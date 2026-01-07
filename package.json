@@ -1,0 +1,20 @@
+{
+  "name": "marga-biz",
+  "version": "1.0.0",
+  "description": "Marga Enterprises official website",
+  "scripts": {
+    "generate": "node scripts/generate-pages.js",
+    "serve": "npx http-server . -p 8080 -o",
+    "build": "npm run generate",
+    "deploy": "netlify deploy --prod"
+  },
+  "author": "Marga Enterprises",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

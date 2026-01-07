@@ -1,0 +1,232 @@
+{
+  "url": "https://marga.biz",
+  "crawledAt": "2026-01-07T12:37:21.469Z",
+  "page": {
+    "title": "Copier Rental | Printer Rental | Manila, Philippines",
+    "metaDescription": "Top copier rental Philippines. Quality printers & copiers from ₱1,250/month. Full support included. Call 09171642540 for instant quote!",
+    "metaKeywords": "",
+    "canonical": "https://marga.biz/",
+    "ogTitle": "COPIER RENTAL",
+    "ogDescription": "Seeking out for a dependable copier rental? Look no more! Our affordable copier rental Philippines offers the MFC-L2750DW",
+    "ogImage": "http://marga.biz/wp-content/uploads/2023/07/7040-TTC-1.png",
+    "ogType": "website",
+    "ogSiteName": "Copier and Printer Rental: Premium Quality Meets Affordability!",
+    "twitterCard": "summary_large_image",
+    "twitterTitle": "",
+    "twitterDescription": "",
+    "twitterImage": "",
+    "h1": "Copier Rental | Printer Rental | Manila, Philippines",
+    "h2s": [
+      "Copier Rental Plans and Printer Options",
+      "The Best Copier Rental Deals",
+      "Best deals and tips regarding the best best copier rental deals",
+      "Best deals and tips regarding the Best Copier Rental Deals:",
+      "Testimonials and Reviews:",
+      "Conclusion"
+    ],
+    "structuredData": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://marga.biz/",
+            "url": "https://marga.biz/",
+            "name": "Copier Rental | Printer Rental | Manila, Philippines",
+            "isPartOf": {
+              "@id": "https://marga.biz/#website"
+            },
+            "about": {
+              "@id": "https://marga.biz/#organization"
+            },
+            "primaryImageOfPage": {
+              "@id": "https://marga.biz/#primaryimage"
+            },
+            "image": {
+              "@id": "https://marga.biz/#primaryimage"
+            },
+            "thumbnailUrl": "http://marga.biz/wp-content/uploads/2023/06/RICOH-COPIER.jpg",
+            "datePublished": "2023-04-14T21:08:11+00:00",
+            "dateModified": "2025-08-26T07:59:35+00:00",
+            "description": "Top copier rental Philippines. Quality printers & copiers from ₱1,250/month. Full support included. Call 09171642540 for instant quote!",
+            "breadcrumb": {
+              "@id": "https://marga.biz/#breadcrumb"
+            },
+            "inLanguage": "en-US",
+            "potentialAction": [
+              {
+                "@type": "ReadAction",
+                "target": [
+                  "https://marga.biz/"
+                ]
+              }
+            ]
+          },
+          {
+            "@type": "ImageObject",
+            "inLanguage": "en-US",
+            "@id": "https://marga.biz/#primaryimage",
+            "url": "https://marga.biz/wp-content/uploads/2023/06/RICOH-COPIER.jpg",
+            "contentUrl": "https://marga.biz/wp-content/uploads/2023/06/RICOH-COPIER.jpg",
+            "width": 219,
+            "height": 231,
+            "caption": "Ricoh 2551 office printer"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://marga.biz/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://marga.biz/#website",
+            "url": "https://marga.biz/",
+            "name": "Marga",
+            "description": "Elevate Your Efficiency: Get a quick quote now!",
+            "publisher": {
+              "@id": "https://marga.biz/#organization"
+            },
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://marga.biz/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://marga.biz/#organization",
+            "name": "Marga",
+            "url": "https://marga.biz/",
+            "logo": {
+              "@type": "ImageObject",
+              "inLanguage": "en-US",
+              "@id": "https://marga.biz/#/schema/logo/image/",
+              "url": "https://marga.biz/wp-content/uploads/2023/06/Xerox-VersaLink-C405DN.webp",
+              "contentUrl": "https://marga.biz/wp-content/uploads/2023/06/Xerox-VersaLink-C405DN.webp",
+              "width": 700,
+              "height": 700,
+              "caption": "Marga"
+            },
+            "image": {
+              "@id": "https://marga.biz/#/schema/logo/image/"
+            },
+            "sameAs": [
+              "https://www.facebook.com/margaenterprises",
+              "https://www.youtube.com/channel/UCN-t-fnAlr3GoX-IjGrkcQA"
+            ]
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "src": "https://secure.gravatar.com/avatar/ccfb72dd339347718cd8fba59e8358cedb6bb2475f3e1d0e8b7d944d78c16cfc?s=26&d=mm&r=g",
+        "alt": "",
+        "title": ""
+      },
+      {
+        "src": "https://secure.gravatar.com/avatar/ccfb72dd339347718cd8fba59e8358cedb6bb2475f3e1d0e8b7d944d78c16cfc?s=64&d=mm&r=g",
+        "alt": "",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2024/04/Marga-Logo-M.png",
+        "alt": "Marga Logo M",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2024/06/Banner-Marga-2-2-1024x379.png",
+        "alt": "",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2024/04/Marga-Logo-M.png",
+        "alt": "Marga Logo M",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2024/06/Banner-Marga-2-3-1024x379.png",
+        "alt": "",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2023/06/RICOH-COPIER.jpg",
+        "alt": "Ricoh 2551 multifunction copier printer",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2023/09/BH-363-Konika.jpg",
+        "alt": "BH 363 Konika multifunction printer",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2023/07/Brother-MFC-J2330DW-Inkjet-Printer.jpeg",
+        "alt": "Brother MFC-J2330DW inkjet printer",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2023/07/Brother-T820.png",
+        "alt": "Brother T820 inkjet printer",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2023/07/ImageRUNNER-2525i.jpg",
+        "alt": "Canon ImageRUNNER 2525i multifunction printer",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2023/09/copier-rental-1.png",
+        "alt": "Professional office workers collaborating in modern workplace",
+        "title": ""
+      },
+      {
+        "src": "http://marga.biz/wp-content/uploads/2023/08/A_frazzled_employee_looking_at_a_jammed_printer.png",
+        "alt": "Overwhelmed office worker with excessive paperwork and printer",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/uploads/2023/07/Epson-WorkForce-WF-3720.jpg",
+        "alt": "Epson WorkForce WF-3720 all-in-one printer",
+        "title": ""
+      },
+      {
+        "src": "http://marga.biz/wp-content/uploads/2023/08/A_happy_filipino_business_owner.png",
+        "alt": "Satisfied business owner with large multifunction copier in office",
+        "title": ""
+      },
+      {
+        "src": "http://marga.biz/wp-content/uploads/2024/04/printer-rental-31.webp",
+        "alt": "Office worker operating large multifunction copier machine",
+        "title": ""
+      },
+      {
+        "src": "http://marga.biz/wp-content/uploads/2024/04/printer-rental-32.webp",
+        "alt": "Office worker operating large multifunction copier machine",
+        "title": ""
+      },
+      {
+        "src": "https://marga.biz/wp-content/plugins/wpforms-lite/assets/images/submit-spin.svg",
+        "alt": "Loading",
+        "title": ""
+      }
+    ],
+    "wordCount": 6535,
+    "generator": "WordPress 6.8.3"
+  }
+}

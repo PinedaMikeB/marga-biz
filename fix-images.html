@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fix Image URLs - Manual</title>
+    <style>
+        body { font-family: Arial; padding: 40px; max-width: 900px; margin: 0 auto; }
+        h1 { color: #667eea; }
+        .step { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #667eea; }
+        .btn { background: #667eea; color: white; padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #5566d8; }
+        textarea { width: 100%; height: 150px; font-family: monospace; padding: 10px; }
+        .status { padding: 15px; margin: 15px 0; border-radius: 8px; }
+        .success { background: #d4edda; color: #155724; }
+        .info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Manual Image URL Fixer</h1>
+    
+    <div class="step">
+        <h2>Step 1: Get Firebase Image List</h2>
+        <p>We need to get the list of uploaded images from Firebase Storage.</p>
+        <button class="btn" onclick="listFirebaseImages()">Get Firebase Images</button>
+        <div id="firebaseStatus"></div>
+        <textarea id="imageList" placeholder="Firebase images will appear here..."></textarea>
+    </div>
+    
+    <div class="step">
+        <h2>Step 2: Load Your HTML</h2>
+        <input type="file" id="htmlFile" accept=".html">
+        <div id="loadStatus"></div>
+    </div>
+    
+    <div class="step">
+        <h2>Step 3: Fix URLs</h2>
+        <button class="btn" onclick="fixURLs()" id="fixBtn" disabled>Fix Image URLs</button>
+        <div id="fixStatus"></div>
+    </div>
+    
+    <div class="step">
+        <h2>Step 4: Download Fixed HTML</h2>
+        <button class="btn" onclick="downloadFixed()" id="downloadBtn" disabled style="background: #4caf50;">Download Fixed HTML</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase config
+        firebase.initializeApp({
+            apiKey: "AIzaSyCgPJs1Neq2bRMAOvREBeV-f2i_3h1Qx3M",
+            authDomain: "sah-spiritual-journal.firebaseapp.com",
+            projectId: "sah-spiritual-journal",
+            storageBucket: "sah-spiritual-journal.firebasestorage.app",
+            messagingSenderId: "450636566224",
+            appId: "1:450636566224:web:5c46eb4b827e6fd3ad58d5"
+        });
+
+        const storage = firebase.storage();
+        let firebaseImages = {};
+        let htmlContent = '';
+        let fixedHTML = '';
+
+        async function listFirebaseImages() {
+            const status = document.getElementById('firebaseStatus');
+            status.innerHTML = '<div class="status info">Loading images from Firebase...</div>';
+            
+            try {
+                const listRef = storage.ref('public/website');
+                const result = await listRef.listAll();
+                
+                for (const item of result.items) {
+                    const url = await item.getDownloadURL();
+                    const filename = item.name;
+                    firebaseImages[filename] = url;
+                }
+                
+                const list = Object.keys(firebaseImages).join('\n');
+                document.getElementById('imageList').value = list;
+                
+                status.innerHTML = `<div class="status success">✅ Found ${Object.keys(firebaseImages).length} images in Firebase!</div>`;
+                
+            } catch (error) {
+                status.innerHTML = `<div class="status" style="background:#f8d7da;color:#721c24;">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        document.getElementById('htmlFile').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            htmlContent = await file.text();
+            const status = document.getElementById('loadStatus');
+            status.innerHTML = '<div class="status success">✅ HTML loaded! Click "Fix Image URLs" to continue.</div>';
+            document.getElementById('fixBtn').disabled = false;
+        });
+
+        function fixURLs() {
+            if (!htmlContent) {
+                alert('Please load HTML file first!');
+                return;
+            }
+            
+            if (Object.keys(firebaseImages).length === 0) {
+                alert('Please get Firebase images first!');
+                return;
+            }
+            
+            const status = document.getElementById('fixStatus');
+            status.innerHTML = '<div class="status info">Fixing URLs...</div>';
+            
+            fixedHTML = htmlContent;
+            let replacements = 0;
+            
+            // Replace each image
+            Object.entries(firebaseImages).forEach(([filename, firebaseURL]) => {
+                // Match various path patterns
+                const patterns = [
+                    new RegExp(`/images/[^"']*${filename}`, 'g'),
+                    new RegExp(`images/[^"']*${filename}`, 'g'),
+                    new RegExp(`https?://marga\\.biz/wp-content/uploads/[^"']*${filename}`, 'g')
+                ];
+                
+                patterns.forEach(pattern => {
+                    if (fixedHTML.match(pattern)) {
+                        fixedHTML = fixedHTML.replace(pattern, firebaseURL);
+                        replacements++;
+                    }
+                });
+            });
+            
+            status.innerHTML = `<div class="status success">✅ Fixed ${replacements} image URLs!</div>`;
+            document.getElementById('downloadBtn').disabled = false;
+        }
+
+        function downloadFixed() {
+            const blob = new Blob([fixedHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index-fixed.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Downloaded! Replace your index.html with index-fixed.html');
+        }
+    </script>
+</body>
+</html>
