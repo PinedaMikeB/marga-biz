@@ -865,3 +865,88 @@ body {
         max-width: 100%;
     }
 }
+
+
+/* ============================================
+   MOBILE FIXES - January 2026
+   ============================================ */
+
+/* Fix header container on mobile */
+@media (max-width: 768px) {
+    .site-header .container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+    
+    /* Hamburger animation when active */
+    .mobile-menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+    
+    /* Ensure full width sections */
+    .hero,
+    .page-header,
+    .cta-section,
+    .site-footer {
+        width: 100%;
+        margin: 0;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-sizing: border-box;
+    }
+    
+    /* Fix main content width */
+    .main-content,
+    .page-content,
+    .content-wrapper {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-sizing: border-box;
+    }
+    
+    /* Footer fixes */
+    .site-footer {
+        width: 100%;
+    }
+    
+    .footer-grid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+/* Logo fallback styling */
+.logo img {
+    max-height: 50px;
+    width: auto;
+    display: block;
+}
+
+/* Hide broken image icon */
+.logo img[alt]:not([src]),
+.logo img[alt][src=""],
+.logo img:not([src]) {
+    display: none;
+}
+
+/* Text fallback for logo */
+.logo a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.25rem;
+}

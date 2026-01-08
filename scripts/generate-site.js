@@ -877,7 +877,7 @@ function copyStaticAssets() {
     }
     
     // Copy other root files
-    const rootFiles = ['favicon.ico', 'apple-touch-icon.png', '_redirects', 'netlify.toml'];
+    const rootFiles = ['favicon.ico', 'apple-touch-icon.png', '_redirects', 'netlify.toml', 'marga-logo.png'];
     const rootDir = path.join(__dirname, '..');
     
     for (const file of rootFiles) {
