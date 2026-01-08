@@ -10,6 +10,18 @@
     box-sizing: border-box;
 }
 
+/* Prevent horizontal overflow */
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    min-width: 0;
+}
+
 :root {
     --primary-color: #0066cc;
     --secondary-color: #003d7a;
@@ -164,9 +176,22 @@ body {
 
 .main-content img {
     max-width: 100%;
+    width: auto;
     height: auto;
     border-radius: 8px;
     margin: 20px 0;
+    display: block;
+}
+
+/* Prevent any element from causing horizontal overflow */
+.main-content img,
+.main-content iframe,
+.main-content video,
+.main-content table,
+.main-content pre,
+.main-content code {
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .main-content a {
@@ -969,6 +994,31 @@ html, body {
     .content-wrapper {
         max-width: 100% !important;
         padding: 0 !important;
+        overflow-x: hidden;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    /* Force all images to fit within container */
+    .content-wrapper img,
+    .page-content img,
+    .main-content img {
+        max-width: 100% !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    
+    /* Prevent srcset from causing overflow */
+    img {
+        max-width: 100% !important;
+    }
+    
+    /* Article content overflow prevention */
+    article,
+    .page-content,
+    .post-content {
+        overflow-x: hidden;
+        width: 100%;
     }
     
     /* Footer grid single column */
