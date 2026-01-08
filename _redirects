@@ -1,4 +1,4 @@
-# Redirect old WordPress URLs
+# Redirect old WordPress URLs only
 /wp-admin/* / 301!
 /wp-login.php / 301!
 /wp-content/uploads/* https://firebasestorage.googleapis.com/v0/b/sah-spiritual-journal.firebasestorage.app/o/public%2Fwebsite%2F:splat?alt=media 301

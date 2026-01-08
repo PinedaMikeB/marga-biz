@@ -222,12 +222,76 @@ function cleanContent(content, urlMap = {}) {
         }
     );
     
+    // Known broken URL mappings (content has wrong paths)
+    const brokenUrlFixes = {
+        "3d-printers-for-rent": "/printer-rental/3d-printers-for-rent/",
+        "copier-rental/color-copier-rental": "/blogs/color-copier-rental/",
+        "copier-rental/short-term-copier-rental": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/short-term-copier-rental/",
+        "dot-matrix-printers-for-rent": "/printer-rental/types-of-printers-for-rent/dot-matrix-printers-for-rent/",
+        "portable-printers-for-rent": "/printer-rental/types-of-printers-for-rent/portable-printers-for-rent/",
+        "copier-technology-and-features-faqs": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-technology-and-features-faqs/",
+        "duration-of-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/duration-of-copier-rentals/",
+        "impact-of-digital-transformation": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/impact-of-digital-transformation/",
+        "maintenance-and-support-faqs": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/maintenance-and-support-faqs/",
+        "overview-of-copier-rental-market-trends": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/overview-of-copier-rental-market-trends/",
+        "printer-rental-contracts": "/copier-rental/printer-rental-contracts/",
+        "printer-rental-vs-purchase": "/printer-rental/printer-rental-vs-purchase/",
+        "regulatory-impact-on-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/regulatory-impact-on-copier-rentals/",
+        "shifts-in-consumer-preferences": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/shifts-in-consumer-preferences/",
+        "technological-advancements-in-copiers": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/technological-advancements-in-copiers/",
+        "terms-of-service": "/terms-of-service/",
+        "color-copier-rental": "/blogs/color-copier-rental/",
+        "short-term-copier-rental": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/short-term-copier-rental/",
+        "access-to-latest-technology": "/printer-rental/access-to-latest-technology/",
+        "adoption-of-cloud-technology-in-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/adoption-of-cloud-technology-in-copier-rentals/",
+        "advanced-maintenance-technologies": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/maintenance-and-support/advanced-maintenance-technologies/",
+        "advanced-technology-in-high-volume-copiers": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/high-volume-copier-rental/advanced-technology-in-high-volume-copiers/",
+        "case-studies-effective-copier-maintenance": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/maintenance-and-support/case-studies-effective-copier-maintenance/",
+        "case-studies-on-high-volume-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/high-volume-copier-rental/case-studies-on-high-volume-copier-rentals/",
+        "challenges-facing-the-copier-rental-market": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/challenges-facing-the-copier-rental-market/",
+        "choosing-the-right-copier-rental": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/choosing-the-right-copier-rental/",
+        "color-copier-rental-costs": "/blogs/color-copier-rental/color-copier-rental-costs/",
+        "consumer-education-and-engagement": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/consumer-education-and-engagement/",
+        "copier-rental-insurance-options": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-overview/copier-rental-insurance-options/",
+        "costs-involved-in-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/costs-involved-in-copier-rentals/",
+        "customization-and-personalization-trends": "/printer-rental/future-trends-in-printer-rentals/customization-and-personalization-trends/",
+        "demand-for-multifunction-copiers": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/demand-for-multifunction-copiers/",
+        "emerging-technologies-in-printer-rentals": "/printer-rental/future-trends-in-printer-rentals/emerging-technologies-in-printer-rentals/",
+        "enhancing-security-with-rented-copiers": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-overview/enhancing-security-with-rented-copiers/",
+        "feedback-and-improvement-for-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/high-volume-copier-rental/feedback-and-improvement-for-copier-rentals/",
+        "growth-of-wireless-printer-rentals": "/printer-rental/future-trends-in-printer-rentals/growth-of-wireless-printer-rentals/",
+        "impact-of-copier-rental-on-workflow": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-overview/impact-of-copier-rental-on-workflow/",
+        "innovations-in-copier-rental-services": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/innovations-in-copier-rental-services/",
+        "maintenance-and-support": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/maintenance-and-support/",
+        "pricing-strategies-in-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/pricing-strategies-in-copier-rentals/",
+        "reducing-costs-with-high-volume-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/high-volume-copier-rental/reducing-costs-with-high-volume-copier-rentals/",
+        "role-of-maintenance-in-copier-lifecycle": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/maintenance-and-support/role-of-maintenance-in-copier-lifecycle/",
+        "security-features-for-color-copiers": "/blogs/color-copier-rental/security-features-for-color-copiers/",
+        "sustainability-practices-in-copier-rental": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-overview/sustainability-practices-in-copier-rental/",
+        "sustainability-trends-in-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/sustainability-trends-in-copier-rentals/",
+        "sustainable-maintenance-practices": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/maintenance-and-support/sustainable-maintenance-practices/",
+        "the-rise-of-eco-friendly-printer-rentals": "/printer-rental/future-trends-in-printer-rentals/the-rise-of-eco-friendly-printer-rentals/",
+        "the-role-of-data-analytics-in-copier-rentals": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-market-trends/the-role-of-data-analytics-in-copier-rentals/"
+    };
+    
     // Fix internal links - convert to relative and fix broken short URLs
     content = content.replace(/href="https?:\/\/marga\.biz\/([^"]*?)"/gi, (match, path) => {
+        // Remove trailing slash for comparison
+        const cleanPath = path.replace(/\/$/, '');
+        
+        // First check hardcoded broken URL fixes
+        if (brokenUrlFixes[cleanPath]) {
+            return `href="${brokenUrlFixes[cleanPath]}"`;
+        }
+        
         // Extract the slug (last part of the path)
-        const cleanPath = path.replace(/\/$/, ''); // Remove trailing slash
         const parts = cleanPath.split('/');
         const slug = parts[parts.length - 1] || parts[parts.length - 2];
+        
+        // Check hardcoded fixes by slug
+        if (slug && brokenUrlFixes[slug]) {
+            return `href="${brokenUrlFixes[slug]}"`;
+        }
         
         // Check if this slug exists in our URL map with a different path
         if (slug && urlMap[slug]) {
@@ -813,7 +877,7 @@ function copyStaticAssets() {
     }
     
     // Copy other root files
-    const rootFiles = ['favicon.ico', '_redirects', 'netlify.toml'];
+    const rootFiles = ['favicon.ico', 'apple-touch-icon.png', '_redirects', 'netlify.toml'];
     const rootDir = path.join(__dirname, '..');
     
     for (const file of rootFiles) {
@@ -821,6 +885,24 @@ function copyStaticAssets() {
         if (fs.existsSync(srcPath)) {
             fs.copyFileSync(srcPath, path.join(CONFIG.distDir, file));
             console.log(`   ✅ Copied ${file}`);
+        }
+    }
+    
+    // Copy static pages (about, terms-of-service, etc.)
+    const staticPagesDir = path.join(rootDir, 'static-pages');
+    if (fs.existsSync(staticPagesDir)) {
+        const staticPages = fs.readdirSync(staticPagesDir);
+        for (const page of staticPages) {
+            const srcPageDir = path.join(staticPagesDir, page);
+            const destPageDir = path.join(CONFIG.distDir, page);
+            if (fs.statSync(srcPageDir).isDirectory()) {
+                ensureDir(destPageDir);
+                const files = fs.readdirSync(srcPageDir);
+                for (const file of files) {
+                    fs.copyFileSync(path.join(srcPageDir, file), path.join(destPageDir, file));
+                }
+                console.log(`   ✅ Copied static page: ${page}`);
+            }
         }
     }
 }

@@ -1,0 +1,432 @@
+{
+  "generatedAt": "2026-01-08T05:47:32.306Z",
+  "siteUrl": "https://marga-biz.netlify.app",
+  "summary": {
+    "totalPages": 1904,
+    "averageSEOScore": 96,
+    "perfectScorePages": 1064,
+    "pagesWithCriticalIssues": 1,
+    "brokenLinksFound": 5753,
+    "orphanPages": 626
+  },
+  "scoreDistribution": {
+    "excellent": 1777,
+    "good": 126,
+    "needsWork": 1,
+    "poor": 0
+  },
+  "discoverability": {
+    "reachableFromHomepage": 1257,
+    "totalPages": 1904,
+    "unreachablePages": 647,
+    "coveragePercent": 66
+  },
+  "sitemapComparison": {
+    "generatedSitemapUrls": 1903,
+    "wordPressSitemapUrls": 1903,
+    "matchingUrls": 1899,
+    "matchPercent": 100,
+    "missingFromGenerated": 0,
+    "extraInGenerated": 0
+  },
+  "topIssues": [
+    [
+      "Meta description short (117 chars)",
+      36
+    ],
+    [
+      "Meta description short (118 chars)",
+      35
+    ],
+    [
+      "Meta description short (71 chars)",
+      35
+    ],
+    [
+      "Meta description short (116 chars)",
+      34
+    ],
+    [
+      "Meta description short (119 chars)",
+      34
+    ],
+    [
+      "1 images missing alt text",
+      34
+    ],
+    [
+      "Meta description short (111 chars)",
+      29
+    ],
+    [
+      "Meta description short (114 chars)",
+      26
+    ],
+    [
+      "Meta description short (115 chars)",
+      26
+    ],
+    [
+      "Meta description short (112 chars)",
+      26
+    ]
+  ],
+  "brokenLinks": [
+    {
+      "source": "/blogs/advanced-maintenance-technologies/index.html",
+      "brokenLink": "/training-staff-on-copier-maintenance/"
+    },
+    {
+      "source": "/blogs/advanced-technology-in-high-volume-copiers/index.html",
+      "brokenLink": "/upgrading-high-volume-copier-technology/"
+    },
+    {
+      "source": "/blogs/advancing-document-production-with-color-printer-rental/index.html",
+      "brokenLink": "/trends-in-high-performance-printer-rentals/"
+    },
+    {
+      "source": "/blogs/advancing-document-production-with-color-printer-rental/index.html",
+      "brokenLink": "/trends-in-high-performance-printer-rentals/"
+    },
+    {
+      "source": "/blogs/advantages-of-unlimited-printer-rental/index.html",
+      "brokenLink": "/trends-in-high-performance-printer-rentals/"
+    },
+    {
+      "source": "/blogs/advantages-of-unlimited-printer-rental/index.html",
+      "brokenLink": "/trends-in-high-performance-printer-rentals/"
+    },
+    {
+      "source": "/blogs/ai-and-automation-in-printer-rentals/index.html",
+      "brokenLink": "/trends-in-high-performance-printer-rentals/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-office-use/index.html",
+      "brokenLink": "/best-laser-printers-for-offices/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-office-use/index.html",
+      "brokenLink": "/inkjet-printers-for-office-use/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-office-use/index.html",
+      "brokenLink": "/monochrome-printers-for-office-use/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-office-use/index.html",
+      "brokenLink": "/office-printers-with-best-support/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/office-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/high-speed-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/industrial-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/all-in-one-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/all-in-one-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/office-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/industrial-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/all-in-one-printers-for-rent/index.html",
+      "brokenLink": "/high-speed-printers-for-rent/"
+    },
+    {
+      "source": "/blogs/amendments-and-addendums-in-contracts/index.html",
+      "brokenLink": "/contract-length-short-term-vs-long-term/"
+    },
+    {
+      "source": "/blogs/amendments-and-addendums-in-contracts/index.html",
+      "brokenLink": "/printer-upgrades-in-rental-contracts/"
+    },
+    {
+      "source": "/blogs/amendments-and-addendums-in-contracts/index.html",
+      "brokenLink": "/warranty-and-service-agreements/"
+    },
+    {
+      "source": "/blogs/amendments-and-addendums-in-contracts/index.html",
+      "brokenLink": "/penalties-and-fees-in-rental-agreements/"
+    },
+    {
+      "source": "/blogs/amendments-and-addendums-in-contracts/index.html",
+      "brokenLink": "/case-studies-printer-rental-contracts/"
+    },
+    {
+      "source": "/blogs/amendments-and-addendums-in-contracts/index.html",
+      "brokenLink": "/common-clauses-in-rental-agreements/"
+    },
+    {
+      "source": "/blogs/amendments-and-modifications-in-agreements/index.html",
+      "brokenLink": "/insurance-requirements-in-rental-agreements/"
+    },
+    {
+      "source": "/blogs/amendments-and-modifications-in-agreements/index.html",
+      "brokenLink": "/compliance-with-regulations/"
+    },
+    {
+      "source": "/blogs/amendments-and-modifications-in-agreements/index.html",
+      "brokenLink": "/copier-performance-guarantees/"
+    },
+    {
+      "source": "/blogs/amendments-to-rental-agreements/index.html",
+      "brokenLink": "/how-to-negotiate-rental-terms/"
+    },
+    {
+      "source": "/blogs/analyzing-lease-terms-for-cost-efficiency/index.html",
+      "brokenLink": "/copier-rental/marga-copier-rental/color-copier-rental-agreements/cost-comparison-renting-vs-buying-a-copier/"
+    },
+    {
+      "source": "/blogs/analyzing-lease-terms-for-cost-efficiency/index.html",
+      "brokenLink": "/how-to-budget-for-copier-rentals/"
+    },
+    {
+      "source": "/blogs/analyzing-lease-terms-for-cost-efficiency/index.html",
+      "brokenLink": "/copier-rental-cost-benefits-for-small-businesses/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/what-is-printer-rental/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/what-types-of-printers-can-i-rent/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/how-long-can-i-rent-a-printer-for/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/how-much-does-printer-rental-cost/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/what-is-included-in-a-printer-rental-agreement/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/what-is-printer-rental/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/how-much-does-printer-rental-cost/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/what-types-of-printers-can-i-rent/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/how-long-can-i-rent-a-printer-for/"
+    },
+    {
+      "source": "/blogs/are-eco-friendly-printers-available-for-rent/index.html",
+      "brokenLink": "/what-is-included-in-a-printer-rental-agreement/"
+    },
+    {
+      "source": "/blogs/are-there-any-hidden-fees-in-printer-rentals/index.html",
+      "brokenLink": "/what-is-printer-rental/"
+    },
+    {
+      "source": "/blogs/are-there-any-hidden-fees-in-printer-rentals/index.html",
+      "brokenLink": "/how-much-does-printer-rental-cost/"
+    },
+    {
+      "source": "/blogs/are-there-any-hidden-fees-in-printer-rentals/index.html",
+      "brokenLink": "/what-is-included-in-a-printer-rental-agreement/"
+    },
+    {
+      "source": "/blogs/are-there-any-hidden-fees-in-printer-rentals/index.html",
+      "brokenLink": "/what-types-of-printers-can-i-rent/"
+    },
+    {
+      "source": "/blogs/are-there-any-hidden-fees-in-printer-rentals/index.html",
+      "brokenLink": "/how-long-can-i-rent-a-printer-for/"
+    },
+    {
+      "source": "/blogs/asia-pacific-copier-rental-insights/index.html",
+      "brokenLink": "/financing-and-leasing-options-by-region/"
+    },
+    {
+      "source": "/blogs/asia-pacific-copier-rental-insights/index.html",
+      "brokenLink": "/legal-and-regulatory-factors-in-regional-rentals/"
+    },
+    {
+      "source": "/blogs/asia-pacific-copier-rental-insights/index.html",
+      "brokenLink": "/challenges-in-copier-rentals-for-remote-regions/"
+    }
+  ],
+  "lowestScoringPages": [
+    {
+      "path": "/terms-of-service/index.html",
+      "score": 62,
+      "issues": [
+        "Missing og:description"
+      ]
+    },
+    {
+      "path": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-for-smbs/budgeting-for-copiers-in-smbs-marga-copier-rental/index.html",
+      "score": 77,
+      "issues": []
+    },
+    {
+      "path": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/eco-friendly-copier-rental/benefits-of-eco-friendly-copiers/index.html",
+      "score": 77,
+      "issues": []
+    },
+    {
+      "path": "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/maintenance-and-support/assessing-copier-health-and-performance/index.html",
+      "score": 77,
+      "issues": []
+    },
+    {
+      "path": "/pricing-guide/index.html",
+      "score": 77,
+      "issues": []
+    },
+    {
+      "path": "/blogs/access-to-latest-technology/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/benefits-of-analog-copiers/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/choosing-a-color-copier/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/choosing-the-right-copier-lease-a-comprehensive-guide/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/color-copier-staff-training/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/comprehensive-copier-leasing-solutions-philippines-marga/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-lease-experience-the-ultimate-rental-bliss/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-leasing-a-strategic-investment/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-leasing-solutions-a-path-to-efficiency/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-models-for-office-use/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-rental-a-practical-guide-to-affordable-printing-solutions/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-rental-faqs-2/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-rental-for-events/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-rental-for-schools-2/index.html",
+      "score": 85,
+      "issues": []
+    },
+    {
+      "path": "/blogs/copier-rental-for-smbs-2/index.html",
+      "score": 85,
+      "issues": []
+    }
+  ],
+  "orphanPages": [
+    "/blogs/color-copier-rental/best-color-copier-models/",
+    "/blogs/color-copier-rental/case-studies-on-effective-color-copier-usage/",
+    "/blogs/color-copier-rental/color-copier-lease-agreements/copier-rental-cost-breakdown/",
+    "/blogs/color-copier-rental/color-copier-lease-agreements/factors-affecting-copier-rental-prices/",
+    "/blogs/color-copier-rental/color-copier-lease-agreements/how-to-budget-for-copier-rentals/",
+    "/blogs/color-copier-rental/color-copier-lease-agreements/rental-vs-purchase-comparison/",
+    "/blogs/color-copier-rental/color-copier-rental-agreements/",
+    "/blogs/color-copier-rental/copier-ink-management/",
+    "/blogs/color-copier-rental/custom-color-profiles-for-special-projects/",
+    "/blogs/color-copier-rental/energy-efficiency-in-color-copiers/",
+    "/blogs/color-copier-rental/environmental-impact-of-color-copiers/",
+    "/blogs/color-copier-rental/impact-of-color-printing-on-branding/",
+    "/blogs/color-copier-rental/innovative-color-copier-technologies/",
+    "/blogs/color-copier-rental/maintenance-of-color-copiers/",
+    "/copier-rental/contract-conflict-resolution/",
+    "/copier-rental/copier-for-rent/photocopier-rental/high-quality-copier-rental-philippines/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/advantages-of-renting-vs-buying-a-copier/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/common-clauses-in-rental-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/amendments-and-modifications-in-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/case-studies-successful-rental-agreement-negotiations/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/compliance-with-regulations/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/copier-performance-guarantees/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/customizing-rental-agreements-for-special-needs/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/dispute-resolution-mechanisms/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/duration-and-renewal-options/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/early-termination-options/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/impact-of-technology-upgrades-on-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/insurance-requirements-in-rental-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/key-clauses-in-copier-rental-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/liability-and-damage-provisions/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/negotiating-copier-rental-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/overview-of-copier-rental-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/penalties-and-fees-in-rental-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/renewal-strategies-for-copier-rentals/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/service-and-maintenance-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/subleasing-and-assignment-provisions/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/termination-clauses-in-copier-rentals/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements/understanding-legal-terms-in-rental-agreements/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-agreements-what-to-watch-for/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/asia-pacific-copier-rental-insights/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/challenges-in-copier-rentals-for-remote-regions/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/copier-maintenance-and-support-in-diverse-regions/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/copier-rental-best-practices-by-region/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/copier-rental-demand-fluctuations-by-season/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/copier-rental-market-trends-in-north-america/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/copier-rental-options-in-europe/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/copier-rentals-for-multinational-corporations/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/cost-comparison-of-copier-rentals-by-region/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/customization-options-for-regional-needs/",
+    "/copier-rental/printer-and-copier-leasing-smart-solution-for-businesses/copier-rental-by-region/environmental-considerations-in-regional-rentals/"
+  ]
+}
