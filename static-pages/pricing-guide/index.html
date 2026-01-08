@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Pricing Guide - Marga Enterprises | Copier & Printer Rental</title>
+    <meta name="description" content="Get our complete pricing guide for copier and printer rentals. Plans starting at ₱1,250/month with full support.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .verification-container {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 40px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .verification-container h2 {
+            color: #003d7a;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        .verification-container p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .otp-inputs input {
+            width: 50px;
+            height: 55px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .otp-inputs input:focus {
+            border-color: #0066cc;
+            outline: none;
+        }
+        .btn-verify {
+            width: 100%;
+            padding: 15px;
+            background: #ff6b00;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-verify:hover {
+            background: #e55d00;
+        }
+        .btn-verify:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .success-message {
+            background: #efe;
+            color: #060;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .resend-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .resend-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .resend-link a:hover {
+            text-decoration: underline;
+        }
+        .timer {
+            color: #666;
+            font-size: 14px;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        /* Pricing content styles */
+        .pricing-content {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .pricing-content.visible {
+            display: block;
+        }
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .pricing-header h1 {
+            color: #003d7a;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .pricing-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .pricing-card.popular {
+            border-color: #ff6b00;
+            position: relative;
+        }
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff6b00;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .pricing-card h3 {
+            color: #003d7a;
+            margin-bottom: 15px;
+        }
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        .pricing-card .period {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .pricing-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+            text-align: left;
+        }
+        .pricing-card li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+        .pricing-card li::before {
+            content: '✓';
+            color: #22c55e;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .btn-cta {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .btn-cta:hover {
+            background: #0055a5;
+        }
+        .pricing-card.popular .btn-cta {
+            background: #ff6b00;
+        }
+        .pricing-card.popular .btn-cta:hover {
+            background: #e55d00;
+        }
+        .pricing-note {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        .pricing-note h4 {
+            color: #003d7a;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body class="page pricing-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="/marga-logo.png" alt="Marga Enterprises" height="50">
+                </a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav" id="main-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/copier-rental/copier-for-rent/" class="nav-link">Copier Rental</a></li>
+                    <li class="nav-item"><a href="/printer-rental/" class="nav-link">Printer Rental</a></li>
+                    <li class="nav-item"><a href="/blogs/" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="/about/" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="/contact/" class="nav-link cta-link">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="main-content">
+        <!-- Verification Form (shown first) -->
+        <div class="verification-container" id="verification-section">
+            <div class="form-step active" id="step-mobile">
+                <h2>📄 Get Complete Pricing Guide</h2>
+                <p>Enter your mobile number to receive a verification code and access our full pricing details.</p>
+                
+                <div class="error-message" id="error-mobile"></div>
+                <div class="success-message" id="success-mobile"></div>
+                
+                <form id="mobile-form">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="Juan Dela Cruz" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company" name="company" placeholder="Your Company Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" name="mobile" placeholder="09XX XXX XXXX" required>
+                    </div>
+                    <button type="submit" class="btn-verify" id="btn-send-otp">
+                        Send Verification Code
+                    </button>
+                </form>
+            </div>
+
+            <div class="form-step" id="step-otp">
+                <h2>🔐 Enter Verification Code</h2>
+                <p>We sent a 6-digit code to <strong id="display-mobile"></strong></p>
+                
+                <div class="error-message" id="error-otp"></div>
+                
+                <form id="otp-form">
+                    <div class="form-group">
+                        <div class="otp-inputs">
+                            <input type="text" maxlength="1" class="otp-digit" data-index="0" inputmode="numeric">
+                            <input type="text" maxlength="1" class="otp-digit" data-index="1" inputmode="numeric">
+                            <input type="text" maxlength="1" class="otp-digit" data-index="2" inputmode="numeric">
+                            <input type="text" maxlength="1" class="otp-digit" data-index="3" inputmode="numeric">
+                            <input type="text" maxlength="1" class="otp-digit" data-index="4" inputmode="numeric">
+                            <input type="text" maxlength="1" class="otp-digit" data-index="5" inputmode="numeric">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-verify" id="btn-verify-otp">
+                        Verify & View Pricing
+                    </button>
+                </form>
+                
+                <div class="resend-link">
+                    <span class="timer" id="timer">Resend code in <span id="countdown">60</span>s</span>
+                    <a href="#" id="resend-link" style="display:none;">Resend verification code</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Content (shown after verification) -->
+        <div class="pricing-content" id="pricing-section">
+            <div class="pricing-header">
+                <h1>Complete Copier & Printer Rental Pricing</h1>
+                <p>Transparent pricing with no hidden fees. All plans include full support, maintenance, and toner.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">₱1,250</div>
+                    <div class="period">per month</div>
+                    <ul>
+                        <li>Inkjet Printer</li>
+                        <li>Up to 500 prints/month</li>
+                        <li>Black & White printing</li>
+                        <li>Free delivery & setup</li>
+                        <li>Basic support</li>
+                    </ul>
+                    <a href="/contact/" class="btn-cta">Get Started</a>
+                </div>
+
+                <div class="pricing-card popular">
+                    <h3>Business</h3>
+                    <div class="price">₱3,500</div>
+                    <div class="period">per month</div>
+                    <ul>
+                        <li>Laser Copier/Printer</li>
+                        <li>Up to 3,000 prints/month</li>
+                        <li>Black & White printing</li>
+                        <li>Copy, Print, Scan</li>
+                        <li>Free toner & maintenance</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="/contact/" class="btn-cta">Get Started</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">₱6,500</div>
+                    <div class="period">per month</div>
+                    <ul>
+                        <li>Color Laser Copier</li>
+                        <li>Up to 5,000 prints/month</li>
+                        <li>Full Color printing</li>
+                        <li>Copy, Print, Scan, Fax</li>
+                        <li>Free toner & maintenance</li>
+                        <li>24/7 priority support</li>
+                    </ul>
+                    <a href="/contact/" class="btn-cta">Get Started</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Print All You Can</h3>
+                    <div class="price">₱4,500</div>
+                    <div class="period">per month</div>
+                    <ul>
+                        <li>High-volume Inkjet</li>
+                        <li>Unlimited prints!</li>
+                        <li>Black & White printing</li>
+                        <li>Ink tank included</li>
+                        <li>Free maintenance</li>
+                        <li>Best for high volume</li>
+                    </ul>
+                    <a href="/contact/" class="btn-cta">Get Started</a>
+                </div>
+            </div>
+
+            <div class="pricing-note">
+                <h4>📋 What's Included in All Plans:</h4>
+                <ul style="columns: 2; column-gap: 40px;">
+                    <li>Free delivery within Metro Manila</li>
+                    <li>Free installation & setup</li>
+                    <li>Free training for your staff</li>
+                    <li>Regular maintenance visits</li>
+                    <li>Toner/ink replacement</li>
+                    <li>Technical support hotline</li>
+                    <li>Flexible contract terms</li>
+                    <li>No hidden charges</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px;">
+                <h3>Ready to get started?</h3>
+                <p style="color: #666; margin-bottom: 20px;">Contact us for a customized quote based on your needs.</p>
+                <a href="/contact/" class="btn-cta" style="margin-right: 15px;">Request a Quote</a>
+                <a href="tel:09171642540" class="btn-cta" style="background: #22c55e;">Call Now: 0917 164 2540</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Marga Enterprises. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js" defer></script>
+    <script>
+        // OTP Verification System
+        let otpToken = null;
+        let countdownInterval = null;
+
+        // Check if user already has valid access
+        document.addEventListener('DOMContentLoaded', function() {
+            const accessToken = localStorage.getItem('pricing_access_token');
+            if (accessToken) {
+                try {
+                    const data = JSON.parse(atob(accessToken));
+                    if (data.verified && Date.now() < data.expiresAt) {
+                        showPricingContent();
+                        return;
+                    }
+                } catch (e) {
+                    localStorage.removeItem('pricing_access_token');
+                }
+            }
+        });
+
+        // Step 1: Send OTP
+        document.getElementById('mobile-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const company = document.getElementById('company').value;
+            const mobile = document.getElementById('mobile').value;
+            const btn = document.getElementById('btn-send-otp');
+            const errorDiv = document.getElementById('error-mobile');
+            const successDiv = document.getElementById('success-mobile');
+            
+            // Validate mobile
+            const cleanMobile = mobile.replace(/\s/g, '');
+            if (!/^(09|\+639)\d{9}$/.test(cleanMobile)) {
+                errorDiv.textContent = 'Please enter a valid Philippine mobile number (e.g., 09171234567)';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            errorDiv.style.display = 'none';
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Sending...';
+            
+            try {
+                const response = await fetch('/.netlify/functions/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mobile: cleanMobile, name, company })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    otpToken = data.token;
+                    document.getElementById('display-mobile').textContent = mobile;
+                    document.getElementById('step-mobile').classList.remove('active');
+                    document.getElementById('step-otp').classList.add('active');
+                    startCountdown(60);
+                    document.querySelector('.otp-digit').focus();
+                } else {
+                    errorDiv.textContent = data.error || 'Failed to send OTP. Please try again.';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Network error. Please check your connection.';
+                errorDiv.style.display = 'block';
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = 'Send Verification Code';
+        });
+
+        // OTP Input handling - auto focus next
+        document.querySelectorAll('.otp-digit').forEach((input, index) => {
+            input.addEventListener('input', function(e) {
+                if (this.value.length === 1 && index < 5) {
+                    document.querySelectorAll('.otp-digit')[index + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                    document.querySelectorAll('.otp-digit')[index - 1].focus();
+                }
+            });
+        });
+
+        // Step 2: Verify OTP
+        document.getElementById('otp-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const otpDigits = document.querySelectorAll('.otp-digit');
+            const otp = Array.from(otpDigits).map(input => input.value).join('');
+            const btn = document.getElementById('btn-verify-otp');
+            const errorDiv = document.getElementById('error-otp');
+            
+            if (otp.length !== 6) {
+                errorDiv.textContent = 'Please enter the complete 6-digit code';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            errorDiv.style.display = 'none';
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Verifying...';
+            
+            try {
+                const response = await fetch('/.netlify/functions/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp, token: otpToken })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('pricing_access_token', data.accessToken);
+                    showPricingContent();
+                } else {
+                    errorDiv.textContent = data.error || 'Invalid code. Please try again.';
+                    errorDiv.style.display = 'block';
+                    otpDigits.forEach(input => input.value = '');
+                    otpDigits[0].focus();
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Network error. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = 'Verify & View Pricing';
+        });
+
+        // Countdown timer
+        function startCountdown(seconds) {
+            const timerSpan = document.getElementById('timer');
+            const countdownSpan = document.getElementById('countdown');
+            const resendLink = document.getElementById('resend-link');
+            
+            timerSpan.style.display = 'inline';
+            resendLink.style.display = 'none';
+            
+            countdownInterval = setInterval(() => {
+                seconds--;
+                countdownSpan.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    timerSpan.style.display = 'none';
+                    resendLink.style.display = 'inline';
+                }
+            }, 1000);
+        }
+
+        // Resend OTP
+        document.getElementById('resend-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('step-otp').classList.remove('active');
+            document.getElementById('step-mobile').classList.add('active');
+        });
+
+        // Show pricing content
+        function showPricingContent() {
+            document.getElementById('verification-section').style.display = 'none';
+            document.getElementById('pricing-section').classList.add('visible');
+        }
+    </script>
+</body>
+</html>
