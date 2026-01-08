@@ -1,0 +1,75 @@
+<!-- Blog Post Template - For blog articles -->
+<!-- Extends: base.html -->
+<!-- Usage: All blog posts from /blogs/ -->
+
+<!-- Article Header -->
+<article class="blog-post" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="container">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                        <meta itemprop="position" content="1">
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a itemprop="item" href="/blogs/"><span itemprop="name">Blog</span></a>
+                        <meta itemprop="position" content="2">
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <span itemprop="name">{{POST_TITLE}}</span>
+                        <meta itemprop="position" content="3">
+                    </li>
+                </ol>
+            </nav>
+            <h1 itemprop="headline">{{H1_TITLE}}</h1>
+            <div class="post-meta">
+                <time datetime="{{PUBLISH_DATE_ISO}}" itemprop="datePublished">{{PUBLISH_DATE}}</time>
+                <span class="author" itemprop="author" itemscope itemtype="https://schema.org/Organization">
+                    <span itemprop="name">Marga Enterprises</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <div class="post-content-wrapper">
+        <div class="container">
+            <div class="post-content" itemprop="articleBody">
+                {{POST_CONTENT}}
+            </div>
+            
+            <aside class="post-sidebar">
+                <div class="sidebar-widget">
+                    <h3>Related Articles</h3>
+                    <ul class="related-posts">
+                        {{RELATED_POSTS}}
+                    </ul>
+                </div>
+                <div class="sidebar-widget cta-widget">
+                    <h3>Need a Copier?</h3>
+                    <p>Get quality printer & copier rentals from ₱1,250/month</p>
+                    <a href="/contact/" class="btn btn-primary">Get Quote</a>
+                </div>
+            </aside>
+        </div>
+    </div>
+</article>
+
+<!-- Post Navigation -->
+<nav class="post-navigation">
+    <div class="container">
+        {{#PREV_POST}}
+        <a href="{{PREV_POST_URL}}" class="nav-prev">
+            <span class="nav-label">Previous</span>
+            <span class="nav-title">{{PREV_POST_TITLE}}</span>
+        </a>
+        {{/PREV_POST}}
+        {{#NEXT_POST}}
+        <a href="{{NEXT_POST_URL}}" class="nav-next">
+            <span class="nav-label">Next</span>
+            <span class="nav-title">{{NEXT_POST_TITLE}}</span>
+        </a>
+        {{/NEXT_POST}}
+    </div>
+</nav>

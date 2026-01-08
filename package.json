@@ -1,12 +1,16 @@
 {
   "name": "marga-biz",
-  "version": "1.0.0",
-  "description": "Marga Enterprises official website",
+  "version": "2.0.0",
+  "description": "Marga Enterprises official website - Static Site Generator",
   "scripts": {
-    "generate": "node scripts/generate-pages.js",
-    "serve": "npx http-server . -p 8080 -o",
+    "generate": "node scripts/generate-site.js",
+    "generate:old": "node scripts/generate-pages.js",
+    "sync-images": "node scripts/sync-images.js",
+    "serve": "cd dist && npx http-server . -p 8080 -o",
+    "serve:root": "npx http-server . -p 8080 -o",
     "build": "npm run generate",
-    "deploy": "netlify deploy --prod"
+    "deploy": "netlify deploy --prod --dir=dist",
+    "clean": "rm -rf dist/*"
   },
   "author": "Marga Enterprises",
   "license": "UNLICENSED",
@@ -15,6 +19,6 @@
     "http-server": "^14.1.1"
   },
   "dependencies": {
-    "firebase-admin": "^12.0.0"
+    "firebase-admin": "^12.7.0"
   }
 }

@@ -1,0 +1,62 @@
+<!-- Page Template - For standard pages -->
+<!-- Extends: base.html -->
+<!-- Usage: Most pages including services, about, contact -->
+
+{{#IS_HOMEPAGE}}
+<!-- Hero Section (Homepage Only) -->
+<section class="hero">
+    <div class="container">
+        <h1>{{H1_TITLE}}</h1>
+        <p class="lead">{{HERO_SUBTITLE}}</p>
+        <div class="cta-buttons">
+            <a href="/contact/" class="btn btn-primary">Get Instant Quote</a>
+            <a href="tel:09171642540" class="btn btn-secondary">Call 09171642540</a>
+        </div>
+    </div>
+</section>
+{{/IS_HOMEPAGE}}
+
+{{^IS_HOMEPAGE}}
+<!-- Page Header (Non-homepage) -->
+<section class="page-header">
+    <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                {{BREADCRUMB_ITEMS}}
+            </ol>
+        </nav>
+        <h1>{{H1_TITLE}}</h1>
+    </div>
+</section>
+{{/IS_HOMEPAGE}}
+
+<!-- Page Content -->
+<article class="page-content">
+    <div class="container">
+        <div class="content-wrapper">
+            {{PAGE_CONTENT}}
+        </div>
+        
+        {{#HAS_SIDEBAR}}
+        <aside class="sidebar">
+            {{SIDEBAR_CONTENT}}
+        </aside>
+        {{/HAS_SIDEBAR}}
+    </div>
+</article>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Get Started?</h2>
+        <p>Contact us today for a free quote on copier and printer rental services.</p>
+        <div class="cta-buttons">
+            <a href="/contact/" class="btn btn-primary">Get a Quote</a>
+            <a href="tel:09171642540" class="btn btn-outline">Call 09171642540</a>
+        </div>
+    </div>
+</section>
