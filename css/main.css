@@ -212,14 +212,15 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
     .site-header .container {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
     }
     
     .main-nav ul {
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
+        gap: 0;
+        flex-direction: column;
     }
     
     .hero h1 {
@@ -871,13 +872,33 @@ body {
    MOBILE FIXES - January 2026
    ============================================ */
 
+/* Ensure all sections have same horizontal alignment */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 /* Fix header container on mobile */
 @media (max-width: 768px) {
+    /* Header row layout */
+    .site-header {
+        width: 100%;
+    }
+    
     .site-header .container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
         position: relative;
+        gap: 0 !important;
+        max-width: 100%;
+        padding: 15px 20px;
+    }
+    
+    /* Hamburger button styles */
+    .mobile-menu-toggle {
+        display: block !important;
+        z-index: 1001;
     }
     
     /* Hamburger animation when active */
@@ -893,52 +914,84 @@ body {
         transform: rotate(-45deg) translate(7px, -6px);
     }
     
-    /* Ensure full width sections */
+    /* Navigation hidden by default, shown when active */
+    .main-nav {
+        display: none !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+    
+    .main-nav.active {
+        display: block !important;
+    }
+    
+    .main-nav .nav-menu {
+        flex-direction: column;
+        gap: 0;
+        padding: 10px 20px 20px;
+    }
+    
+    .main-nav .nav-link {
+        display: block;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    /* Unified container widths across all sections */
+    .container {
+        max-width: 100% !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        box-sizing: border-box;
+    }
+    
+    /* Full width sections */
+    .site-header,
     .hero,
     .page-header,
+    .page-content,
+    .main-content,
     .cta-section,
     .site-footer {
         width: 100%;
-        margin: 0;
-        padding-left: 20px;
-        padding-right: 20px;
-        box-sizing: border-box;
-    }
-    
-    /* Fix main content width */
-    .main-content,
-    .page-content,
-    .content-wrapper {
-        width: 100%;
         max-width: 100%;
-        padding-left: 20px;
-        padding-right: 20px;
+        margin-left: 0;
+        margin-right: 0;
         box-sizing: border-box;
     }
     
-    /* Footer fixes */
-    .site-footer {
-        width: 100%;
+    /* Content wrapper full width on mobile */
+    .content-wrapper {
+        max-width: 100% !important;
+        padding: 0 !important;
     }
     
+    /* Footer grid single column */
     .footer-grid {
-        padding-left: 0;
-        padding-right: 0;
+        grid-template-columns: 1fr !important;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .footer-col {
+        text-align: center;
+    }
+    
+    .social-links {
+        justify-content: center;
     }
 }
 
-/* Logo fallback styling */
+/* Logo styling */
 .logo img {
     max-height: 50px;
     width: auto;
     display: block;
-}
-
-/* Hide broken image icon */
-.logo img[alt]:not([src]),
-.logo img[alt][src=""],
-.logo img:not([src]) {
-    display: none;
 }
 
 /* Text fallback for logo */
