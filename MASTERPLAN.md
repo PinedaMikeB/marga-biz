@@ -141,7 +141,7 @@ marga.biz/
 - [x] Build Netlify scheduled function (daily cron)
 - [x] Store daily KPIs: visitors, pageviews, clicks, rankings
 - [x] Enable week-over-week and month-over-month comparisons
-- [ ] Add FIREBASE_SERVICE_ACCOUNT to Netlify env vars
+- [x] Add FIREBASE_SERVICE_ACCOUNT to Netlify env vars
 
 #### Phase 3.3: AI SEO Analysis Feature (~1 hour)
 - [ ] Claude API integration for insights analysis
