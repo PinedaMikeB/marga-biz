@@ -9,21 +9,15 @@ const admin = require('firebase-admin');
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 const { google } = require('googleapis');
 
-// Initialize Firebase Admin
-let firebaseApp;
+// Initialize Firebase Admin (singleton pattern)
 const getFirebaseApp = () => {
-    if (!firebaseApp) {
+    if (admin.apps.length === 0) {
         const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
-        if (serviceAccount.project_id) {
-            firebaseApp = admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            });
-        } else {
-            // Use default credentials or existing initialization
-            firebaseApp = admin.apps[0] || admin.initializeApp();
-        }
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
     }
-    return firebaseApp;
+    return admin.app();
 };
 
 const GA4_PROPERTY_ID = process.env.GA4_PROPERTY_ID || '406902171';

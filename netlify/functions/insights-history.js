@@ -5,19 +5,15 @@
 
 const admin = require('firebase-admin');
 
-let firebaseApp;
+// Initialize Firebase Admin (singleton pattern)
 const getFirebaseApp = () => {
-    if (!firebaseApp) {
+    if (admin.apps.length === 0) {
         const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
-        if (serviceAccount.project_id) {
-            firebaseApp = admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            });
-        } else {
-            firebaseApp = admin.apps[0] || admin.initializeApp();
-        }
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
     }
-    return firebaseApp;
+    return admin.app();
 };
 
 exports.handler = async (event) => {
