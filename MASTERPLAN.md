@@ -100,11 +100,11 @@ marga.biz/
 - [x] Create DNS rollback documentation
 
 ### Phase 2: Event Tracking & Redirects
-- [ ] Add custom GA4 events for button clicks
-- [ ] Track "Get Instant Quote" clicks
-- [ ] Track phone number clicks (tel: links)
-- [ ] Track form submissions
-- [ ] Track scroll depth on key pages
+- [x] Add custom GA4 events for button clicks
+- [x] Track "Get Instant Quote" clicks
+- [x] Track phone number clicks (tel: links)
+- [x] Track form submissions
+- [x] Track scroll depth on key pages
 - [ ] Audit 404 errors in Google Search Console
 - [ ] Add missing 301 redirects to `_redirects`
 - [ ] Submit updated sitemap to Google

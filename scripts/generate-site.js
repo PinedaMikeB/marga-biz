@@ -576,7 +576,7 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
     html = html.replace(/\{\{MAIN_CONTENT\}\}/g, mainContent);
     html = html.replace(/\{\{BODY_CLASS\}\}/g, isHomepage ? 'home' : 'page');
     html = html.replace(/\{\{EXTRA_HEAD\}\}/g, '');
-    html = html.replace(/\{\{EXTRA_SCRIPTS\}\}/g, '');
+    html = html.replace(/\{\{EXTRA_SCRIPTS\}\}/g, '\n    <script src="/js/ga4-events.js" defer></script>');
     
     // Remove unused template conditionals
     html = html.replace(/\{\{#.*?\}\}[\s\S]*?\{\{\/.*?\}\}/g, '');
@@ -705,7 +705,7 @@ function generateBlogPost(post, templates, components, allPosts, postIndex, urlM
     html = html.replace(/\{\{MAIN_CONTENT\}\}/g, mainContent);
     html = html.replace(/\{\{BODY_CLASS\}\}/g, 'blog-post-page');
     html = html.replace(/\{\{EXTRA_HEAD\}\}/g, '');
-    html = html.replace(/\{\{EXTRA_SCRIPTS\}\}/g, '');
+    html = html.replace(/\{\{EXTRA_SCRIPTS\}\}/g, '\n    <script src="/js/ga4-events.js" defer></script>');
     
     // Clean up
     html = html.replace(/\{\{#.*?\}\}[\s\S]*?\{\{\/.*?\}\}/g, '');
@@ -838,7 +838,7 @@ function generateBlogIndex(posts, templates, components) {
     html = html.replace(/\{\{MAIN_CONTENT\}\}/g, mainContent);
     html = html.replace(/\{\{BODY_CLASS\}\}/g, 'blog-index');
     html = html.replace(/\{\{EXTRA_HEAD\}\}/g, '');
-    html = html.replace(/\{\{EXTRA_SCRIPTS\}\}/g, '');
+    html = html.replace(/\{\{EXTRA_SCRIPTS\}\}/g, '\n    <script src="/js/ga4-events.js" defer></script>');
     html = html.replace(/\{\{#.*?\}\}[\s\S]*?\{\{\/.*?\}\}/g, '');
     
     const blogDir = path.join(CONFIG.distDir, 'blogs');

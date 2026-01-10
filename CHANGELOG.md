@@ -52,6 +52,59 @@ Each entry includes rollback instructions.
 
 ---
 
+## [v1.1.0] - 2026-01-10
+
+### 📊 GA4 Custom Event Tracking Added
+
+**Summary:** Added comprehensive event tracking for user behavior analytics.
+
+**Changes:**
+- Created `/js/ga4-events.js` — Custom event tracking script
+- Injected tracking script into all 1,904 HTML pages
+- Created `add-ga4-events.js` — Injection utility script
+
+**Events Now Tracked:**
+| Event | Description |
+|-------|-------------|
+| `click_quote_button` | "Get Instant Quote" and CTA button clicks |
+| `click_phone` | Phone number clicks (tel: links) |
+| `click_email` | Email link clicks (mailto:) |
+| `click_pricing_guide` | Pricing guide button clicks |
+| `scroll_depth` | 25%, 50%, 75%, 100% scroll milestones |
+| `click_cta` | All other CTA button clicks |
+| `outbound_click` | External link clicks |
+| `form_submit` | Form submissions |
+| `page_engagement` | Time on page tracking |
+
+**Git Commit:** *(add commit hash after push)*
+
+**Rollback Instructions:**
+```bash
+# Remove ga4-events.js script tag from all files
+cd "/Volumes/Wotg Drive Mike/GitHub/marga-biz"
+find dist -name "*.html" -exec sed -i '' 's|<script src="/js/ga4-events.js" defer></script>||g' {} \;
+rm dist/js/ga4-events.js
+rm js/ga4-events.js
+git add .
+git commit -m "Rollback: Remove GA4 custom events"
+git push origin main
+```
+
+**Files Changed:**
+- `js/ga4-events.js` (new)
+- `dist/js/ga4-events.js` (new)
+- `add-ga4-events.js` (new)
+- All 1,904 HTML files in `/dist/`
+
+**Verification:**
+- [ ] https://marga.biz loads without JS errors
+- [ ] Open browser DevTools Console, see "GA4 Events: All tracking initialized"
+- [ ] Click "Get Instant Quote" → see `click_quote_button` event in console
+- [ ] Click phone number → see `click_phone` event in console
+- [ ] GA4 Realtime → Events shows new custom events within 24-48 hours
+
+---
+
 ## [v1.0.1] - 2026-01-10
 
 ### 📄 Documentation System Added
