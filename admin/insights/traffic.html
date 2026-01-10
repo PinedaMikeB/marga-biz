@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insights Dashboard - Marga Enterprises</title>
+    <title>Traffic Analysis - Marga Insights</title>
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Flatpickr for date picker -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     
     <!-- Dashboard CSS -->
     <link rel="stylesheet" href="css/insights.css">
@@ -34,89 +30,98 @@
 
         <!-- Navigation Tabs -->
         <nav class="dashboard-nav">
-            <a href="index.html" class="nav-tab active">Overview</a>
-            <a href="traffic.html" class="nav-tab">Traffic</a>
-            <a href="#" class="nav-tab disabled" title="Coming Soon">Behavior</a>
-            <a href="#" class="nav-tab disabled" title="Coming Soon">SEO</a>
-            <a href="#" class="nav-tab disabled" title="Coming Soon">Conversions</a>
+            <a href="index.html" class="nav-tab">Overview</a>
+            <a href="traffic.html" class="nav-tab active">Traffic</a>
+            <a href="behavior.html" class="nav-tab">Behavior</a>
+            <a href="seo.html" class="nav-tab">SEO</a>
+            <a href="conversions.html" class="nav-tab">Conversions</a>
         </nav>
 
 
-        <!-- KPI Cards -->
+        <!-- Page Title -->
+        <div class="page-title">
+            <h2>📈 Traffic Analysis</h2>
+            <p>Detailed breakdown of your website traffic</p>
+        </div>
+
+        <!-- KPI Cards Row -->
         <section class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-icon">👥</div>
                 <div class="kpi-content">
-                    <div class="kpi-value" id="totalVisitors">--</div>
-                    <div class="kpi-label">Total Visitors</div>
-                    <div class="kpi-trend" id="visitorsTrend"></div>
+                    <div class="kpi-value" id="totalUsers">--</div>
+                    <div class="kpi-label">Total Users</div>
                 </div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-icon">📄</div>
+                <div class="kpi-icon">🆕</div>
                 <div class="kpi-content">
-                    <div class="kpi-value" id="pageViews">--</div>
-                    <div class="kpi-label">Page Views</div>
-                    <div class="kpi-trend" id="pageViewsTrend"></div>
+                    <div class="kpi-value" id="newUsers">--</div>
+                    <div class="kpi-label">New Users</div>
                 </div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-icon">🖱️</div>
+                <div class="kpi-icon">🔄</div>
                 <div class="kpi-content">
-                    <div class="kpi-value" id="totalClicks">--</div>
-                    <div class="kpi-label">CTA Clicks</div>
-                    <div class="kpi-trend" id="clicksTrend"></div>
+                    <div class="kpi-value" id="sessions">--</div>
+                    <div class="kpi-label">Sessions</div>
                 </div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-icon">📑</div>
+                <div class="kpi-icon">⏱️</div>
                 <div class="kpi-content">
-                    <div class="kpi-value" id="indexedPages">--</div>
-                    <div class="kpi-label">Indexed Pages</div>
-                    <div class="kpi-trend" id="indexedTrend"></div>
+                    <div class="kpi-value" id="avgDuration">--</div>
+                    <div class="kpi-label">Avg. Duration</div>
                 </div>
             </div>
         </section>
 
-        <!-- Charts Row -->
+        <!-- Charts Row 1 -->
         <section class="charts-grid">
             <div class="chart-card">
                 <h3>Traffic Over Time</h3>
-                <canvas id="trafficChart"></canvas>
+                <canvas id="trafficTimeChart"></canvas>
             </div>
-            <div class="chart-card">
-                <h3>Top Pages</h3>
-                <div id="topPagesList" class="top-list">
-                    <div class="loading">Loading...</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Second Row -->
-        <section class="charts-grid">
             <div class="chart-card">
                 <h3>Traffic Sources</h3>
                 <canvas id="sourcesChart"></canvas>
             </div>
+        </section>
+
+
+        <!-- Charts Row 2 -->
+        <section class="charts-grid">
             <div class="chart-card">
-                <h3>Top Search Keywords</h3>
-                <div id="topKeywordsList" class="top-list">
+                <h3>Devices</h3>
+                <canvas id="devicesChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Top Countries</h3>
+                <div id="countriesList" class="top-list">
                     <div class="loading">Loading...</div>
                 </div>
             </div>
         </section>
 
+        <!-- Top Pages Table -->
+        <section class="table-section">
+            <div class="table-card">
+                <h3>Top Landing Pages</h3>
+                <div id="landingPagesList" class="top-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </section>
 
         <!-- Footer -->
         <footer class="dashboard-footer">
             <p>Last updated: <span id="lastUpdated">--</span></p>
-            <p>Data source: Google Analytics 4 & Search Console</p>
         </footer>
     </div>
 
-    <!-- Dashboard JavaScript -->
+    <!-- Scripts -->
     <script src="/js/admin/insights/insights-api.js"></script>
     <script src="/js/admin/insights/insights-charts.js"></script>
-    <script src="/js/admin/insights/insights-ui.js"></script>
+    <script src="/js/admin/insights/traffic-ui.js"></script>
 </body>
 </html>
