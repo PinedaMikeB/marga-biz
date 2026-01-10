@@ -115,6 +115,12 @@ body {
     color: var(--white);
 }
 
+.nav-tab.disabled {
+    color: var(--gray-300);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* KPI Cards */
 .kpi-grid {
     display: grid;
@@ -186,6 +192,13 @@ body {
     padding: 20px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.chart-card canvas {
+    max-height: 280px !important;
+    width: 100% !important;
 }
 
 .chart-card h3 {
