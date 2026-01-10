@@ -141,9 +141,10 @@ marga.biz/
 - [x] Build Netlify scheduled function (daily cron)
 - [x] Store daily KPIs: visitors, pageviews, clicks, rankings
 - [x] Enable week-over-week and month-over-month comparisons
-- [x] Add FIREBASE_SERVICE_ACCOUNT to Netlify env vars
+- [x] Grant Firebase access to Google service account (IAM Editor role)
+- [x] Test snapshot function - first data captured successfully
 
-#### Phase 3.3: AI SEO Analysis Feature (~1 hour)
+#### Phase 3.3: AI SEO Analysis Feature (~1 hour) - NEXT SESSION
 - [ ] Claude API integration for insights analysis
 - [ ] Traffic trend analysis ("Traffic up/down X%")
 - [ ] Content gap detection ("Create page for keyword X")
@@ -151,6 +152,7 @@ marga.biz/
 - [ ] Ranking change alerts
 - [ ] Store AI insights in Firebase
 - [ ] Display AI recommendations in dashboard
+- [ ] Add "AI Insights" section to Overview tab
 
 ### Phase 4: Admin Module
 - [ ] Set up Firebase project (or use existing)
