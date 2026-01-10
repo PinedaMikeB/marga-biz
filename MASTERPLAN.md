@@ -117,20 +117,39 @@ marga.biz/
 - [ ] Submit updated sitemap to Google
 
 ### Phase 3: Insights Module (Analytics + SEO Dashboard)
-- [ ] Set up Google Cloud Project for API access
-- [ ] Enable GA4 Data API
-- [ ] Enable Search Console API
-- [ ] Create service account & credentials
-- [ ] Build Netlify Functions for data fetching
-- [ ] Create admin/insights/ dashboard pages
-- [ ] Traffic Overview widget (visitors, pageviews, sources)
-- [ ] Behavior Analysis widget (clicks, scroll depth, engagement)
-- [ ] Conversion Tracking widget (quotes, calls, forms)
-- [ ] SEO Performance widget (rankings, CTR, queries)
-- [ ] Indexing Status widget (indexed/not indexed pages)
-- [ ] Page Health widget (404s, speed issues)
-- [ ] Date range selector (today, 7d, 30d, custom)
-- [ ] Export to CSV/PDF functionality
+- [x] Set up Google Cloud Project for API access
+- [x] Enable GA4 Data API
+- [x] Enable Search Console API
+- [x] Create service account & credentials
+- [x] Build Netlify Functions for data fetching
+- [x] Create admin/insights/ dashboard pages
+- [x] Overview tab with KPIs (visitors, pageviews, clicks, indexed)
+- [x] Traffic Over Time chart
+- [x] Top Pages list
+- [x] Traffic Sources pie chart
+- [x] Top Keywords list
+- [x] Date range selector (7d, 30d, 90d)
+
+#### Phase 3.1: Build Remaining Dashboard Tabs (~30 min each)
+- [ ] Traffic tab - detailed traffic analysis, sources breakdown, devices
+- [ ] Behavior tab - click events, scroll depth, engagement time
+- [ ] SEO tab - indexing status, keyword rankings, position changes
+- [ ] Conversions tab - quote clicks, phone calls, form submissions funnel
+
+#### Phase 3.2: Firebase Historical Data Storage (~20 min)
+- [ ] Create Firebase collection for daily snapshots
+- [ ] Build Netlify scheduled function (daily cron)
+- [ ] Store daily KPIs: visitors, pageviews, clicks, rankings
+- [ ] Enable week-over-week and month-over-month comparisons
+
+#### Phase 3.3: AI SEO Analysis Feature (~1 hour)
+- [ ] Claude API integration for insights analysis
+- [ ] Traffic trend analysis ("Traffic up/down X%")
+- [ ] Content gap detection ("Create page for keyword X")
+- [ ] Page performance recommendations
+- [ ] Ranking change alerts
+- [ ] Store AI insights in Firebase
+- [ ] Display AI recommendations in dashboard
 
 ### Phase 4: Admin Module
 - [ ] Set up Firebase project (or use existing)
