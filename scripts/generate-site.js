@@ -876,6 +876,15 @@ function copyStaticAssets() {
         console.log('   ✅ Copied js/main.js');
     }
     
+    // Copy GA4 events tracking script
+    if (fs.existsSync(path.join(CONFIG.jsDir, 'ga4-events.js'))) {
+        fs.copyFileSync(
+            path.join(CONFIG.jsDir, 'ga4-events.js'),
+            path.join(jsDistDir, 'ga4-events.js')
+        );
+        console.log('   ✅ Copied js/ga4-events.js');
+    }
+    
     // Copy other root files
     const rootFiles = ['favicon.ico', 'apple-touch-icon.png', '_redirects', 'netlify.toml', 'marga-logo.png'];
     const rootDir = path.join(__dirname, '..');
@@ -903,6 +912,37 @@ function copyStaticAssets() {
                 }
                 console.log(`   ✅ Copied static page: ${page}`);
             }
+        }
+    }
+    
+    // Copy admin folder (Insights dashboard)
+    const adminDir = path.join(rootDir, 'admin');
+    if (fs.existsSync(adminDir)) {
+        copyDirRecursive(adminDir, path.join(CONFIG.distDir, 'admin'));
+        console.log('   ✅ Copied admin/ folder');
+    }
+    
+    // Copy admin JS
+    const adminJsDir = path.join(CONFIG.jsDir, 'admin');
+    if (fs.existsSync(adminJsDir)) {
+        copyDirRecursive(adminJsDir, path.join(CONFIG.distDir, 'js', 'admin'));
+        console.log('   ✅ Copied js/admin/ folder');
+    }
+}
+
+// Helper function to copy directory recursively
+function copyDirRecursive(src, dest) {
+    ensureDir(dest);
+    const entries = fs.readdirSync(src, { withFileTypes: true });
+    
+    for (const entry of entries) {
+        const srcPath = path.join(src, entry.name);
+        const destPath = path.join(dest, entry.name);
+        
+        if (entry.isDirectory()) {
+            copyDirRecursive(srcPath, destPath);
+        } else {
+            fs.copyFileSync(srcPath, destPath);
         }
     }
 }
