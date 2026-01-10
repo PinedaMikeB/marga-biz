@@ -54,3 +54,8 @@
   for = "/*.ico"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+
+# Scheduled function - Daily snapshot at 6 AM PHT (10 PM UTC previous day)
+[functions."insights-snapshot"]
+  schedule = "0 22 * * *"

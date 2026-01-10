@@ -131,16 +131,17 @@ marga.biz/
 - [x] Date range selector (7d, 30d, 90d)
 
 #### Phase 3.1: Build Remaining Dashboard Tabs (~30 min each)
-- [ ] Traffic tab - detailed traffic analysis, sources breakdown, devices
-- [ ] Behavior tab - click events, scroll depth, engagement time
-- [ ] SEO tab - indexing status, keyword rankings, position changes
-- [ ] Conversions tab - quote clicks, phone calls, form submissions funnel
+- [x] Traffic tab - detailed traffic analysis, sources breakdown, devices
+- [x] Behavior tab - click events, scroll depth, engagement time
+- [x] SEO tab - indexing status, keyword rankings, position changes
+- [x] Conversions tab - quote clicks, phone calls, form submissions funnel
 
 #### Phase 3.2: Firebase Historical Data Storage (~20 min)
-- [ ] Create Firebase collection for daily snapshots
-- [ ] Build Netlify scheduled function (daily cron)
-- [ ] Store daily KPIs: visitors, pageviews, clicks, rankings
-- [ ] Enable week-over-week and month-over-month comparisons
+- [x] Create Firebase collection for daily snapshots
+- [x] Build Netlify scheduled function (daily cron)
+- [x] Store daily KPIs: visitors, pageviews, clicks, rankings
+- [x] Enable week-over-week and month-over-month comparisons
+- [ ] Add FIREBASE_SERVICE_ACCOUNT to Netlify env vars
 
 #### Phase 3.3: AI SEO Analysis Feature (~1 hour)
 - [ ] Claude API integration for insights analysis
