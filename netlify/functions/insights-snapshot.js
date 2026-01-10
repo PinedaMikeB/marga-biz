@@ -9,12 +9,13 @@ const admin = require('firebase-admin');
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 const { google } = require('googleapis');
 
-// Initialize Firebase Admin (singleton pattern)
+// Initialize Firebase Admin using Google Service Account
 const getFirebaseApp = () => {
     if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
+        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
         admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
+            credential: admin.credential.cert(serviceAccount),
+            projectId: 'sah-spiritual-journal'
         });
     }
     return admin.app();
