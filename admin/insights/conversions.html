@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversions - Marga Insights</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/insights.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <div class="header-left"><h1>📊 Marga Insights</h1></div>
+            <div class="header-right">
+                <select id="dateRange" class="date-select">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d" selected>Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                </select>
+                <button id="refreshBtn" class="btn-refresh">↻</button>
+            </div>
+        </header>
+
+        <nav class="dashboard-nav">
+            <a href="index.html" class="nav-tab">Overview</a>
+            <a href="traffic.html" class="nav-tab">Traffic</a>
+            <a href="behavior.html" class="nav-tab">Behavior</a>
+            <a href="seo.html" class="nav-tab">SEO</a>
+            <a href="conversions.html" class="nav-tab active">Conversions</a>
+        </nav>
+
+        <div class="page-title">
+            <h2>🎯 Conversions</h2>
+            <p>Lead generation and conversion tracking</p>
+        </div>
+
+
+        <section class="kpi-grid">
+            <div class="kpi-card highlight">
+                <div class="kpi-icon">📝</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="totalLeads">--</div>
+                    <div class="kpi-label">Total Leads</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">💬</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="quoteRequests">--</div>
+                    <div class="kpi-label">Quote Requests</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📞</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="phoneCalls">--</div>
+                    <div class="kpi-label">Phone Clicks</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📧</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="emailLeads">--</div>
+                    <div class="kpi-label">Email Clicks</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3>Conversions Over Time</h3>
+                <canvas id="conversionsChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Conversion Sources</h3>
+                <canvas id="sourcesChart"></canvas>
+            </div>
+        </section>
+
+        <section class="table-section">
+            <div class="table-card">
+                <h3>Top Converting Pages</h3>
+                <div id="convertingPagesList" class="top-list"><div class="loading">Loading...</div></div>
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>Last updated: <span id="lastUpdated">--</span></p>
+        </footer>
+    </div>
+
+    <script src="/js/admin/insights/conversions-ui.js"></script>
+</body>
+</html>

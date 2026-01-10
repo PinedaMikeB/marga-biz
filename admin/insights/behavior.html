@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavior Analysis - Marga Insights</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/insights.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>📊 Marga Insights</h1>
+            </div>
+            <div class="header-right">
+                <select id="dateRange" class="date-select">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d" selected>Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                </select>
+                <button id="refreshBtn" class="btn-refresh">↻</button>
+            </div>
+        </header>
+
+        <nav class="dashboard-nav">
+            <a href="index.html" class="nav-tab">Overview</a>
+            <a href="traffic.html" class="nav-tab">Traffic</a>
+            <a href="behavior.html" class="nav-tab active">Behavior</a>
+            <a href="seo.html" class="nav-tab">SEO</a>
+            <a href="conversions.html" class="nav-tab">Conversions</a>
+        </nav>
+
+        <div class="page-title">
+            <h2>🖱️ Behavior Analysis</h2>
+            <p>How visitors interact with your website</p>
+        </div>
+
+
+        <!-- Click Events KPIs -->
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon">📝</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="quoteClicks">--</div>
+                    <div class="kpi-label">Quote Button Clicks</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📞</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="phoneClicks">--</div>
+                    <div class="kpi-label">Phone Clicks</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">✉️</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="emailClicks">--</div>
+                    <div class="kpi-label">Email Clicks</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🔗</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="internalClicks">--</div>
+                    <div class="kpi-label">Internal Link Clicks</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3>Click Events Over Time</h3>
+                <canvas id="clicksChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Scroll Depth Distribution</h3>
+                <canvas id="scrollChart"></canvas>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3>Top Clicked Pages</h3>
+                <div id="clickedPagesList" class="top-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Event Breakdown</h3>
+                <canvas id="eventsChart"></canvas>
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>Last updated: <span id="lastUpdated">--</span></p>
+        </footer>
+    </div>
+
+    <script src="/js/admin/insights/insights-api.js"></script>
+    <script src="/js/admin/insights/behavior-ui.js"></script>
+</body>
+</html>
