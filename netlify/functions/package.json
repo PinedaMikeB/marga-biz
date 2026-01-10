@@ -1,0 +1,8 @@
+{
+  "name": "marga-insights-functions",
+  "version": "1.0.0",
+  "dependencies": {
+    "@google-analytics/data": "^4.0.0",
+    "googleapis": "^128.0.0"
+  }
+}
