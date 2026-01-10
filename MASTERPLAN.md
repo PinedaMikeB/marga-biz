@@ -14,7 +14,7 @@ Transform marga.biz from a static marketing site into a full business platform w
 
 ## 🏗️ ARCHITECTURE
 
-### 4-Module System
+### 5-Module System
 
 ```
 marga.biz/
@@ -27,18 +27,24 @@ marga.biz/
 │   ├── Page editor
 │   └── Image management
 │
-├── 3. SEO MODULE (Automation)             🔲 TODO
+├── 3. INSIGHTS MODULE (Analytics + SEO)   🔲 TODO ← NEW!
+│   ├── Traffic Dashboard (GA4 Data API)
+│   ├── Visitor Behavior (clicks, scroll, engagement)
+│   ├── SEO Performance (Search Console API)
+│   ├── Indexing Status (indexed vs not)
+│   └── Conversion Tracking (leads, calls, quotes)
+│
+├── 4. SEO MODULE (Automation)             🔲 TODO
 │   ├── Claude API content generation
-│   ├── Rank tracking
+│   ├── Meta description optimizer
 │   ├── Backlink monitoring
 │   └── Social media auto-posting
 │
-└── 4. SALES MODULE (Leads & CRM)          🔲 TODO
-    ├── GA4 custom event tracking
-    ├── Visitor behavior analysis
+└── 5. SALES MODULE (Leads & CRM)          🔲 TODO
     ├── Lead capture forms
     ├── Quotation system
-    └── Lead nurturing workflows
+    ├── Lead nurturing workflows
+    └── Email/SMS automation
 ```
 
 ### Tech Stack
@@ -60,6 +66,7 @@ marga.biz/
 ```
 /api/website/   → Public content endpoints
 /api/admin/     → Content management (auth required)
+/api/insights/  → Analytics & SEO data (auth required) ← NEW!
 /api/seo/       → SEO automation (auth required)
 /api/sales/     → Lead management (auth required)
 ```
@@ -109,7 +116,23 @@ marga.biz/
 - [ ] Add missing 301 redirects to `_redirects`
 - [ ] Submit updated sitemap to Google
 
-### Phase 3: Admin Module
+### Phase 3: Insights Module (Analytics + SEO Dashboard)
+- [ ] Set up Google Cloud Project for API access
+- [ ] Enable GA4 Data API
+- [ ] Enable Search Console API
+- [ ] Create service account & credentials
+- [ ] Build Netlify Functions for data fetching
+- [ ] Create admin/insights/ dashboard pages
+- [ ] Traffic Overview widget (visitors, pageviews, sources)
+- [ ] Behavior Analysis widget (clicks, scroll depth, engagement)
+- [ ] Conversion Tracking widget (quotes, calls, forms)
+- [ ] SEO Performance widget (rankings, CTR, queries)
+- [ ] Indexing Status widget (indexed/not indexed pages)
+- [ ] Page Health widget (404s, speed issues)
+- [ ] Date range selector (today, 7d, 30d, custom)
+- [ ] Export to CSV/PDF functionality
+
+### Phase 4: Admin Module
 - [ ] Set up Firebase project (or use existing)
 - [ ] Create admin authentication (login page)
 - [ ] Build blog post list view
@@ -118,17 +141,15 @@ marga.biz/
 - [ ] Image upload to Firebase Storage
 - [ ] Auto-regenerate static files on publish
 
-### Phase 4: SEO Module
+### Phase 5: SEO Module
 - [ ] Claude API integration
 - [ ] Blog post generator (AI-assisted)
 - [ ] Meta description optimizer
-- [ ] Rank tracking dashboard
 - [ ] Backlink monitor
 - [ ] Social media auto-post on publish
 
-### Phase 5: Sales Module
+### Phase 6: Sales Module
 - [ ] Lead capture form integration
-- [ ] Visitor tracking dashboard
 - [ ] Lead list & management
 - [ ] Quotation builder
 - [ ] Email/SMS follow-up automation
@@ -140,6 +161,8 @@ marga.biz/
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-01-10 | Create INSIGHTS MODULE combining Analytics + SEO | Single dashboard for all data, avoid switching between GA4 and Search Console |
+| 2026-01-10 | Expand to 5-module architecture | Better separation of concerns: Insights (view data) vs SEO (automation) vs Sales (leads) |
 | 2026-01-08 | Migrate from WordPress to static | Faster load times, lower cost, maintain SEO |
 | 2026-01-08 | Use Netlify over Vercel | Free tier sufficient, simpler setup |
 | 2026-01-08 | Keep DNS at Hostinger | Email MX records already configured there |
