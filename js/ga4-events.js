@@ -1,17 +1,19 @@
 /**
  * Marga Enterprises - GA4 Custom Event Tracking
- * Version: 1.0.0
+ * Version: 1.1.0
  * Created: 2026-01-10
+ * Updated: 2026-01-10
  * 
  * Events tracked:
  * - click_quote_button: "Get Instant Quote" and similar CTA clicks
  * - click_phone: Phone number clicks (tel: links)
  * - click_email: Email link clicks (mailto:)
  * - click_pricing_guide: Pricing guide button clicks
- * - click_contact_link: Contact page navigation
+ * - click_internal_link: Menu, breadcrumb, and article link clicks
  * - form_submit: Form submissions
  * - scroll_depth: 25%, 50%, 75%, 100% scroll milestones
  * - outbound_click: External link clicks
+ * - page_engagement: Time spent on page
  */
 
 (function() {
@@ -206,7 +208,68 @@
     }
 
     // =====================================================
-    // 7. FORM SUBMISSION TRACKING
+    // 7. INTERNAL LINK TRACKING (Menu & Article Links)
+    // =====================================================
+    function setupInternalLinkTracking() {
+        const currentDomain = window.location.hostname;
+        
+        document.querySelectorAll('a').forEach(function(link) {
+            // Skip if no href or already tracked by other handlers
+            if (!link.href) return;
+            
+            try {
+                const url = new URL(link.href);
+                
+                // Skip non-http links (tel:, mailto:, javascript:, etc.)
+                if (!url.protocol.startsWith('http')) return;
+                
+                // Skip external links (handled by outbound tracking)
+                if (url.hostname !== currentDomain && !url.hostname.includes('marga.biz')) return;
+                
+                // Skip if already tracked by specific handlers
+                if (link.href.includes('tel:') || 
+                    link.href.includes('mailto:') ||
+                    link.classList.contains('btn-primary') ||
+                    link.classList.contains('btn-secondary')) return;
+                
+                // Determine link type
+                let linkType = 'content'; // Default: links in article content
+                let linkSection = 'body';
+                
+                if (link.closest('nav') || link.closest('.nav-menu')) {
+                    linkType = 'navigation';
+                    linkSection = 'header';
+                } else if (link.closest('footer')) {
+                    linkType = 'footer';
+                    linkSection = 'footer';
+                } else if (link.closest('.breadcrumb') || link.closest('[class*="breadcrumb"]')) {
+                    linkType = 'breadcrumb';
+                    linkSection = 'breadcrumb';
+                } else if (link.closest('article') || link.closest('.content-wrapper') || link.closest('.page-content')) {
+                    linkType = 'article';
+                    linkSection = 'content';
+                }
+                
+                link.addEventListener('click', function(e) {
+                    const destinationPath = url.pathname;
+                    
+                    trackEvent('click_internal_link', {
+                        link_text: getButtonText(this).substring(0, 50),
+                        link_url: destinationPath,
+                        link_type: linkType,
+                        link_section: linkSection,
+                        source_page: window.location.pathname
+                    });
+                });
+                
+            } catch (err) {
+                // Invalid URL, skip
+            }
+        });
+    }
+
+    // =====================================================
+    // 8. FORM SUBMISSION TRACKING
     // =====================================================
     function setupFormTracking() {
         document.querySelectorAll('form').forEach(function(form) {
@@ -224,7 +287,7 @@
     }
 
     // =====================================================
-    // 8. CTA BUTTON STYLE TRACKING (Additional CTAs)
+    // 9. CTA BUTTON STYLE TRACKING (Additional CTAs)
     // =====================================================
     function setupCTATracking() {
         // Track all styled buttons/links
@@ -259,7 +322,7 @@
     }
 
     // =====================================================
-    // 9. PAGE ENGAGEMENT TIME
+    // 10. PAGE ENGAGEMENT TIME
     // =====================================================
     function setupEngagementTracking() {
         let startTime = Date.now();
@@ -314,6 +377,7 @@
         setupPricingGuideTracking();
         setupScrollTracking();
         setupOutboundTracking();
+        setupInternalLinkTracking();
         setupFormTracking();
         setupCTATracking();
         setupEngagementTracking();
@@ -322,7 +386,7 @@
         
         // Track that custom events are loaded (useful for debugging)
         trackEvent('ga4_events_loaded', {
-            version: '1.0.0',
+            version: '1.1.0',
             page_path: window.location.pathname
         });
     }
