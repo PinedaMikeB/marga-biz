@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
 **Last Updated:** January 10, 2026 @ 11:45 AM PHT  
-**Current Version:** v1.1.0  
+**Current Version:** v1.1.1  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -94,6 +94,7 @@
 
 | Date | Change | Version |
 |------|--------|---------|
+| 2026-01-10 | Added internal link tracking | v1.1.1 |
 | 2026-01-10 | Added GA4 custom event tracking | v1.1.0 |
 | 2026-01-10 | Created 3-file documentation system | v1.0.1 |
 | 2026-01-08 | DNS migration, SSL fix, GA4 added | v1.0.0 |
