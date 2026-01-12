@@ -55,21 +55,21 @@ const TOOLS = [
     },
     {
         name: "edit_page_seo",
-        description: "Edit a page's SEO elements (title tag, meta description). This ACTUALLY updates the live website via GitHub. Use when user approves SEO changes.",
+        description: "Edit a page's SEO elements (title tag, meta description). This ACTUALLY updates the live website via GitHub. Use when user approves SEO changes. The page_path should be a URL path like '/printer-rental/' or just 'printer-rental'.",
         input_schema: {
             type: "object",
             properties: {
                 page_path: {
                     type: "string",
-                    description: "The file path in the repo, e.g., 'printer-rental/index.html'"
+                    description: "URL path like '/printer-rental/' or 'printer-rental' (NOT the full file path)"
                 },
                 title: {
                     type: "string",
-                    description: "New title tag content"
+                    description: "New title tag content (optional)"
                 },
                 meta_description: {
                     type: "string",
-                    description: "New meta description content"
+                    description: "New meta description content (optional)"
                 }
             },
             required: ["page_path"]
