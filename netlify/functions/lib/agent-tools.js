@@ -25,36 +25,52 @@ const getDb = () => {
  */
 async function scanPage(pagePath) {
     try {
-        const url = pagePath.startsWith('http') 
-            ? pagePath 
-            : `https://marga.biz${pagePath.startsWith('/') ? '' : '/'}${pagePath}`;
+        // Normalize path
+        let path = pagePath;
+        if (path.startsWith('http')) {
+            // Extract path from full URL
+            const url = new URL(path);
+            path = url.pathname;
+        }
+        if (!path.startsWith('/')) {
+            path = '/' + path;
+        }
+        if (!path.endsWith('/')) {
+            path = path + '/';
+        }
         
-        // Call the existing page-scanner function
-        const response = await fetch(`https://marga.biz/.netlify/functions/page-scanner?url=${encodeURIComponent(url)}`);
+        // Call the existing page-scanner function with correct parameters
+        const response = await fetch(
+            `https://marga.biz/.netlify/functions/page-scanner?action=scan&path=${encodeURIComponent(path)}`
+        );
         const result = await response.json();
         
-        if (result.success) {
+        if (result.success && result.data) {
+            const data = result.data;
             return {
                 success: true,
-                url: result.data.url,
-                title: result.data.title,
-                titleLength: result.data.title?.length || 0,
-                metaDescription: result.data.metaDescription,
-                metaLength: result.data.metaDescription?.length || 0,
-                h1: result.data.h1,
-                h2Count: result.data.headings?.h2?.length || 0,
-                wordCount: result.data.wordCount,
-                seoScore: result.data.seoScore,
-                grade: result.data.grade,
-                issues: result.data.issues || [],
-                passed: result.data.passed || [],
-                internalLinks: result.data.internalLinkCount,
-                externalLinks: result.data.externalLinkCount,
-                images: result.data.imageCount,
-                imagesWithoutAlt: result.data.imagesWithoutAlt
+                path: data.path,
+                url: data.url || `https://marga.biz${path}`,
+                title: data.title,
+                titleLength: data.title?.length || 0,
+                metaDescription: data.metaDescription,
+                metaLength: data.metaDescription?.length || 0,
+                h1: data.h1,
+                h2Count: data.h2s?.length || 0,
+                wordCount: data.wordCount,
+                seoScore: data.seoScore,
+                grade: data.grade,
+                issues: data.issues || [],
+                passed: data.passed || [],
+                internalLinks: data.internalLinks?.length || 0,
+                externalLinks: data.externalLinks?.length || 0,
+                images: data.images?.length || 0,
+                imagesWithoutAlt: data.images?.filter(i => !i.hasAlt)?.length || 0,
+                hasSchema: data.hasSchema,
+                canonical: data.canonical
             };
         }
-        return { success: false, error: result.error || 'Scan failed' };
+        return { success: false, error: result.error || 'Scan failed - no data returned' };
     } catch (e) {
         return { success: false, error: e.message };
     }
