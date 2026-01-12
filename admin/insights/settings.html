@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Settings - Marga Insights</title>
+    
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="css/insights.css">
+    <link rel="stylesheet" href="css/settings.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>⚙️ AI Settings</h1>
+            </div>
+            <div class="header-right">
+                <button id="saveAllBtn" class="btn-save">💾 Save All</button>
+                <button id="resetBtn" class="btn-reset" title="Reset to Defaults">↺ Reset</button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="dashboard-nav">
+            <a href="index.html" class="nav-tab">Overview</a>
+            <a href="traffic.html" class="nav-tab">Traffic</a>
+            <a href="behavior.html" class="nav-tab">Behavior</a>
+            <a href="seo.html" class="nav-tab">SEO</a>
+            <a href="conversions.html" class="nav-tab">Conversions</a>
+            <a href="settings.html" class="nav-tab active">Settings</a>
+        </nav>
+
+        <!-- Settings Content -->
+        <div class="settings-container">
+            
+            <!-- Left Column -->
+            <div class="settings-column">
+                
+                <!-- AI Model Configuration -->
+                <section class="settings-card">
+                    <h2>🤖 AI Model Configuration</h2>
+                    
+                    <div class="setting-group">
+                        <label>Model Selection</label>
+                        <div class="model-options" id="modelOptions">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="toggle-label">
+                            <span>Smart Model Routing</span>
+                            <input type="checkbox" id="smartRouting" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <small>Auto-select model based on task complexity</small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Temperature: <span id="tempValue">0.7</span></label>
+                        <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7" class="slider">
+                        <small>0 = Precise, 1 = Creative</small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Max Tokens</label>
+                        <input type="number" id="maxTokens" value="4000" min="100" max="8000" class="input-field">
+                        <small>Maximum response length</small>
+                    </div>
+                </section>
+
+                <!-- System Prompt -->
+                <section class="settings-card">
+                    <h2>📋 System Prompt</h2>
+                    <div class="setting-group">
+                        <textarea id="systemPrompt" class="textarea-large" rows="8" placeholder="Enter system prompt..."></textarea>
+                        <small>Base instructions for all AI interactions</small>
+                    </div>
+                </section>
+
+                <!-- Additional Instructions -->
+                <section class="settings-card">
+                    <h2>📝 Additional Instructions</h2>
+                    <div class="setting-group">
+                        <textarea id="additionalInstructions" class="textarea-large" rows="6" placeholder="Enter additional instructions..."></textarea>
+                        <small>Extra context (competitors, strategies, focus areas)</small>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right Column -->
+            <div class="settings-column">
+
+                <!-- Competitors -->
+                <section class="settings-card">
+                    <h2>🎯 Competitors to Monitor</h2>
+                    <div class="setting-group">
+                        <div id="competitorsList" class="list-container">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="add-item-row">
+                            <input type="text" id="newCompetitorDomain" placeholder="competitor.com" class="input-field flex-1">
+                            <input type="text" id="newCompetitorNotes" placeholder="Notes" class="input-field flex-2">
+                            <button id="addCompetitorBtn" class="btn-add">+ Add</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Keywords -->
+                <section class="settings-card">
+                    <h2>🔑 Target Keywords</h2>
+                    
+                    <div class="setting-group">
+                        <label>Primary (Protect)</label>
+                        <div id="primaryKeywords" class="tag-container">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="add-item-row">
+                            <input type="text" id="newPrimaryKeyword" placeholder="Add keyword" class="input-field flex-1">
+                            <button id="addPrimaryKeywordBtn" class="btn-add">+ Add</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Growth (Improve)</label>
+                        <div id="growthKeywords" class="tag-container">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="add-item-row">
+                            <input type="text" id="newGrowthKeyword" placeholder="Add keyword" class="input-field flex-1">
+                            <button id="addGrowthKeywordBtn" class="btn-add">+ Add</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI Behaviors -->
+                <section class="settings-card">
+                    <h2>🤖 AI Behaviors</h2>
+                    
+                    <div class="setting-group">
+                        <label class="toggle-label">
+                            <span>Auto-approve minor changes</span>
+                            <input type="checkbox" id="autoApproveMinor" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <small>Meta tags, titles (logged to history)</small>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="toggle-label">
+                            <span>Notify on ranking drops</span>
+                            <input type="checkbox" id="notifyOnRankDrop" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="toggle-label">
+                            <span>Suggest content weekly</span>
+                            <input type="checkbox" id="suggestContentWeekly" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="toggle-label">
+                            <span>Auto-generate monthly report</span>
+                            <input type="checkbox" id="autoMonthlyReport" class="toggle-input">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Schedules -->
+                <section class="settings-card">
+                    <h2>⏰ Scheduled Tasks</h2>
+                    <div id="schedulesList" class="schedules-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <!-- Change History -->
+        <section class="settings-card full-width">
+            <h2>📜 Change History</h2>
+            <div id="historyContainer" class="history-container">
+                <!-- Populated by JS -->
+            </div>
+            <button id="loadMoreHistory" class="btn-load-more">Load More</button>
+        </section>
+
+        <!-- Status Bar -->
+        <div id="statusBar" class="status-bar hidden">
+            <span id="statusMessage"></span>
+        </div>
+
+    </div>
+
+    <!-- Settings JS -->
+    <script src="../../js/admin/insights/settings-ui.js"></script>
+</body>
+</html>
