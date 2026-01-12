@@ -241,11 +241,87 @@ async function getSiteOverview() {
     }
 }
 
+/**
+ * TOOL: Edit a page's SEO elements (title, meta description)
+ * Uses GitHub API to update the actual file
+ */
+async function editPageSEO(pagePath, changes) {
+    try {
+        // First, get the current file content
+        const getResponse = await fetch(
+            `https://marga.biz/.netlify/functions/github-editor?action=get&path=${encodeURIComponent(pagePath)}`
+        );
+        const getResult = await getResponse.json();
+        
+        if (!getResult.success) {
+            return { success: false, error: `Cannot read file: ${getResult.error}` };
+        }
+        
+        let content = getResult.data.content;
+        let modified = false;
+        const changesMade = [];
+        
+        // Update title tag
+        if (changes.title) {
+            const titleRegex = /<title>([^<]*)<\/title>/i;
+            if (titleRegex.test(content)) {
+                content = content.replace(titleRegex, `<title>${changes.title}</title>`);
+                changesMade.push(`Title: "${changes.title}"`);
+                modified = true;
+            }
+        }
+        
+        // Update meta description
+        if (changes.metaDescription) {
+            const metaRegex = /<meta\s+name=["']description["']\s+content=["'][^"']*["']\s*\/?>/i;
+            const newMeta = `<meta name="description" content="${changes.metaDescription}">`;
+            if (metaRegex.test(content)) {
+                content = content.replace(metaRegex, newMeta);
+                changesMade.push(`Meta description updated`);
+                modified = true;
+            }
+        }
+        
+        if (!modified) {
+            return { success: false, error: 'No changes could be applied to the file' };
+        }
+        
+        // Save the updated content
+        const updateResponse = await fetch('https://marga.biz/.netlify/functions/github-editor', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'update',
+                path: pagePath,
+                content: content,
+                message: `SEO update: ${changesMade.join(', ')}`
+            })
+        });
+        
+        const updateResult = await updateResponse.json();
+        
+        if (updateResult.success) {
+            return {
+                success: true,
+                message: 'Page updated successfully!',
+                changes: changesMade,
+                path: pagePath,
+                commitUrl: updateResult.data?.commit?.html_url
+            };
+        } else {
+            return { success: false, error: updateResult.error };
+        }
+    } catch (e) {
+        return { success: false, error: e.message };
+    }
+}
+
 module.exports = {
     scanPage,
     checkRanking,
     findCompetitors,
     getCachedPage,
     getSearchConsoleData,
-    getSiteOverview
+    getSiteOverview,
+    editPageSEO
 };

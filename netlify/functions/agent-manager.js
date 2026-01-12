@@ -29,7 +29,8 @@ const {
     findCompetitors,
     getCachedPage,
     getSearchConsoleData,
-    getSiteOverview
+    getSiteOverview,
+    editPageSEO
 } = require('./lib/agent-tools');
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -47,6 +48,28 @@ const TOOLS = [
                 page_path: {
                     type: "string",
                     description: "The page path to scan, e.g., '/printer-rental/' or full URL"
+                }
+            },
+            required: ["page_path"]
+        }
+    },
+    {
+        name: "edit_page_seo",
+        description: "Edit a page's SEO elements (title tag, meta description). This ACTUALLY updates the live website via GitHub. Use when user approves SEO changes.",
+        input_schema: {
+            type: "object",
+            properties: {
+                page_path: {
+                    type: "string",
+                    description: "The file path in the repo, e.g., 'printer-rental/index.html'"
+                },
+                title: {
+                    type: "string",
+                    description: "New title tag content"
+                },
+                meta_description: {
+                    type: "string",
+                    description: "New meta description content"
                 }
             },
             required: ["page_path"]
@@ -111,6 +134,11 @@ async function executeTool(toolName, toolInput) {
     switch (toolName) {
         case 'scan_page':
             return await scanPage(toolInput.page_path);
+        case 'edit_page_seo':
+            return await editPageSEO(toolInput.page_path, {
+                title: toolInput.title,
+                metaDescription: toolInput.meta_description
+            });
         case 'check_ranking':
             return await checkRanking(toolInput.keyword);
         case 'find_competitors':
