@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026 @ v1.9.0  
-**Current Version:** v1.9.0  
+**Last Updated:** January 12, 2026 @ Agent System v1  
+**Current Version:** v2.0.0  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -13,95 +13,133 @@
 | Live Site | https://marga.biz |
 | Insights Dashboard | https://marga.biz/admin/insights/ |
 | Settings + Scanner | https://marga.biz/admin/insights/settings.html |
-| SEO Tab | https://marga.biz/admin/insights/seo.html |
+| Agent Dashboard API | https://marga.biz/.netlify/functions/agent-dashboard |
 
 ---
 
-## 📍 CURRENT STATE
+## 🤖 AGENT SYSTEM (NEW!)
 
-### What's Working
-- ✅ Static site (1,903 pages on Netlify)
-- ✅ INSIGHTS MODULE (6 tabs)
-- ✅ AI Chat Widget with file attachments
-- ✅ **Page Scanner** - Deep SEO analysis of each page
-- ✅ **Scanner UI** in Settings page
-- ✅ Site Structure in Firebase
-- ✅ Global AI Memory
-- ✅ GitHub Editor API
-- ✅ Config Manager API
+### Architecture
+```
+     YOU
+      │
+      ▼
+┌─────────────┐
+│   MANAGER   │◄── Only agent you talk to
+│    AGENT    │
+└─────┬───────┘
+      │ Delegates to:
+      ├── 🌐 Website Agent (pages, links, edits)
+      ├── 🔍 Search Agent (SERP, competitors) ⏳ Phase 2
+      ├── 📊 Google Agent (GA4, GSC, index)
+      ├── ✏️ Content Agent (write pages) ⏳ Phase 2
+      ├── 📋 Tracker Agent (issues, followups) ⏳ Phase 3
+      └── 🤖 AI Search Agent (Perplexity, ChatGPT) ⏳ Phase 4
+```
 
-### AI Capabilities
-- Knows all 1,903 pages (structure)
-- Deep scan data: title, meta, H1-H6, word count, links
-- SEO score (0-100) with specific issues
-- Accept image/file attachments for analysis
-- Global memory across sessions
-- Never asks about WordPress
+### Current Status
 
----
-
-## 🔨 LAST COMPLETED
-
-**v1.9.0: Page Scanner + Attachments**
-
-1. **Deep Page Scanner** (`page-scanner.js`)
-   - Extracts: title, meta, headings, word count, links, images
-   - Calculates SEO score with issues
-   - Smart scanning: initial, delta, targeted
-   
-2. **Scanner UI** (Settings page)
-   - Stats: pages scanned, issues, avg score
-   - Scan Key Pages button
-   - View Issues with color-coded results
-
-3. **Chat Attachments**
-   - Upload images (screenshots)
-   - Upload CSV/TXT files
-   - Drag & drop support
-   - Claude vision for image analysis
+| Agent | Status | Function |
+|-------|--------|----------|
+| **Manager** | ✅ Working | `agent-manager.js` |
+| **Website** | ✅ Existing | `page-scanner.js` |
+| **Google** | ✅ Existing | `insights-ga4.js`, `insights-search.js` |
+| **Search** | ⏳ Phase 2 | Web search for rankings |
+| **Content** | ⏳ Phase 2 | Content generation |
+| **Tracker** | ⏳ Phase 3 | Issue tracking |
+| **AI Search** | ⏳ Phase 4 | AI presence monitoring |
 
 ---
 
-## 📋 HOW TO USE
+## 📁 New Files Created
 
-### Run Page Scan
-1. Go to Settings page
-2. Click "📊 Scan Key Pages (20)"
-3. Wait ~1 minute
-4. Click "⚠️ View Issues" to see problems
+```
+netlify/functions/
+├── lib/
+│   └── agent-utils.js      # Shared agent utilities
+├── agent-manager.js        # Orchestrator agent
+└── agent-dashboard.js      # Dashboard API
+```
 
-### Chat with Attachments
-1. Click chat bubble 💬
-2. Click 📎 or drag file onto chat
-3. Ask: "Analyze this competitor screenshot"
+### Firebase Collections (New)
+
+| Collection | Purpose |
+|------------|---------|
+| `marga_agents` | Agent statuses |
+| `marga_tasks` | Task queue |
+| `marga_issues` | Issue tracking |
+| `marga_solutions` | Solution log |
+| `marga_followups` | Follow-up checks |
+| `marga_recommendations` | User approvals |
+| `marga_activity_log` | Activity history |
+| `marga_shared` | Shared agent data |
+
+---
+
+## 🔧 API Endpoints
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/agent-manager` | POST | Chat with Manager |
+| `/agent-dashboard` | GET | Get all agent data |
+| `/agent-dashboard?action=approve&recId=X` | GET | Approve recommendation |
+| `/agent-dashboard?action=dismiss&recId=X` | GET | Dismiss recommendation |
+
+---
+
+## 📋 Build Progress
+
+### ✅ Phase 1: Agent Framework (DONE)
+- [x] Agent utilities library
+- [x] Manager Agent (orchestrator)
+- [x] Dashboard API
+- [x] Task queue system
+- [x] Recommendation workflow
+
+### ⏳ Phase 2: Search Agent (NEXT)
+- [ ] SERP API integration
+- [ ] Ranking checks
+- [ ] Competitor monitoring
+- [ ] Bing submission
+
+### ⏳ Phase 3: Tracker Agent
+- [ ] Issue logging
+- [ ] Solution tracking
+- [ ] Follow-up scheduling
+
+### ⏳ Phase 4: AI Search Agent
+- [ ] Perplexity checking
+- [ ] ChatGPT presence
+
+### ⏳ Phase 5: Dashboard UI
+- [ ] Agent status cards
+- [ ] Recommendations panel
+- [ ] Activity timeline
+
+---
+
+## 📚 Documentation
+
+- `/Volumes/Wotg Drive Mike/GitHub/dev-standards/AGENT-ARCHITECTURE.md`
+- Full architecture spec for multi-agent system
+- Portable to other projects (breadhub.ph)
 
 ---
 
 ## 🔄 ROLLBACK
 
 ```bash
-git revert b022144  # Scanner UI
-git revert 631fba8  # Attachments
-git revert c9a0f88  # Page scanner
+git revert 50d5864  # Index fix
+git revert 676bf80  # Phase 1 agent framework
 ```
 
 ---
 
-## 📋 NEXT STEPS
-
-1. Run full page scan (all 1,903 pages) - schedule nightly
-2. Add web search for competitor research
-3. Landing page preview modal
-4. Auto-improvement suggestions
-
----
-
-## ⚙️ RECENT CHANGES
+## ⚙️ Recent Changes
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-01-12 | v1.9.0 | Page Scanner + Attachments + Scanner UI |
+| 2026-01-12 | v2.0.0 | Phase 1: Agent Framework |
+| 2026-01-12 | v1.9.0 | Page Scanner + Attachments |
 | 2026-01-12 | v1.8.0 | Site Scanner + Global Memory |
 | 2026-01-12 | v1.7.0 | AI Chat Widget |
-| 2026-01-12 | v1.6.0 | Settings UI |
-| 2026-01-12 | v1.5.0 | GitHub/Config APIs |
