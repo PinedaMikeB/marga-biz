@@ -348,3 +348,277 @@ body {
     padding: 40px;
     color: var(--gray-400);
 }
+
+
+/* AI Insights Section */
+.ai-insights-section {
+    margin-bottom: 20px;
+}
+
+.ai-insights-card {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0055A5 100%);
+    color: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ai-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.ai-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.cache-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+.btn-refresh-ai {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-refresh-ai:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.ai-summary {
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ai-summary p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+
+/* AI Alerts */
+.ai-alerts {
+    padding: 15px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.2);
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.3);
+}
+
+.alert-info {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* AI Analysis Text */
+.ai-analysis-text {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ai-analysis-text h4 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.ai-analysis-text p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.85;
+}
+
+/* AI Sections */
+.ai-section {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.ai-section h4 {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+
+/* Content Gaps */
+.content-gaps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.content-gap-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+}
+
+.gap-keyword {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.gap-reason {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* Recommendations */
+.recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recommendation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+}
+
+.priority-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
+    flex-shrink: 0;
+}
+
+.rec-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rec-action {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.rec-impact {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+
+/* AI Footer */
+.ai-footer {
+    padding: 12px 20px;
+    background: rgba(0,0,0,0.1);
+    text-align: right;
+}
+
+.ai-footer small {
+    opacity: 0.6;
+    font-size: 0.75rem;
+}
+
+/* AI Loading State */
+.ai-loading {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.ai-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.ai-loading p {
+    margin-bottom: 5px;
+}
+
+.ai-loading small {
+    opacity: 0.6;
+}
+
+/* AI Error State */
+.ai-error {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.ai-error p {
+    margin-bottom: 10px;
+}
+
+.ai-error small {
+    opacity: 0.6;
+}
+
+/* Responsive AI Section */
+@media (max-width: 768px) {
+    .ai-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .content-gap-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .recommendation-item {
+        flex-direction: column;
+    }
+}

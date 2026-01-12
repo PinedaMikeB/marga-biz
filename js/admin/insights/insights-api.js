@@ -44,11 +44,27 @@ const InsightsAPI = {
             return await response.json();
         } catch (error) {
             console.error('Dashboard API Error:', error);
-            // Return mock data for development/demo
             return this.getMockData();
         }
     },
     
+    /**
+     * Fetch AI SEO Analysis
+     * @param {boolean} forceRefresh - Force new analysis instead of cached
+     */
+    async getAIAnalysis(forceRefresh = false) {
+        try {
+            const url = forceRefresh 
+                ? `${this.baseUrl}/insights-ai?refresh=true`
+                : `${this.baseUrl}/insights-ai`;
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to fetch AI analysis');
+            return await response.json();
+        } catch (error) {
+            console.error('AI Analysis API Error:', error);
+            return null;
+        }
+    },
 
     /**
      * Mock data for development/demo when API is not ready
@@ -87,6 +103,35 @@ const InsightsAPI = {
                 { keyword: 'office printer rental', position: 6, clicks: 87, impressions: 1700 }
             ],
             lastUpdated: new Date().toISOString()
+        };
+    },
+
+    /**
+     * Mock AI analysis for development
+     */
+    getMockAIAnalysis() {
+        return {
+            success: true,
+            data: {
+                date: new Date().toISOString().split('T')[0],
+                cached: false,
+                analysis: {
+                    trafficAnalysis: "Traffic is stable with slight growth. Organic search remains the dominant source at 65%, indicating strong SEO foundation. The #2 ranking for 'printer rental philippines' continues to drive consistent traffic.",
+                    alerts: [
+                        { type: 'success', message: 'Maintained #2 position for "printer rental philippines"' },
+                        { type: 'info', message: 'Traffic up 12% week-over-week' }
+                    ],
+                    contentGaps: [
+                        { keyword: 'copier maintenance tips', reason: 'High search volume, no dedicated page' },
+                        { keyword: 'printer rental rates manila', reason: 'Competitor content opportunity' }
+                    ],
+                    recommendations: [
+                        { priority: 'high', action: 'Create FAQ page for common rental questions', impact: 'Capture long-tail keywords' },
+                        { priority: 'medium', action: 'Add customer testimonials to homepage', impact: 'Improve trust signals' }
+                    ],
+                    summary: 'SEO performance is healthy with opportunities to expand content for long-tail keywords.'
+                }
+            }
         };
     }
 };

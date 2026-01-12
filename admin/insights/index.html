@@ -41,6 +41,10 @@
             <a href="conversions.html" class="nav-tab">Conversions</a>
         </nav>
 
+        <!-- AI Insights Section (NEW) -->
+        <section id="aiInsightsSection" class="ai-insights-section">
+            <!-- AI content loaded dynamically -->
+        </section>
 
         <!-- KPI Cards -->
         <section class="kpi-grid">
@@ -106,7 +110,6 @@
             </div>
         </section>
 
-
         <!-- Footer -->
         <footer class="dashboard-footer">
             <p>Last updated: <span id="lastUpdated">--</span></p>
@@ -116,7 +119,14 @@
 
     <!-- Dashboard JavaScript -->
     <script src="/js/admin/insights/insights-api.js"></script>
+    <script src="/js/admin/insights/ai-insights-ui.js"></script>
     <script src="/js/admin/insights/insights-charts.js"></script>
     <script src="/js/admin/insights/insights-ui.js"></script>
+    <script>
+        // Initialize AI Insights after page load
+        document.addEventListener('DOMContentLoaded', () => {
+            AIInsightsUI.init('aiInsightsSection');
+        });
+    </script>
 </body>
 </html>
