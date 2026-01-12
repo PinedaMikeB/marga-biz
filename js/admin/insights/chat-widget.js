@@ -314,8 +314,8 @@ const AIChatWidget = {
         this.setLoading(true);
 
         try {
-            // Send to AI chat endpoint
-            const response = await fetch('/.netlify/functions/insights-chat', {
+            // Send to Manager Agent (new orchestrator)
+            const response = await fetch('/.netlify/functions/agent-manager', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -328,7 +328,16 @@ const AIChatWidget = {
             const result = await response.json();
 
             if (result.success) {
-                this.addMessage('assistant', result.data.response, result.data.actions);
+                // Show response with any approval buttons
+                this.addMessage('assistant', result.data.response, result.data.actions, result.data.approvals);
+                
+                // Show context badge if there are pending items
+                if (result.data.context) {
+                    const { pendingRecommendations, openIssues } = result.data.context;
+                    if (pendingRecommendations > 0 || openIssues > 0) {
+                        this.showContextBadge(pendingRecommendations, openIssues);
+                    }
+                }
             } else {
                 this.addMessage('assistant', `Sorry, I encountered an error: ${result.error}`);
             }
@@ -502,6 +511,40 @@ const AIChatWidget = {
      */
     hideBadge() {
         document.getElementById('chatBadge').classList.remove('visible');
+    },
+
+    /**
+     * Show context badge for pending items
+     */
+    showContextBadge(recommendations, issues) {
+        // Could add a small indicator showing pending work
+        console.log(`Pending: ${recommendations} recommendations, ${issues} issues`);
+    },
+
+    /**
+     * Handle approval action
+     */
+    async handleApproval(recId, approved) {
+        this.setLoading(true);
+        try {
+            const response = await fetch('/.netlify/functions/agent-manager', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: approved ? 'approve' : 'dismiss',
+                    recId
+                })
+            });
+            const result = await response.json();
+            if (result.success) {
+                this.addMessage('assistant', approved ? 
+                    '✅ Action approved! The agents are working on it...' : 
+                    '❌ Action dismissed.');
+            }
+        } catch (e) {
+            this.addMessage('assistant', 'Error processing approval.');
+        }
+        this.setLoading(false);
     },
 
     /**
