@@ -102,6 +102,71 @@ async function callSearchAgent(action, params = {}) {
 }
 
 /**
+ * Call Page Scanner to analyze a page
+ */
+async function callPageScanner(url) {
+    try {
+        const response = await fetch('https://marga.biz/.netlify/functions/page-scanner', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url })
+        });
+        const result = await response.json();
+        return result.success ? result.data : { error: result.error };
+    } catch (e) {
+        return { error: e.message };
+    }
+}
+
+/**
+ * Detect if user wants page analysis and scan the page
+ */
+async function enrichContextWithPageScan(message, context) {
+    const lowerMessage = message.toLowerCase();
+    
+    // Check if user said yes to analyzing or wants to scan
+    const analyzeKeywords = ['yes', 'analyze', 'scan', 'check page', 'check my page', 'optimize', 'improvement'];
+    const wantsAnalysis = analyzeKeywords.some(k => lowerMessage.includes(k));
+    
+    // Check for specific page mentions
+    const pagePatterns = [
+        /printer.?rental/i,
+        /copier.?rental/i,
+        /\/([a-z0-9-]+)\//i
+    ];
+    
+    if (wantsAnalysis) {
+        // Determine which page to scan
+        let pageUrl = 'https://marga.biz/printer-rental-philippines/'; // Default
+        
+        if (lowerMessage.includes('copier')) {
+            pageUrl = 'https://marga.biz/copier-rental/';
+        } else if (lowerMessage.includes('home') || lowerMessage.includes('homepage')) {
+            pageUrl = 'https://marga.biz/';
+        } else if (lowerMessage.includes('pricing') || lowerMessage.includes('price')) {
+            pageUrl = 'https://marga.biz/pricing/';
+        }
+        
+        // Extract URL if provided
+        const urlMatch = lowerMessage.match(/https?:\/\/[^\s]+/);
+        if (urlMatch) {
+            pageUrl = urlMatch[0];
+        }
+        
+        // Call Page Scanner
+        const scanResult = await callPageScanner(pageUrl);
+        
+        if (!scanResult.error) {
+            context.pageScanResult = scanResult;
+        } else {
+            context.pageScanError = scanResult.error;
+        }
+    }
+    
+    return context;
+}
+
+/**
  * Detect if user is asking about rankings and get live data
  */
 async function enrichContextWithSearchData(message, context) {
@@ -237,6 +302,49 @@ function buildManagerPrompt(context) {
         prompt += `1. Get free API key at serper.dev\n`;
         prompt += `2. Add SERPER_API_KEY to Netlify environment variables\n`;
         prompt += `3. Redeploy the site\n`;
+    }
+
+    // PAGE SCAN RESULTS (from Page Scanner)
+    if (context.pageScanResult) {
+        const scan = context.pageScanResult;
+        prompt += `\n### 📄 PAGE SCAN RESULTS (Just Scanned)\n`;
+        prompt += `**URL:** ${scan.url}\n`;
+        prompt += `**SEO Score:** ${scan.seoScore}/100 (Grade: ${scan.grade})\n\n`;
+        
+        if (scan.title) {
+            prompt += `**Title:** "${scan.title}" (${scan.title.length} chars)\n`;
+        }
+        if (scan.metaDescription) {
+            prompt += `**Meta Description:** "${scan.metaDescription.substring(0, 100)}..." (${scan.metaDescription.length} chars)\n`;
+        }
+        
+        prompt += `\n**Content Stats:**\n`;
+        prompt += `- Word Count: ${scan.wordCount || 'N/A'}\n`;
+        prompt += `- H1: ${scan.h1 || 'Missing!'}\n`;
+        prompt += `- H2 Count: ${scan.headings?.h2 || 0}\n`;
+        prompt += `- Internal Links: ${scan.internalLinks || 0}\n`;
+        prompt += `- Images: ${scan.images?.total || 0} (${scan.images?.withAlt || 0} with alt)\n`;
+        
+        if (scan.issues && scan.issues.length > 0) {
+            prompt += `\n**Issues Found (${scan.issues.length}):**\n`;
+            scan.issues.slice(0, 10).forEach(issue => {
+                prompt += `- [${issue.severity?.toUpperCase() || 'ISSUE'}] ${issue.message} (${issue.points ? `-${issue.points} pts` : ''})\n`;
+            });
+        }
+        
+        if (scan.passed && scan.passed.length > 0) {
+            prompt += `\n**Passed Checks (${scan.passed.length}):**\n`;
+            scan.passed.slice(0, 5).forEach(p => {
+                prompt += `- ✅ ${p.message}\n`;
+            });
+        }
+        
+        prompt += `\n**USE THIS DATA** - Give specific recommendations based on these actual issues!\n`;
+    }
+    
+    if (context.pageScanError) {
+        prompt += `\n### ⚠️ Page Scan Error\n`;
+        prompt += `Could not scan page: ${context.pageScanError}\n`;
     }
 
     // Analytics if available
@@ -520,6 +628,9 @@ exports.handler = async (event) => {
         
         // Enrich context with live search data if user is asking about rankings
         context = await enrichContextWithSearchData(message, context);
+        
+        // Enrich context with page scan if user wants analysis
+        context = await enrichContextWithPageScan(message, context);
         
         // Build system prompt
         const systemPrompt = buildManagerPrompt(context);
