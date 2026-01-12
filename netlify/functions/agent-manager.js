@@ -2,8 +2,8 @@
  * Marga AI - SEO Manager Agent (Orchestrator)
  * 
  * The ONLY agent the user talks to.
- * Aggregates data from all agents, makes recommendations,
- * delegates tasks, and reports results.
+ * Uses tools directly (MCP-style) for immediate results.
+ * Aggregates data, makes recommendations, executes actions.
  */
 
 const {
@@ -22,7 +22,107 @@ const {
     getSharedData
 } = require('./lib/agent-utils');
 
+// Direct tool functions (MCP-style)
+const {
+    scanPage,
+    checkRanking,
+    findCompetitors,
+    getCachedPage,
+    getSearchConsoleData,
+    getSiteOverview
+} = require('./lib/agent-tools');
+
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
+
+/**
+ * Available tools for Claude to use
+ */
+const TOOLS = [
+    {
+        name: "scan_page",
+        description: "Scan a page for SEO issues. Returns actual title, meta, headings, word count, SEO score, and specific issues. Use this to get REAL data about a page.",
+        input_schema: {
+            type: "object",
+            properties: {
+                page_path: {
+                    type: "string",
+                    description: "The page path to scan, e.g., '/printer-rental/' or full URL"
+                }
+            },
+            required: ["page_path"]
+        }
+    },
+    {
+        name: "check_ranking",
+        description: "Check live Google SERP ranking for a keyword. Returns your position and top 10 competitors. Use this for real-time ranking data.",
+        input_schema: {
+            type: "object",
+            properties: {
+                keyword: {
+                    type: "string",
+                    description: "The keyword to check rankings for"
+                }
+            },
+            required: ["keyword"]
+        }
+    },
+    {
+        name: "find_competitors",
+        description: "Find and analyze competitors ranking for a keyword. Returns competitor list with positions and opportunities.",
+        input_schema: {
+            type: "object",
+            properties: {
+                keyword: {
+                    type: "string",
+                    description: "The keyword to find competitors for"
+                }
+            },
+            required: ["keyword"]
+        }
+    },
+    {
+        name: "get_search_console",
+        description: "Get Search Console data for keyword performance. Returns historical clicks, impressions, and positions.",
+        input_schema: {
+            type: "object",
+            properties: {
+                keyword: {
+                    type: "string",
+                    description: "The keyword to get Search Console data for"
+                }
+            },
+            required: ["keyword"]
+        }
+    },
+    {
+        name: "get_site_overview",
+        description: "Get overview of the site including total pages, recent scans, and SEO scores.",
+        input_schema: {
+            type: "object",
+            properties: {}
+        }
+    }
+];
+
+/**
+ * Execute a tool call
+ */
+async function executeTool(toolName, toolInput) {
+    switch (toolName) {
+        case 'scan_page':
+            return await scanPage(toolInput.page_path);
+        case 'check_ranking':
+            return await checkRanking(toolInput.keyword);
+        case 'find_competitors':
+            return await findCompetitors(toolInput.keyword);
+        case 'get_search_console':
+            return await getSearchConsoleData(toolInput.keyword);
+        case 'get_site_overview':
+            return await getSiteOverview();
+        default:
+            return { error: `Unknown tool: ${toolName}` };
+    }
+}
 
 /**
  * Get comprehensive context for the Manager
@@ -436,58 +536,132 @@ Say: "I'll check your current rankings. Note: The Search Agent is being built - 
 3. Propose specific solution
 4. Ask for approval ONLY for actions that make changes
 
+## TOOLS AVAILABLE
+
+You have access to these tools. USE THEM to get real data:
+
+1. **scan_page** - Scan any page for SEO issues (REAL data, not guesses)
+2. **check_ranking** - Check live SERP ranking for a keyword
+3. **find_competitors** - Find competitors for a keyword
+4. **get_search_console** - Get historical Search Console data
+5. **get_site_overview** - Get site stats and recent scans
+
+**IMPORTANT:** When user asks about a page or ranking, USE THE TOOLS to get actual data. Don't guess or make up information.
+
 ## RESPONSE RULES
 
 ### DON'T:
-- Don't ask "would you like me to...?" - just do it or propose it
-- Don't ask "what timeframe?" - default to last 30 days
+- Don't GUESS page content - use scan_page tool
+- Don't ASSUME rankings - use check_ranking tool
+- Don't ask "would you like me to...?" - just use the tools
 - Don't ask basic questions about the business
-- Don't end responses with questions unless truly necessary
 
 ### DO:
-- Show data you have
-- Be honest about limitations
-- Propose concrete next steps
-- Default to comprehensive analysis
+- Use tools to get real data
+- Show actual results from tools
+- Be specific with real numbers
+- Propose concrete next steps based on data
 
-## IMPORTANT LIMITATIONS (Be Honest)
+## TOOL USAGE EXAMPLES
 
-- Search Agent not yet built - can't check live SERP rankings yet
-- Can see Search Console data (if it's in my context above)
-- Can scan your pages for SEO issues
-- Can propose content improvements
-- Cannot make changes without your approval
+When user asks "analyze my printer rental page":
+→ Use scan_page tool with "/printer-rental/"
+→ Show the actual SEO score, title, issues found
+→ Give recommendations based on REAL issues
 
-## DELEGATING TASKS
-
-When user approves an action, include this in your response:
-<!--DELEGATE:{"agent":"agent_id","action":"action_name","data":{...}}-->
-
-Available delegations:
-- Website: scan_page, edit_page, check_links, analyze_page
-- Search: check_ranking, find_competitors, submit_to_bing (NOT YET AVAILABLE)
-- Google: get_analytics, check_index, request_indexing  
-- Content: write_page, expand_content, write_meta, write_faq
-- Tracker: create_issue, create_followup, check_followups
-- AI_Search: check_perplexity, check_chatgpt, analyze_ai_presence (NOT YET AVAILABLE)
+When user asks "check my ranking for printer rental philippines":
+→ Use check_ranking tool with "printer rental philippines"
+→ Show actual position and competitors
+→ Analyze based on real SERP data
 `;
 
     return prompt;
 }
 
 /**
- * Call Claude API
+ * Call Claude API with tools
  */
-async function callClaude(messages, systemPrompt) {
+async function callClaudeWithTools(messages, systemPrompt) {
     const apiKey = process.env.CLAUDE_API_KEY;
     if (!apiKey) throw new Error('CLAUDE_API_KEY not configured');
 
-    const response = await fetch(CLAUDE_API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01'
+    let currentMessages = [...messages];
+    let finalResponse = '';
+    let iterations = 0;
+    const maxIterations = 5; // Prevent infinite loops
+
+    while (iterations < maxIterations) {
+        iterations++;
+        
+        const response = await fetch(CLAUDE_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': apiKey,
+                'anthropic-version': '2023-06-01'
+            },
+            body: JSON.stringify({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 4000,
+                temperature: 0.7,
+                system: systemPrompt,
+                tools: TOOLS,
+                messages: currentMessages
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`Claude API error: ${response.status} - ${error}`);
+        }
+
+        const result = await response.json();
+        
+        // Check if Claude wants to use tools
+        if (result.stop_reason === 'tool_use') {
+            // Find tool use blocks
+            const toolUseBlocks = result.content.filter(b => b.type === 'tool_use');
+            const textBlocks = result.content.filter(b => b.type === 'text');
+            
+            // Collect any text before tool calls
+            if (textBlocks.length > 0) {
+                finalResponse += textBlocks.map(b => b.text).join('\n');
+            }
+            
+            // Add assistant message with tool use
+            currentMessages.push({
+                role: 'assistant',
+                content: result.content
+            });
+            
+            // Execute each tool and collect results
+            const toolResults = [];
+            for (const toolUse of toolUseBlocks) {
+                console.log(`Executing tool: ${toolUse.name}`, toolUse.input);
+                const toolResult = await executeTool(toolUse.name, toolUse.input);
+                toolResults.push({
+                    type: 'tool_result',
+                    tool_use_id: toolUse.id,
+                    content: JSON.stringify(toolResult)
+                });
+            }
+            
+            // Add tool results
+            currentMessages.push({
+                role: 'user',
+                content: toolResults
+            });
+            
+        } else {
+            // No more tool calls, get final response
+            const textContent = result.content.filter(b => b.type === 'text');
+            finalResponse += textContent.map(b => b.text).join('\n');
+            break;
+        }
+    }
+
+    return finalResponse;
+}
         },
         body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
@@ -642,14 +816,8 @@ exports.handler = async (event) => {
             return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
         }
 
-        // Get comprehensive context
+        // Get basic context (tools will fetch specific data as needed)
         let context = await getManagerContext(db);
-        
-        // Enrich context with live search data if user is asking about rankings
-        context = await enrichContextWithSearchData(message, context);
-        
-        // Enrich context with page scan if user wants analysis
-        context = await enrichContextWithPageScan(message, context);
         
         // Build system prompt
         const systemPrompt = buildManagerPrompt(context);
@@ -661,10 +829,10 @@ exports.handler = async (event) => {
         }));
         messages.push({ role: 'user', content: message });
 
-        // Call Claude
-        let rawResponse = await callClaude(messages, systemPrompt);
+        // Call Claude with tools (MCP-style)
+        let rawResponse = await callClaudeWithTools(messages, systemPrompt);
         
-        // Parse delegations and approvals
+        // Parse delegations and approvals (for backwards compatibility)
         const { response: cleanResponse, delegations } = parseDelegations(rawResponse);
         const { response: finalResponse, approvals } = parseApprovals(cleanResponse);
         
