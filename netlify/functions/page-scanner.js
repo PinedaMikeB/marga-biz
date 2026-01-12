@@ -339,8 +339,36 @@ async function initialScan(db, limit = 50) {
     const keyPagesDoc = await db.collection('marga_site').doc('key_pages').get();
     const keyPages = keyPagesDoc.exists ? keyPagesDoc.data().pages : [];
     
-    const results = { scanned: 0, success: 0, failed: 0, pages: [] };
-    const pagesToScan = keyPages.slice(0, limit);
+    // Check which pages are already scanned (within 24 hours)
+    const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+    const now = Date.now();
+    const pagesToScan = [];
+    
+    for (const page of keyPages) {
+        if (pagesToScan.length >= limit) break;
+        
+        const docId = page.path.replace(/\//g, '_').replace(/^_/, '').replace(/_$/, '') || 'homepage';
+        const existingDoc = await db.collection('marga_pages').doc(docId).get();
+        
+        if (!existingDoc.exists) {
+            // Not scanned yet
+            pagesToScan.push(page);
+        } else {
+            const data = existingDoc.data();
+            const lastScanned = data.lastScanned ? new Date(data.lastScanned).getTime() : 0;
+            if (now - lastScanned > maxAge) {
+                // Stale, needs rescan
+                pagesToScan.push(page);
+            }
+            // else: recently scanned, skip
+        }
+    }
+    
+    if (pagesToScan.length === 0) {
+        return { scanned: 0, success: 0, failed: 0, skipped: keyPages.length, message: 'All pages already scanned within 24 hours' };
+    }
+    
+    const results = { scanned: 0, success: 0, failed: 0, skipped: keyPages.length - pagesToScan.length, pages: [] };
 
     for (const page of pagesToScan) {
         results.scanned++;
