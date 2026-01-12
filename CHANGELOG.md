@@ -10,6 +10,54 @@ Each entry includes rollback instructions.
 
 ---
 
+## [v1.4.0] - 2026-01-12
+
+### 🤖 AI SEO Analysis Feature (Phase 3.3)
+
+**Summary:** Claude AI-powered SEO analysis with recommendations.
+
+**Changes:**
+- Claude API integration for SEO data analysis
+- Traffic trend analysis (week-over-week comparison)
+- Content gap detection for keyword opportunities
+- Ranking change alerts
+- AI recommendations with priority levels
+- 12-hour Firebase caching to reduce API costs
+- AI Insights section on Overview dashboard
+
+**New Files:**
+- `netlify/functions/insights-ai.js` - Claude API function
+- `js/admin/insights/ai-insights-ui.js` - Frontend UI component
+
+**Modified Files:**
+- `admin/insights/index.html` - Added AI section
+- `admin/insights/css/insights.css` - AI styling
+- `js/admin/insights/insights-api.js` - AI endpoint
+- `netlify/functions/package.json` - firebase-admin dependency
+
+**Git Commit:** `99cac69`
+
+**Rollback Instructions:**
+```bash
+# Option 1: Revert commit
+git revert 99cac69
+
+# Option 2: Checkout previous version
+git checkout 5234628 -- admin/insights/ js/admin/insights/ netlify/functions/
+
+# Option 3: Remove AI files only
+rm netlify/functions/insights-ai.js
+rm js/admin/insights/ai-insights-ui.js
+git checkout 5234628 -- admin/insights/index.html admin/insights/css/insights.css js/admin/insights/insights-api.js
+```
+
+**Verification:**
+- [ ] https://marga.biz/admin/insights/ loads AI section
+- [ ] AI analysis generates recommendations
+- [ ] Cache badge shows when using cached data
+
+---
+
 ## [v1.3.0] - 2026-01-11
 
 ### 📊 INSIGHTS MODULE Complete (Phase 3.1 & 3.2)
