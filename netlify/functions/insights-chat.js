@@ -50,6 +50,38 @@ async function getSiteStructure(db) {
     } catch (e) { return null; }
 }
 
+/**
+ * Get pages with SEO issues from deep scan
+ */
+async function getPagesWithIssues(db, limit = 10) {
+    try {
+        const snapshot = await db.collection('marga_pages')
+            .where('seoScore', '<', 80)
+            .orderBy('seoScore', 'asc')
+            .limit(limit)
+            .get();
+
+        const pages = [];
+        snapshot.forEach(doc => {
+            if (doc.id !== '_index') {
+                pages.push(doc.data());
+            }
+        });
+        return pages;
+    } catch (e) { return []; }
+}
+
+/**
+ * Get detailed page data
+ */
+async function getPageDetails(db, path) {
+    try {
+        const docId = path.replace(/\//g, '_').replace(/^_/, '').replace(/_$/, '') || 'homepage';
+        const doc = await db.collection('marga_pages').doc(docId).get();
+        return doc.exists ? doc.data() : null;
+    } catch (e) { return null; }
+}
+
 async function getGlobalMemory(db) {
     try {
         const doc = await db.collection('marga_ai_memory').doc('global').get();
@@ -80,7 +112,7 @@ async function updateGlobalMemory(db, update) {
     await memRef.set(current);
 }
 
-function buildSystemPrompt(config, seoConfig, analytics, siteStructure, memory) {
+function buildSystemPrompt(config, seoConfig, analytics, siteStructure, memory, pagesWithIssues) {
     let prompt = `You are the AI SEO Manager for Marga Enterprises (marga.biz).
 
 ## CRITICAL PLATFORM INFO
@@ -89,6 +121,7 @@ function buildSystemPrompt(config, seoConfig, analytics, siteStructure, memory) 
 - You can create/edit pages via GitHub API
 - **NEVER ask about WordPress, admin panels, or CMS**
 - **NEVER ask for URLs you should already know**
+- **I have DEEP SCANNED your pages** - I know titles, meta descriptions, headings, word counts
 
 ## SITE STRUCTURE
 `;
@@ -157,6 +190,20 @@ function buildSystemPrompt(config, seoConfig, analytics, siteStructure, memory) 
         }
     }
 
+    // Pages with SEO issues (from deep scan)
+    if (pagesWithIssues?.length > 0) {
+        prompt += `## 🚨 PAGES NEEDING IMPROVEMENT (from Deep Scan)\n`;
+        pagesWithIssues.slice(0, 5).forEach(p => {
+            prompt += `\n### ${p.path} (Score: ${p.seoScore}/100)\n`;
+            prompt += `- **Title:** ${p.title || 'MISSING'}\n`;
+            prompt += `- **Meta:** ${p.metaDescription ? p.metaDescription.substring(0, 50) + '...' : 'MISSING'}\n`;
+            prompt += `- **H1:** ${p.h1 || 'MISSING'}\n`;
+            prompt += `- **Word Count:** ${p.wordCount || 0}\n`;
+            prompt += `- **Issues:** ${p.issues?.map(i => i.type).join(', ') || 'None'}\n`;
+        });
+        prompt += '\n';
+    }
+
     // Global Memory
     if (memory?.facts?.length > 0) {
         prompt += `## THINGS I REMEMBER
@@ -179,17 +226,20 @@ ${memory.recentActions.slice(-3).map(a => `- ${a.type}: ${a.description || JSON.
 ❌ Mention WordPress, admin panel, CMS
 ❌ Ask what services you offer (I know: printer rental, copier rental, print-all-you-can)
 ❌ Say "I don't have access to..." (I have full access via APIs)
+❌ Say "Without seeing your actual metadata" - I HAVE the metadata from deep scan
 ❌ Be vague - give specific page names and data
 
 ### ALWAYS DO:
 ✅ Reference specific pages by path (e.g., "/copier-rental-manila/")
-✅ Use actual data from analytics
+✅ Use actual title, meta, and content data I have from deep scans
+✅ Give SPECIFIC word counts, title lengths, issues
 ✅ Suggest concrete improvements with reasons
 ✅ Offer action buttons when I can help execute
 
 ## CAPABILITIES
 I can execute these actions (show as buttons):
 - **add_competitor**: {domain, notes}
+- **scan_page**: {path} - Deep scan a specific page for latest data
 - **add_keyword**: {keyword, type}
 - **create_page**: {slug, title, type, targetKeyword}
 - **update_config**: {path, value}
@@ -325,6 +375,18 @@ async function executeAction(db, action) {
             return { success: true, message: `Updated ${data.path}` };
         }
 
+        case 'scan_page': {
+            // Trigger a deep scan of a specific page
+            const path = data.path || '/';
+            const response = await fetch(`https://marga.biz/.netlify/functions/page-scanner?action=scan&path=${encodeURIComponent(path)}`);
+            const result = await response.json();
+            if (result.success) {
+                await updateGlobalMemory(db, { action: { type: 'scan_page', description: `Scanned ${path}` } });
+                return { success: true, message: `Scanned ${path}`, data: result.data };
+            }
+            return { success: false, message: 'Scan failed' };
+        }
+
         default:
             return { success: false, message: `Unknown action: ${type}` };
     }
@@ -354,16 +416,17 @@ exports.handler = async (event) => {
         const { message, history = [] } = body;
         if (!message) return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
 
-        // Load ALL context
-        const [configDoc, analytics, siteStructure, memory] = await Promise.all([
+        // Load ALL context including pages with issues
+        const [configDoc, analytics, siteStructure, memory, pagesWithIssues] = await Promise.all([
             db.collection('marga_config').doc('settings').get(),
             getLatestAnalytics(db),
             getSiteStructure(db),
-            getGlobalMemory(db)
+            getGlobalMemory(db),
+            getPagesWithIssues(db, 5)
         ]);
 
         const config = configDoc.exists ? configDoc.data() : {};
-        const systemPrompt = buildSystemPrompt(config.ai || {}, config.seo || {}, analytics, siteStructure, memory);
+        const systemPrompt = buildSystemPrompt(config.ai || {}, config.seo || {}, analytics, siteStructure, memory, pagesWithIssues);
 
         // Build messages
         const messages = history.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }));
