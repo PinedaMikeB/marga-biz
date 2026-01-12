@@ -429,3 +429,115 @@
 .chat-messages::-webkit-scrollbar-thumb:hover {
     background: #9ca3af;
 }
+
+
+/* File Attachment Styles */
+.chat-file-input {
+    display: none;
+}
+
+.chat-attach-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: #f3f4f6;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.chat-attach-btn:hover {
+    background: #e5e7eb;
+}
+
+.chat-attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+}
+
+.chat-attachments.hidden {
+    display: none;
+}
+
+.attachment-preview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.attachment-preview img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.attachment-preview .file-icon {
+    font-size: 20px;
+}
+
+.attachment-preview .file-name {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #4b5563;
+}
+
+.attachment-preview .remove-attachment {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 4px;
+}
+
+.attachment-preview .remove-attachment:hover {
+    color: #ef4444;
+}
+
+/* Drag and drop */
+.chat-window.drag-over {
+    border: 2px dashed #2563eb;
+    background: #eff6ff;
+}
+
+/* Image in messages */
+.message-image {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.message-image:hover {
+    opacity: 0.9;
+}
+
+.message-file {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-top: 8px;
+    color: #4b5563;
+}

@@ -413,8 +413,8 @@ exports.handler = async (event) => {
             return { statusCode: 200, headers, body: JSON.stringify({ success: true, data: result }) };
         }
 
-        const { message, history = [] } = body;
-        if (!message) return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
+        const { message, attachments = [], history = [] } = body;
+        if (!message && attachments.length === 0) return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
 
         // Load ALL context including pages with issues
         const [configDoc, analytics, siteStructure, memory, pagesWithIssues] = await Promise.all([
@@ -428,9 +428,50 @@ exports.handler = async (event) => {
         const config = configDoc.exists ? configDoc.data() : {};
         const systemPrompt = buildSystemPrompt(config.ai || {}, config.seo || {}, analytics, siteStructure, memory, pagesWithIssues);
 
-        // Build messages
+        // Build messages with attachment support
         const messages = history.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }));
-        messages.push({ role: 'user', content: message });
+        
+        // Build current message content (may include images)
+        const currentMessageContent = [];
+        
+        // Add images first
+        for (const att of attachments) {
+            if (att.type && att.type.startsWith('image/')) {
+                currentMessageContent.push({
+                    type: 'image',
+                    source: {
+                        type: 'base64',
+                        media_type: att.type,
+                        data: att.data
+                    }
+                });
+            } else if (att.type === 'text/csv' || att.name.endsWith('.csv')) {
+                // For CSV, decode and add as text
+                const csvText = Buffer.from(att.data, 'base64').toString('utf-8');
+                currentMessageContent.push({
+                    type: 'text',
+                    text: `[CSV File: ${att.name}]\n${csvText.substring(0, 5000)}${csvText.length > 5000 ? '\n...(truncated)' : ''}`
+                });
+            } else if (att.type === 'text/plain' || att.name.endsWith('.txt')) {
+                const txtContent = Buffer.from(att.data, 'base64').toString('utf-8');
+                currentMessageContent.push({
+                    type: 'text',
+                    text: `[File: ${att.name}]\n${txtContent.substring(0, 5000)}${txtContent.length > 5000 ? '\n...(truncated)' : ''}`
+                });
+            }
+        }
+        
+        // Add text message
+        if (message) {
+            currentMessageContent.push({ type: 'text', text: message });
+        }
+        
+        // Add to messages array
+        if (currentMessageContent.length === 1 && currentMessageContent[0].type === 'text') {
+            messages.push({ role: 'user', content: message });
+        } else {
+            messages.push({ role: 'user', content: currentMessageContent });
+        }
 
         // Call Claude
         const rawResponse = await callClaude(messages, config.ai || {}, systemPrompt);
@@ -439,6 +480,8 @@ exports.handler = async (event) => {
         // Log chat
         await db.collection('marga_chat_log').add({
             userMessage: message,
+            hasAttachments: attachments.length > 0,
+            attachmentNames: attachments.map(a => a.name),
             assistantResponse: response,
             actions,
             timestamp: new Date().toISOString(),

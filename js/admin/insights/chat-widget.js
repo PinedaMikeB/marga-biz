@@ -68,11 +68,14 @@ const AIChatWidget = {
                 </div>
 
                 <div class="chat-input-area">
+                    <input type="file" id="chatFileInput" class="chat-file-input" accept="image/*,.csv,.txt,.pdf" multiple>
+                    <button id="chatAttach" class="chat-attach-btn" title="Attach file">📎</button>
                     <textarea id="chatInput" class="chat-input" placeholder="Ask me anything..." rows="1"></textarea>
                     <button id="chatSend" class="chat-send-btn" title="Send">
                         <span>➤</span>
                     </button>
                 </div>
+                <div id="chatAttachments" class="chat-attachments hidden"></div>
             </div>
         `;
         document.body.appendChild(widget);
@@ -106,12 +109,106 @@ const AIChatWidget = {
             e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
         });
 
+        // File attachment
+        document.getElementById('chatAttach').addEventListener('click', () => {
+            document.getElementById('chatFileInput').click();
+        });
+
+        document.getElementById('chatFileInput').addEventListener('change', (e) => {
+            this.handleFileSelect(e.target.files);
+        });
+
+        // Drag and drop
+        const chatWindow = document.getElementById('chatWindow');
+        chatWindow.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            chatWindow.classList.add('drag-over');
+        });
+        chatWindow.addEventListener('dragleave', () => {
+            chatWindow.classList.remove('drag-over');
+        });
+        chatWindow.addEventListener('drop', (e) => {
+            e.preventDefault();
+            chatWindow.classList.remove('drag-over');
+            this.handleFileSelect(e.dataTransfer.files);
+        });
+
         // Quick action buttons
         document.querySelectorAll('.quick-action-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const action = e.target.dataset.action;
                 this.handleQuickAction(action);
             });
+        });
+    },
+
+    /**
+     * Handle file selection
+     */
+    handleFileSelect(files) {
+        if (!files || files.length === 0) return;
+
+        const container = document.getElementById('chatAttachments');
+        container.classList.remove('hidden');
+
+        for (const file of files) {
+            if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                alert('File too large. Max 10MB.');
+                continue;
+            }
+
+            const attachment = {
+                name: file.name,
+                type: file.type,
+                size: file.size,
+                file: file
+            };
+
+            this.pendingAttachments = this.pendingAttachments || [];
+            this.pendingAttachments.push(attachment);
+
+            // Show preview
+            const preview = document.createElement('div');
+            preview.className = 'attachment-preview';
+            
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                preview.appendChild(img);
+            } else {
+                preview.innerHTML = `<span class="file-icon">📄</span>`;
+            }
+            
+            preview.innerHTML += `
+                <span class="file-name">${file.name}</span>
+                <button class="remove-attachment" data-name="${file.name}">×</button>
+            `;
+            
+            preview.querySelector('.remove-attachment').addEventListener('click', (e) => {
+                const name = e.target.dataset.name;
+                this.pendingAttachments = this.pendingAttachments.filter(a => a.name !== name);
+                preview.remove();
+                if (this.pendingAttachments.length === 0) {
+                    container.classList.add('hidden');
+                }
+            });
+
+            container.appendChild(preview);
+        }
+
+        // Clear the input
+        document.getElementById('chatFileInput').value = '';
+    },
+
+    /**
+     * Convert file to base64
+     */
+    fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
         });
     },
 
@@ -179,14 +276,39 @@ const AIChatWidget = {
         const input = document.getElementById('chatInput');
         const message = input.value.trim();
         
-        if (!message || this.isLoading) return;
+        if ((!message && (!this.pendingAttachments || this.pendingAttachments.length === 0)) || this.isLoading) return;
 
         // Clear input
         input.value = '';
         input.style.height = 'auto';
 
+        // Process attachments
+        let attachments = [];
+        if (this.pendingAttachments && this.pendingAttachments.length > 0) {
+            for (const att of this.pendingAttachments) {
+                const base64 = await this.fileToBase64(att.file);
+                attachments.push({
+                    name: att.name,
+                    type: att.type,
+                    size: att.size,
+                    data: base64
+                });
+            }
+            // Clear attachments UI
+            this.pendingAttachments = [];
+            const container = document.getElementById('chatAttachments');
+            container.innerHTML = '';
+            container.classList.add('hidden');
+        }
+
+        // Build display message
+        let displayMessage = message;
+        if (attachments.length > 0) {
+            displayMessage += `\n📎 ${attachments.map(a => a.name).join(', ')}`;
+        }
+
         // Add user message to chat
-        this.addMessage('user', message);
+        this.addMessage('user', displayMessage);
 
         // Show loading
         this.setLoading(true);
@@ -198,6 +320,7 @@ const AIChatWidget = {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     message,
+                    attachments,
                     history: this.messages.slice(-10) // Last 10 messages for context
                 })
             });
