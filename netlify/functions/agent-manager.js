@@ -88,6 +88,62 @@ async function getManagerContext(db) {
 }
 
 /**
+ * Call Search Agent to check rankings
+ */
+async function callSearchAgent(action, params = {}) {
+    try {
+        const queryString = new URLSearchParams({ action, ...params }).toString();
+        const response = await fetch(`https://marga.biz/.netlify/functions/agent-search?${queryString}`);
+        const result = await response.json();
+        return result.success ? result.data : { error: result.error };
+    } catch (e) {
+        return { error: e.message };
+    }
+}
+
+/**
+ * Detect if user is asking about rankings and get live data
+ */
+async function enrichContextWithSearchData(message, context) {
+    const lowerMessage = message.toLowerCase();
+    
+    // Check if asking about rankings
+    const rankingKeywords = ['ranking', 'rank', 'position', 'serp', 'search result', 'where do i rank', 'check my'];
+    const isAskingRanking = rankingKeywords.some(k => lowerMessage.includes(k));
+    
+    if (isAskingRanking) {
+        // Extract keyword from message or use default
+        let keyword = 'printer rental philippines';
+        
+        // Try to extract specific keyword
+        const keywordPatterns = [
+            /for ['"]?([^'"]+)['"]?/i,
+            /keyword ['"]?([^'"]+)['"]?/i,
+            /['"]([^'"]+)['"]/
+        ];
+        
+        for (const pattern of keywordPatterns) {
+            const match = lowerMessage.match(pattern);
+            if (match) {
+                keyword = match[1];
+                break;
+            }
+        }
+        
+        // Call Search Agent
+        const rankingData = await callSearchAgent('quick_check', { keyword });
+        
+        if (!rankingData.error) {
+            context.liveRankingData = rankingData;
+        } else {
+            context.searchAgentError = rankingData.error;
+        }
+    }
+    
+    return context;
+}
+
+/**
  * Build the Manager's system prompt
  */
 function buildManagerPrompt(context) {
@@ -157,6 +213,26 @@ function buildManagerPrompt(context) {
     if (context.pagesData) {
         prompt += `- Pages Scanned: ${context.pagesData.totalScanned || 'some'}\n`;
         prompt += `- Last Scan: ${context.pagesData.lastFullScan || 'recent'}\n`;
+    }
+
+    // LIVE RANKING DATA (from Search Agent)
+    if (context.liveRankingData) {
+        const rd = context.liveRankingData;
+        prompt += `\n### 🔴 LIVE SERP RANKING (Just Checked)\n`;
+        prompt += `**Keyword:** "${rd.keyword}"\n`;
+        prompt += `**Your Position:** ${rd.margaPosition === 'Not in top 20' ? '❌ Not in top 20' : `#${rd.margaPosition}`}\n`;
+        prompt += `**Checked:** Just now\n\n`;
+        prompt += `**Top 10 Results:**\n`;
+        rd.top10.forEach(r => {
+            const isMarga = r.domain.includes('marga.biz');
+            prompt += `${r.position}. ${isMarga ? '👉 ' : ''}${r.domain}${isMarga ? ' (YOU)' : ''}\n`;
+        });
+        prompt += `\n**USE THIS DATA** - This is real-time, not historical!\n`;
+    }
+    
+    if (context.searchAgentError) {
+        prompt += `\n### Search Agent Status\n`;
+        prompt += `⚠️ ${context.searchAgentError}\n`;
     }
 
     // Analytics if available
@@ -436,7 +512,10 @@ exports.handler = async (event) => {
         }
 
         // Get comprehensive context
-        const context = await getManagerContext(db);
+        let context = await getManagerContext(db);
+        
+        // Enrich context with live search data if user is asking about rankings
+        context = await enrichContextWithSearchData(message, context);
         
         // Build system prompt
         const systemPrompt = buildManagerPrompt(context);
