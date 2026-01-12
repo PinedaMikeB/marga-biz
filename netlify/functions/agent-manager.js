@@ -231,8 +231,12 @@ function buildManagerPrompt(context) {
     }
     
     if (context.searchAgentError) {
-        prompt += `\n### Search Agent Status\n`;
-        prompt += `⚠️ ${context.searchAgentError}\n`;
+        prompt += `\n### ⚠️ Search Agent Status\n`;
+        prompt += `Cannot check live rankings: ${context.searchAgentError}\n`;
+        prompt += `To enable live SERP checking:\n`;
+        prompt += `1. Get free API key at serper.dev\n`;
+        prompt += `2. Add SERPER_API_KEY to Netlify environment variables\n`;
+        prompt += `3. Redeploy the site\n`;
     }
 
     // Analytics if available
