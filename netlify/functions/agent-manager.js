@@ -132,7 +132,7 @@ async function enrichContextWithPageScan(message, context) {
     
     if (wantsAnalysis) {
         // Determine which page to scan (use PATH not full URL)
-        let pagePath = '/printer-rental-philippines/'; // Default
+        let pagePath = '/printer-rental/'; // Default - main printer rental page
         
         if (lowerMessage.includes('copier')) {
             pagePath = '/copier-rental/';
@@ -144,6 +144,8 @@ async function enrichContextWithPageScan(message, context) {
             pagePath = '/contact/';
         } else if (lowerMessage.includes('about')) {
             pagePath = '/about/';
+        } else if (lowerMessage.includes('quote')) {
+            pagePath = '/quote/';
         }
         
         // Extract path if full URL provided
@@ -155,13 +157,18 @@ async function enrichContextWithPageScan(message, context) {
         // Call Page Scanner
         const scanResult = await callPageScanner(pagePath);
         
-        if (!scanResult.error && scanResult.data) {
-            context.pageScanResult = scanResult.data;
-        } else if (!scanResult.error) {
-            // Handle case where data is at top level
-            context.pageScanResult = scanResult;
+        if (scanResult && !scanResult.error) {
+            if (scanResult.data) {
+                // Nested structure: { fresh: true, data: {...} }
+                context.pageScanResult = scanResult.data;
+            } else if (scanResult.path) {
+                // Flat structure: { path: '/', title: '...', ...}
+                context.pageScanResult = scanResult;
+            } else {
+                context.pageScanError = 'Page not found or not yet scanned';
+            }
         } else {
-            context.pageScanError = scanResult.error;
+            context.pageScanError = scanResult?.error || 'Unknown scanner error';
         }
     }
     
