@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026 @ Agent System v1  
-**Current Version:** v2.0.0  
+**Last Updated:** January 12, 2026  
+**Current Version:** v2.1.0 (MCP-Style Agent System)  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -13,133 +13,113 @@
 | Live Site | https://marga.biz |
 | Insights Dashboard | https://marga.biz/admin/insights/ |
 | Settings + Scanner | https://marga.biz/admin/insights/settings.html |
-| Agent Dashboard API | https://marga.biz/.netlify/functions/agent-dashboard |
 
 ---
 
-## 🤖 AGENT SYSTEM (NEW!)
+## 🤖 AGENT ARCHITECTURE (MCP-Style)
 
-### Architecture
+### How It Works Now
+
+The Manager uses **tools directly** (MCP-style) for immediate results:
+
 ```
-     YOU
-      │
-      ▼
-┌─────────────┐
-│   MANAGER   │◄── Only agent you talk to
-│    AGENT    │
-└─────┬───────┘
-      │ Delegates to:
-      ├── 🌐 Website Agent (pages, links, edits)
-      ├── 🔍 Search Agent (SERP, competitors) ⏳ Phase 2
-      ├── 📊 Google Agent (GA4, GSC, index)
-      ├── ✏️ Content Agent (write pages) ⏳ Phase 2
-      ├── 📋 Tracker Agent (issues, followups) ⏳ Phase 3
-      └── 🤖 AI Search Agent (Perplexity, ChatGPT) ⏳ Phase 4
+User: "Check my ranking for printer rental philippines"
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│                    MANAGER AGENT                        │
+│                                                         │
+│  1. Sees ranking request                                │
+│  2. Calls checkRanking() tool DIRECTLY                  │
+│  3. Gets LIVE SERP data                                 │
+│  4. Analyzes and responds with REAL data                │
+└─────────────────────────────────────────────────────────┘
 ```
 
-### Current Status
+### Available Tools (lib/agent-tools.js)
 
-| Agent | Status | Function |
-|-------|--------|----------|
-| **Manager** | ✅ Working | `agent-manager.js` |
-| **Website** | ✅ Existing | `page-scanner.js` |
-| **Google** | ✅ Existing | `insights-ga4.js`, `insights-search.js` |
-| **Search** | ⏳ Phase 2 | Web search for rankings |
-| **Content** | ⏳ Phase 2 | Content generation |
-| **Tracker** | ⏳ Phase 3 | Issue tracking |
-| **AI Search** | ⏳ Phase 4 | AI presence monitoring |
+| Tool | Function | Data Source |
+|------|----------|-------------|
+| `scan_page` | Scan page for SEO | page-scanner function |
+| `check_ranking` | Live SERP position | Serper.dev API |
+| `find_competitors` | Who ranks above you | Serper.dev API |
+| `get_search_console` | Historical rankings | Firebase snapshots |
+| `get_site_overview` | Site stats | Firebase marga_site |
 
 ---
 
-## 📁 New Files Created
+## 🔑 API KEYS NEEDED
+
+### Serper.dev (for live SERP)
+- **Status:** Not configured
+- **Get key:** https://serper.dev (FREE 2,500/month)
+- **Add to Netlify:** Environment variable `SERPER_API_KEY`
+
+---
+
+## 📁 Key Files
 
 ```
 netlify/functions/
+├── agent-manager.js      # Orchestrator with tools
+├── agent-search.js       # Search Agent (SERP checking)
+├── agent-dashboard.js    # Dashboard API
 ├── lib/
-│   └── agent-utils.js      # Shared agent utilities
-├── agent-manager.js        # Orchestrator agent
-└── agent-dashboard.js      # Dashboard API
+│   ├── agent-utils.js    # Firebase helpers
+│   └── agent-tools.js    # MCP-style tools
+├── page-scanner.js       # Deep page analysis
+├── site-scanner.js       # Sitemap scanning
+└── insights-*.js         # Analytics functions
 ```
 
-### Firebase Collections (New)
+---
+
+## 🔧 Firebase Collections
 
 | Collection | Purpose |
 |------------|---------|
 | `marga_agents` | Agent statuses |
-| `marga_tasks` | Task queue |
-| `marga_issues` | Issue tracking |
-| `marga_solutions` | Solution log |
-| `marga_followups` | Follow-up checks |
-| `marga_recommendations` | User approvals |
-| `marga_activity_log` | Activity history |
-| `marga_shared` | Shared agent data |
+| `marga_tasks` | Task queue (legacy) |
+| `marga_pages` | Scanned page data |
+| `marga_site` | Site structure |
+| `marga_rankings` | Ranking history |
+| `insights_snapshots` | Daily analytics |
 
 ---
 
-## 🔧 API Endpoints
+## ✅ What's Working
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/agent-manager` | POST | Chat with Manager |
-| `/agent-dashboard` | GET | Get all agent data |
-| `/agent-dashboard?action=approve&recId=X` | GET | Approve recommendation |
-| `/agent-dashboard?action=dismiss&recId=X` | GET | Dismiss recommendation |
-
----
-
-## 📋 Build Progress
-
-### ✅ Phase 1: Agent Framework (DONE)
-- [x] Agent utilities library
-- [x] Manager Agent (orchestrator)
-- [x] Dashboard API
-- [x] Task queue system
-- [x] Recommendation workflow
-
-### ⏳ Phase 2: Search Agent (NEXT)
-- [ ] SERP API integration
-- [ ] Ranking checks
-- [ ] Competitor monitoring
-- [ ] Bing submission
-
-### ⏳ Phase 3: Tracker Agent
-- [ ] Issue logging
-- [ ] Solution tracking
-- [ ] Follow-up scheduling
-
-### ⏳ Phase 4: AI Search Agent
-- [ ] Perplexity checking
-- [ ] ChatGPT presence
-
-### ⏳ Phase 5: Dashboard UI
-- [ ] Agent status cards
-- [ ] Recommendations panel
-- [ ] Activity timeline
+1. **Manager Agent** - Uses tools directly, gives real analysis
+2. **Page Scanner** - Scans pages, returns SEO data
+3. **Search Agent** - Ready (needs API key for live SERP)
+4. **Site Scanner** - Scans sitemap, stores key pages
+5. **Chat Widget** - User interface for Manager
 
 ---
 
-## 📚 Documentation
+## ⏳ Not Built Yet
 
-- `/Volumes/Wotg Drive Mike/GitHub/dev-standards/AGENT-ARCHITECTURE.md`
-- Full architecture spec for multi-agent system
-- Portable to other projects (breadhub.ph)
+- **Tracker Agent** - Issue tracking, follow-ups
+- **Content Agent** - Content generation
+- **AI Search Agent** - Perplexity/ChatGPT monitoring
+- **Bing Submission** - Submit URLs to Bing
+
+---
+
+## 📋 Recent Commits
+
+```
+41287cd Fix: Remove duplicate code block in agent-tools.js
+798be98 Fix: Remove leftover code causing syntax error
+a3125f0 Major: Manager now uses tools directly (MCP-style)
+655ad80 Phase 2: Search Agent - Live SERP rankings
+```
 
 ---
 
 ## 🔄 ROLLBACK
 
+To revert to pre-agent system:
 ```bash
-git revert 50d5864  # Index fix
-git revert 676bf80  # Phase 1 agent framework
+git revert 41287cd 798be98 a3125f0 655ad80
 ```
-
----
-
-## ⚙️ Recent Changes
-
-| Date | Version | Change |
-|------|---------|--------|
-| 2026-01-12 | v2.0.0 | Phase 1: Agent Framework |
-| 2026-01-12 | v1.9.0 | Page Scanner + Attachments |
-| 2026-01-12 | v1.8.0 | Site Scanner + Global Memory |
-| 2026-01-12 | v1.7.0 | AI Chat Widget |
