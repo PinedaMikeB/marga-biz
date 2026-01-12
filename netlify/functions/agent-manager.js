@@ -216,7 +216,7 @@ function buildManagerPrompt(context) {
     }
 
     // LIVE RANKING DATA (from Search Agent)
-    if (context.liveRankingData) {
+    if (context.liveRankingData && context.liveRankingData.top10) {
         const rd = context.liveRankingData;
         prompt += `\n### 🔴 LIVE SERP RANKING (Just Checked)\n`;
         prompt += `**Keyword:** "${rd.keyword}"\n`;
