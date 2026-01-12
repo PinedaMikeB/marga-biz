@@ -248,10 +248,10 @@ function buildManagerPrompt(context) {
             prompt += `- Clicks: ${context.analytics.seo.clicks || 'N/A'}\n`;
             prompt += `- Avg Position: ${context.analytics.seo.avgPosition || 'N/A'}\n`;
         }
-        if (context.analytics.seo?.topKeywords) {
+        if (context.analytics.seo?.topKeywords && Array.isArray(context.analytics.seo.topKeywords)) {
             prompt += `\n### Top Keywords (from Search Console)\n`;
             context.analytics.seo.topKeywords.slice(0, 10).forEach(kw => {
-                prompt += `- "${kw.query}": position ${kw.position?.toFixed(1)}, ${kw.clicks} clicks\n`;
+                prompt += `- "${kw.query || 'unknown'}": position ${kw.position?.toFixed(1) || 'N/A'}, ${kw.clicks || 0} clicks\n`;
             });
         }
     }
