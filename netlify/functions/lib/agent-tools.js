@@ -83,11 +83,6 @@ async function scanPage(pagePath) {
         return { success: false, error: e.message };
     }
 }
-        return { success: false, error: result.error || 'Scan failed - no data returned' };
-    } catch (e) {
-        return { success: false, error: e.message };
-    }
-}
 
 /**
  * TOOL: Check live SERP ranking
