@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026 @ Phase 4.2 Complete  
-**Current Version:** v1.6.0  
+**Last Updated:** January 12, 2026 @ Phase 4.3 Complete  
+**Current Version:** v1.7.0  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -12,7 +12,7 @@
 |----------|-----|
 | Live Site | https://marga.biz |
 | Insights Dashboard | https://marga.biz/admin/insights/ |
-| **Settings Page** | https://marga.biz/admin/insights/settings.html |
+| Settings Page | https://marga.biz/admin/insights/settings.html |
 | Netlify Dashboard | https://app.netlify.com/projects/marga-biz |
 | GitHub Repo | https://github.com/PinedaMikeB/marga-biz |
 
@@ -23,50 +23,48 @@
 ### What's Working
 - ✅ Static site live (1,903 pages)
 - ✅ GA4 tracking + custom events
-- ✅ INSIGHTS MODULE (All 5 tabs)
-- ✅ AI SEO Analysis (Phase 3.3)
+- ✅ INSIGHTS MODULE (6 tabs including Settings)
+- ✅ AI SEO Analysis 
 - ✅ GitHub Editor API (cloud file editing)
 - ✅ Config Manager API (AI settings)
-- ✅ **Settings UI Page** - Full AI configuration interface
+- ✅ Settings UI Page
+- ✅ **AI Chat Widget** - Floating on all Insights pages
 
 ### What's In Progress
-- 🔨 Phase 4.3 - AI Chat Widget (floating)
+- 🔨 Phase 4.4 - Chat → Config/GitHub integration (actions)
 
 ### What's Planned
-- ❌ Landing page generator
-- ❌ Competitor monitoring (web search)
+- ❌ Landing page generator with preview
+- ❌ Competitor research (web search)
 - ❌ Auto-publish system
 
 ---
 
 ## 🔨 LAST COMPLETED
 
-**Phase 4.2: Settings UI** (Commit: `8eb0a46`)
+**Phase 4.3: AI Chat Widget** (Commits: `0d9fc39`, `58a8865`)
 
-Features built:
-- Model selection (Opus/Sonnet/Haiku) with cost tiers
-- Smart routing toggle
-- Temperature and max tokens sliders
-- System prompt editor
-- Additional instructions editor
-- Competitors list (add/remove)
-- Keywords management (primary/growth)
-- AI behaviors toggles
-- Scheduled tasks overview
-- Change history viewer
-- Settings tab added to all pages
+Features:
+- Floating chat bubble on all 6 Insights pages
+- Claude API integration with config-based model selection
+- Quick action buttons (Find competitors, Create page, Analyze SEO)
+- Message history persistence (localStorage)
+- Action buttons in AI responses
+- Typing indicator and loading states
+- Mobile responsive design
+- Model name normalization for API compatibility
 
 ---
 
 ## 🔄 ROLLBACK INSTRUCTIONS
 
 ```bash
+# Phase 4.3 (Chat Widget)
+git revert 58a8865
+git revert 0d9fc39
+
 # Phase 4.2 (Settings UI)
 git revert 8eb0a46
-
-# Phase 4.0-4.1 (Config/GitHub APIs)
-git revert ae4d7e7
-git revert ba01f2b
 ```
 
 ---
@@ -75,9 +73,9 @@ git revert ba01f2b
 
 | File | Purpose |
 |------|---------|
-| `admin/insights/settings.html` | Settings UI page |
-| `admin/insights/css/settings.css` | Settings styling |
-| `js/admin/insights/settings-ui.js` | Settings JavaScript |
+| `js/admin/insights/chat-widget.js` | Chat UI component |
+| `admin/insights/css/chat-widget.css` | Chat styling |
+| `netlify/functions/insights-chat.js` | Chat backend |
 | `netlify/functions/config-manager.js` | Config API |
 | `netlify/functions/github-editor.js` | File editing API |
 
@@ -85,10 +83,10 @@ git revert ba01f2b
 
 ## 📋 NEXT STEPS
 
-1. **Phase 4.3** - Floating AI chat widget
-2. **Phase 4.4** - Chat → Config/GitHub integration
-3. **Phase 4.5** - Preview modal system
-4. **Phase 4.6** - BGC landing page test
+1. **Phase 4.4** - Add web search to chat for competitor research
+2. **Phase 4.5** - Preview modal for page creation
+3. **Phase 4.6** - BGC landing page test (from phone!)
+4. **Phase 4.7** - Task queue + history viewer
 
 ---
 
@@ -96,6 +94,7 @@ git revert ba01f2b
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-01-12 | v1.7.0 | AI Chat Widget |
 | 2026-01-12 | v1.6.0 | Settings UI Page |
 | 2026-01-12 | v1.5.0 | GitHub Editor + Config Manager |
 | 2026-01-12 | v1.4.0 | AI SEO Analysis |
