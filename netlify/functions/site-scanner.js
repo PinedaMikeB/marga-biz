@@ -116,17 +116,60 @@ async function storeSiteStructure(db, pages) {
         await chunkBatch.commit();
     }
     
-    // Store key pages separately for quick access
-    const keyPages = pages.filter(p => 
-        p.category === 'homepage' || 
-        p.category === 'service' || 
-        p.category === 'conversion' ||
-        p.category === 'pricing'
-    ).slice(0, 100);
+    // Store key pages separately for quick access (PRIORITY ORDER)
+    // Priority 1: Money pages (homepage, quote, contact, pricing)
+    // Priority 2: Main service pages (short URLs)
+    // Priority 3: Deep service pages
+    // Priority 4: Blog posts
+    
+    const priorityPages = [];
+    
+    // Priority 1: Money pages
+    const moneyPaths = ['/', '/quote/', '/contact/', '/pricing/'];
+    moneyPaths.forEach(path => {
+        const found = pages.find(p => p.path === path);
+        if (found) priorityPages.push({ ...found, priority: 1 });
+    });
+    
+    // Priority 2: Main service pages (depth 2-3, contains rental/copier/printer)
+    pages.forEach(p => {
+        if (priorityPages.some(pp => pp.path === p.path)) return;
+        if (p.depth <= 3 && (p.path.includes('rental') || p.path.includes('copier') || p.path.includes('printer'))) {
+            priorityPages.push({ ...p, priority: 2 });
+        }
+    });
+    
+    // Priority 3: Other service pages
+    pages.forEach(p => {
+        if (priorityPages.some(pp => pp.path === p.path)) return;
+        if (p.category === 'service') {
+            priorityPages.push({ ...p, priority: 3 });
+        }
+    });
+    
+    // Priority 4: Blog posts (limit to 50)
+    let blogCount = 0;
+    pages.forEach(p => {
+        if (priorityPages.some(pp => pp.path === p.path)) return;
+        if (p.category === 'blog' && blogCount < 50) {
+            priorityPages.push({ ...p, priority: 4 });
+            blogCount++;
+        }
+    });
+    
+    // Sort by priority, then by depth (shallower first)
+    priorityPages.sort((a, b) => {
+        if (a.priority !== b.priority) return a.priority - b.priority;
+        return a.depth - b.depth;
+    });
+    
+    // Limit to 200 key pages
+    const keyPages = priorityPages.slice(0, 200);
     
     await db.collection('marga_site').doc('key_pages').set({
         pages: keyPages,
-        count: keyPages.length
+        count: keyPages.length,
+        lastUpdated: new Date().toISOString()
     });
     
     return {

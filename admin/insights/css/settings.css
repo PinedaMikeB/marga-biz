@@ -729,3 +729,109 @@ h4 {
     margin: 1rem 0 0.5rem;
     color: #1f2937;
 }
+
+
+/* Improved Scan Results */
+.scan-results-list.paginated {
+    max-height: 420px; /* Fits exactly 10 items */
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+}
+
+.scan-result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    min-height: 42px;
+}
+
+.scan-result-item:last-child {
+    border-bottom: none;
+}
+
+.scan-result-item:hover {
+    background: #f9fafb;
+}
+
+.result-rank {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    min-width: 24px;
+    text-align: right;
+}
+
+.result-score {
+    font-weight: 700;
+    font-size: 0.95rem;
+    min-width: 50px;
+    text-align: center;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.result-score small {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+.result-path {
+    font-size: 0.85rem;
+    color: #374151;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 0 0 8px 8px;
+    margin-top: -1px;
+}
+
+.page-btn {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-info {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.scan-results-wrapper {
+    margin-top: 1rem;
+}
+
+.scan-results-wrapper h4 {
+    margin-bottom: 0.75rem;
+}

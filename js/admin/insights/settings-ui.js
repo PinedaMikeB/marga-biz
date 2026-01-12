@@ -659,23 +659,78 @@ const SettingsUI = {
             return;
         }
 
-        // Sort by score (lowest first)
-        pages.sort((a, b) => (a.score || 0) - (b.score || 0));
-
-        let html = '<h4>📋 Scan Results</h4><div class="scan-results-list">';
+        // Store pages for pagination
+        this.scanResultPages = pages.sort((a, b) => (a.score || 0) - (b.score || 0));
+        this.scanResultPage = 1;
+        this.scanResultsPerPage = 10;
         
-        pages.forEach(page => {
+        this.renderScanResultsPage();
+    },
+
+    /**
+     * Render current page of scan results
+     */
+    renderScanResultsPage() {
+        const pages = this.scanResultPages || [];
+        const currentPage = this.scanResultPage || 1;
+        const perPage = this.scanResultsPerPage || 10;
+        const totalPages = Math.ceil(pages.length / perPage);
+        
+        const start = (currentPage - 1) * perPage;
+        const end = start + perPage;
+        const pageItems = pages.slice(start, end);
+        
+        let html = `<h4>📋 Scan Results (${pages.length} pages)</h4>`;
+        html += '<div class="scan-results-list paginated">';
+        
+        pageItems.forEach((page, idx) => {
             const scoreClass = page.score < 50 ? 'low' : page.score < 80 ? 'medium' : 'high';
+            const grade = page.score >= 90 ? 'A' : page.score >= 80 ? 'B' : page.score >= 70 ? 'C' : page.score >= 60 ? 'D' : 'F';
             html += `
                 <div class="scan-result-item">
-                    <span class="result-score ${scoreClass}">${page.score || 0}</span>
-                    <span class="result-path">${page.path}</span>
+                    <span class="result-rank">${start + idx + 1}</span>
+                    <span class="result-score ${scoreClass}">${page.score || 0}<small>${grade}</small></span>
+                    <span class="result-path" title="${page.path}">${this.truncatePath(page.path, 60)}</span>
                 </div>
             `;
         });
         
         html += '</div>';
-        resultsContainer.innerHTML += html;
+        
+        // Pagination
+        if (totalPages > 1) {
+            html += '<div class="pagination">';
+            html += `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="SettingsUI.goToScanPage(${currentPage - 1})">← Prev</button>`;
+            html += `<span class="page-info">Page ${currentPage} of ${totalPages}</span>`;
+            html += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="SettingsUI.goToScanPage(${currentPage + 1})">Next →</button>`;
+            html += '</div>';
+        }
+        
+        // Find existing results section or append
+        const existingResults = document.querySelector('.scan-results-list.paginated')?.parentElement;
+        if (existingResults) {
+            existingResults.outerHTML = `<div class="scan-results-wrapper">${html}</div>`;
+        } else {
+            document.getElementById('scannerResults').innerHTML += `<div class="scan-results-wrapper">${html}</div>`;
+        }
+    },
+
+    /**
+     * Go to specific scan results page
+     */
+    goToScanPage(page) {
+        this.scanResultPage = page;
+        this.renderScanResultsPage();
+    },
+
+    /**
+     * Truncate long paths for display
+     */
+    truncatePath(path, maxLen) {
+        if (path.length <= maxLen) return path;
+        const start = path.substring(0, 20);
+        const end = path.substring(path.length - (maxLen - 23));
+        return `${start}...${end}`;
     },
 
     /**
