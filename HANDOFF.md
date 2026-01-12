@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026 @ AI Chat Enhanced  
-**Current Version:** v1.7.1  
+**Last Updated:** January 12, 2026 @ Full Site Knowledge  
+**Current Version:** v1.8.0  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -12,30 +12,32 @@
 |----------|-----|
 | Live Site | https://marga.biz |
 | Insights Dashboard | https://marga.biz/admin/insights/ |
-| Settings Page | https://marga.biz/admin/insights/settings.html |
+| Settings | https://marga.biz/admin/insights/settings.html |
+| SEO Tab | https://marga.biz/admin/insights/seo.html |
 
 ---
 
 ## 📍 CURRENT STATE
 
 ### What's Working
-- ✅ Static site live (1,903 pages)
-- ✅ GA4 tracking + custom events
+- ✅ Static site (1,903 pages on Netlify)
 - ✅ INSIGHTS MODULE (6 tabs)
-- ✅ AI SEO Analysis
-- ✅ GitHub Editor API
+- ✅ AI Chat Widget (floating on all pages)
+- ✅ **Site Scanner** - All pages stored in Firebase
+- ✅ **Global Memory** - AI remembers across sessions
+- ✅ Settings UI with model selection
+- ✅ GitHub Editor API (cloud file editing)
 - ✅ Config Manager API
-- ✅ Settings UI Page
-- ✅ **AI Chat Widget** - With FULL website knowledge!
 
-### AI Chat Capabilities
+### AI Capabilities
 The AI now knows:
-- All 1,903 pages (structure, URLs)
-- Latest analytics (visitors, page views)
-- Current keyword rankings from Search Console
-- Top performing pages
-- Competitors being monitored
-- Target keywords (primary + growth)
+- All 1,903 pages (scanned from sitemap.xml)
+- Page categories (542 service, 418 blog, etc.)
+- Key page URLs and titles
+- Latest analytics and rankings
+- Competitors and target keywords
+- **Never asks about WordPress** (we're on Netlify)
+- **Never asks for URLs** (already knows them)
 
 ### What's Planned
 - ❌ Web search for competitor research
@@ -46,32 +48,46 @@ The AI now knows:
 
 ## 🔨 LAST COMPLETED
 
-**AI Chat Enhancement** (Commit: `41ac3c2`)
+**v1.8.0: Full Site Knowledge** (Commit: `e5e72f6`)
 
-The AI chat no longer asks dumb questions! It:
-- Knows your whole website
-- Gives specific page recommendations
-- References actual data (rankings, traffic)
-- Suggests action buttons (create page, add keyword)
+1. **Site Scanner** (`site-scanner.js`)
+   - Scans sitemap.xml
+   - Stores all pages in Firebase
+   - Categories: service, blog, conversion, pricing, other
+   - Run: `?action=scan` to refresh
+
+2. **Global Memory System**
+   - Collection: `marga_ai_memory/global`
+   - Stores facts, recent actions, improvements
+   - Persists across all chat sessions
+
+3. **AI Improvements**
+   - Knows complete site structure
+   - Never mentions WordPress
+   - Never asks for URLs
+   - Gives specific page recommendations
 
 ---
 
-## 📋 EXAMPLE CHAT QUERIES
+## 📋 Firebase Collections
 
-| Ask This | AI Will... |
-|----------|------------|
-| "How can I improve my SEO?" | Give 3 specific recommendations with page names |
-| "What are my top pages?" | List pages with actual traffic data |
-| "What keywords should I target?" | Show gaps and opportunities with action buttons |
-| "Create page for BGC" | Offer to create with one-click button |
+| Collection | Purpose |
+|------------|---------|
+| `marga_config/settings` | AI config, SEO settings |
+| `marga_site/summary` | Site structure summary |
+| `marga_site/key_pages` | Important pages list |
+| `marga_ai_memory/global` | AI memory across sessions |
+| `marga_history/` | All change logs |
+| `marga_chat_log/` | Chat conversation logs |
+| `insights_snapshots/` | Daily analytics snapshots |
 
 ---
 
 ## 🔄 ROLLBACK
 
 ```bash
-git revert 41ac3c2  # AI chat enhancement
-git revert 58a8865  # Model fix
+git revert e5e72f6  # Full site knowledge
+git revert 41ac3c2  # Chat enhancement
 git revert 0d9fc39  # Chat widget
 ```
 
@@ -80,8 +96,9 @@ git revert 0d9fc39  # Chat widget
 ## 📋 NEXT STEPS
 
 1. **Phase 4.4** - Web search for competitor research
-2. **Phase 4.5** - Preview modal for page creation
-3. **Phase 4.6** - Actually create BGC landing page!
+2. **Phase 4.5** - Landing page preview modal
+3. **Phase 4.6** - Create BGC landing page test
+4. **Fix** - Top Performing Pages loading on SEO tab
 
 ---
 
@@ -89,7 +106,8 @@ git revert 0d9fc39  # Chat widget
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-01-12 | v1.7.1 | AI Chat with website knowledge |
+| 2026-01-12 | v1.8.0 | Site scanner + Global memory |
+| 2026-01-12 | v1.7.1 | AI with website knowledge |
 | 2026-01-12 | v1.7.0 | AI Chat Widget |
 | 2026-01-12 | v1.6.0 | Settings UI Page |
-| 2026-01-12 | v1.5.0 | GitHub Editor + Config Manager |
+| 2026-01-12 | v1.5.0 | GitHub/Config APIs |
