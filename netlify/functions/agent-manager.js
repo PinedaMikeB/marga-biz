@@ -104,13 +104,15 @@ async function callSearchAgent(action, params = {}) {
 /**
  * Call Page Scanner to analyze a page
  */
-async function callPageScanner(url) {
+async function callPageScanner(pagePath) {
     try {
-        const response = await fetch('https://marga.biz/.netlify/functions/page-scanner', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ url })
-        });
+        // Page scanner uses query params, not POST body
+        const queryString = new URLSearchParams({ 
+            action: 'get', 
+            path: pagePath,
+            maxAge: '3600000' // 1 hour cache
+        }).toString();
+        const response = await fetch(`https://marga.biz/.netlify/functions/page-scanner?${queryString}`);
         const result = await response.json();
         return result.success ? result.data : { error: result.error };
     } catch (e) {
@@ -128,35 +130,35 @@ async function enrichContextWithPageScan(message, context) {
     const analyzeKeywords = ['yes', 'analyze', 'scan', 'check page', 'check my page', 'optimize', 'improvement'];
     const wantsAnalysis = analyzeKeywords.some(k => lowerMessage.includes(k));
     
-    // Check for specific page mentions
-    const pagePatterns = [
-        /printer.?rental/i,
-        /copier.?rental/i,
-        /\/([a-z0-9-]+)\//i
-    ];
-    
     if (wantsAnalysis) {
-        // Determine which page to scan
-        let pageUrl = 'https://marga.biz/printer-rental-philippines/'; // Default
+        // Determine which page to scan (use PATH not full URL)
+        let pagePath = '/printer-rental-philippines/'; // Default
         
         if (lowerMessage.includes('copier')) {
-            pageUrl = 'https://marga.biz/copier-rental/';
+            pagePath = '/copier-rental/';
         } else if (lowerMessage.includes('home') || lowerMessage.includes('homepage')) {
-            pageUrl = 'https://marga.biz/';
+            pagePath = '/';
         } else if (lowerMessage.includes('pricing') || lowerMessage.includes('price')) {
-            pageUrl = 'https://marga.biz/pricing/';
+            pagePath = '/pricing-guide/';
+        } else if (lowerMessage.includes('contact')) {
+            pagePath = '/contact/';
+        } else if (lowerMessage.includes('about')) {
+            pagePath = '/about/';
         }
         
-        // Extract URL if provided
-        const urlMatch = lowerMessage.match(/https?:\/\/[^\s]+/);
+        // Extract path if full URL provided
+        const urlMatch = lowerMessage.match(/marga\.biz(\/[^\s]*)/);
         if (urlMatch) {
-            pageUrl = urlMatch[0];
+            pagePath = urlMatch[1];
         }
         
         // Call Page Scanner
-        const scanResult = await callPageScanner(pageUrl);
+        const scanResult = await callPageScanner(pagePath);
         
-        if (!scanResult.error) {
+        if (!scanResult.error && scanResult.data) {
+            context.pageScanResult = scanResult.data;
+        } else if (!scanResult.error) {
+            // Handle case where data is at top level
             context.pageScanResult = scanResult;
         } else {
             context.pageScanError = scanResult.error;
