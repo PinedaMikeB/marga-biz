@@ -193,79 +193,172 @@ function extractPageData(html, path) {
     }
 
     // Calculate SEO score and issues
-    const { score, issues } = calculateSEOScore(data);
+    const { score, grade, issues, passed } = calculateSEOScore(data);
     data.seoScore = score;
+    data.seoGrade = grade;
     data.issues = issues;
+    data.passed = passed;
 
     return data;
 }
 
 /**
- * Calculate SEO score and identify issues
+ * Calculate SEO score and identify issues (Yoast-style)
+ * 
+ * Scoring Breakdown (100 points total):
+ * - Title: 15 points (existence, length, unique)
+ * - Meta Description: 15 points (existence, length)
+ * - H1: 10 points (existence, uniqueness)
+ * - Content: 20 points (word count, structure)
+ * - Headings: 10 points (H2s, hierarchy)
+ * - Internal Links: 10 points (quantity)
+ * - Images: 10 points (alt text)
+ * - Technical: 10 points (schema, canonical)
  */
 function calculateSEOScore(data) {
-    let score = 100;
+    let score = 0;
     const issues = [];
+    const passed = [];
 
-    // Title checks (25 points)
+    // === TITLE (15 points) ===
     if (!data.title) {
-        score -= 25;
-        issues.push({ type: 'missing_title', severity: 'critical', message: 'Missing page title' });
-    } else if (data.title.length < 30) {
-        score -= 10;
-        issues.push({ type: 'title_too_short', severity: 'warning', message: `Title too short (${data.title.length} chars, recommend 50-60)` });
-    } else if (data.title.length > 70) {
-        score -= 5;
-        issues.push({ type: 'title_too_long', severity: 'minor', message: `Title too long (${data.title.length} chars, recommend 50-60)` });
+        issues.push({ type: 'missing_title', severity: 'critical', message: 'Missing page title', points: -15 });
+    } else {
+        const titleLen = data.title.length;
+        if (titleLen >= 50 && titleLen <= 60) {
+            score += 15;
+            passed.push({ type: 'title_perfect', message: `Title length is ideal (${titleLen} chars)` });
+        } else if (titleLen >= 30 && titleLen <= 70) {
+            score += 10;
+            issues.push({ type: 'title_length', severity: 'minor', message: `Title length (${titleLen}) could be optimized (50-60 recommended)`, points: -5 });
+        } else if (titleLen < 30) {
+            score += 5;
+            issues.push({ type: 'title_too_short', severity: 'warning', message: `Title too short (${titleLen} chars, need 50-60)`, points: -10 });
+        } else {
+            score += 5;
+            issues.push({ type: 'title_too_long', severity: 'warning', message: `Title too long (${titleLen} chars, may be truncated)`, points: -10 });
+        }
     }
 
-    // Meta description checks (20 points)
+    // === META DESCRIPTION (15 points) ===
     if (!data.metaDescription) {
-        score -= 20;
-        issues.push({ type: 'missing_meta', severity: 'critical', message: 'Missing meta description' });
-    } else if (data.metaDescription.length < 120) {
-        score -= 10;
-        issues.push({ type: 'meta_too_short', severity: 'warning', message: `Meta description too short (${data.metaDescription.length} chars, recommend 150-160)` });
-    } else if (data.metaDescription.length > 170) {
-        score -= 5;
-        issues.push({ type: 'meta_too_long', severity: 'minor', message: `Meta description too long (${data.metaDescription.length} chars)` });
+        issues.push({ type: 'missing_meta', severity: 'critical', message: 'Missing meta description - critical for CTR', points: -15 });
+    } else {
+        const metaLen = data.metaDescription.length;
+        if (metaLen >= 150 && metaLen <= 160) {
+            score += 15;
+            passed.push({ type: 'meta_perfect', message: `Meta description length is ideal (${metaLen} chars)` });
+        } else if (metaLen >= 120 && metaLen <= 170) {
+            score += 10;
+            issues.push({ type: 'meta_length', severity: 'minor', message: `Meta description (${metaLen}) could be optimized (150-160 recommended)`, points: -5 });
+        } else if (metaLen < 120) {
+            score += 5;
+            issues.push({ type: 'meta_too_short', severity: 'warning', message: `Meta description too short (${metaLen} chars)`, points: -10 });
+        } else {
+            score += 5;
+            issues.push({ type: 'meta_too_long', severity: 'warning', message: `Meta description too long (${metaLen} chars, will be truncated)`, points: -10 });
+        }
     }
 
-    // H1 checks (15 points)
+    // === H1 HEADING (10 points) ===
     if (!data.h1) {
-        score -= 15;
-        issues.push({ type: 'missing_h1', severity: 'critical', message: 'Missing H1 heading' });
+        issues.push({ type: 'missing_h1', severity: 'critical', message: 'Missing H1 heading - every page needs one', points: -10 });
+    } else {
+        score += 10;
+        passed.push({ type: 'h1_present', message: 'H1 heading present' });
     }
 
-    // Content length (15 points)
-    if (data.wordCount < 300) {
-        score -= 15;
-        issues.push({ type: 'thin_content', severity: 'warning', message: `Thin content (${data.wordCount} words, recommend 500+)` });
-    } else if (data.wordCount < 500) {
-        score -= 5;
-        issues.push({ type: 'low_content', severity: 'minor', message: `Low word count (${data.wordCount} words)` });
+    // === CONTENT LENGTH (20 points) ===
+    const words = data.wordCount || 0;
+    if (words >= 1000) {
+        score += 20;
+        passed.push({ type: 'content_excellent', message: `Excellent content length (${words} words)` });
+    } else if (words >= 500) {
+        score += 15;
+        passed.push({ type: 'content_good', message: `Good content length (${words} words)` });
+    } else if (words >= 300) {
+        score += 10;
+        issues.push({ type: 'content_low', severity: 'warning', message: `Content could be longer (${words} words, aim for 500+)`, points: -10 });
+    } else if (words >= 100) {
+        score += 5;
+        issues.push({ type: 'thin_content', severity: 'warning', message: `Thin content (${words} words) - add more value`, points: -15 });
+    } else {
+        issues.push({ type: 'very_thin_content', severity: 'critical', message: `Very thin content (${words} words) - needs significant expansion`, points: -20 });
     }
 
-    // Internal links (10 points)
-    if (data.internalLinks.length < 3) {
-        score -= 10;
-        issues.push({ type: 'few_internal_links', severity: 'warning', message: `Only ${data.internalLinks.length} internal links (recommend 5+)` });
+    // === HEADING STRUCTURE (10 points) ===
+    const h2Count = data.h2s?.length || 0;
+    if (h2Count >= 3) {
+        score += 10;
+        passed.push({ type: 'headings_good', message: `Good heading structure (${h2Count} H2s)` });
+    } else if (h2Count >= 1) {
+        score += 5;
+        issues.push({ type: 'few_headings', severity: 'minor', message: `Only ${h2Count} H2 heading(s) - add more sections`, points: -5 });
+    } else {
+        issues.push({ type: 'no_h2s', severity: 'warning', message: 'No H2 headings - content lacks structure', points: -10 });
     }
 
-    // Images (10 points)
-    const imagesWithoutAlt = data.images.filter(img => !img.hasAlt);
-    if (imagesWithoutAlt.length > 0) {
-        score -= Math.min(10, imagesWithoutAlt.length * 2);
-        issues.push({ type: 'missing_alt', severity: 'warning', message: `${imagesWithoutAlt.length} images missing alt text` });
+    // === INTERNAL LINKS (10 points) ===
+    const linkCount = data.internalLinks?.length || 0;
+    if (linkCount >= 5) {
+        score += 10;
+        passed.push({ type: 'links_good', message: `Good internal linking (${linkCount} links)` });
+    } else if (linkCount >= 2) {
+        score += 5;
+        issues.push({ type: 'few_links', severity: 'minor', message: `Only ${linkCount} internal links - add more`, points: -5 });
+    } else {
+        issues.push({ type: 'no_links', severity: 'warning', message: 'Very few internal links - hurts SEO', points: -10 });
     }
 
-    // Schema (5 points)
-    if (!data.hasSchema) {
-        score -= 5;
-        issues.push({ type: 'missing_schema', severity: 'minor', message: 'No structured data (schema.org) found' });
+    // === IMAGES (10 points) ===
+    const images = data.images || [];
+    const imagesWithAlt = images.filter(img => img.hasAlt).length;
+    const imagesWithoutAlt = images.length - imagesWithAlt;
+    
+    if (images.length === 0) {
+        score += 5; // No images isn't terrible
+        issues.push({ type: 'no_images', severity: 'minor', message: 'No images - consider adding visuals', points: -5 });
+    } else if (imagesWithoutAlt === 0) {
+        score += 10;
+        passed.push({ type: 'images_good', message: `All ${images.length} images have alt text` });
+    } else {
+        score += 5;
+        issues.push({ type: 'missing_alt', severity: 'warning', message: `${imagesWithoutAlt}/${images.length} images missing alt text`, points: -5 });
     }
 
-    return { score: Math.max(0, score), issues };
+    // === TECHNICAL (10 points) ===
+    let techScore = 0;
+    if (data.hasSchema) {
+        techScore += 5;
+        passed.push({ type: 'has_schema', message: 'Schema markup present' });
+    } else {
+        issues.push({ type: 'missing_schema', severity: 'minor', message: 'No schema markup - add LocalBusiness schema', points: -5 });
+    }
+    
+    if (data.canonical) {
+        techScore += 5;
+        passed.push({ type: 'has_canonical', message: 'Canonical URL set' });
+    } else {
+        issues.push({ type: 'missing_canonical', severity: 'minor', message: 'No canonical URL specified', points: -5 });
+    }
+    score += techScore;
+
+    // Determine overall grade
+    let grade = 'F';
+    if (score >= 90) grade = 'A';
+    else if (score >= 80) grade = 'B';
+    else if (score >= 70) grade = 'C';
+    else if (score >= 60) grade = 'D';
+
+    return { 
+        score: Math.max(0, Math.min(100, score)), 
+        grade,
+        issues: issues.sort((a, b) => {
+            const severityOrder = { critical: 0, warning: 1, minor: 2 };
+            return severityOrder[a.severity] - severityOrder[b.severity];
+        }),
+        passed 
+    };
 }
 
 /**

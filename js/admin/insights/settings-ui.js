@@ -564,34 +564,118 @@ const SettingsUI = {
     },
 
     /**
-     * Run initial scan
+     * Run initial scan with progress
      */
     async runInitialScan() {
         const btn = document.getElementById('runInitialScan');
+        const resultsContainer = document.getElementById('scannerResults');
+        
         btn.disabled = true;
-        btn.textContent = '⏳ Scanning...';
-        this.showStatus('Scanning pages... This may take a minute.', 'info');
-
+        btn.textContent = '⏳ Scanning 0/50...';
+        resultsContainer.classList.remove('hidden');
+        resultsContainer.innerHTML = '<div class="scan-progress"><p>🔍 Starting scan...</p><div class="progress-bar"><div class="progress-fill" id="scanProgress" style="width: 0%"></div></div><div id="scanLog" class="scan-log"></div></div>';
+        
+        const scanLog = document.getElementById('scanLog');
+        const progressBar = document.getElementById('scanProgress');
+        
         try {
-            const response = await fetch('/.netlify/functions/page-scanner?action=initial&limit=20');
-            const result = await response.json();
+            // Scan in batches of 10 to show progress
+            const batchSize = 10;
+            const totalBatches = 5; // 50 pages total
+            let totalScanned = 0;
+            let totalSuccess = 0;
+            let allPages = [];
 
-            if (result.success) {
-                const data = result.data;
-                document.getElementById('scannerPagesScanned').textContent = data.success || 0;
-                document.getElementById('scannerLastScan').textContent = 'Just now';
+            for (let batch = 0; batch < totalBatches; batch++) {
+                const progress = Math.round((batch / totalBatches) * 100);
+                progressBar.style.width = progress + '%';
+                btn.textContent = `⏳ Scanning ${batch * batchSize}/${totalBatches * batchSize}...`;
                 
-                this.showStatus(`Scanned ${data.success} pages!`, 'success');
-                await this.loadScannerStats();
-            } else {
-                this.showStatus('Scan failed: ' + result.error, 'error');
+                scanLog.innerHTML += `<p>📄 Scanning batch ${batch + 1}/${totalBatches}...</p>`;
+                scanLog.scrollTop = scanLog.scrollHeight;
+
+                const response = await fetch(`/.netlify/functions/page-scanner?action=initial&limit=${batchSize}`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    const data = result.data;
+                    totalScanned += data.scanned || 0;
+                    totalSuccess += data.success || 0;
+                    
+                    if (data.pages) {
+                        allPages = [...allPages, ...data.pages];
+                    }
+
+                    if (data.skipped > 0 && data.scanned === 0) {
+                        scanLog.innerHTML += `<p>✅ All pages in batch already scanned (${data.skipped} skipped)</p>`;
+                    } else {
+                        scanLog.innerHTML += `<p>✅ Batch ${batch + 1}: ${data.success} scanned, ${data.skipped || 0} skipped</p>`;
+                    }
+                    
+                    // If all pages are already scanned, stop
+                    if (data.message && data.message.includes('already scanned')) {
+                        scanLog.innerHTML += `<p>🎉 All key pages already scanned!</p>`;
+                        break;
+                    }
+                } else {
+                    scanLog.innerHTML += `<p>⚠️ Batch ${batch + 1} failed</p>`;
+                }
+                
+                scanLog.scrollTop = scanLog.scrollHeight;
+                
+                // Small delay between batches
+                await new Promise(r => setTimeout(r, 500));
             }
+
+            progressBar.style.width = '100%';
+            
+            // Show results
+            document.getElementById('scannerPagesScanned').textContent = totalSuccess;
+            document.getElementById('scannerLastScan').textContent = 'Just now';
+            
+            // Show scanned pages in paginated view
+            this.showScanResults(allPages);
+            
+            this.showStatus(`Scanned ${totalSuccess} pages!`, 'success');
+            await this.loadScannerStats();
+            
         } catch (error) {
+            scanLog.innerHTML += `<p>❌ Error: ${error.message}</p>`;
             this.showStatus('Scan failed: ' + error.message, 'error');
         }
 
         btn.disabled = false;
-        btn.textContent = '📊 Scan Key Pages (20)';
+        btn.textContent = '📊 Scan Key Pages (50)';
+    },
+
+    /**
+     * Show scan results in paginated view
+     */
+    showScanResults(pages) {
+        const resultsContainer = document.getElementById('scannerResults');
+        
+        if (!pages || pages.length === 0) {
+            resultsContainer.innerHTML += '<p class="scan-complete">No new pages scanned. All pages are up to date!</p>';
+            return;
+        }
+
+        // Sort by score (lowest first)
+        pages.sort((a, b) => (a.score || 0) - (b.score || 0));
+
+        let html = '<h4>📋 Scan Results</h4><div class="scan-results-list">';
+        
+        pages.forEach(page => {
+            const scoreClass = page.score < 50 ? 'low' : page.score < 80 ? 'medium' : 'high';
+            html += `
+                <div class="scan-result-item">
+                    <span class="result-score ${scoreClass}">${page.score || 0}</span>
+                    <span class="result-path">${page.path}</span>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        resultsContainer.innerHTML += html;
     },
 
     /**
@@ -603,7 +687,7 @@ const SettingsUI = {
         resultsContainer.innerHTML = '<p>Loading issues...</p>';
 
         try {
-            const response = await fetch('/.netlify/functions/page-scanner?action=issues&limit=20');
+            const response = await fetch('/.netlify/functions/page-scanner?action=issues&limit=50');
             const result = await response.json();
 
             if (result.success && result.data.pages) {
