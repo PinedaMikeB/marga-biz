@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights Dashboard - Marga Enterprises</title>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Flatpickr for date picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="css/insights.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>📊 Marga Insights</h1>
+            </div>
+            <div class="header-right">
+                <select id="dateRange" class="date-select">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d" selected>Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                </select>
+                <button id="refreshBtn" class="btn-refresh" title="Refresh Data">↻</button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="dashboard-nav">
+            <a href="index.html" class="nav-tab active">Overview</a>
+            <a href="traffic.html" class="nav-tab">Traffic</a>
+            <a href="behavior.html" class="nav-tab">Behavior</a>
+            <a href="seo.html" class="nav-tab">SEO</a>
+            <a href="conversions.html" class="nav-tab">Conversions</a>
+        </nav>
+
+        <!-- AI Insights Section (NEW) -->
+        <section id="aiInsightsSection" class="ai-insights-section">
+            <!-- AI content loaded dynamically -->
+        </section>
+
+        <!-- KPI Cards -->
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon">👥</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="totalVisitors">--</div>
+                    <div class="kpi-label">Total Visitors</div>
+                    <div class="kpi-trend" id="visitorsTrend"></div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📄</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="pageViews">--</div>
+                    <div class="kpi-label">Page Views</div>
+                    <div class="kpi-trend" id="pageViewsTrend"></div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🖱️</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="totalClicks">--</div>
+                    <div class="kpi-label">CTA Clicks</div>
+                    <div class="kpi-trend" id="clicksTrend"></div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📑</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="indexedPages">--</div>
+                    <div class="kpi-label">Indexed Pages</div>
+                    <div class="kpi-trend" id="indexedTrend"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Row -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3>Traffic Over Time</h3>
+                <canvas id="trafficChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Top Pages</h3>
+                <div id="topPagesList" class="top-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Second Row -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3>Traffic Sources</h3>
+                <canvas id="sourcesChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Top Search Keywords</h3>
+                <div id="topKeywordsList" class="top-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Last updated: <span id="lastUpdated">--</span></p>
+            <p>Data source: Google Analytics 4 & Search Console</p>
+        </footer>
+    </div>
+
+    <!-- Dashboard JavaScript -->
+    <script src="/js/admin/insights/insights-api.js"></script>
+    <script src="/js/admin/insights/ai-insights-ui.js"></script>
+    <script src="/js/admin/insights/insights-charts.js"></script>
+    <script src="/js/admin/insights/insights-ui.js"></script>
+    <script>
+        // Initialize AI Insights after page load
+        document.addEventListener('DOMContentLoaded', () => {
+            AIInsightsUI.init('aiInsightsSection');
+        });
+    </script>
+</body>
+</html>

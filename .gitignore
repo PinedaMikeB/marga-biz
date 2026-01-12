@@ -15,8 +15,8 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Build files
-dist/
+# Build files - REMOVED dist/ to track all pages in git
+# dist/
 build/
 
 # Logs

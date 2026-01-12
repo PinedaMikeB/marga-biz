@@ -1,0 +1,9 @@
+# Marga Enterprises - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://marga.biz/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
