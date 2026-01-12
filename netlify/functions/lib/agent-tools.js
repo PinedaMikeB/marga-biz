@@ -247,14 +247,27 @@ async function getSiteOverview() {
  */
 async function editPageSEO(pagePath, changes) {
     try {
+        // Convert URL path to file path
+        // /printer-rental/ -> dist/printer-rental/index.html
+        let filePath = pagePath;
+        if (filePath.startsWith('/')) {
+            filePath = filePath.slice(1);
+        }
+        if (filePath.endsWith('/')) {
+            filePath = filePath.slice(0, -1);
+        }
+        if (!filePath.includes('.html')) {
+            filePath = filePath ? `dist/${filePath}/index.html` : 'dist/index.html';
+        }
+        
         // First, get the current file content
         const getResponse = await fetch(
-            `https://marga.biz/.netlify/functions/github-editor?action=get&path=${encodeURIComponent(pagePath)}`
+            `https://marga.biz/.netlify/functions/github-editor?action=get&path=${encodeURIComponent(filePath)}`
         );
         const getResult = await getResponse.json();
         
-        if (!getResult.success) {
-            return { success: false, error: `Cannot read file: ${getResult.error}` };
+        if (!getResult.success || !getResult.data?.content) {
+            return { success: false, error: `Cannot read file ${filePath}: ${getResult.error || 'No content'}` };
         }
         
         let content = getResult.data.content;
@@ -265,18 +278,20 @@ async function editPageSEO(pagePath, changes) {
         if (changes.title) {
             const titleRegex = /<title>([^<]*)<\/title>/i;
             if (titleRegex.test(content)) {
+                const oldTitle = content.match(titleRegex)[1];
                 content = content.replace(titleRegex, `<title>${changes.title}</title>`);
-                changesMade.push(`Title: "${changes.title}"`);
+                changesMade.push(`Title: "${oldTitle}" → "${changes.title}"`);
                 modified = true;
+            } else {
+                return { success: false, error: 'Title tag not found in file' };
             }
         }
         
         // Update meta description
         if (changes.metaDescription) {
-            const metaRegex = /<meta\s+name=["']description["']\s+content=["'][^"']*["']\s*\/?>/i;
-            const newMeta = `<meta name="description" content="${changes.metaDescription}">`;
+            const metaRegex = /<meta\s+name=["']description["']\s+content=["']([^"']*)["'][^>]*>/i;
             if (metaRegex.test(content)) {
-                content = content.replace(metaRegex, newMeta);
+                content = content.replace(metaRegex, `<meta name="description" content="${changes.metaDescription}">`);
                 changesMade.push(`Meta description updated`);
                 modified = true;
             }
@@ -286,30 +301,31 @@ async function editPageSEO(pagePath, changes) {
             return { success: false, error: 'No changes could be applied to the file' };
         }
         
-        // Save the updated content
-        const updateResponse = await fetch('https://marga.biz/.netlify/functions/github-editor', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'update',
-                path: pagePath,
-                content: content,
-                message: `SEO update: ${changesMade.join(', ')}`
-            })
-        });
+        // Save the updated content via GitHub API
+        const updateResponse = await fetch(
+            `https://marga.biz/.netlify/functions/github-editor?action=update&path=${encodeURIComponent(filePath)}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: content,
+                    message: `SEO update: ${changesMade.join(', ')}`
+                })
+            }
+        );
         
         const updateResult = await updateResponse.json();
         
         if (updateResult.success) {
             return {
                 success: true,
-                message: 'Page updated successfully!',
+                message: 'Page updated successfully! Changes will be live in ~30 seconds after Netlify deploys.',
                 changes: changesMade,
-                path: pagePath,
-                commitUrl: updateResult.data?.commit?.html_url
+                filePath: filePath,
+                commitUrl: updateResult.data?.commitUrl
             };
         } else {
-            return { success: false, error: updateResult.error };
+            return { success: false, error: updateResult.error || 'Failed to save changes' };
         }
     } catch (e) {
         return { success: false, error: e.message };
