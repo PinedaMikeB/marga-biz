@@ -43,11 +43,37 @@ async function getManagerContext(db) {
     // Get site summary
     const siteSummary = await getSharedData('site_summary');
     
-    // Get latest analytics
-    const analytics = await getSharedData('latest_analytics');
+    // Get latest analytics snapshot
+    let analytics = null;
+    try {
+        const snapshot = await db.collection('insights_snapshots')
+            .orderBy('timestamp', 'desc')
+            .limit(1)
+            .get();
+        if (!snapshot.empty) {
+            analytics = snapshot.docs[0].data();
+        }
+    } catch (e) {
+        // Ignore if no snapshots
+    }
     
-    // Get tracked keywords
-    const keywords = await getSharedData('tracked_keywords');
+    // Get Search Console keyword data
+    let searchConsoleData = null;
+    try {
+        const gscDoc = await db.collection('marga_analytics').doc('search_console').get();
+        if (gscDoc.exists) {
+            searchConsoleData = gscDoc.data();
+        }
+    } catch (e) {}
+    
+    // Get scanned pages summary
+    let pagesData = null;
+    try {
+        const indexDoc = await db.collection('marga_pages').doc('_index').get();
+        if (indexDoc.exists) {
+            pagesData = indexDoc.data();
+        }
+    } catch (e) {}
     
     return {
         agents,
@@ -56,7 +82,8 @@ async function getManagerContext(db) {
         activity,
         siteSummary,
         analytics,
-        keywords
+        searchConsoleData,
+        pagesData
     };
 }
 
@@ -101,11 +128,11 @@ function buildManagerPrompt(context) {
 ## YOUR TEAM (Delegate Tasks To Them)
 
 1. **Website Agent** - Scans marga.biz pages, checks SEO, edits content
-2. **Search Agent** - Checks LIVE SERP rankings, finds competitors (NOT YET BUILT - say "I'll check once Search Agent is ready")
+2. **Search Agent** - Checks LIVE SERP rankings, finds competitors (NOT YET BUILT - be honest about this)
 3. **Google Agent** - GA4 traffic, Search Console data, index status
 4. **Content Agent** - Writes landing pages, blog posts, meta descriptions
 5. **Tracker Agent** - Logs issues, tracks solutions, schedules follow-ups
-6. **AI Search Agent** - Monitors Perplexity, ChatGPT, Gemini presence
+6. **AI Search Agent** - Monitors Perplexity, ChatGPT, Gemini presence (NOT YET BUILT)
 
 ## CURRENT KNOWLEDGE
 
@@ -122,9 +149,35 @@ function buildManagerPrompt(context) {
     // Site summary
     if (context.siteSummary) {
         prompt += `- Total Pages: ${context.siteSummary.totalPages || '1,903'}\n`;
-        prompt += `- Pages Scanned: ${context.siteSummary.pagesScanned || 0}\n`;
     } else {
         prompt += `- Total Pages: ~1,903 (from sitemap)\n`;
+    }
+    
+    // Pages scan data
+    if (context.pagesData) {
+        prompt += `- Pages Scanned: ${context.pagesData.totalScanned || 'some'}\n`;
+        prompt += `- Last Scan: ${context.pagesData.lastFullScan || 'recent'}\n`;
+    }
+
+    // Analytics if available
+    if (context.analytics) {
+        prompt += `\n### Latest Analytics Snapshot\n`;
+        if (context.analytics.traffic) {
+            prompt += `- Sessions: ${context.analytics.traffic.sessions || 'N/A'}\n`;
+            prompt += `- Users: ${context.analytics.traffic.users || 'N/A'}\n`;
+            prompt += `- Page Views: ${context.analytics.traffic.pageViews || 'N/A'}\n`;
+        }
+        if (context.analytics.seo) {
+            prompt += `- Impressions: ${context.analytics.seo.impressions || 'N/A'}\n`;
+            prompt += `- Clicks: ${context.analytics.seo.clicks || 'N/A'}\n`;
+            prompt += `- Avg Position: ${context.analytics.seo.avgPosition || 'N/A'}\n`;
+        }
+        if (context.analytics.seo?.topKeywords) {
+            prompt += `\n### Top Keywords (from Search Console)\n`;
+            context.analytics.seo.topKeywords.slice(0, 10).forEach(kw => {
+                prompt += `- "${kw.query}": position ${kw.position?.toFixed(1)}, ${kw.clicks} clicks\n`;
+            });
+        }
     }
 
     // Agent statuses
@@ -135,13 +188,6 @@ function buildManagerPrompt(context) {
         });
     } else {
         prompt += `- All agents idle (ready to work)\n`;
-    }
-
-    // Analytics if available
-    if (context.analytics) {
-        prompt += `\n### Recent Analytics\n`;
-        prompt += `- Visitors: ${context.analytics.visitors || 'N/A'}\n`;
-        prompt += `- Avg Position: ${context.analytics.avgPosition || 'N/A'}\n`;
     }
 
     // Open issues
