@@ -10,6 +10,94 @@ Each entry includes rollback instructions.
 
 ---
 
+## [v1.3.0] - 2026-01-11
+
+### 📊 INSIGHTS MODULE Complete (Phase 3.1 & 3.2)
+
+**Summary:** Full analytics dashboard with Firebase historical storage.
+
+**Changes:**
+- Built all 5 dashboard tabs (Overview, Traffic, Behavior, SEO, Conversions)
+- Firebase Firestore integration for historical data
+- Daily snapshot function (runs 6 AM PHT automatically)
+- Trend calculations (week-over-week comparisons)
+- First snapshot captured successfully
+
+**Dashboard URLs:**
+- /admin/insights/ (Overview)
+- /admin/insights/traffic.html
+- /admin/insights/behavior.html
+- /admin/insights/seo.html
+- /admin/insights/conversions.html
+
+**Netlify Functions Added:**
+- insights-traffic.js
+- insights-behavior.js
+- insights-snapshot.js (scheduled)
+- insights-history.js
+
+**Git Commit:** `3efdd4f`
+
+**Rollback Instructions:**
+```bash
+git revert 3efdd4f
+# Or remove admin folder:
+rm -rf admin/insights/
+rm -rf js/admin/insights/
+rm netlify/functions/insights-*.js
+```
+
+**Files Changed:**
+- admin/insights/*.html (5 files)
+- js/admin/insights/*.js (6 files)
+- netlify/functions/insights-*.js (5 files)
+- netlify.toml (scheduled function config)
+
+**Verification:**
+- [x] https://marga.biz/admin/insights/ loads with real data
+- [x] All 5 tabs working
+- [x] Firebase snapshot function runs successfully
+- [x] Historical data retrievable via insights-history endpoint
+
+---
+
+## [v1.2.0] - 2026-01-10
+
+### 📊 INSIGHTS MODULE - Overview Dashboard Live
+
+**Summary:** Analytics dashboard with GA4 and Search Console integration.
+
+**Changes:**
+- Created /admin/insights/ dashboard
+- Connected GA4 Data API (real data showing)
+- Connected Search Console API
+- Overview tab with KPIs, charts, top pages, keywords
+
+**Git Commit:** `bd58728`
+
+**Rollback Instructions:**
+```bash
+git checkout bd58728~1 -- admin/ js/admin/ netlify/functions/
+```
+
+**Verification:**
+- [x] Real GA4 data displaying
+- [x] Charts rendering correctly
+
+---
+
+## [v1.1.1] - 2026-01-10
+
+### 🔗 Internal Link Click Tracking
+
+**Summary:** Added tracking for internal navigation clicks.
+
+**Changes:**
+- Added `click_internal_link` event to ga4-events.js
+- Tracks link text and destination URL
+
+---
+
 ## [v1.0.0] - 2026-01-08
 
 ### 🚀 Initial Static Site Launch
