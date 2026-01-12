@@ -114,7 +114,17 @@ async function callPageScanner(pagePath) {
         }).toString();
         const response = await fetch(`https://marga.biz/.netlify/functions/page-scanner?${queryString}`);
         const result = await response.json();
-        return result.success ? result.data : { error: result.error };
+        
+        if (!result.success) {
+            return { error: result.error || 'Scanner returned error' };
+        }
+        
+        // result.data can be null if page not yet scanned
+        if (!result.data) {
+            return { error: 'Page not yet scanned. Try scanning the site first.' };
+        }
+        
+        return result.data;
     } catch (e) {
         return { error: e.message };
     }
