@@ -137,9 +137,9 @@ async function createIssue(issue) {
 
 async function getOpenIssues(limit = 20) {
     const db = getDb();
+    // Simple query without orderBy to avoid index requirement
     const snapshot = await db.collection('marga_issues')
         .where('status', '==', ISSUE_STATUS.OPEN)
-        .orderBy('foundAt', 'desc')
         .limit(limit)
         .get();
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -203,9 +203,10 @@ async function createRecommendation(rec) {
 
 async function getPendingRecommendations() {
     const db = getDb();
+    // Simple query without orderBy to avoid index requirement
     const snapshot = await db.collection('marga_recommendations')
         .where('status', '==', 'pending')
-        .orderBy('createdAt', 'desc')
+        .limit(20)
         .get();
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
