@@ -1,6 +1,6 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026 @ Deep Page Scanner Complete  
+**Last Updated:** January 12, 2026 @ v1.9.0  
 **Current Version:** v1.9.0  
 **Site Status:** ✅ LIVE & HEALTHY
 
@@ -12,7 +12,8 @@
 |----------|-----|
 | Live Site | https://marga.biz |
 | Insights Dashboard | https://marga.biz/admin/insights/ |
-| Settings | https://marga.biz/admin/insights/settings.html |
+| Settings + Scanner | https://marga.biz/admin/insights/settings.html |
+| SEO Tab | https://marga.biz/admin/insights/seo.html |
 
 ---
 
@@ -21,106 +22,77 @@
 ### What's Working
 - ✅ Static site (1,903 pages on Netlify)
 - ✅ INSIGHTS MODULE (6 tabs)
-- ✅ AI Chat Widget (floating on all pages)
-- ✅ Site Scanner (all pages stored in Firebase)
-- ✅ Global Memory (AI remembers across sessions)
-- ✅ **Deep Page Scanner** - Knows EVERYTHING about each page:
-  - Title, meta description
-  - H1, H2, H3 headings
-  - Word count
-  - Internal/external links
-  - Images and alt text
-  - Schema markup
-  - SEO score (0-100)
-  - Specific issues list
+- ✅ AI Chat Widget with file attachments
+- ✅ **Page Scanner** - Deep SEO analysis of each page
+- ✅ **Scanner UI** in Settings page
+- ✅ Site Structure in Firebase
+- ✅ Global AI Memory
+- ✅ GitHub Editor API
+- ✅ Config Manager API
 
 ### AI Capabilities
-- Never asks for URLs (knows them all)
-- Never asks about WordPress (knows it's Netlify)
-- Gives specific recommendations with actual data
-- Can scan pages on-demand for fresh data
-- Knows which pages need improvement
+- Knows all 1,903 pages (structure)
+- Deep scan data: title, meta, H1-H6, word count, links
+- SEO score (0-100) with specific issues
+- Accept image/file attachments for analysis
+- Global memory across sessions
+- Never asks about WordPress
 
 ---
 
 ## 🔨 LAST COMPLETED
 
-**v1.9.0: Deep Page Scanner** (Commit: `c9a0f88`)
+**v1.9.0: Page Scanner + Attachments**
 
-New function: `page-scanner.js`
-- `?action=initial&limit=50` - Initial scan of key pages
-- `?action=scan&path=/contact/` - Scan single page
-- `?action=get&path=/contact/` - Get cached data (auto-rescan if stale)
-- `?action=issues` - Get pages with low SEO scores
+1. **Deep Page Scanner** (`page-scanner.js`)
+   - Extracts: title, meta, headings, word count, links, images
+   - Calculates SEO score with issues
+   - Smart scanning: initial, delta, targeted
+   
+2. **Scanner UI** (Settings page)
+   - Stats: pages scanned, issues, avg score
+   - Scan Key Pages button
+   - View Issues with color-coded results
 
-Scanned data includes:
-```javascript
-{
-  path: "/contact/",
-  title: "Contact Us - Marga Enterprises...",
-  metaDescription: "Contact Marga...",
-  h1: "Contact Us",
-  h2s: [],
-  wordCount: 178,
-  internalLinks: [...],
-  images: [...],
-  seoScore: 80,
-  issues: [
-    { type: "thin_content", message: "178 words, recommend 500+" }
-  ]
-}
-```
+3. **Chat Attachments**
+   - Upload images (screenshots)
+   - Upload CSV/TXT files
+   - Drag & drop support
+   - Claude vision for image analysis
 
 ---
 
-## 📋 Firebase Collections
+## 📋 HOW TO USE
 
-| Collection | Purpose |
-|------------|---------|
-| `marga_pages/{page_id}` | Deep scan data for each page |
-| `marga_pages/_index` | Scan status summary |
-| `marga_config/settings` | AI config, SEO settings |
-| `marga_site/summary` | Site structure summary |
-| `marga_ai_memory/global` | AI memory across sessions |
-| `insights_snapshots/` | Daily analytics snapshots |
+### Run Page Scan
+1. Go to Settings page
+2. Click "📊 Scan Key Pages (20)"
+3. Wait ~1 minute
+4. Click "⚠️ View Issues" to see problems
+
+### Chat with Attachments
+1. Click chat bubble 💬
+2. Click 📎 or drag file onto chat
+3. Ask: "Analyze this competitor screenshot"
 
 ---
 
 ## 🔄 ROLLBACK
 
 ```bash
-git revert c9a0f88  # Deep page scanner
-git revert e5e72f6  # Site scanner + memory
+git revert b022144  # Scanner UI
+git revert 631fba8  # Attachments
+git revert c9a0f88  # Page scanner
 ```
 
 ---
 
 ## 📋 NEXT STEPS
 
-1. **Scan more pages** - Run initial scan with higher limit
-2. **Auto-improvement** - AI suggests fixes automatically
-3. **Preview modal** - See changes before applying
-4. **Create BGC landing page** - Test the full flow
-
----
-
-## 🧪 TEST COMMANDS
-
-```bash
-# Initial scan (key pages)
-curl "https://marga.biz/.netlify/functions/page-scanner?action=initial&limit=50"
-
-# Scan specific page
-curl "https://marga.biz/.netlify/functions/page-scanner?action=scan&path=/contact/"
-
-# Get pages with issues
-curl "https://marga.biz/.netlify/functions/page-scanner?action=issues"
-
-# Test AI knowledge
-curl -X POST "https://marga.biz/.netlify/functions/insights-chat" \
-  -H "Content-Type: application/json" \
-  -d '{"message": "What is wrong with my contact page?"}'
-```
+1. Run full page scan (all 1,903 pages) - schedule nightly
+2. Add web search for competitor research
+3. Landing page preview modal
+4. Auto-improvement suggestions
 
 ---
 
@@ -128,7 +100,8 @@ curl -X POST "https://marga.biz/.netlify/functions/insights-chat" \
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-01-12 | v1.9.0 | Deep Page Scanner |
-| 2026-01-12 | v1.8.0 | Site scanner + Global memory |
+| 2026-01-12 | v1.9.0 | Page Scanner + Attachments + Scanner UI |
+| 2026-01-12 | v1.8.0 | Site Scanner + Global Memory |
 | 2026-01-12 | v1.7.0 | AI Chat Widget |
-| 2026-01-12 | v1.6.0 | Settings UI Page |
+| 2026-01-12 | v1.6.0 | Settings UI |
+| 2026-01-12 | v1.5.0 | GitHub/Config APIs |
