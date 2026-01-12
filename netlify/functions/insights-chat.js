@@ -1,11 +1,13 @@
 /**
- * Marga AI - Chat Endpoint (Enhanced)
- * Includes full website knowledge context
+ * Marga AI - Chat Endpoint (v2 - Full Knowledge)
+ * Now includes:
+ * - Complete site structure from Firebase
+ * - Global memory across sessions
+ * - No WordPress references (static Netlify site)
  */
 
 const admin = require('firebase-admin');
 
-// Initialize Firebase Admin
 const getFirebaseApp = () => {
     if (admin.apps.length === 0) {
         const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
@@ -19,191 +21,202 @@ const getFirebaseApp = () => {
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 
-/**
- * Get AI config from Firebase
- */
 async function getAIConfig(db) {
     const doc = await db.collection('marga_config').doc('settings').get();
     if (!doc.exists) {
-        return {
-            model: 'claude-sonnet-4-20250514',
-            temperature: 0.7,
-            maxTokens: 4000,
-            systemPrompt: '',
-            additionalInstructions: ''
-        };
+        return { model: 'claude-sonnet-4-20250514', temperature: 0.7, maxTokens: 4000 };
     }
     return doc.data().ai;
 }
 
-/**
- * Get latest analytics snapshot from Firebase
- */
 async function getLatestAnalytics(db) {
     try {
         const snapshot = await db.collection('insights_snapshots')
-            .orderBy('date', 'desc')
-            .limit(1)
-            .get();
-        
+            .orderBy('date', 'desc').limit(1).get();
         if (snapshot.empty) return null;
         return snapshot.docs[0].data();
-    } catch (e) {
-        console.error('Error getting analytics:', e);
-        return null;
-    }
+    } catch (e) { return null; }
 }
 
-/**
- * Build comprehensive system prompt with full website knowledge
- */
-function buildSystemPrompt(config, seoConfig, analytics) {
-    let prompt = `You are the AI SEO Manager for Marga Enterprises (marga.biz), a B2B printer and copier rental company serving Metro Manila, Philippines.
+async function getSiteStructure(db) {
+    try {
+        const summaryDoc = await db.collection('marga_site').doc('summary').get();
+        const keyPagesDoc = await db.collection('marga_site').doc('key_pages').get();
+        
+        return {
+            summary: summaryDoc.exists ? summaryDoc.data() : null,
+            keyPages: keyPagesDoc.exists ? keyPagesDoc.data().pages : []
+        };
+    } catch (e) { return null; }
+}
 
-## YOUR WEBSITE KNOWLEDGE
+async function getGlobalMemory(db) {
+    try {
+        const doc = await db.collection('marga_ai_memory').doc('global').get();
+        if (!doc.exists) return { facts: [], recentActions: [], improvements: [] };
+        return doc.data();
+    } catch (e) { return { facts: [], recentActions: [], improvements: [] }; }
+}
 
-### Site Overview
-- **Domain:** marga.biz
-- **Total Pages:** 1,903 (896 service pages + 1,007 blog posts)
-- **Primary Business:** Printer & copier rental for businesses
-- **Service Areas:** Metro Manila, Cavite, Laguna, Bulacan, Batangas
-- **Key Offering:** Print-all-you-can plans, same-day delivery
+async function updateGlobalMemory(db, update) {
+    const memRef = db.collection('marga_ai_memory').doc('global');
+    const doc = await memRef.get();
+    const current = doc.exists ? doc.data() : { facts: [], recentActions: [], improvements: [] };
+    
+    if (update.fact) {
+        current.facts = [...(current.facts || []).slice(-20), update.fact];
+    }
+    if (update.action) {
+        current.recentActions = [...(current.recentActions || []).slice(-10), {
+            ...update.action,
+            timestamp: new Date().toISOString()
+        }];
+    }
+    if (update.improvement) {
+        current.improvements = [...(current.improvements || []).slice(-20), update.improvement];
+    }
+    
+    current.lastUpdated = new Date().toISOString();
+    await memRef.set(current);
+}
 
-### Key Pages You Manage
-| Page | URL | Purpose |
-|------|-----|---------|
-| Homepage | marga.biz | Main landing, hero CTA |
-| Copier Rental | /copier-rental-manila/ | High-traffic service page |
-| Printer Rental | /printer-rental-philippines/ | Top SEO page (#2 ranking) |
-| Pricing | /pricing/ | Rental rates |
-| Contact | /contact/ | Lead capture |
-| Blog | /blog/ | 1,007 articles for SEO |
-| Quote Page | /quote/ | Main conversion point |
+function buildSystemPrompt(config, seoConfig, analytics, siteStructure, memory) {
+    let prompt = `You are the AI SEO Manager for Marga Enterprises (marga.biz).
 
-### Current SEO Status
-- **Primary Keyword:** "printer rental philippines" - Ranking #2 (PROTECT THIS!)
-- **Main Competitor:** jmti.com.ph - Ranking #1
-- **Indexed Pages:** 1,903 in Google
+## CRITICAL PLATFORM INFO
+⚠️ **This is a STATIC HTML site on Netlify** - NOT WordPress!
+- Files stored on GitHub: github.com/PinedaMikeB/marga-biz
+- You can create/edit pages via GitHub API
+- **NEVER ask about WordPress, admin panels, or CMS**
+- **NEVER ask for URLs you should already know**
 
+## SITE STRUCTURE
 `;
 
-    // Add live analytics if available
+    if (siteStructure?.summary) {
+        const s = siteStructure.summary;
+        prompt += `- **Total Pages:** ${s.totalPages}
+- **Categories:** ${Object.entries(s.categories || {}).map(([k,v]) => `${k}: ${v}`).join(', ')}
+- **Last Scanned:** ${s.lastScanned || 'Never'}
+
+`;
+    }
+
+    if (siteStructure?.keyPages?.length > 0) {
+        prompt += `### Key Pages I Manage\n`;
+        siteStructure.keyPages.slice(0, 20).forEach(p => {
+            prompt += `- **${p.title}** (${p.path}) [${p.category}]\n`;
+        });
+        prompt += '\n';
+    }
+
+    // Analytics
     if (analytics) {
-        prompt += `### Recent Performance (Last 7 Days)
+        prompt += `## CURRENT PERFORMANCE (Latest Snapshot)
 - **Visitors:** ${analytics.summary?.visitors || analytics.ga4?.visitors || 'N/A'}
 - **Page Views:** ${analytics.summary?.pageViews || analytics.ga4?.pageViews || 'N/A'}
 - **Search Clicks:** ${analytics.summary?.clicks || analytics.searchConsole?.clicks || 'N/A'}
-- **Avg Position:** ${analytics.summary?.avgPosition || analytics.searchConsole?.avgPosition || 'N/A'}
+- **Avg Position:** ${analytics.summary?.avgPosition?.toFixed(1) || 'N/A'}
 
 `;
-        // Add top pages if available
-        if (analytics.ga4?.topPages && analytics.ga4.topPages.length > 0) {
-            prompt += `### Top Performing Pages\n`;
-            analytics.ga4.topPages.slice(0, 5).forEach((page, i) => {
-                prompt += `${i + 1}. ${page.path} - ${page.views} views\n`;
+        if (analytics.ga4?.topPages?.length > 0) {
+            prompt += `### Top Pages by Traffic\n`;
+            analytics.ga4.topPages.slice(0, 5).forEach((p, i) => {
+                prompt += `${i+1}. ${p.path} - ${p.views} views\n`;
             });
             prompt += '\n';
         }
-
-        // Add top keywords if available
-        if (analytics.searchConsole?.topKeywords && analytics.searchConsole.topKeywords.length > 0) {
+        if (analytics.searchConsole?.topKeywords?.length > 0) {
             prompt += `### Current Keyword Rankings\n`;
-            analytics.searchConsole.topKeywords.slice(0, 10).forEach((kw, i) => {
-                prompt += `${i + 1}. "${kw.keyword}" - Position ${kw.position}, ${kw.clicks} clicks\n`;
+            analytics.searchConsole.topKeywords.slice(0, 10).forEach((k, i) => {
+                prompt += `${i+1}. "${k.keyword}" - Position ${k.position?.toFixed(1)}, ${k.clicks} clicks\n`;
             });
             prompt += '\n';
         }
     }
 
-    // Add monitored competitors
-    if (seoConfig?.competitors && seoConfig.competitors.length > 0) {
-        prompt += `### Competitors Being Monitored\n`;
+    // SEO Config
+    if (seoConfig?.competitors?.length > 0) {
+        prompt += `## COMPETITORS MONITORED\n`;
         seoConfig.competitors.forEach(c => {
             prompt += `- **${c.domain}**: ${c.notes || 'No notes'}\n`;
         });
         prompt += '\n';
     }
 
-    // Add target keywords
     if (seoConfig?.keywords) {
         if (seoConfig.keywords.primary?.length > 0) {
-            prompt += `### Primary Keywords (PROTECT - Already Ranking)\n`;
+            prompt += `## PRIMARY KEYWORDS (Protect)\n`;
             seoConfig.keywords.primary.forEach(k => prompt += `- "${k}"\n`);
             prompt += '\n';
         }
         if (seoConfig.keywords.growth?.length > 0) {
-            prompt += `### Growth Keywords (IMPROVE - Target These)\n`;
+            prompt += `## GROWTH KEYWORDS (Target)\n`;
             seoConfig.keywords.growth.forEach(k => prompt += `- "${k}"\n`);
             prompt += '\n';
         }
     }
 
-    // Add any custom instructions
-    if (config.additionalInstructions) {
-        prompt += `### Additional Instructions\n${config.additionalInstructions}\n\n`;
+    // Global Memory
+    if (memory?.facts?.length > 0) {
+        prompt += `## THINGS I REMEMBER
+${memory.facts.slice(-5).map(f => `- ${f}`).join('\n')}
+
+`;
+    }
+    if (memory?.recentActions?.length > 0) {
+        prompt += `## MY RECENT ACTIONS
+${memory.recentActions.slice(-3).map(a => `- ${a.type}: ${a.description || JSON.stringify(a.data)}`).join('\n')}
+
+`;
     }
 
-    // Add behavior instructions
-    prompt += `## YOUR BEHAVIOR
+    // Behavior rules
+    prompt += `## MY BEHAVIOR RULES
 
-### How to Respond
-1. **Be proactive** - Don't ask for information you already have
-2. **Be specific** - Reference actual pages, keywords, and data
-3. **Be actionable** - Give concrete recommendations with steps
-4. **Be concise** - No fluff, just useful insights
+### NEVER DO:
+❌ Ask for website URLs (I know them all)
+❌ Mention WordPress, admin panel, CMS
+❌ Ask what services you offer (I know: printer rental, copier rental, print-all-you-can)
+❌ Say "I don't have access to..." (I have full access via APIs)
+❌ Be vague - give specific page names and data
 
-### Example Good Response
-User: "How can I improve my SEO?"
-You: "Based on your current data, here are 3 quick wins:
-
-1. **Your /copier-rental-manila/ page** gets 245 views but has no FAQ section. Adding 5 FAQs could boost time-on-page and rankings.
-
-2. **'printer rental bgc'** is in your growth keywords but you have NO dedicated page for it. I can create a landing page targeting BGC businesses.
-
-3. **Your competitor jmti.com.ph** ranks above you for 'printer rental philippines'. Their page has 2,100 words vs your 890. Consider expanding your content."
-
-### Example BAD Response (Never Do This)
-"Can you provide me with the URL of your website?" ❌
-"What services do you offer?" ❌
-"I'd need to see your analytics first." ❌
-
-You ALREADY KNOW this information. Use it.
+### ALWAYS DO:
+✅ Reference specific pages by path (e.g., "/copier-rental-manila/")
+✅ Use actual data from analytics
+✅ Suggest concrete improvements with reasons
+✅ Offer action buttons when I can help execute
 
 ## CAPABILITIES
+I can execute these actions (show as buttons):
+- **add_competitor**: {domain, notes}
+- **add_keyword**: {keyword, type}
+- **create_page**: {slug, title, type, targetKeyword}
+- **update_config**: {path, value}
+- **remember**: {fact} - Store important info for future
 
-You can execute these actions (will show confirmation buttons):
-1. **add_competitor** - Add domain to monitoring list
-2. **add_keyword** - Add keyword to primary/growth list
-3. **create_page** - Create new landing page (shows preview)
-4. **update_config** - Update site settings
-
-When suggesting actions, include them as:
-<!--ACTIONS:[{"type":"action_type","label":"Button Text","data":{}}]-->
+Action format: <!--ACTIONS:[{"type":"...", "label":"...", "data":{}}]-->
 `;
+
+    if (config.additionalInstructions) {
+        prompt += `\n## ADDITIONAL INSTRUCTIONS\n${config.additionalInstructions}\n`;
+    }
 
     return prompt;
 }
 
-/**
- * Normalize model name to valid API model
- */
 function normalizeModel(model) {
-    const modelMap = {
+    const map = {
         'claude-opus-4-5-20250514': 'claude-opus-4-20250514',
         'claude-sonnet-4-5-20250514': 'claude-sonnet-4-20250514',
         'claude-haiku-4-5-20250514': 'claude-haiku-3-5-20241022',
     };
-    return modelMap[model] || model || 'claude-sonnet-4-20250514';
+    return map[model] || model || 'claude-sonnet-4-20250514';
 }
 
-/**
- * Call Claude API
- */
 async function callClaude(messages, config, systemPrompt) {
     const apiKey = process.env.CLAUDE_API_KEY;
     if (!apiKey) throw new Error('CLAUDE_API_KEY not configured');
-
-    const model = normalizeModel(config.model);
 
     const response = await fetch(CLAUDE_API_URL, {
         method: 'POST',
@@ -213,7 +226,7 @@ async function callClaude(messages, config, systemPrompt) {
             'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-            model,
+            model: normalizeModel(config.model),
             max_tokens: config.maxTokens || 4000,
             temperature: config.temperature || 0.7,
             system: systemPrompt,
@@ -226,84 +239,81 @@ async function callClaude(messages, config, systemPrompt) {
         throw new Error(`Claude API error: ${response.status} - ${error}`);
     }
 
-    const data = await response.json();
-    return data.content[0].text;
+    return (await response.json()).content[0].text;
 }
 
-/**
- * Parse actions from response
- */
 function parseActions(response) {
-    const actionMatch = response.match(/<!--ACTIONS:(\[.*?\])-->/s);
+    const match = response.match(/<!--ACTIONS:(\[.*?\])-->/s);
     let actions = [];
-    let cleanResponse = response;
+    let clean = response;
 
-    if (actionMatch) {
+    if (match) {
         try {
-            actions = JSON.parse(actionMatch[1]);
-            cleanResponse = response.replace(actionMatch[0], '').trim();
-        } catch (e) {
-            console.error('Failed to parse actions:', e);
-        }
+            actions = JSON.parse(match[1]);
+            clean = response.replace(match[0], '').trim();
+        } catch (e) {}
     }
-
-    return { response: cleanResponse, actions };
+    return { response: clean, actions };
 }
 
-/**
- * Execute action
- */
 async function executeAction(db, action) {
     const { type, data } = action;
 
     switch (type) {
         case 'add_competitor': {
-            const configDoc = await db.collection('marga_config').doc('settings').get();
-            const config = configDoc.data();
-            
+            const doc = await db.collection('marga_config').doc('settings').get();
+            const config = doc.data();
             if (!config.seo) config.seo = {};
             if (!config.seo.competitors) config.seo.competitors = [];
             
-            const exists = config.seo.competitors.some(c => c.domain === data.domain);
-            if (exists) return { success: false, message: 'Competitor already exists' };
+            if (config.seo.competitors.some(c => c.domain === data.domain)) {
+                return { success: false, message: 'Already exists' };
+            }
 
-            config.seo.competitors.push({
-                domain: data.domain,
-                notes: data.notes || '',
-                addedAt: new Date().toISOString()
-            });
-
+            config.seo.competitors.push({ domain: data.domain, notes: data.notes || '', addedAt: new Date().toISOString() });
             await db.collection('marga_config').doc('settings').set(config);
-            await logHistory(db, 'competitor_added', { domain: data.domain, notes: data.notes });
-
-            return { success: true, message: `Added ${data.domain} to competitors` };
+            await updateGlobalMemory(db, { action: { type: 'add_competitor', description: `Added ${data.domain}` } });
+            return { success: true, message: `Added ${data.domain}` };
         }
 
         case 'add_keyword': {
-            const configDoc = await db.collection('marga_config').doc('settings').get();
-            const config = configDoc.data();
+            const doc = await db.collection('marga_config').doc('settings').get();
+            const config = doc.data();
+            if (!config.seo?.keywords) config.seo = { ...config.seo, keywords: { primary: [], growth: [] } };
             
-            if (!config.seo) config.seo = {};
-            if (!config.seo.keywords) config.seo.keywords = { primary: [], growth: [] };
+            const kwType = data.type || 'growth';
+            const kw = data.keyword.toLowerCase();
             
-            const keywordType = data.type || 'growth';
-            const keyword = data.keyword.toLowerCase();
-            
-            if (config.seo.keywords[keywordType].includes(keyword)) {
-                return { success: false, message: 'Keyword already exists' };
+            if (config.seo.keywords[kwType].includes(kw)) {
+                return { success: false, message: 'Already exists' };
             }
 
-            config.seo.keywords[keywordType].push(keyword);
+            config.seo.keywords[kwType].push(kw);
             await db.collection('marga_config').doc('settings').set(config);
-            await logHistory(db, 'keyword_added', { keyword, keywordType });
+            await updateGlobalMemory(db, { action: { type: 'add_keyword', description: `Added "${kw}" to ${kwType}` } });
+            return { success: true, message: `Added "${kw}"` };
+        }
 
-            return { success: true, message: `Added "${keyword}" to ${keywordType} keywords` };
+        case 'remember': {
+            await updateGlobalMemory(db, { fact: data.fact });
+            return { success: true, message: 'Remembered!' };
+        }
+
+        case 'create_page': {
+            await db.collection('marga_tasks').add({
+                type: 'create_page',
+                status: 'pending',
+                data,
+                source: 'ai-chat',
+                createdAt: admin.firestore.FieldValue.serverTimestamp()
+            });
+            await updateGlobalMemory(db, { action: { type: 'create_page', description: `Queued page: ${data.title || data.slug}` } });
+            return { success: true, message: `Page creation queued` };
         }
 
         case 'update_config': {
-            const configDoc = await db.collection('marga_config').doc('settings').get();
-            const config = configDoc.data();
-            
+            const doc = await db.collection('marga_config').doc('settings').get();
+            const config = doc.data();
             const keys = data.path.split('.');
             let current = config;
             for (let i = 0; i < keys.length - 1; i++) {
@@ -311,49 +321,15 @@ async function executeAction(db, action) {
                 current = current[keys[i]];
             }
             current[keys[keys.length - 1]] = data.value;
-
             await db.collection('marga_config').doc('settings').set(config);
-            await logHistory(db, 'config_update', { path: data.path, value: data.value });
-
             return { success: true, message: `Updated ${data.path}` };
         }
 
-        case 'create_page': {
-            await db.collection('marga_tasks').add({
-                type: 'create_page',
-                status: 'pending',
-                data: data,
-                source: 'ai-chat',
-                createdAt: admin.firestore.FieldValue.serverTimestamp()
-            });
-
-            return { 
-                success: true, 
-                message: `Page creation task queued for "${data.title || data.slug}".`
-            };
-        }
-
         default:
-            return { success: false, message: `Unknown action type: ${type}` };
+            return { success: false, message: `Unknown action: ${type}` };
     }
 }
 
-/**
- * Log to history
- */
-async function logHistory(db, type, data) {
-    await db.collection('marga_history').add({
-        type,
-        data,
-        source: 'ai-chat',
-        timestamp: new Date().toISOString(),
-        createdAt: admin.firestore.FieldValue.serverTimestamp()
-    });
-}
-
-/**
- * Main handler
- */
 exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -361,60 +337,40 @@ exports.handler = async (event) => {
         'Content-Type': 'application/json'
     };
 
-    if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 200, headers, body: '' };
-    }
-
-    if (event.httpMethod !== 'POST') {
-        return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
-    }
+    if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers, body: '' };
+    if (event.httpMethod !== 'POST') return { statusCode: 405, headers, body: JSON.stringify({ error: 'POST only' }) };
 
     try {
         const app = getFirebaseApp();
         const db = admin.firestore(app);
-        
         const body = JSON.parse(event.body || '{}');
 
-        // Handle direct action execution
+        // Direct action execution
         if (body.action) {
             const result = await executeAction(db, { type: body.action, data: body.data });
-            return {
-                statusCode: 200,
-                headers,
-                body: JSON.stringify({ success: true, data: result })
-            };
+            return { statusCode: 200, headers, body: JSON.stringify({ success: true, data: result }) };
         }
 
-        // Handle chat message
         const { message, history = [] } = body;
-        if (!message) {
-            return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message is required' }) };
-        }
+        if (!message) return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
 
-        // Load all context
-        const configDoc = await db.collection('marga_config').doc('settings').get();
+        // Load ALL context
+        const [configDoc, analytics, siteStructure, memory] = await Promise.all([
+            db.collection('marga_config').doc('settings').get(),
+            getLatestAnalytics(db),
+            getSiteStructure(db),
+            getGlobalMemory(db)
+        ]);
+
         const config = configDoc.exists ? configDoc.data() : {};
-        const aiConfig = config.ai || {};
-        const seoConfig = config.seo || {};
-        
-        // Get latest analytics snapshot
-        const analytics = await getLatestAnalytics(db);
-
-        // Build system prompt with full website knowledge
-        const systemPrompt = buildSystemPrompt(aiConfig, seoConfig, analytics);
+        const systemPrompt = buildSystemPrompt(config.ai || {}, config.seo || {}, analytics, siteStructure, memory);
 
         // Build messages
-        const messages = [];
-        history.forEach(msg => {
-            messages.push({
-                role: msg.role === 'assistant' ? 'assistant' : 'user',
-                content: msg.content
-            });
-        });
+        const messages = history.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }));
         messages.push({ role: 'user', content: message });
 
         // Call Claude
-        const rawResponse = await callClaude(messages, aiConfig, systemPrompt);
+        const rawResponse = await callClaude(messages, config.ai || {}, systemPrompt);
         const { response, actions } = parseActions(rawResponse);
 
         // Log chat
@@ -426,18 +382,10 @@ exports.handler = async (event) => {
             createdAt: admin.firestore.FieldValue.serverTimestamp()
         });
 
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify({ success: true, data: { response, actions } })
-        };
+        return { statusCode: 200, headers, body: JSON.stringify({ success: true, data: { response, actions } }) };
 
     } catch (error) {
         console.error('Chat error:', error);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ success: false, error: error.message })
-        };
+        return { statusCode: 500, headers, body: JSON.stringify({ success: false, error: error.message }) };
     }
 };
