@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026  
-**Current Version:** v2.1.0 (MCP-Style Agent System)  
+**Last Updated:** January 13, 2026 (12:52 AM)  
+**Current Version:** v2.2.0 (MCP-Style Agent System)  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -12,114 +12,182 @@
 |----------|-----|
 | Live Site | https://marga.biz |
 | Insights Dashboard | https://marga.biz/admin/insights/ |
-| Settings + Scanner | https://marga.biz/admin/insights/settings.html |
+| GitHub Repo | https://github.com/PinedaMikeB/marga-biz |
 
 ---
 
-## 🤖 AGENT ARCHITECTURE (MCP-Style)
+## ✅ SESSION ACCOMPLISHMENTS (Jan 12-13, 2026)
 
-### How It Works Now
+### 1. All 1,905 Pages Now in GitHub ✅
+- Removed `dist/` from `.gitignore`
+- All HTML pages tracked in git
+- Manager can now edit pages via GitHub API
 
-The Manager uses **tools directly** (MCP-style) for immediate results:
+### 2. SEO Updates Made ✅
+| Page | Change | Status |
+|------|--------|--------|
+| /printer-rental/ | Title: "Printer Rental" → "Printer Rental Philippines" | ✅ Live |
+| /printer-rental/ | Meta description updated | ✅ In GitHub (deploying) |
 
-```
-User: "Check my ranking for printer rental philippines"
-         │
-         ▼
-┌─────────────────────────────────────────────────────────┐
-│                    MANAGER AGENT                        │
-│                                                         │
-│  1. Sees ranking request                                │
-│  2. Calls checkRanking() tool DIRECTLY                  │
-│  3. Gets LIVE SERP data                                 │
-│  4. Analyzes and responds with REAL data                │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Available Tools (lib/agent-tools.js)
-
-| Tool | Function | Data Source |
-|------|----------|-------------|
-| `scan_page` | Scan page for SEO | page-scanner function |
-| `check_ranking` | Live SERP position | Serper.dev API |
-| `find_competitors` | Who ranks above you | Serper.dev API |
-| `get_search_console` | Historical rankings | Firebase snapshots |
-| `get_site_overview` | Site stats | Firebase marga_site |
+### 3. Agent System Built ✅
+- Manager Agent with MCP-style tools
+- Search Agent with live SERP (Serper.dev)
+- Page scanning and editing tools
 
 ---
 
-## 🔑 API KEYS NEEDED
+## 🤖 CURRENT AGENT CAPABILITIES
 
-### Serper.dev (for live SERP)
-- **Status:** Not configured
-- **Get key:** https://serper.dev (FREE 2,500/month)
-- **Add to Netlify:** Environment variable `SERPER_API_KEY`
+### What Manager CAN Do:
+| Tool | Function | Status |
+|------|----------|--------|
+| `scan_page` | Scan YOUR pages for SEO issues | ✅ Working |
+| `check_ranking` | Live SERP position via Serper.dev | ✅ Working |
+| `find_competitors` | List competitor domains from SERP | ✅ Working |
+| `edit_page_seo` | Edit title/meta via GitHub API | ✅ Working |
+| `get_search_console` | Historical keyword data | ✅ Working |
+| `get_site_overview` | Site stats | ✅ Working |
+
+### What Manager CANNOT Do Yet:
+| Feature | What's Missing |
+|---------|----------------|
+| Scan competitor pages | Need `scan_competitor` tool |
+| See competitor titles/meta | Need to fetch & parse competitor HTML |
+| Generate content | Content Agent not built |
+| Track issues over time | Tracker Agent not built |
 
 ---
 
-## 📁 Key Files
+## 📁 KEY FILES
 
 ```
 netlify/functions/
-├── agent-manager.js      # Orchestrator with tools
-├── agent-search.js       # Search Agent (SERP checking)
-├── agent-dashboard.js    # Dashboard API
+├── agent-manager.js      # Main AI orchestrator (talks to user)
+├── agent-search.js       # Live SERP via Serper.dev
+├── agent-dashboard.js    # Status API
+├── github-editor.js      # Edit files via GitHub API
+├── page-scanner.js       # Scan pages for SEO
 ├── lib/
 │   ├── agent-utils.js    # Firebase helpers
-│   └── agent-tools.js    # MCP-style tools
-├── page-scanner.js       # Deep page analysis
-├── site-scanner.js       # Sitemap scanning
-└── insights-*.js         # Analytics functions
+│   └── agent-tools.js    # MCP-style tools (scan, edit, rank)
 ```
 
 ---
 
-## 🔧 Firebase Collections
+## 🔑 API KEYS (in Netlify Env Vars)
 
-| Collection | Purpose |
-|------------|---------|
-| `marga_agents` | Agent statuses |
-| `marga_tasks` | Task queue (legacy) |
-| `marga_pages` | Scanned page data |
-| `marga_site` | Site structure |
-| `marga_rankings` | Ranking history |
-| `insights_snapshots` | Daily analytics |
+| Key | Purpose | Status |
+|-----|---------|--------|
+| `CLAUDE_API_KEY` | AI responses | ✅ Set |
+| `SERPER_API_KEY` | Live SERP rankings | ✅ Set |
+| `GITHUB_TOKEN` | Edit pages via API | ✅ Set |
+| `GOOGLE_SERVICE_ACCOUNT_KEY` | Firebase/Analytics | ✅ Set |
 
 ---
 
-## ✅ What's Working
-
-1. **Manager Agent** - Uses tools directly, gives real analysis
-2. **Page Scanner** - Scans pages, returns SEO data
-3. **Search Agent** - Ready (needs API key for live SERP)
-4. **Site Scanner** - Scans sitemap, stores key pages
-5. **Chat Widget** - User interface for Manager
-
----
-
-## ⏳ Not Built Yet
-
-- **Tracker Agent** - Issue tracking, follow-ups
-- **Content Agent** - Content generation
-- **AI Search Agent** - Perplexity/ChatGPT monitoring
-- **Bing Submission** - Submit URLs to Bing
-
----
-
-## 📋 Recent Commits
+## 🔧 HOW EDITING WORKS
 
 ```
-41287cd Fix: Remove duplicate code block in agent-tools.js
-798be98 Fix: Remove leftover code causing syntax error
-a3125f0 Major: Manager now uses tools directly (MCP-style)
+User: "Change title to X"
+         │
+         ▼
+Manager calls edit_page_seo tool
+         │
+         ▼
+Tool calls github-editor.js
+         │
+         ▼
+GitHub API updates dist/page/index.html
+         │
+         ▼
+Netlify auto-deploys (~30 sec)
+         │
+         ▼
+Live on marga.biz!
+```
+
+---
+
+## 📊 CURRENT RANKINGS (as of Jan 12)
+
+| Keyword | Position | Notes |
+|---------|----------|-------|
+| "printer rental philippines" | #5 | Target: Top 3 |
+| Top competitor | printerrentalsph.com (#1) | Keyword-rich domain |
+
+---
+
+## ⏳ NEXT STEPS (Priority Order)
+
+### 1. Add Competitor Scanning Tool
+Manager admitted it can't see competitor title tags. Need to add:
+```javascript
+// Tool: scan_competitor
+// Fetches competitor page, extracts title/meta/h1/word count
+async function scanCompetitor(url) {
+    // Fetch HTML
+    // Parse title, meta, h1, h2s, word count
+    // Return structured data
+}
+```
+
+### 2. Build Content Agent
+- Generate optimized content
+- Expand thin pages
+- Add FAQ sections
+
+### 3. Build Tracker Agent  
+- Track issues over time
+- Follow up on fixes
+- Monitor ranking changes
+
+---
+
+## 🐛 KNOWN ISSUES
+
+1. **Meta description deploy delay** - GitHub updated but Netlify may cache. Usually resolves in 5-10 min or manual redeploy.
+
+2. **edit_page_seo path confusion** - Fixed the tool description to clarify: use URL path like `/printer-rental/` not file path.
+
+3. **Manager sometimes asks questions** - Improved but occasionally still asks instead of acting. Continue refining prompt.
+
+---
+
+## 📋 RECENT COMMITS
+
+```
+a526168 Fix: Clarify edit_page_seo tool path format
+f1807b5 SEO: Update meta description
+fefc4ca Add all 1,900+ pages to GitHub
+fdf8eb7 Make Manager SMART - use multiple tools
+7f72554 Fix: Remove duplicate code block
 655ad80 Phase 2: Search Agent - Live SERP rankings
 ```
 
 ---
 
-## 🔄 ROLLBACK
+## 💡 KEY LEARNINGS
 
-To revert to pre-agent system:
+1. **dist/ was gitignored** - Your 1,900+ pages weren't in GitHub! Fixed now.
+
+2. **Netlify = CDN, not storage** - GitHub is source of truth, Netlify just serves files.
+
+3. **Manager is honest** - When asked about competitor titles, it admitted it can't see them. Good behavior!
+
+4. **MCP-style > Task Queue** - Direct tool calls work better than async task delegation.
+
+---
+
+## 🔄 TO CONTINUE TOMORROW
+
+1. Test the chat widget - should work now
+2. Verify meta description deployed
+3. Consider adding `scan_competitor` tool
+4. Ask Manager to analyze more pages
+
+**Command to check status:**
 ```bash
-git revert 41287cd 798be98 a3125f0 655ad80
+curl -s "https://marga.biz/.netlify/functions/agent-manager" \
+  -X POST -H "Content-Type: application/json" \
+  -d '{"message": "What can you help me with?"}'
 ```
