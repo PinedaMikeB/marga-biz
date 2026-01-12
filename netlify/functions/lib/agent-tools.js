@@ -28,7 +28,6 @@ async function scanPage(pagePath) {
         // Normalize path
         let path = pagePath;
         if (path.startsWith('http')) {
-            // Extract path from full URL
             const url = new URL(path);
             path = url.pathname;
         }
@@ -39,37 +38,51 @@ async function scanPage(pagePath) {
             path = path + '/';
         }
         
-        // Call the existing page-scanner function with correct parameters
+        // Call the existing page-scanner function
         const response = await fetch(
             `https://marga.biz/.netlify/functions/page-scanner?action=scan&path=${encodeURIComponent(path)}`
         );
         const result = await response.json();
         
+        // Handle nested response structure: result.data.data contains actual page data
         if (result.success && result.data) {
-            const data = result.data;
-            return {
-                success: true,
-                path: data.path,
-                url: data.url || `https://marga.biz${path}`,
-                title: data.title,
-                titleLength: data.title?.length || 0,
-                metaDescription: data.metaDescription,
-                metaLength: data.metaDescription?.length || 0,
-                h1: data.h1,
-                h2Count: data.h2s?.length || 0,
-                wordCount: data.wordCount,
-                seoScore: data.seoScore,
-                grade: data.grade,
-                issues: data.issues || [],
-                passed: data.passed || [],
-                internalLinks: data.internalLinks?.length || 0,
-                externalLinks: data.externalLinks?.length || 0,
-                images: data.images?.length || 0,
-                imagesWithoutAlt: data.images?.filter(i => !i.hasAlt)?.length || 0,
-                hasSchema: data.hasSchema,
-                canonical: data.canonical
-            };
+            // The actual data might be in result.data.data (nested) or result.data directly
+            const pageData = result.data.data || result.data;
+            
+            if (pageData.title || pageData.h1 || pageData.wordCount) {
+                return {
+                    success: true,
+                    path: pageData.path || path,
+                    url: pageData.url || `https://marga.biz${path}`,
+                    title: pageData.title,
+                    titleLength: pageData.title?.length || 0,
+                    metaDescription: pageData.metaDescription,
+                    metaLength: pageData.metaDescription?.length || 0,
+                    h1: pageData.h1,
+                    h2s: pageData.h2s || [],
+                    h2Count: pageData.h2s?.length || 0,
+                    h3s: pageData.h3s || [],
+                    wordCount: pageData.wordCount || 0,
+                    seoScore: pageData.seoScore,
+                    grade: pageData.grade,
+                    issues: pageData.issues || [],
+                    passed: pageData.passed || [],
+                    internalLinks: Array.isArray(pageData.internalLinks) ? pageData.internalLinks : [],
+                    internalLinkCount: Array.isArray(pageData.internalLinks) ? pageData.internalLinks.length : 0,
+                    externalLinks: Array.isArray(pageData.externalLinks) ? pageData.externalLinks : [],
+                    externalLinkCount: Array.isArray(pageData.externalLinks) ? pageData.externalLinks.length : 0,
+                    images: pageData.images || [],
+                    imageCount: pageData.images?.length || 0,
+                    hasSchema: pageData.hasSchema,
+                    canonical: pageData.canonical
+                };
+            }
         }
+        return { success: false, error: result.error || 'Scan returned no usable data' };
+    } catch (e) {
+        return { success: false, error: e.message };
+    }
+}
         return { success: false, error: result.error || 'Scan failed - no data returned' };
     } catch (e) {
         return { success: false, error: e.message };
