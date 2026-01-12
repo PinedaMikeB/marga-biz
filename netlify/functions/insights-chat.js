@@ -1,6 +1,6 @@
 /**
- * Marga AI - Chat Endpoint
- * Handles chat messages and executes AI actions
+ * Marga AI - Chat Endpoint (Enhanced)
+ * Includes full website knowledge context
  */
 
 const admin = require('firebase-admin');
@@ -17,7 +17,6 @@ const getFirebaseApp = () => {
     return admin.app();
 };
 
-// Claude API configuration
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 
 /**
@@ -30,7 +29,7 @@ async function getAIConfig(db) {
             model: 'claude-sonnet-4-20250514',
             temperature: 0.7,
             maxTokens: 4000,
-            systemPrompt: 'You are an SEO assistant for Marga Enterprises.',
+            systemPrompt: '',
             additionalInstructions: ''
         };
     }
@@ -38,61 +37,149 @@ async function getAIConfig(db) {
 }
 
 /**
- * Build system prompt with context
+ * Get latest analytics snapshot from Firebase
  */
-function buildSystemPrompt(config, seoConfig) {
-    let prompt = config.systemPrompt || '';
-    
-    if (config.additionalInstructions) {
-        prompt += '\n\n' + config.additionalInstructions;
+async function getLatestAnalytics(db) {
+    try {
+        const snapshot = await db.collection('insights_snapshots')
+            .orderBy('date', 'desc')
+            .limit(1)
+            .get();
+        
+        if (snapshot.empty) return null;
+        return snapshot.docs[0].data();
+    } catch (e) {
+        console.error('Error getting analytics:', e);
+        return null;
     }
+}
 
-    // Add context about competitors and keywords
-    if (seoConfig) {
-        if (seoConfig.competitors && seoConfig.competitors.length > 0) {
-            prompt += '\n\nCurrent competitors being monitored:\n';
-            seoConfig.competitors.forEach(c => {
-                prompt += `- ${c.domain}: ${c.notes || 'No notes'}\n`;
+/**
+ * Build comprehensive system prompt with full website knowledge
+ */
+function buildSystemPrompt(config, seoConfig, analytics) {
+    let prompt = `You are the AI SEO Manager for Marga Enterprises (marga.biz), a B2B printer and copier rental company serving Metro Manila, Philippines.
+
+## YOUR WEBSITE KNOWLEDGE
+
+### Site Overview
+- **Domain:** marga.biz
+- **Total Pages:** 1,903 (896 service pages + 1,007 blog posts)
+- **Primary Business:** Printer & copier rental for businesses
+- **Service Areas:** Metro Manila, Cavite, Laguna, Bulacan, Batangas
+- **Key Offering:** Print-all-you-can plans, same-day delivery
+
+### Key Pages You Manage
+| Page | URL | Purpose |
+|------|-----|---------|
+| Homepage | marga.biz | Main landing, hero CTA |
+| Copier Rental | /copier-rental-manila/ | High-traffic service page |
+| Printer Rental | /printer-rental-philippines/ | Top SEO page (#2 ranking) |
+| Pricing | /pricing/ | Rental rates |
+| Contact | /contact/ | Lead capture |
+| Blog | /blog/ | 1,007 articles for SEO |
+| Quote Page | /quote/ | Main conversion point |
+
+### Current SEO Status
+- **Primary Keyword:** "printer rental philippines" - Ranking #2 (PROTECT THIS!)
+- **Main Competitor:** jmti.com.ph - Ranking #1
+- **Indexed Pages:** 1,903 in Google
+
+`;
+
+    // Add live analytics if available
+    if (analytics) {
+        prompt += `### Recent Performance (Last 7 Days)
+- **Visitors:** ${analytics.summary?.visitors || analytics.ga4?.visitors || 'N/A'}
+- **Page Views:** ${analytics.summary?.pageViews || analytics.ga4?.pageViews || 'N/A'}
+- **Search Clicks:** ${analytics.summary?.clicks || analytics.searchConsole?.clicks || 'N/A'}
+- **Avg Position:** ${analytics.summary?.avgPosition || analytics.searchConsole?.avgPosition || 'N/A'}
+
+`;
+        // Add top pages if available
+        if (analytics.ga4?.topPages && analytics.ga4.topPages.length > 0) {
+            prompt += `### Top Performing Pages\n`;
+            analytics.ga4.topPages.slice(0, 5).forEach((page, i) => {
+                prompt += `${i + 1}. ${page.path} - ${page.views} views\n`;
             });
+            prompt += '\n';
         }
 
-        if (seoConfig.keywords) {
-            if (seoConfig.keywords.primary && seoConfig.keywords.primary.length > 0) {
-                prompt += '\n\nPrimary keywords to protect:\n';
-                prompt += seoConfig.keywords.primary.map(k => `- "${k}"`).join('\n');
-            }
-            if (seoConfig.keywords.growth && seoConfig.keywords.growth.length > 0) {
-                prompt += '\n\nGrowth keywords to improve:\n';
-                prompt += seoConfig.keywords.growth.map(k => `- "${k}"`).join('\n');
-            }
+        // Add top keywords if available
+        if (analytics.searchConsole?.topKeywords && analytics.searchConsole.topKeywords.length > 0) {
+            prompt += `### Current Keyword Rankings\n`;
+            analytics.searchConsole.topKeywords.slice(0, 10).forEach((kw, i) => {
+                prompt += `${i + 1}. "${kw.keyword}" - Position ${kw.position}, ${kw.clicks} clicks\n`;
+            });
+            prompt += '\n';
         }
     }
 
-    // Add capabilities
-    prompt += `
+    // Add monitored competitors
+    if (seoConfig?.competitors && seoConfig.competitors.length > 0) {
+        prompt += `### Competitors Being Monitored\n`;
+        seoConfig.competitors.forEach(c => {
+            prompt += `- **${c.domain}**: ${c.notes || 'No notes'}\n`;
+        });
+        prompt += '\n';
+    }
 
-CAPABILITIES:
-You can help the user with:
-1. Finding and analyzing competitors (use web search)
-2. Creating landing pages (will show preview for approval)
-3. Updating website settings and config
-4. Analyzing SEO performance
-5. Suggesting content improvements
+    // Add target keywords
+    if (seoConfig?.keywords) {
+        if (seoConfig.keywords.primary?.length > 0) {
+            prompt += `### Primary Keywords (PROTECT - Already Ranking)\n`;
+            seoConfig.keywords.primary.forEach(k => prompt += `- "${k}"\n`);
+            prompt += '\n';
+        }
+        if (seoConfig.keywords.growth?.length > 0) {
+            prompt += `### Growth Keywords (IMPROVE - Target These)\n`;
+            seoConfig.keywords.growth.forEach(k => prompt += `- "${k}"\n`);
+            prompt += '\n';
+        }
+    }
 
-RESPONSE FORMAT:
-- Be concise and actionable
-- Use markdown for formatting (bold, lists)
-- When suggesting actions, include action buttons in your response
-- For competitor research, search the web and present findings clearly
+    // Add any custom instructions
+    if (config.additionalInstructions) {
+        prompt += `### Additional Instructions\n${config.additionalInstructions}\n\n`;
+    }
 
-When you need to perform actions, include them in this JSON format at the end of your response:
+    // Add behavior instructions
+    prompt += `## YOUR BEHAVIOR
+
+### How to Respond
+1. **Be proactive** - Don't ask for information you already have
+2. **Be specific** - Reference actual pages, keywords, and data
+3. **Be actionable** - Give concrete recommendations with steps
+4. **Be concise** - No fluff, just useful insights
+
+### Example Good Response
+User: "How can I improve my SEO?"
+You: "Based on your current data, here are 3 quick wins:
+
+1. **Your /copier-rental-manila/ page** gets 245 views but has no FAQ section. Adding 5 FAQs could boost time-on-page and rankings.
+
+2. **'printer rental bgc'** is in your growth keywords but you have NO dedicated page for it. I can create a landing page targeting BGC businesses.
+
+3. **Your competitor jmti.com.ph** ranks above you for 'printer rental philippines'. Their page has 2,100 words vs your 890. Consider expanding your content."
+
+### Example BAD Response (Never Do This)
+"Can you provide me with the URL of your website?" ❌
+"What services do you offer?" ❌
+"I'd need to see your analytics first." ❌
+
+You ALREADY KNOW this information. Use it.
+
+## CAPABILITIES
+
+You can execute these actions (will show confirmation buttons):
+1. **add_competitor** - Add domain to monitoring list
+2. **add_keyword** - Add keyword to primary/growth list
+3. **create_page** - Create new landing page (shows preview)
+4. **update_config** - Update site settings
+
+When suggesting actions, include them as:
 <!--ACTIONS:[{"type":"action_type","label":"Button Text","data":{}}]-->
-
-Action types available:
-- add_competitor: {domain, notes}
-- add_keyword: {keyword, type: "primary"|"growth"}
-- create_page: {slug, title, type}
-- update_config: {path, value}`;
+`;
 
     return prompt;
 }
@@ -101,14 +188,10 @@ Action types available:
  * Normalize model name to valid API model
  */
 function normalizeModel(model) {
-    // Map old/incorrect model names to valid ones
     const modelMap = {
         'claude-opus-4-5-20250514': 'claude-opus-4-20250514',
         'claude-sonnet-4-5-20250514': 'claude-sonnet-4-20250514',
         'claude-haiku-4-5-20250514': 'claude-haiku-3-5-20241022',
-        'claude-opus-4-5': 'claude-opus-4-20250514',
-        'claude-sonnet-4-5': 'claude-sonnet-4-20250514',
-        'claude-haiku-4-5': 'claude-haiku-3-5-20241022'
     };
     return modelMap[model] || model || 'claude-sonnet-4-20250514';
 }
@@ -118,10 +201,7 @@ function normalizeModel(model) {
  */
 async function callClaude(messages, config, systemPrompt) {
     const apiKey = process.env.CLAUDE_API_KEY;
-    
-    if (!apiKey) {
-        throw new Error('CLAUDE_API_KEY not configured');
-    }
+    if (!apiKey) throw new Error('CLAUDE_API_KEY not configured');
 
     const model = normalizeModel(config.model);
 
@@ -133,11 +213,11 @@ async function callClaude(messages, config, systemPrompt) {
             'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-            model: model,
+            model,
             max_tokens: config.maxTokens || 4000,
             temperature: config.temperature || 0.7,
             system: systemPrompt,
-            messages: messages
+            messages
         })
     });
 
@@ -184,11 +264,8 @@ async function executeAction(db, action) {
             if (!config.seo) config.seo = {};
             if (!config.seo.competitors) config.seo.competitors = [];
             
-            // Check if already exists
             const exists = config.seo.competitors.some(c => c.domain === data.domain);
-            if (exists) {
-                return { success: false, message: 'Competitor already exists' };
-            }
+            if (exists) return { success: false, message: 'Competitor already exists' };
 
             config.seo.competitors.push({
                 domain: data.domain,
@@ -197,15 +274,7 @@ async function executeAction(db, action) {
             });
 
             await db.collection('marga_config').doc('settings').set(config);
-            
-            // Log to history
-            await db.collection('marga_history').add({
-                type: 'competitor_added',
-                data: { domain: data.domain, notes: data.notes },
-                source: 'ai-chat',
-                timestamp: new Date().toISOString(),
-                createdAt: admin.firestore.FieldValue.serverTimestamp()
-            });
+            await logHistory(db, 'competitor_added', { domain: data.domain, notes: data.notes });
 
             return { success: true, message: `Added ${data.domain} to competitors` };
         }
@@ -226,15 +295,7 @@ async function executeAction(db, action) {
 
             config.seo.keywords[keywordType].push(keyword);
             await db.collection('marga_config').doc('settings').set(config);
-            
-            // Log to history
-            await db.collection('marga_history').add({
-                type: 'keyword_added',
-                data: { keyword, keywordType },
-                source: 'ai-chat',
-                timestamp: new Date().toISOString(),
-                createdAt: admin.firestore.FieldValue.serverTimestamp()
-            });
+            await logHistory(db, 'keyword_added', { keyword, keywordType });
 
             return { success: true, message: `Added "${keyword}" to ${keywordType} keywords` };
         }
@@ -243,7 +304,6 @@ async function executeAction(db, action) {
             const configDoc = await db.collection('marga_config').doc('settings').get();
             const config = configDoc.data();
             
-            // Navigate to nested path and update
             const keys = data.path.split('.');
             let current = config;
             for (let i = 0; i < keys.length - 1; i++) {
@@ -253,22 +313,12 @@ async function executeAction(db, action) {
             current[keys[keys.length - 1]] = data.value;
 
             await db.collection('marga_config').doc('settings').set(config);
-            
-            // Log to history
-            await db.collection('marga_history').add({
-                type: 'config_update',
-                path: data.path,
-                newValue: data.value,
-                source: 'ai-chat',
-                timestamp: new Date().toISOString(),
-                createdAt: admin.firestore.FieldValue.serverTimestamp()
-            });
+            await logHistory(db, 'config_update', { path: data.path, value: data.value });
 
             return { success: true, message: `Updated ${data.path}` };
         }
 
         case 'create_page': {
-            // For now, just create a task - actual page creation in Phase 4.5
             await db.collection('marga_tasks').add({
                 type: 'create_page',
                 status: 'pending',
@@ -279,13 +329,26 @@ async function executeAction(db, action) {
 
             return { 
                 success: true, 
-                message: `Page creation task queued. I'll prepare a preview for "${data.title || data.slug}".`
+                message: `Page creation task queued for "${data.title || data.slug}".`
             };
         }
 
         default:
             return { success: false, message: `Unknown action type: ${type}` };
     }
+}
+
+/**
+ * Log to history
+ */
+async function logHistory(db, type, data) {
+    await db.collection('marga_history').add({
+        type,
+        data,
+        source: 'ai-chat',
+        timestamp: new Date().toISOString(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp()
+    });
 }
 
 /**
@@ -303,11 +366,7 @@ exports.handler = async (event) => {
     }
 
     if (event.httpMethod !== 'POST') {
-        return {
-            statusCode: 405,
-            headers,
-            body: JSON.stringify({ error: 'Method not allowed' })
-        };
+        return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
     }
 
     try {
@@ -328,49 +387,41 @@ exports.handler = async (event) => {
 
         // Handle chat message
         const { message, history = [] } = body;
-
         if (!message) {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({ error: 'Message is required' })
-            };
+            return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message is required' }) };
         }
 
-        // Get config
+        // Load all context
         const configDoc = await db.collection('marga_config').doc('settings').get();
         const config = configDoc.exists ? configDoc.data() : {};
         const aiConfig = config.ai || {};
         const seoConfig = config.seo || {};
-
-        // Build system prompt
-        const systemPrompt = buildSystemPrompt(aiConfig, seoConfig);
-
-        // Build messages array
-        const messages = [];
         
-        // Add history
+        // Get latest analytics snapshot
+        const analytics = await getLatestAnalytics(db);
+
+        // Build system prompt with full website knowledge
+        const systemPrompt = buildSystemPrompt(aiConfig, seoConfig, analytics);
+
+        // Build messages
+        const messages = [];
         history.forEach(msg => {
             messages.push({
                 role: msg.role === 'assistant' ? 'assistant' : 'user',
                 content: msg.content
             });
         });
-
-        // Add current message
         messages.push({ role: 'user', content: message });
 
         // Call Claude
         const rawResponse = await callClaude(messages, aiConfig, systemPrompt);
-
-        // Parse response and actions
         const { response, actions } = parseActions(rawResponse);
 
-        // Log chat to history
+        // Log chat
         await db.collection('marga_chat_log').add({
             userMessage: message,
             assistantResponse: response,
-            actions: actions,
+            actions,
             timestamp: new Date().toISOString(),
             createdAt: admin.firestore.FieldValue.serverTimestamp()
         });
@@ -378,10 +429,7 @@ exports.handler = async (event) => {
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({
-                success: true,
-                data: { response, actions }
-            })
+            body: JSON.stringify({ success: true, data: { response, actions } })
         };
 
     } catch (error) {
@@ -389,10 +437,7 @@ exports.handler = async (event) => {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ 
-                success: false, 
-                error: error.message 
-            })
+            body: JSON.stringify({ success: false, error: error.message })
         };
     }
 };
