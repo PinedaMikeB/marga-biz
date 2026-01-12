@@ -18,6 +18,7 @@ const SettingsUI = {
         try {
             await this.loadConfig();
             await this.loadHistory();
+            await this.loadScannerStats();
             this.bindEvents();
             this.hideStatus();
         } catch (error) {
@@ -402,6 +403,10 @@ const SettingsUI = {
         // Load more history
         document.getElementById('loadMoreHistory').addEventListener('click', () => this.loadHistory(true));
 
+        // Scanner buttons
+        document.getElementById('runInitialScan')?.addEventListener('click', () => this.runInitialScan());
+        document.getElementById('viewIssues')?.addEventListener('click', () => this.viewIssues());
+
         // Enter key handlers
         document.getElementById('newCompetitorDomain').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.addCompetitor();
@@ -529,6 +534,107 @@ const SettingsUI = {
      */
     hideStatus() {
         document.getElementById('statusBar').classList.add('hidden');
+    },
+
+    /**
+     * Load scanner stats
+     */
+    async loadScannerStats() {
+        try {
+            // Get pages index
+            const response = await fetch('/.netlify/functions/page-scanner?action=issues&limit=50');
+            const result = await response.json();
+            
+            if (result.success && result.data) {
+                const pages = result.data.pages || [];
+                const totalScanned = pages.length;
+                const avgScore = totalScanned > 0 
+                    ? Math.round(pages.reduce((sum, p) => sum + (p.seoScore || 0), 0) / totalScanned)
+                    : 0;
+                const issuesCount = pages.filter(p => p.seoScore < 80).length;
+
+                document.getElementById('scannerPagesScanned').textContent = totalScanned;
+                document.getElementById('scannerIssues').textContent = issuesCount;
+                document.getElementById('scannerAvgScore').textContent = avgScore + '/100';
+                document.getElementById('scannerLastScan').textContent = 'Ready';
+            }
+        } catch (e) {
+            console.error('Error loading scanner stats:', e);
+        }
+    },
+
+    /**
+     * Run initial scan
+     */
+    async runInitialScan() {
+        const btn = document.getElementById('runInitialScan');
+        btn.disabled = true;
+        btn.textContent = '⏳ Scanning...';
+        this.showStatus('Scanning pages... This may take a minute.', 'info');
+
+        try {
+            const response = await fetch('/.netlify/functions/page-scanner?action=initial&limit=20');
+            const result = await response.json();
+
+            if (result.success) {
+                const data = result.data;
+                document.getElementById('scannerPagesScanned').textContent = data.success || 0;
+                document.getElementById('scannerLastScan').textContent = 'Just now';
+                
+                this.showStatus(`Scanned ${data.success} pages!`, 'success');
+                await this.loadScannerStats();
+            } else {
+                this.showStatus('Scan failed: ' + result.error, 'error');
+            }
+        } catch (error) {
+            this.showStatus('Scan failed: ' + error.message, 'error');
+        }
+
+        btn.disabled = false;
+        btn.textContent = '📊 Scan Key Pages (20)';
+    },
+
+    /**
+     * View pages with issues
+     */
+    async viewIssues() {
+        const resultsContainer = document.getElementById('scannerResults');
+        resultsContainer.classList.remove('hidden');
+        resultsContainer.innerHTML = '<p>Loading issues...</p>';
+
+        try {
+            const response = await fetch('/.netlify/functions/page-scanner?action=issues&limit=20');
+            const result = await response.json();
+
+            if (result.success && result.data.pages) {
+                const pages = result.data.pages;
+                
+                if (pages.length === 0) {
+                    resultsContainer.innerHTML = '<p>✅ No issues found! All scanned pages look good.</p>';
+                    return;
+                }
+
+                resultsContainer.innerHTML = pages.map(page => {
+                    const scoreClass = page.seoScore < 50 ? 'low' : page.seoScore < 80 ? 'medium' : 'high';
+                    const itemClass = page.seoScore < 50 ? '' : page.seoScore < 80 ? 'warning' : 'minor';
+                    
+                    return `
+                        <div class="issue-item ${itemClass}">
+                            <span class="issue-score ${scoreClass}">${page.seoScore}</span>
+                            <div class="issue-content">
+                                <div class="issue-path">${page.path}</div>
+                                <div class="issue-details">${page.title || 'No title'}</div>
+                                <div class="issue-list">
+                                    ${(page.issues || []).map(i => `<span class="issue-tag">${i.type}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        } catch (error) {
+            resultsContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+        }
     }
 };
 

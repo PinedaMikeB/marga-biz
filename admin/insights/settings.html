@@ -186,6 +186,38 @@
             </div>
         </div>
 
+        <!-- Page Scanner Section -->
+        <section class="settings-card full-width">
+            <h2>🔍 Page Scanner</h2>
+            <div class="scanner-status">
+                <div class="scanner-stats">
+                    <div class="stat-item">
+                        <span class="stat-value" id="scannerPagesScanned">--</span>
+                        <span class="stat-label">Pages Scanned</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="scannerLastScan">--</span>
+                        <span class="stat-label">Last Scan</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="scannerIssues">--</span>
+                        <span class="stat-label">Issues Found</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="scannerAvgScore">--</span>
+                        <span class="stat-label">Avg. SEO Score</span>
+                    </div>
+                </div>
+                <div class="scanner-actions">
+                    <button id="runInitialScan" class="btn-primary">📊 Scan Key Pages (20)</button>
+                    <button id="viewIssues" class="btn-secondary">⚠️ View Issues</button>
+                </div>
+            </div>
+            <div id="scannerResults" class="scanner-results hidden">
+                <!-- Results populated by JS -->
+            </div>
+        </section>
+
         <!-- Change History -->
         <section class="settings-card full-width">
             <h2>📜 Change History</h2>
