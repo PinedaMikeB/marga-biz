@@ -662,23 +662,6 @@ async function callClaudeWithTools(messages, systemPrompt) {
 
     return finalResponse;
 }
-        },
-        body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 4000,
-            temperature: 0.7,
-            system: systemPrompt,
-            messages
-        })
-    });
-
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Claude API error: ${response.status} - ${error}`);
-    }
-
-    return (await response.json()).content[0].text;
-}
 
 /**
  * Parse delegations from response
