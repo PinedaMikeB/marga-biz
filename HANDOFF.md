@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026 @ Phase 4.0-4.1 Complete  
-**Current Version:** v1.5.0  
+**Last Updated:** January 12, 2026 @ Phase 4.2 Complete  
+**Current Version:** v1.6.0  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -12,9 +12,9 @@
 |----------|-----|
 | Live Site | https://marga.biz |
 | Insights Dashboard | https://marga.biz/admin/insights/ |
+| **Settings Page** | https://marga.biz/admin/insights/settings.html |
 | Netlify Dashboard | https://app.netlify.com/projects/marga-biz |
 | GitHub Repo | https://github.com/PinedaMikeB/marga-biz |
-| GA4 Analytics | https://analytics.google.com |
 
 ---
 
@@ -25,60 +25,48 @@
 - ✅ GA4 tracking + custom events
 - ✅ INSIGHTS MODULE (All 5 tabs)
 - ✅ AI SEO Analysis (Phase 3.3)
-- ✅ **GitHub Editor API** - Cloud file editing
-- ✅ **Config Manager** - AI-editable settings
+- ✅ GitHub Editor API (cloud file editing)
+- ✅ Config Manager API (AI settings)
+- ✅ **Settings UI Page** - Full AI configuration interface
 
 ### What's In Progress
-- 🔨 Phase 4.2 - Settings UI
-- 🔨 Phase 4.3 - AI Chat Widget
+- 🔨 Phase 4.3 - AI Chat Widget (floating)
 
 ### What's Planned
 - ❌ Landing page generator
-- ❌ Competitor monitoring
+- ❌ Competitor monitoring (web search)
 - ❌ Auto-publish system
 
 ---
 
 ## 🔨 LAST COMPLETED
 
-**Phase 4.0-4.1: Cloud Infrastructure**
+**Phase 4.2: Settings UI** (Commit: `8eb0a46`)
 
-| Component | Status | Endpoint |
-|-----------|--------|----------|
-| GitHub Editor | ✅ Live | `/.netlify/functions/github-editor` |
-| Config Manager | ✅ Live | `/.netlify/functions/config-manager` |
-
-**GitHub Editor Actions:**
-- `?action=test` - Test connection
-- `?action=get&path=FILE` - Read file
-- `?action=list&path=DIR` - List directory
-- `?action=create` + POST body - Create file
-- `?action=update` + POST body - Update file
-- `?action=delete` + POST body - Delete file
-- `?action=batch` + POST body - Multi-file commit
-
-**Config Manager Actions:**
-- `?action=get` - Get full config
-- `?action=get&path=ai.model` - Get specific value
-- `?action=set&path=X` + POST `{value}` - Update value
-- `?action=history` - View change history
-- `?action=reset` - Reset to defaults
+Features built:
+- Model selection (Opus/Sonnet/Haiku) with cost tiers
+- Smart routing toggle
+- Temperature and max tokens sliders
+- System prompt editor
+- Additional instructions editor
+- Competitors list (add/remove)
+- Keywords management (primary/growth)
+- AI behaviors toggles
+- Scheduled tasks overview
+- Change history viewer
+- Settings tab added to all pages
 
 ---
 
 ## 🔄 ROLLBACK INSTRUCTIONS
 
-**Phase 4.0-4.1:**
 ```bash
-git revert ae4d7e7  # Config manager
-git revert ba01f2b  # GitHub editor
-git push origin main
-```
+# Phase 4.2 (Settings UI)
+git revert 8eb0a46
 
-**Phase 3.3 (AI Analysis):**
-```bash
-git revert 99cac69
-git push origin main
+# Phase 4.0-4.1 (Config/GitHub APIs)
+git revert ae4d7e7
+git revert ba01f2b
 ```
 
 ---
@@ -87,31 +75,20 @@ git push origin main
 
 | File | Purpose |
 |------|---------|
-| `netlify/functions/github-editor.js` | Cloud file editing API |
-| `netlify/functions/config-manager.js` | AI settings storage |
-| `netlify/functions/insights-ai.js` | Claude SEO analysis |
-| `MASTERPLAN.md` | Architecture & roadmap |
-| `CHANGELOG.md` | Version history |
-
----
-
-## ⚙️ ENVIRONMENT VARIABLES (Netlify)
-
-| Variable | Purpose |
-|----------|---------|
-| `GOOGLE_SERVICE_ACCOUNT_KEY` | Firebase/GA4 access |
-| `CLAUDE_API_KEY` | AI analysis |
-| `GITHUB_TOKEN` | Cloud file editing |
+| `admin/insights/settings.html` | Settings UI page |
+| `admin/insights/css/settings.css` | Settings styling |
+| `js/admin/insights/settings-ui.js` | Settings JavaScript |
+| `netlify/functions/config-manager.js` | Config API |
+| `netlify/functions/github-editor.js` | File editing API |
 
 ---
 
 ## 📋 NEXT STEPS
 
-1. **Phase 4.2** - Settings UI page
-2. **Phase 4.3** - Floating chat widget
-3. **Phase 4.4** - Chat → Config integration
-4. **Phase 4.5** - Preview modal system
-5. **Phase 4.6** - BGC landing page test
+1. **Phase 4.3** - Floating AI chat widget
+2. **Phase 4.4** - Chat → Config/GitHub integration
+3. **Phase 4.5** - Preview modal system
+4. **Phase 4.6** - BGC landing page test
 
 ---
 
@@ -119,8 +96,7 @@ git push origin main
 
 | Date | Version | Change |
 |------|---------|--------|
+| 2026-01-12 | v1.6.0 | Settings UI Page |
 | 2026-01-12 | v1.5.0 | GitHub Editor + Config Manager |
 | 2026-01-12 | v1.4.0 | AI SEO Analysis |
 | 2026-01-11 | v1.3.0 | INSIGHTS MODULE Complete |
-| 2026-01-10 | v1.2.0 | Overview Dashboard |
-| 2026-01-08 | v1.0.0 | Initial Static Site |
