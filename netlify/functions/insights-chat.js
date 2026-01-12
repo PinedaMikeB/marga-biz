@@ -27,7 +27,7 @@ async function getAIConfig(db) {
     const doc = await db.collection('marga_config').doc('settings').get();
     if (!doc.exists) {
         return {
-            model: 'claude-sonnet-4-5-20250514',
+            model: 'claude-sonnet-4-20250514',
             temperature: 0.7,
             maxTokens: 4000,
             systemPrompt: 'You are an SEO assistant for Marga Enterprises.',
@@ -98,6 +98,22 @@ Action types available:
 }
 
 /**
+ * Normalize model name to valid API model
+ */
+function normalizeModel(model) {
+    // Map old/incorrect model names to valid ones
+    const modelMap = {
+        'claude-opus-4-5-20250514': 'claude-opus-4-20250514',
+        'claude-sonnet-4-5-20250514': 'claude-sonnet-4-20250514',
+        'claude-haiku-4-5-20250514': 'claude-haiku-3-5-20241022',
+        'claude-opus-4-5': 'claude-opus-4-20250514',
+        'claude-sonnet-4-5': 'claude-sonnet-4-20250514',
+        'claude-haiku-4-5': 'claude-haiku-3-5-20241022'
+    };
+    return modelMap[model] || model || 'claude-sonnet-4-20250514';
+}
+
+/**
  * Call Claude API
  */
 async function callClaude(messages, config, systemPrompt) {
@@ -107,6 +123,8 @@ async function callClaude(messages, config, systemPrompt) {
         throw new Error('CLAUDE_API_KEY not configured');
     }
 
+    const model = normalizeModel(config.model);
+
     const response = await fetch(CLAUDE_API_URL, {
         method: 'POST',
         headers: {
@@ -115,7 +133,7 @@ async function callClaude(messages, config, systemPrompt) {
             'anthropic-version': '2023-06-01'
         },
         body: JSON.stringify({
-            model: config.model || 'claude-sonnet-4-5-20250514',
+            model: model,
             max_tokens: config.maxTokens || 4000,
             temperature: config.temperature || 0.7,
             system: systemPrompt,

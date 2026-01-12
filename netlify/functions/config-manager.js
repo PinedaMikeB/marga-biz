@@ -28,17 +28,17 @@ const getFirebaseApp = () => {
  */
 const DEFAULT_CONFIG = {
     ai: {
-        model: 'claude-sonnet-4-5-20250514',
+        model: 'claude-sonnet-4-20250514',
         availableModels: [
-            { id: 'claude-opus-4-5-20250514', name: 'Claude Opus 4.5', description: 'Most capable, complex analysis', costTier: 'high' },
-            { id: 'claude-sonnet-4-5-20250514', name: 'Claude Sonnet 4.5', description: 'Balanced, daily tasks', costTier: 'medium' },
-            { id: 'claude-haiku-4-5-20250514', name: 'Claude Haiku 4.5', description: 'Fast & cheap, simple queries', costTier: 'low' }
+            { id: 'claude-opus-4-20250514', name: 'Claude Opus 4', description: 'Most capable, complex analysis', costTier: 'high' },
+            { id: 'claude-sonnet-4-20250514', name: 'Claude Sonnet 4', description: 'Balanced, daily tasks', costTier: 'medium' },
+            { id: 'claude-haiku-3-5-20241022', name: 'Claude Haiku 3.5', description: 'Fast & cheap, simple queries', costTier: 'low' }
         ],
         smartRouting: true,
         routingRules: {
-            simple: 'claude-haiku-4-5-20250514',
-            standard: 'claude-sonnet-4-5-20250514',
-            complex: 'claude-opus-4-5-20250514'
+            simple: 'claude-haiku-3-5-20241022',
+            standard: 'claude-sonnet-4-20250514',
+            complex: 'claude-opus-4-20250514'
         },
         temperature: 0.7,
         maxTokens: 4000,
