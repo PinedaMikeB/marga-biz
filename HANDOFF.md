@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 12, 2026 @ Deployed  
-**Current Version:** v1.4.0  
+**Last Updated:** January 12, 2026 @ Phase 4.0-4.1 Complete  
+**Current Version:** v1.5.0  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -15,80 +15,69 @@
 | Netlify Dashboard | https://app.netlify.com/projects/marga-biz |
 | GitHub Repo | https://github.com/PinedaMikeB/marga-biz |
 | GA4 Analytics | https://analytics.google.com |
-| Hostinger DNS | https://hpanel.hostinger.com |
 
 ---
 
 ## 📍 CURRENT STATE
 
 ### What's Working
-- ✅ Static site live at marga.biz (1,903 pages)
-- ✅ SSL certificate active (Let's Encrypt)
-- ✅ GA4 tracking on all pages (G-L8XL675H9L)
-- ✅ GA4 Custom Event Tracking
-- ✅ Auto-deploy from GitHub → Netlify
-- ✅ Email working (MX records at Hostinger)
-- ✅ SEO rankings preserved (#2 for "printer rental philippines")
-- ✅ **INSIGHTS MODULE Complete (All 5 tabs)**
-- ✅ **Firebase Historical Storage Working**
-- ✅ **AI SEO Analysis Feature (Phase 3.3) - DEPLOYED!**
+- ✅ Static site live (1,903 pages)
+- ✅ GA4 tracking + custom events
+- ✅ INSIGHTS MODULE (All 5 tabs)
+- ✅ AI SEO Analysis (Phase 3.3)
+- ✅ **GitHub Editor API** - Cloud file editing
+- ✅ **Config Manager** - AI-editable settings
 
-### What's Not Yet Built
-- ❌ 301 redirects audit
-- ❌ Admin module (content management)
-- ❌ SEO automation module
-- ❌ Sales/CRM module
+### What's In Progress
+- 🔨 Phase 4.2 - Settings UI
+- 🔨 Phase 4.3 - AI Chat Widget
+
+### What's Planned
+- ❌ Landing page generator
+- ❌ Competitor monitoring
+- ❌ Auto-publish system
 
 ---
 
 ## 🔨 LAST COMPLETED
 
-**Task:** Phase 3.3 - AI SEO Analysis Feature ✅ DEPLOYED
+**Phase 4.0-4.1: Cloud Infrastructure**
 
-**Git Commit:** `99cac69`
-**Rollback Point:** `5234628`
+| Component | Status | Endpoint |
+|-----------|--------|----------|
+| GitHub Editor | ✅ Live | `/.netlify/functions/github-editor` |
+| Config Manager | ✅ Live | `/.netlify/functions/config-manager` |
 
-**What Was Built:**
-- `insights-ai.js` Netlify Function with Claude API
-- `ai-insights-ui.js` frontend component
-- Traffic trend analysis (week-over-week)
-- Content gap detection for keywords
-- Ranking change alerts
-- AI recommendations with priority levels
-- 12-hour Firebase caching
+**GitHub Editor Actions:**
+- `?action=test` - Test connection
+- `?action=get&path=FILE` - Read file
+- `?action=list&path=DIR` - List directory
+- `?action=create` + POST body - Create file
+- `?action=update` + POST body - Update file
+- `?action=delete` + POST body - Delete file
+- `?action=batch` + POST body - Multi-file commit
 
----
-
-## 🚧 BLOCKERS
-
-*None currently*
-
----
-
-## 📋 NEXT STEPS (Priority Order)
-
-1. **Test AI insights at /admin/insights/** ← VERIFY DEPLOYMENT
-2. **301 Redirects Audit**
-   - Check Google Search Console for 404 errors
-   - Add missing redirects to `_redirects`
-3. **Admin Module** - Content management system
+**Config Manager Actions:**
+- `?action=get` - Get full config
+- `?action=get&path=ai.model` - Get specific value
+- `?action=set&path=X` + POST `{value}` - Update value
+- `?action=history` - View change history
+- `?action=reset` - Reset to defaults
 
 ---
 
 ## 🔄 ROLLBACK INSTRUCTIONS
 
-**If Phase 3.3 has issues:**
+**Phase 4.0-4.1:**
 ```bash
-cd "/Volumes/Wotg Drive Mike/GitHub/marga-biz"
-
-# Option 1: Revert commit
-git revert 99cac69
+git revert ae4d7e7  # Config manager
+git revert ba01f2b  # GitHub editor
 git push origin main
+```
 
-# Option 2: Checkout previous state
-git checkout 5234628 -- admin/insights/ js/admin/insights/ netlify/functions/
-git add .
-git commit -m "Rollback Phase 3.3"
+**Phase 3.3 (AI Analysis):**
+```bash
+git revert 99cac69
 git push origin main
 ```
 
@@ -98,12 +87,31 @@ git push origin main
 
 | File | Purpose |
 |------|---------|
-| `MASTERPLAN.md` | Architecture, roadmap, full task checklist |
-| `CHANGELOG.md` | Version history with rollback instructions |
-| `HANDOFF.md` | This file — current session state |
-| `DNS-ROLLBACK.md` | Emergency WordPress restore instructions |
-| `/netlify/functions/insights-ai.js` | Claude API SEO analysis |
-| `/js/admin/insights/ai-insights-ui.js` | AI Insights UI component |
+| `netlify/functions/github-editor.js` | Cloud file editing API |
+| `netlify/functions/config-manager.js` | AI settings storage |
+| `netlify/functions/insights-ai.js` | Claude SEO analysis |
+| `MASTERPLAN.md` | Architecture & roadmap |
+| `CHANGELOG.md` | Version history |
+
+---
+
+## ⚙️ ENVIRONMENT VARIABLES (Netlify)
+
+| Variable | Purpose |
+|----------|---------|
+| `GOOGLE_SERVICE_ACCOUNT_KEY` | Firebase/GA4 access |
+| `CLAUDE_API_KEY` | AI analysis |
+| `GITHUB_TOKEN` | Cloud file editing |
+
+---
+
+## 📋 NEXT STEPS
+
+1. **Phase 4.2** - Settings UI page
+2. **Phase 4.3** - Floating chat widget
+3. **Phase 4.4** - Chat → Config integration
+4. **Phase 4.5** - Preview modal system
+5. **Phase 4.6** - BGC landing page test
 
 ---
 
@@ -111,8 +119,8 @@ git push origin main
 
 | Date | Version | Change |
 |------|---------|--------|
-| 2026-01-12 | v1.4.0 | AI SEO Analysis (Phase 3.3) |
+| 2026-01-12 | v1.5.0 | GitHub Editor + Config Manager |
+| 2026-01-12 | v1.4.0 | AI SEO Analysis |
 | 2026-01-11 | v1.3.0 | INSIGHTS MODULE Complete |
-| 2026-01-10 | v1.2.0 | Overview Dashboard Live |
-| 2026-01-10 | v1.1.0 | GA4 Custom Events |
-| 2026-01-08 | v1.0.0 | Initial Static Site Launch |
+| 2026-01-10 | v1.2.0 | Overview Dashboard |
+| 2026-01-08 | v1.0.0 | Initial Static Site |
