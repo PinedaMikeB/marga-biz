@@ -442,8 +442,12 @@ const AIChatWidget = {
         // Scroll to show the START of this message (not bottom)
         // This lets user read from the beginning of the reply
         if (role === 'assistant') {
-            // Scroll so the message appears at the top of the viewport
-            messageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Calculate position to scroll the message to the top of the container
+            // Use setTimeout to ensure DOM has updated
+            setTimeout(() => {
+                const messageTop = messageEl.offsetTop;
+                messagesContainer.scrollTop = messageTop - 10; // 10px padding from top
+            }, 50);
         } else {
             // For user messages, scroll to bottom as usual
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
