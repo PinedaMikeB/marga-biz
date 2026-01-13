@@ -356,7 +356,7 @@ async function scanCompetitor(url) {
         
         // Fetch the competitor page
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        const timeout = setTimeout(() => controller.abort(), 5000); // 5 second timeout (reduced from 10)
         
         const response = await fetch(url, {
             signal: controller.signal,
@@ -504,7 +504,7 @@ async function scanCompetitor(url) {
         
     } catch (e) {
         if (e.name === 'AbortError') {
-            return { success: false, error: 'Request timed out (10 seconds)' };
+            return { success: false, error: 'Request timed out (5 seconds) - competitor site may be slow' };
         }
         return { success: false, error: e.message };
     }
