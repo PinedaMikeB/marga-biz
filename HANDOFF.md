@@ -22,7 +22,7 @@
 - `scan_competitor` tool - fetches and parses competitor pages
 - Extracts: title, meta description, H1, H2s, word count, schema
 - Analyzes strengths and weaknesses automatically
-- 10-second timeout, proper error handling
+- 5-second timeout, proper error handling
 
 ### 2. Compare With Competitor Tool Built ✅
 - `compare_with_competitor` tool - side-by-side analysis
@@ -34,6 +34,14 @@
 - New tools registered in TOOLS array
 - System prompt updated with competitor analysis workflows
 - Can now answer "what's competitor X doing?"
+
+### 4. Chat Widget UX Fixes ✅
+- **JSON error handling** - Shows friendly message instead of crash
+- **Scroll to TOP** - Assistant replies now scroll to start (readable)
+- **Tool status** - Shows "Thinking..." with tool name when available
+- **Timeout handling** - Better error messages for slow responses
+- **Reduced iterations** - Max 3 tool calls to avoid timeout
+- **Faster responses** - Reduced max_tokens from 4000 to 2000
 
 ---
 
