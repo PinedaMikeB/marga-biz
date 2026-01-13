@@ -980,7 +980,8 @@ exports.handler = async (event) => {
             logActivity(AGENTS.MANAGER, 'chat_response', {
                 userMessage: message.substring(0, 100)
             }).catch(() => {});
-        } catch (e) {}
+        } catch (e) {
+            // Ignore logging errors
         }
 
         return {
