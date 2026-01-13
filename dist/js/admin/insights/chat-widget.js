@@ -9,6 +9,8 @@ const AIChatWidget = {
     isMinimized: false,
     messages: [],
     isLoading: false,
+    abortController: null, // For cancelling requests
+    statusInterval: null, // For animated status
 
     /**
      * Initialize chat widget
@@ -44,6 +46,7 @@ const AIChatWidget = {
                         </div>
                     </div>
                     <div class="chat-header-actions">
+                        <button id="chatStop" class="chat-stop-btn hidden" title="Stop">⬜ Stop</button>
                         <button id="chatMinimize" class="chat-action-btn" title="Minimize">−</button>
                         <button id="chatClose" class="chat-action-btn" title="Close">×</button>
                     </div>
@@ -91,6 +94,9 @@ const AIChatWidget = {
         // Close/minimize
         document.getElementById('chatClose').addEventListener('click', () => this.close());
         document.getElementById('chatMinimize').addEventListener('click', () => this.minimize());
+        
+        // Stop button
+        document.getElementById('chatStop').addEventListener('click', () => this.stopRequest());
         
         // Send message
         document.getElementById('chatSend').addEventListener('click', () => this.sendMessage());
@@ -270,6 +276,18 @@ const AIChatWidget = {
     },
 
     /**
+     * Stop the current request
+     */
+    stopRequest() {
+        if (this.abortController) {
+            this.abortController.abort();
+            this.abortController = null;
+        }
+        this.setLoading(false);
+        this.addMessage('assistant', '🛑 Request stopped. You can edit your message and try again.');
+    },
+
+    /**
      * Send message to AI
      */
     async sendMessage() {
@@ -310,14 +328,18 @@ const AIChatWidget = {
         // Add user message to chat
         this.addMessage('user', displayMessage);
 
-        // Show loading
+        // Show loading with animated status
         this.setLoading(true);
+
+        // Create abort controller for this request
+        this.abortController = new AbortController();
 
         try {
             // Send to Manager Agent (new orchestrator)
             const response = await fetch('/.netlify/functions/agent-manager', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                signal: this.abortController.signal,
                 body: JSON.stringify({ 
                     message,
                     attachments,
@@ -361,10 +383,16 @@ const AIChatWidget = {
                 this.addMessage('assistant', `Sorry, I encountered an error: ${result.error || 'Unknown error'}`);
             }
         } catch (error) {
+            // Check if it was aborted by user
+            if (error.name === 'AbortError') {
+                // Already handled by stopRequest()
+                return;
+            }
             console.error('Chat error:', error);
             this.addMessage('assistant', `Sorry, I couldn't connect to the server: ${error.message}. Please try again.`);
         }
 
+        this.abortController = null;
         this.setLoading(false);
     },
 
@@ -486,19 +514,73 @@ const AIChatWidget = {
      */
     setLoading(loading, toolName = null) {
         this.isLoading = loading;
-        
-        // Update status text
-        let statusText = 'Ready';
-        if (loading) {
-            statusText = toolName ? `Using ${toolName}...` : 'Thinking...';
-        }
-        document.getElementById('chatStatus').textContent = statusText;
-        document.getElementById('chatSend').disabled = loading;
+        const stopBtn = document.getElementById('chatStop');
+        const sendBtn = document.getElementById('chatSend');
+        const statusEl = document.getElementById('chatStatus');
         
         if (loading) {
+            // Show stop button, hide send button styling
+            stopBtn.classList.remove('hidden');
+            sendBtn.disabled = true;
+            
+            // Start animated status
+            this.startAnimatedStatus();
+            
+            // Add loading indicator
             this.addLoadingIndicator(toolName);
         } else {
+            // Hide stop button
+            stopBtn.classList.add('hidden');
+            sendBtn.disabled = false;
+            
+            // Stop animated status
+            this.stopAnimatedStatus();
+            statusEl.textContent = 'Ready';
+            
+            // Remove loading indicator
             this.removeLoadingIndicator();
+        }
+    },
+
+    /**
+     * Start animated status (cycles through different messages)
+     */
+    startAnimatedStatus() {
+        const statusEl = document.getElementById('chatStatus');
+        const loadingEl = document.querySelector('.tool-status');
+        const stages = [
+            'Thinking...',
+            'Analyzing request...',
+            'Calling AI...',
+            'Processing...',
+            'Working on it...',
+            'Almost there...'
+        ];
+        let index = 0;
+        let seconds = 0;
+        
+        this.statusInterval = setInterval(() => {
+            seconds++;
+            const stage = stages[Math.min(index, stages.length - 1)];
+            const timeText = seconds > 3 ? ` (${seconds}s)` : '';
+            statusEl.textContent = stage + timeText;
+            if (loadingEl) {
+                loadingEl.textContent = stage + timeText;
+            }
+            // Progress through stages every 2 seconds
+            if (seconds % 2 === 0 && index < stages.length - 1) {
+                index++;
+            }
+        }, 1000);
+    },
+
+    /**
+     * Stop animated status
+     */
+    stopAnimatedStatus() {
+        if (this.statusInterval) {
+            clearInterval(this.statusInterval);
+            this.statusInterval = null;
         }
     },
 
