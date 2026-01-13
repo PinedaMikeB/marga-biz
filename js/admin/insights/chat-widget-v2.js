@@ -469,17 +469,101 @@ const AIChatWidget = {
     formatMessage(content) {
         if (!content) return '';
         
-        return content
+        let formatted = content;
+        
+        // Check if content has a markdown table (lines with |)
+        const hasTable = /\|.*\|.*\|/m.test(content);
+        
+        if (hasTable) {
+            // Convert markdown table to HTML
+            formatted = this.convertMarkdownTable(formatted);
+            
+            // Auto-expand chat window
+            setTimeout(() => {
+                document.getElementById('chatWindow').classList.add('expanded');
+            }, 100);
+        }
+        
+        return formatted
             // Bold
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            // Italic
+            // Italic  
             .replace(/\*(.*?)\*/g, '<em>$1</em>')
             // Code
             .replace(/`(.*?)`/g, '<code>$1</code>')
-            // Line breaks
+            // Line breaks (but not inside tables)
             .replace(/\n/g, '<br>')
             // Links
             .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+    },
+
+    /**
+     * Convert markdown table to HTML table
+     */
+    convertMarkdownTable(content) {
+        const lines = content.split('\n');
+        let inTable = false;
+        let tableHtml = '';
+        let result = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            // Check if line is a table row (has | characters)
+            if (line.startsWith('|') && line.endsWith('|')) {
+                // Check if it's a separator row (|---|---|)
+                if (/^\|[\s\-:]+\|/.test(line) && line.includes('-')) {
+                    continue; // Skip separator row
+                }
+                
+                if (!inTable) {
+                    inTable = true;
+                    tableHtml = '<div class="table-wrapper"><table>';
+                }
+                
+                // Parse cells
+                const cells = line.split('|').filter(c => c.trim() !== '');
+                const isHeader = !tableHtml.includes('<tbody>');
+                
+                if (isHeader && !tableHtml.includes('<thead>')) {
+                    tableHtml += '<thead><tr>';
+                    cells.forEach(cell => {
+                        tableHtml += `<th>${cell.trim()}</th>`;
+                    });
+                    tableHtml += '</tr></thead><tbody>';
+                } else {
+                    tableHtml += '<tr>';
+                    cells.forEach(cell => {
+                        // Add color coding for winners/losers
+                        let cellContent = cell.trim();
+                        if (cellContent.includes('✅') || cellContent.includes('YOU') && !cellContent.includes('❌')) {
+                            cellContent = `<span class="winner">${cellContent}</span>`;
+                        } else if (cellContent.includes('❌') || cellContent.includes('THEM')) {
+                            cellContent = `<span class="loser">${cellContent}</span>`;
+                        }
+                        tableHtml += `<td>${cellContent}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                }
+            } else {
+                // Not a table row
+                if (inTable) {
+                    inTable = false;
+                    tableHtml += '</tbody></table></div>';
+                    result.push(tableHtml);
+                    tableHtml = '';
+                }
+                result.push(line);
+            }
+        }
+        
+        // Close table if still open
+        if (inTable) {
+            tableHtml += '</tbody></table></div>';
+            result.push(tableHtml);
+        }
+        
+        return result.join('\n');
     },
 
     /**
