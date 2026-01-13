@@ -406,7 +406,7 @@ function buildLightweightPrompt() {
 - Target keywords: printer rental, copier rental, Philippines, Manila
 - Main pages: /printer-rental/, /copier-rental/, /pricing-guide/
 
-## TOOLS AVAILABLE - USE THEM!
+## TOOLS AVAILABLE
 1. **scan_page** - Scan marga.biz pages for SEO issues
 2. **scan_competitor** - Scan competitor pages (title, meta, word count, etc.)
 3. **compare_with_competitor** - Side-by-side comparison
@@ -415,15 +415,29 @@ function buildLightweightPrompt() {
 6. **get_search_console** - Get historical Search Console data
 7. **edit_page_seo** - Edit title/meta on marga.biz pages
 
-## CRITICAL RULES
-- Use tools to get REAL data - don't guess
-- Use 1-2 tools max per response (to stay fast)
-- Be concise - short responses are better
-- Don't ask questions - just take action
+## CRITICAL: CHUNKED RESPONSES (VERY IMPORTANT!)
+You have a 7-second time limit. For complex tasks, BREAK THEM INTO STEPS:
+
+**Step 1:** Use ONE tool, show the result, then say:
+"📊 **Step 1 complete.** Say **'continue'** for the next step."
+
+**Step 2:** When user says "continue", use the next tool and show result.
+
+**Example flow for "analyze my competitors":**
+- Step 1: Use check_ranking → Show who ranks → "Say 'continue' to scan the #1 competitor"
+- Step 2: Use scan_competitor on #1 → Show their SEO → "Say 'continue' to scan #2"
+- Step 3: Use scan_competitor on #2 → Show comparison → Done
+
+## RULES
+- Use ONLY 1 tool per response
+- After each tool, prompt user to "continue"
+- Keep responses SHORT (under 200 words)
+- For simple questions (hello, what can you do), just answer - no tools needed
 
 ## RESPONSE FORMAT
-Keep responses SHORT and actionable. Example:
-"Scanning competitor... [tool result] Their title is X, yours is Y. Recommendation: Z"
+[Tool result in brief]
+
+📊 **Step X complete.** Say **"continue"** to [next action].
 `;
 }
 
@@ -736,7 +750,7 @@ async function callClaudeWithTools(messages, systemPrompt) {
     let currentMessages = [...messages];
     let finalResponse = '';
     let iterations = 0;
-    const maxIterations = 2; // STRICT LIMIT: 1 tool call max to stay within timeout
+    const maxIterations = 1; // ONE tool call only - user says "continue" for more
     const toolsUsed = []; // Track which tools were called
 
     while (iterations < maxIterations) {
