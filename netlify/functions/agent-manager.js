@@ -36,6 +36,7 @@ const {
 } = require('./lib/agent-tools');
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
+const CLAUDE_MODEL = 'claude-haiku-4-5-20251001'; // Fast model for quick responses
 
 /**
  * Available tools for Claude to use
@@ -749,8 +750,8 @@ async function callClaudeWithTools(messages, systemPrompt) {
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 2000, // Reduced from 4000 to speed up response
+                model: CLAUDE_MODEL, // Using Haiku for speed
+                max_tokens: 1000, // Reduced for faster responses
                 temperature: 0.7,
                 system: systemPrompt,
                 tools: TOOLS,
