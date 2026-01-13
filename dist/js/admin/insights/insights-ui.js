@@ -185,16 +185,26 @@ const InsightsUI = {
                 const { summary, period } = result.data;
                 
                 // Update usage cards
-                document.getElementById('totalRequests').textContent = this.formatNumber(summary.totalRequests);
+                document.getElementById('totalRequests').textContent = 
+                    this.formatTokens(summary.totalInputTokens + summary.totalOutputTokens > 0 ? 
+                        Math.ceil((summary.totalInputTokens + summary.totalOutputTokens) / 1000) : 0) + ' calls*';
                 document.getElementById('totalTokens').textContent = this.formatTokens(summary.totalTokens);
                 document.getElementById('totalCost').textContent = '$' + summary.totalCost.toFixed(4);
                 document.getElementById('projectedCost').textContent = '$' + summary.projectedMonthlyCost.toFixed(2);
                 
                 // Update period text
+                const source = result.source === 'anthropic_admin_api' ? '(from Anthropic)' : '(estimated)';
                 document.getElementById('usagePeriod').textContent = 
-                    `Last ${period.days} days (${period.from} to ${period.to})`;
+                    `Last ${period.days} days (${period.from} to ${period.to}) ${source}`;
+            } else if (result && result.error) {
+                document.getElementById('usagePeriod').innerHTML = 
+                    `<span style="color: #ef4444;">⚠️ ${result.error}</span>`;
+                if (result.help) {
+                    document.getElementById('usagePeriod').innerHTML += 
+                        `<br><small>${result.help}</small>`;
+                }
             } else {
-                document.getElementById('usagePeriod').textContent = 'No usage data yet. Start using the AI Assistant!';
+                document.getElementById('usagePeriod').textContent = 'No usage data available';
             }
         } catch (error) {
             console.error('Error loading API usage:', error);
