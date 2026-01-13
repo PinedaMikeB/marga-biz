@@ -336,6 +336,11 @@ const AIChatWidget = {
 
         try {
             // Send to Manager Agent (new orchestrator)
+            // Filter out empty messages from history
+            const cleanHistory = this.messages
+                .filter(m => m.content && m.content.trim().length > 0)
+                .slice(-10);
+            
             const response = await fetch('/.netlify/functions/agent-manager', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -343,7 +348,7 @@ const AIChatWidget = {
                 body: JSON.stringify({ 
                     message,
                     attachments,
-                    history: this.messages.slice(-10) // Last 10 messages for context
+                    history: cleanHistory
                 })
             });
 

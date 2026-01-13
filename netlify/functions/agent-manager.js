@@ -975,11 +975,13 @@ exports.handler = async (event) => {
             // Use lightweight system prompt (no Firebase calls)
             const systemPrompt = buildLightweightPrompt();
 
-            // Build messages
-            const messages = history.map(m => ({
-                role: m.role === 'assistant' ? 'assistant' : 'user',
-                content: m.content
-            }));
+            // Build messages - filter out empty content
+            const messages = history
+                .filter(m => m.content && m.content.trim().length > 0)
+                .map(m => ({
+                    role: m.role === 'assistant' ? 'assistant' : 'user',
+                    content: m.content
+                }));
             messages.push({ role: 'user', content: message });
 
             // Call Claude with tools (MCP-style)
