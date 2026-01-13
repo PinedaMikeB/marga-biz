@@ -759,7 +759,7 @@ async function callClaudeWithTools(messages, systemPrompt) {
     let currentMessages = [...messages];
     let finalResponse = '';
     let iterations = 0;
-    const maxIterations = 1; // ONE tool call only - user says "continue" for more
+    const maxIterations = 2; // Allow: 1) Tool call 2) Response with tool result
     const toolsUsed = []; // Track which tools were called
 
     while (iterations < maxIterations) {
