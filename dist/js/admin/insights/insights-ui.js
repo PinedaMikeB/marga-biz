@@ -172,10 +172,49 @@ const InsightsUI = {
     formatNumber(num) {
         if (num === null || num === undefined) return '--';
         return num.toLocaleString();
+    },
+
+    /**
+     * Load and render API usage data
+     */
+    async loadAPIUsage() {
+        try {
+            const result = await InsightsAPI.getAPIUsage(30);
+            
+            if (result && result.success) {
+                const { summary, period } = result.data;
+                
+                // Update usage cards
+                document.getElementById('totalRequests').textContent = this.formatNumber(summary.totalRequests);
+                document.getElementById('totalTokens').textContent = this.formatTokens(summary.totalTokens);
+                document.getElementById('totalCost').textContent = '$' + summary.totalCost.toFixed(4);
+                document.getElementById('projectedCost').textContent = '$' + summary.projectedMonthlyCost.toFixed(2);
+                
+                // Update period text
+                document.getElementById('usagePeriod').textContent = 
+                    `Last ${period.days} days (${period.from} to ${period.to})`;
+            } else {
+                document.getElementById('usagePeriod').textContent = 'No usage data yet. Start using the AI Assistant!';
+            }
+        } catch (error) {
+            console.error('Error loading API usage:', error);
+            document.getElementById('usagePeriod').textContent = 'Unable to load usage data';
+        }
+    },
+
+    /**
+     * Format token numbers (e.g., 1.2M, 500K)
+     */
+    formatTokens(num) {
+        if (!num) return '0';
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return num.toString();
     }
 };
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     InsightsUI.init();
+    InsightsUI.loadAPIUsage();
 });

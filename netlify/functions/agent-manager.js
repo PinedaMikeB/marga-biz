@@ -38,6 +38,56 @@ const {
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 const CLAUDE_MODEL = 'claude-haiku-4-5-20251001'; // Fast model for quick responses
 
+// Pricing per 1M tokens (as of Jan 2025)
+const PRICING = {
+    'claude-haiku-4-5-20251001': { input: 0.80, output: 4.00 },
+    'claude-sonnet-4-20250514': { input: 3.00, output: 15.00 },
+    'claude-opus-4-20250514': { input: 15.00, output: 75.00 }
+};
+
+/**
+ * Track API usage in Firebase
+ */
+async function trackUsage(usage, model) {
+    try {
+        const db = getDb();
+        const today = new Date().toISOString().split('T')[0];
+        const pricing = PRICING[model] || PRICING['claude-haiku-4-5-20251001'];
+        
+        // Calculate cost
+        const inputCost = (usage.input_tokens / 1000000) * pricing.input;
+        const outputCost = (usage.output_tokens / 1000000) * pricing.output;
+        const totalCost = inputCost + outputCost;
+        
+        // Get or create today's usage doc
+        const usageRef = db.collection('api_usage').doc(today);
+        const doc = await usageRef.get();
+        
+        if (doc.exists) {
+            const data = doc.data();
+            await usageRef.update({
+                requests: (data.requests || 0) + 1,
+                inputTokens: (data.inputTokens || 0) + usage.input_tokens,
+                outputTokens: (data.outputTokens || 0) + usage.output_tokens,
+                totalCost: (data.totalCost || 0) + totalCost,
+                lastUpdated: new Date().toISOString()
+            });
+        } else {
+            await usageRef.set({
+                date: today,
+                requests: 1,
+                inputTokens: usage.input_tokens,
+                outputTokens: usage.output_tokens,
+                totalCost: totalCost,
+                model: model,
+                lastUpdated: new Date().toISOString()
+            });
+        }
+    } catch (e) {
+        console.error('Failed to track usage:', e);
+    }
+}
+
 /**
  * Available tools for Claude to use
  */
@@ -788,6 +838,11 @@ async function callClaudeWithTools(messages, systemPrompt) {
         }
 
         const result = await response.json();
+        
+        // Track usage in Firebase (fire-and-forget)
+        if (result.usage) {
+            trackUsage(result.usage, CLAUDE_MODEL).catch(() => {});
+        }
         
         // Check if Claude wants to use tools
         if (result.stop_reason === 'tool_use') {

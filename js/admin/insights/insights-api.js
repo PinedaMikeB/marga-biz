@@ -133,5 +133,19 @@ const InsightsAPI = {
                 }
             }
         };
+    },
+
+    /**
+     * Fetch API usage and billing data
+     */
+    async getAPIUsage(days = 30) {
+        try {
+            const response = await fetch(`${this.baseUrl}/api-usage?days=${days}`);
+            if (!response.ok) throw new Error('Failed to fetch API usage');
+            return await response.json();
+        } catch (error) {
+            console.error('API Usage Error:', error);
+            return null;
+        }
     }
 };

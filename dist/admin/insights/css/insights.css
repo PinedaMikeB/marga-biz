@@ -622,3 +622,68 @@ body {
         flex-direction: column;
     }
 }
+
+/* API Usage Section */
+.api-usage-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 24px;
+    box-shadow: var(--shadow);
+}
+
+.api-usage-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.25rem;
+    color: var(--gray-900);
+}
+
+.api-usage-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.usage-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.usage-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.usage-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.usage-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.usage-label {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+}
+
+.usage-period {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .api-usage-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
