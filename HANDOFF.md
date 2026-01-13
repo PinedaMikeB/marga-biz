@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** January 13, 2026 (12:52 AM)  
-**Current Version:** v2.2.0 (MCP-Style Agent System)  
+**Last Updated:** January 13, 2026 (Session 2)  
+**Current Version:** v2.3.0 (Competitor Scanning Tools)  
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -16,23 +16,24 @@
 
 ---
 
-## ✅ SESSION ACCOMPLISHMENTS (Jan 12-13, 2026)
+## ✅ SESSION ACCOMPLISHMENTS (Jan 13, 2026 - Session 2)
 
-### 1. All 1,905 Pages Now in GitHub ✅
-- Removed `dist/` from `.gitignore`
-- All HTML pages tracked in git
-- Manager can now edit pages via GitHub API
+### 1. Competitor Scanning Tool Built ✅
+- `scan_competitor` tool - fetches and parses competitor pages
+- Extracts: title, meta description, H1, H2s, word count, schema
+- Analyzes strengths and weaknesses automatically
+- 10-second timeout, proper error handling
 
-### 2. SEO Updates Made ✅
-| Page | Change | Status |
-|------|--------|--------|
-| /printer-rental/ | Title: "Printer Rental" → "Printer Rental Philippines" | ✅ Live |
-| /printer-rental/ | Meta description updated | ✅ In GitHub (deploying) |
+### 2. Compare With Competitor Tool Built ✅
+- `compare_with_competitor` tool - side-by-side analysis
+- Scans both your page and competitor's page
+- Identifies who wins on each SEO factor
+- Generates specific recommendations
 
-### 3. Agent System Built ✅
-- Manager Agent with MCP-style tools
-- Search Agent with live SERP (Serper.dev)
-- Page scanning and editing tools
+### 3. Manager Agent Updated ✅
+- New tools registered in TOOLS array
+- System prompt updated with competitor analysis workflows
+- Can now answer "what's competitor X doing?"
 
 ---
 
@@ -42,6 +43,8 @@
 | Tool | Function | Status |
 |------|----------|--------|
 | `scan_page` | Scan YOUR pages for SEO issues | ✅ Working |
+| `scan_competitor` | Scan COMPETITOR pages for SEO elements | ✅ NEW |
+| `compare_with_competitor` | Side-by-side page comparison | ✅ NEW |
 | `check_ranking` | Live SERP position via Serper.dev | ✅ Working |
 | `find_competitors` | List competitor domains from SERP | ✅ Working |
 | `edit_page_seo` | Edit title/meta via GitHub API | ✅ Working |
@@ -51,10 +54,9 @@
 ### What Manager CANNOT Do Yet:
 | Feature | What's Missing |
 |---------|----------------|
-| Scan competitor pages | Need `scan_competitor` tool |
-| See competitor titles/meta | Need to fetch & parse competitor HTML |
 | Generate content | Content Agent not built |
 | Track issues over time | Tracker Agent not built |
+| Monitor AI search engines | AI Search Agent not built |
 
 ---
 
@@ -69,8 +71,12 @@ netlify/functions/
 ├── page-scanner.js       # Scan pages for SEO
 ├── lib/
 │   ├── agent-utils.js    # Firebase helpers
-│   └── agent-tools.js    # MCP-style tools (scan, edit, rank)
+│   └── agent-tools.js    # MCP-style tools (scan, edit, rank, competitor)
 ```
+
+### New/Modified Files This Session:
+- `lib/agent-tools.js` — Added `scanCompetitor` and `compareWithCompetitor` functions
+- `agent-manager.js` — Registered new tools, updated system prompt
 
 ---
 
@@ -119,17 +125,11 @@ Live on marga.biz!
 
 ## ⏳ NEXT STEPS (Priority Order)
 
-### 1. Add Competitor Scanning Tool
-Manager admitted it can't see competitor title tags. Need to add:
-```javascript
-// Tool: scan_competitor
-// Fetches competitor page, extracts title/meta/h1/word count
-async function scanCompetitor(url) {
-    // Fetch HTML
-    // Parse title, meta, h1, h2s, word count
-    // Return structured data
-}
-```
+### 1. Test Competitor Scanning ✅ JUST BUILT
+Test via chat widget:
+- "Scan printerrentalsph.com"
+- "Compare my printer-rental page with printerrentalsph.com"
+- "Who's ranking #1 for printer rental philippines and what's their SEO like?"
 
 ### 2. Build Content Agent
 - Generate optimized content
@@ -178,16 +178,21 @@ fdf8eb7 Make Manager SMART - use multiple tools
 
 ---
 
-## 🔄 TO CONTINUE TOMORROW
+## 🔄 TO CONTINUE NEXT SESSION
 
-1. Test the chat widget - should work now
-2. Verify meta description deployed
-3. Consider adding `scan_competitor` tool
-4. Ask Manager to analyze more pages
+1. Test competitor scanning tools via chat widget
+2. Consider building Content Agent for page optimization
+3. Consider building Tracker Agent for issue monitoring
 
-**Command to check status:**
+**Test commands for new tools:**
 ```bash
+# Test competitor scanning via API
 curl -s "https://marga.biz/.netlify/functions/agent-manager" \
   -X POST -H "Content-Type: application/json" \
-  -d '{"message": "What can you help me with?"}'
+  -d '{"message": "Scan the homepage of printerrentalsph.com and tell me their SEO setup"}'
+
+# Test comparison
+curl -s "https://marga.biz/.netlify/functions/agent-manager" \
+  -X POST -H "Content-Type: application/json" \
+  -d '{"message": "Compare my /printer-rental/ page with printerrentalsph.com"}'
 ```

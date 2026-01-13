@@ -10,6 +10,45 @@ Each entry includes rollback instructions.
 
 ---
 
+## [v2.3.0] - 2026-01-13
+
+### 🔍 Competitor Scanning Tools
+
+**Summary:** Manager Agent can now scan competitor pages to see their SEO setup.
+
+**New Tools:**
+- `scan_competitor` - Fetches competitor page, extracts title, meta, H1, H2s, word count, schema markup
+- `compare_with_competitor` - Side-by-side comparison of your page vs competitor
+
+**Features:**
+- Parses competitor HTML for SEO elements
+- 10-second timeout for slow sites
+- Auto-identifies strengths and weaknesses
+- Generates specific recommendations
+- Proper User-Agent header for fetching
+
+**Modified Files:**
+- `netlify/functions/lib/agent-tools.js` - Added scanCompetitor, compareWithCompetitor functions
+- `netlify/functions/agent-manager.js` - Registered new tools, updated system prompt
+
+**Git Commit:** *(pending)*
+
+**Rollback Instructions:**
+```bash
+# Revert to previous version
+git checkout HEAD~1 -- netlify/functions/lib/agent-tools.js netlify/functions/agent-manager.js
+git add .
+git commit -m "Rollback: Remove competitor scanning tools"
+git push origin main
+```
+
+**Verification:**
+- [ ] Chat widget accepts "scan printerrentalsph.com"
+- [ ] Returns competitor's title, meta, word count
+- [ ] Compare tool shows side-by-side analysis
+
+---
+
 ## [v1.4.0] - 2026-01-12
 
 ### 🤖 AI SEO Analysis Feature (Phase 3.3)

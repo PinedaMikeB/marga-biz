@@ -30,7 +30,9 @@ const {
     getCachedPage,
     getSearchConsoleData,
     getSiteOverview,
-    editPageSEO
+    editPageSEO,
+    scanCompetitor,
+    compareWithCompetitor
 } = require('./lib/agent-tools');
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -124,6 +126,38 @@ const TOOLS = [
             type: "object",
             properties: {}
         }
+    },
+    {
+        name: "scan_competitor",
+        description: "Scan a competitor's page to extract their SEO elements (title, meta description, headings, word count, schema). Use this to see what competitors are doing that you're not. Returns actual competitor page data.",
+        input_schema: {
+            type: "object",
+            properties: {
+                url: {
+                    type: "string",
+                    description: "The competitor URL to scan, e.g., 'https://printerrentalsph.com/' or 'printerrentalsph.com'"
+                }
+            },
+            required: ["url"]
+        }
+    },
+    {
+        name: "compare_with_competitor",
+        description: "Compare your page directly with a competitor's page. Scans both pages and provides side-by-side comparison with analysis of who wins on each SEO factor and specific recommendations.",
+        input_schema: {
+            type: "object",
+            properties: {
+                your_path: {
+                    type: "string",
+                    description: "Your page path, e.g., '/printer-rental/'"
+                },
+                competitor_url: {
+                    type: "string",
+                    description: "Competitor's full URL, e.g., 'https://printerrentalsph.com/'"
+                }
+            },
+            required: ["your_path", "competitor_url"]
+        }
     }
 ];
 
@@ -147,6 +181,10 @@ async function executeTool(toolName, toolInput) {
             return await getSearchConsoleData(toolInput.keyword);
         case 'get_site_overview':
             return await getSiteOverview();
+        case 'scan_competitor':
+            return await scanCompetitor(toolInput.url);
+        case 'compare_with_competitor':
+            return await compareWithCompetitor(toolInput.your_path, toolInput.competitor_url);
         default:
             return { error: `Unknown tool: ${toolName}` };
     }
@@ -568,28 +606,36 @@ Say: "I'll check your current rankings. Note: The Search Agent is being built - 
 
 You have access to these tools. USE THEM to get real data:
 
-1. **scan_page** - Scan any page for SEO issues (REAL data, not guesses)
-2. **check_ranking** - Check live SERP ranking for a keyword
-3. **find_competitors** - Find competitors for a keyword
-4. **get_search_console** - Get historical Search Console data
-5. **get_site_overview** - Get site stats and recent scans
+1. **scan_page** - Scan any marga.biz page for SEO issues (REAL data, not guesses)
+2. **scan_competitor** - Scan a COMPETITOR page to see their title, meta, headings, word count, schema
+3. **compare_with_competitor** - Compare your page directly with a competitor (side-by-side analysis)
+4. **check_ranking** - Check live SERP ranking for a keyword
+5. **find_competitors** - Find competitors for a keyword
+6. **get_search_console** - Get historical Search Console data
+7. **get_site_overview** - Get site stats and recent scans
+8. **edit_page_seo** - Edit title/meta on marga.biz pages (requires approval)
 
 **CRITICAL:** USE MULTIPLE TOOLS IN ONE RESPONSE. Don't ask if user wants more - JUST DO IT.
 
 ## SMART BEHAVIOR
 
 When user asks "check my ranking for X":
-1. Use check_ranking tool → Get position
-2. Use scan_page tool → Analyze the relevant page (e.g., /printer-rental/)
-3. Cross-reference: Is the page optimized for that keyword?
-4. Give COMPLETE analysis with actionable fixes
-5. DO NOT ask "would you like me to scan the page?" - JUST SCAN IT
+1. Use check_ranking tool → Get position and see who's ranking above you
+2. Use scan_page tool → Analyze your relevant page
+3. Use scan_competitor tool → Analyze the #1 ranking competitor
+4. Cross-reference: What are they doing that you're not?
+5. Give COMPLETE analysis with actionable fixes
 
-When user asks "analyze my page":
-1. Use scan_page tool → Get real SEO data
-2. Use check_ranking tool → See how it's ranking for its target keywords
-3. Compare with competitors
-4. Give prioritized action plan
+When user asks "analyze competitors":
+1. Use check_ranking to find who ranks for your keywords
+2. Use scan_competitor on the top 2-3 competitors
+3. Use scan_page on your equivalent page
+4. Provide side-by-side comparison and recommendations
+
+When user asks about a specific competitor:
+1. Use scan_competitor to get their actual SEO data
+2. Use compare_with_competitor for direct comparison
+3. Identify specific gaps and opportunities
 
 ## RESPONSE RULES
 

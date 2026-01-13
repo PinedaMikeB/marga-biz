@@ -332,6 +332,303 @@ async function editPageSEO(pagePath, changes) {
     }
 }
 
+/**
+ * TOOL: Scan a competitor's page for SEO analysis
+ * Fetches and parses competitor HTML to extract SEO elements
+ */
+async function scanCompetitor(url) {
+    try {
+        // Validate URL
+        if (!url.startsWith('http')) {
+            url = 'https://' + url;
+        }
+        
+        const urlObj = new URL(url);
+        const domain = urlObj.hostname;
+        
+        // Don't scan our own site with this tool
+        if (domain.includes('marga.biz')) {
+            return { 
+                success: false, 
+                error: 'Use scan_page for marga.biz pages, not scan_competitor' 
+            };
+        }
+        
+        // Fetch the competitor page
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        const response = await fetch(url, {
+            signal: controller.signal,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (compatible; MargaSEOBot/1.0; +https://marga.biz)',
+                'Accept': 'text/html,application/xhtml+xml',
+                'Accept-Language': 'en-US,en;q=0.9'
+            }
+        });
+        
+        clearTimeout(timeout);
+        
+        if (!response.ok) {
+            return { 
+                success: false, 
+                error: `Failed to fetch: HTTP ${response.status}` 
+            };
+        }
+        
+        const html = await response.text();
+        
+        // Parse SEO elements from HTML
+        const result = {
+            success: true,
+            url: url,
+            domain: domain,
+            fetchedAt: new Date().toISOString()
+        };
+        
+        // Extract title
+        const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+        result.title = titleMatch ? titleMatch[1].trim() : null;
+        result.titleLength = result.title?.length || 0;
+        
+        // Extract meta description
+        const metaDescMatch = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["'][^>]*>/i) ||
+                             html.match(/<meta\s+content=["']([^"']*)["']\s+name=["']description["'][^>]*>/i);
+        result.metaDescription = metaDescMatch ? metaDescMatch[1].trim() : null;
+        result.metaLength = result.metaDescription?.length || 0;
+        
+        // Extract H1
+        const h1Match = html.match(/<h1[^>]*>([^<]*)<\/h1>/i);
+        result.h1 = h1Match ? h1Match[1].trim().replace(/\s+/g, ' ') : null;
+        
+        // Count H2s
+        const h2Matches = html.match(/<h2[^>]*>([^<]*)<\/h2>/gi) || [];
+        result.h2s = h2Matches.map(h2 => {
+            const match = h2.match(/<h2[^>]*>([^<]*)<\/h2>/i);
+            return match ? match[1].trim().replace(/\s+/g, ' ') : '';
+        }).filter(h => h.length > 0).slice(0, 10); // First 10 H2s
+        result.h2Count = result.h2s.length;
+        
+        // Count H3s
+        const h3Matches = html.match(/<h3[^>]*>/gi) || [];
+        result.h3Count = h3Matches.length;
+        
+        // Estimate word count (strip HTML, count words)
+        const textContent = html
+            .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+            .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        result.wordCount = textContent.split(/\s+/).filter(w => w.length > 0).length;
+        
+        // Check for schema markup
+        result.hasSchema = html.includes('application/ld+json') || 
+                          html.includes('itemtype="http://schema.org') ||
+                          html.includes('itemtype="https://schema.org');
+        
+        // Check for Open Graph tags
+        result.hasOpenGraph = html.includes('og:title') || html.includes('og:description');
+        
+        // Extract canonical URL
+        const canonicalMatch = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']*)["'][^>]*>/i) ||
+                              html.match(/<link\s+href=["']([^"']*)["']\s+rel=["']canonical["'][^>]*>/i);
+        result.canonical = canonicalMatch ? canonicalMatch[1] : null;
+        
+        // Count images and images with alt text
+        const imgMatches = html.match(/<img[^>]+>/gi) || [];
+        result.imageCount = imgMatches.length;
+        result.imagesWithAlt = imgMatches.filter(img => img.includes('alt=')).length;
+        
+        // Check for common SEO elements
+        result.seoElements = {
+            hasTitle: !!result.title,
+            hasMeta: !!result.metaDescription,
+            hasH1: !!result.h1,
+            hasSchema: result.hasSchema,
+            hasCanonical: !!result.canonical,
+            titleOptimal: result.titleLength >= 30 && result.titleLength <= 60,
+            metaOptimal: result.metaLength >= 120 && result.metaLength <= 160
+        };
+        
+        // Generate quick analysis
+        const strengths = [];
+        const weaknesses = [];
+        
+        if (result.titleLength >= 30 && result.titleLength <= 60) {
+            strengths.push(`Good title length (${result.titleLength} chars)`);
+        } else if (result.titleLength > 0) {
+            weaknesses.push(`Title ${result.titleLength < 30 ? 'too short' : 'too long'} (${result.titleLength} chars)`);
+        } else {
+            weaknesses.push('Missing title tag');
+        }
+        
+        if (result.metaLength >= 120 && result.metaLength <= 160) {
+            strengths.push(`Good meta description length (${result.metaLength} chars)`);
+        } else if (result.metaLength > 0) {
+            weaknesses.push(`Meta description ${result.metaLength < 120 ? 'too short' : 'too long'} (${result.metaLength} chars)`);
+        } else {
+            weaknesses.push('Missing meta description');
+        }
+        
+        if (result.h1) {
+            strengths.push('Has H1 heading');
+        } else {
+            weaknesses.push('Missing H1 heading');
+        }
+        
+        if (result.h2Count >= 3) {
+            strengths.push(`Good heading structure (${result.h2Count} H2s)`);
+        } else if (result.h2Count > 0) {
+            weaknesses.push(`Few subheadings (only ${result.h2Count} H2s)`);
+        } else {
+            weaknesses.push('No H2 subheadings');
+        }
+        
+        if (result.wordCount >= 1000) {
+            strengths.push(`Strong content length (${result.wordCount} words)`);
+        } else if (result.wordCount >= 500) {
+            strengths.push(`Decent content (${result.wordCount} words)`);
+        } else {
+            weaknesses.push(`Thin content (only ${result.wordCount} words)`);
+        }
+        
+        if (result.hasSchema) {
+            strengths.push('Has schema markup');
+        }
+        
+        result.strengths = strengths;
+        result.weaknesses = weaknesses;
+        
+        return result;
+        
+    } catch (e) {
+        if (e.name === 'AbortError') {
+            return { success: false, error: 'Request timed out (10 seconds)' };
+        }
+        return { success: false, error: e.message };
+    }
+}
+
+/**
+ * TOOL: Compare your page with a competitor
+ * Runs scan_page and scan_competitor, then compares
+ */
+async function compareWithCompetitor(yourPath, competitorUrl) {
+    try {
+        // Scan your page
+        const yourPage = await scanPage(yourPath);
+        if (!yourPage.success) {
+            return { success: false, error: `Failed to scan your page: ${yourPage.error}` };
+        }
+        
+        // Scan competitor
+        const competitor = await scanCompetitor(competitorUrl);
+        if (!competitor.success) {
+            return { success: false, error: `Failed to scan competitor: ${competitor.error}` };
+        }
+        
+        // Build comparison
+        const comparison = {
+            success: true,
+            yourPage: {
+                url: yourPage.url,
+                title: yourPage.title,
+                titleLength: yourPage.titleLength,
+                metaDescription: yourPage.metaDescription,
+                metaLength: yourPage.metaLength,
+                h1: yourPage.h1,
+                h2Count: yourPage.h2Count,
+                wordCount: yourPage.wordCount,
+                hasSchema: yourPage.hasSchema,
+                seoScore: yourPage.seoScore
+            },
+            competitor: {
+                url: competitor.url,
+                domain: competitor.domain,
+                title: competitor.title,
+                titleLength: competitor.titleLength,
+                metaDescription: competitor.metaDescription,
+                metaLength: competitor.metaLength,
+                h1: competitor.h1,
+                h2Count: competitor.h2Count,
+                wordCount: competitor.wordCount,
+                hasSchema: competitor.hasSchema
+            },
+            analysis: {
+                youWin: [],
+                theyWin: [],
+                recommendations: []
+            }
+        };
+        
+        // Compare title
+        if (yourPage.titleLength > 0 && competitor.titleLength > 0) {
+            if (yourPage.titleLength >= 30 && yourPage.titleLength <= 60 && 
+                (competitor.titleLength < 30 || competitor.titleLength > 60)) {
+                comparison.analysis.youWin.push('Better optimized title length');
+            } else if (competitor.titleLength >= 30 && competitor.titleLength <= 60 && 
+                      (yourPage.titleLength < 30 || yourPage.titleLength > 60)) {
+                comparison.analysis.theyWin.push('Better optimized title length');
+                comparison.analysis.recommendations.push(`Optimize your title to 30-60 chars (currently ${yourPage.titleLength})`);
+            }
+        }
+        
+        // Compare meta description
+        if (yourPage.metaLength > 0 && competitor.metaLength > 0) {
+            if (yourPage.metaLength >= 120 && yourPage.metaLength <= 160 && 
+                (competitor.metaLength < 120 || competitor.metaLength > 160)) {
+                comparison.analysis.youWin.push('Better meta description length');
+            } else if (competitor.metaLength >= 120 && competitor.metaLength <= 160 && 
+                      (yourPage.metaLength < 120 || yourPage.metaLength > 160)) {
+                comparison.analysis.theyWin.push('Better meta description length');
+                comparison.analysis.recommendations.push(`Optimize meta description to 120-160 chars (currently ${yourPage.metaLength})`);
+            }
+        }
+        
+        // Compare content length
+        const wordDiff = yourPage.wordCount - competitor.wordCount;
+        if (wordDiff >= 200) {
+            comparison.analysis.youWin.push(`More content (+${wordDiff} words)`);
+        } else if (wordDiff <= -200) {
+            comparison.analysis.theyWin.push(`More content (+${Math.abs(wordDiff)} words)`);
+            comparison.analysis.recommendations.push(`Add more content (competitor has ${competitor.wordCount} words vs your ${yourPage.wordCount})`);
+        }
+        
+        // Compare headings
+        if (yourPage.h2Count >= competitor.h2Count + 2) {
+            comparison.analysis.youWin.push('Better heading structure');
+        } else if (competitor.h2Count >= yourPage.h2Count + 2) {
+            comparison.analysis.theyWin.push('Better heading structure');
+            comparison.analysis.recommendations.push(`Add more H2 subheadings (competitor has ${competitor.h2Count}, you have ${yourPage.h2Count})`);
+        }
+        
+        // Compare schema
+        if (yourPage.hasSchema && !competitor.hasSchema) {
+            comparison.analysis.youWin.push('Has schema markup (they don\'t)');
+        } else if (competitor.hasSchema && !yourPage.hasSchema) {
+            comparison.analysis.theyWin.push('Has schema markup');
+            comparison.analysis.recommendations.push('Add schema markup to your page');
+        }
+        
+        // Summary
+        comparison.summary = {
+            yourAdvantages: comparison.analysis.youWin.length,
+            theirAdvantages: comparison.analysis.theyWin.length,
+            verdict: comparison.analysis.youWin.length > comparison.analysis.theyWin.length 
+                ? 'Your page is better optimized overall' 
+                : comparison.analysis.theyWin.length > comparison.analysis.youWin.length
+                    ? 'Competitor page is better optimized - see recommendations'
+                    : 'Pages are similarly optimized'
+        };
+        
+        return comparison;
+        
+    } catch (e) {
+        return { success: false, error: e.message };
+    }
+}
+
 module.exports = {
     scanPage,
     checkRanking,
@@ -339,5 +636,7 @@ module.exports = {
     getCachedPage,
     getSearchConsoleData,
     getSiteOverview,
-    editPageSEO
+    editPageSEO,
+    scanCompetitor,
+    compareWithCompetitor
 };
