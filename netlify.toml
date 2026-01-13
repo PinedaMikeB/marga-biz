@@ -59,3 +59,7 @@
 # Scheduled function - Daily snapshot at 6 AM PHT (10 PM UTC previous day)
 [functions."insights-snapshot"]
   schedule = "0 22 * * *"
+
+# Extended timeout for AI agent (up to 26 seconds on free tier)
+[functions."agent-manager"]
+  external_node_modules = ["@anthropic-ai/sdk"]

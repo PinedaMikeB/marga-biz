@@ -702,7 +702,8 @@ async function callClaudeWithTools(messages, systemPrompt) {
     let currentMessages = [...messages];
     let finalResponse = '';
     let iterations = 0;
-    const maxIterations = 5; // Prevent infinite loops
+    const maxIterations = 3; // Reduced to avoid Netlify timeout (10s limit)
+    const toolsUsed = []; // Track which tools were called
 
     while (iterations < maxIterations) {
         iterations++;
@@ -716,7 +717,7 @@ async function callClaudeWithTools(messages, systemPrompt) {
             },
             body: JSON.stringify({
                 model: 'claude-sonnet-4-20250514',
-                max_tokens: 4000,
+                max_tokens: 2000, // Reduced from 4000 to speed up response
                 temperature: 0.7,
                 system: systemPrompt,
                 tools: TOOLS,
