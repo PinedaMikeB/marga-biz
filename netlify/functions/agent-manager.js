@@ -942,32 +942,45 @@ exports.handler = async (event) => {
             return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
         }
 
-        // Use lightweight system prompt (no Firebase calls)
-        const systemPrompt = buildLightweightPrompt();
+        // Wrap in timeout to avoid Netlify 10s limit
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Request timeout - try a simpler question')), 9000)
+        );
 
-        // Build messages
-        const messages = history.map(m => ({
-            role: m.role === 'assistant' ? 'assistant' : 'user',
-            content: m.content
-        }));
-        messages.push({ role: 'user', content: message });
+        const processMessage = async () => {
+            // Use lightweight system prompt (no Firebase calls)
+            const systemPrompt = buildLightweightPrompt();
 
-        // Call Claude with tools (MCP-style)
-        let rawResponse = await callClaudeWithTools(messages, systemPrompt);
+            // Build messages
+            const messages = history.map(m => ({
+                role: m.role === 'assistant' ? 'assistant' : 'user',
+                content: m.content
+            }));
+            messages.push({ role: 'user', content: message });
+
+            // Call Claude with tools (MCP-style)
+            let rawResponse = await callClaudeWithTools(messages, systemPrompt);
+            
+            // Parse delegations and approvals (for backwards compatibility)
+            const { response: cleanResponse, delegations } = parseDelegations(rawResponse);
+            const { response: finalResponse, approvals } = parseApprovals(cleanResponse);
+            
+            return { finalResponse, approvals };
+        };
+
+        // Race between processing and timeout
+        const { finalResponse, approvals } = await Promise.race([
+            processMessage(),
+            timeoutPromise
+        ]);
         
-        // Parse delegations and approvals (for backwards compatibility)
-        const { response: cleanResponse, delegations } = parseDelegations(rawResponse);
-        const { response: finalResponse, approvals } = parseApprovals(cleanResponse);
-        
-        // Skip heavy Firebase logging to save time
-        // Fire-and-forget status update (don't await)
+        // Fire-and-forget logging (don't await)
         try {
             const db = getDb();
             logActivity(AGENTS.MANAGER, 'chat_response', {
                 userMessage: message.substring(0, 100)
-            }).catch(() => {}); // Ignore errors
-        } catch (e) {
-            // Ignore Firebase errors
+            }).catch(() => {});
+        } catch (e) {}
         }
 
         return {
