@@ -695,7 +695,10 @@ const AIChatWidget = {
      */
     saveHistory() {
         try {
-            const history = this.messages.slice(-50); // Keep last 50 messages
+            // Only save messages with actual content
+            const history = this.messages
+                .filter(m => m.content && m.content.trim().length > 0)
+                .slice(-50);
             localStorage.setItem('marga_chat_history', JSON.stringify(history));
         } catch (e) {
             // localStorage might be full or disabled
@@ -709,14 +712,38 @@ const AIChatWidget = {
         try {
             const history = localStorage.getItem('marga_chat_history');
             if (history) {
-                const messages = JSON.parse(history);
-                messages.forEach(msg => {
-                    this.addMessage(msg.role, msg.content);
-                });
+                let messages = JSON.parse(history);
+                // Filter out any empty or invalid messages
+                messages = messages.filter(msg => 
+                    msg && msg.content && msg.content.trim().length > 0
+                );
+                // If we had to filter, save the clean version
+                if (messages.length > 0) {
+                    messages.forEach(msg => {
+                        this.addMessage(msg.role, msg.content);
+                    });
+                }
             }
         } catch (e) {
-            // Ignore errors
+            // Clear corrupted history
+            localStorage.removeItem('marga_chat_history');
         }
+    },
+    
+    /**
+     * Clear chat history
+     */
+    clearHistory() {
+        this.messages = [];
+        localStorage.removeItem('marga_chat_history');
+        const messagesContainer = document.getElementById('chatMessages');
+        messagesContainer.innerHTML = `
+            <div class="chat-welcome">
+                <p>👋 Hi! I'm your AI SEO assistant.</p>
+                <p>I can help you analyze competitors, check rankings, and optimize your pages.</p>
+                <p>Try: "Check my ranking for printer rental"</p>
+            </div>
+        `;
     }
 };
 
