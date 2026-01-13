@@ -394,6 +394,39 @@ async function enrichContextWithSearchData(message, context) {
 }
 
 /**
+ * Build a LIGHTWEIGHT system prompt (no Firebase data)
+ * Used for fast responses within Netlify's 10-second timeout
+ */
+function buildLightweightPrompt() {
+    return `You are the SEO Manager Agent for Marga Enterprises (marga.biz), a printer and copier rental business in Metro Manila, Philippines.
+
+## YOUR IDENTITY
+- Expert SEO strategist for marga.biz
+- Target keywords: printer rental, copier rental, Philippines, Manila
+- Main pages: /printer-rental/, /copier-rental/, /pricing-guide/
+
+## TOOLS AVAILABLE - USE THEM!
+1. **scan_page** - Scan marga.biz pages for SEO issues
+2. **scan_competitor** - Scan competitor pages (title, meta, word count, etc.)
+3. **compare_with_competitor** - Side-by-side comparison
+4. **check_ranking** - Check live SERP ranking for a keyword
+5. **find_competitors** - Find who ranks for a keyword
+6. **get_search_console** - Get historical Search Console data
+7. **edit_page_seo** - Edit title/meta on marga.biz pages
+
+## CRITICAL RULES
+- Use tools to get REAL data - don't guess
+- Use 1-2 tools max per response (to stay fast)
+- Be concise - short responses are better
+- Don't ask questions - just take action
+
+## RESPONSE FORMAT
+Keep responses SHORT and actionable. Example:
+"Scanning competitor... [tool result] Their title is X, yours is Y. Recommendation: Z"
+`;
+}
+
+/**
  * Build the Manager's system prompt
  */
 function buildManagerPrompt(context) {
@@ -702,7 +735,7 @@ async function callClaudeWithTools(messages, systemPrompt) {
     let currentMessages = [...messages];
     let finalResponse = '';
     let iterations = 0;
-    const maxIterations = 3; // Reduced to avoid Netlify timeout (10s limit)
+    const maxIterations = 2; // STRICT LIMIT: 1 tool call max to stay within timeout
     const toolsUsed = []; // Track which tools were called
 
     while (iterations < maxIterations) {
@@ -892,33 +925,25 @@ exports.handler = async (event) => {
     }
 
     try {
-        const db = getDb();
         const body = JSON.parse(event.body || '{}');
         
-        // Update manager status
-        await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.RUNNING, {
-            currentTask: 'processing_chat'
-        });
-
-        // Handle approval action
+        // Handle approval action (needs Firebase)
         if (body.action === 'approve' || body.action === 'dismiss') {
+            const db = getDb();
+            await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.RUNNING, { currentTask: 'approval' });
             const result = await handleApproval(body.recId, body.action === 'approve');
             await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.IDLE);
             return { statusCode: 200, headers, body: JSON.stringify({ success: true, data: result }) };
         }
 
-        // Handle chat message
+        // Handle chat message - FAST MODE (skip heavy Firebase context)
         const { message, history = [] } = body;
         if (!message) {
-            await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.IDLE);
             return { statusCode: 400, headers, body: JSON.stringify({ error: 'Message required' }) };
         }
 
-        // Get basic context (tools will fetch specific data as needed)
-        let context = await getManagerContext(db);
-        
-        // Build system prompt
-        const systemPrompt = buildManagerPrompt(context);
+        // Use lightweight system prompt (no Firebase calls)
+        const systemPrompt = buildLightweightPrompt();
 
         // Build messages
         const messages = history.map(m => ({
@@ -934,20 +959,16 @@ exports.handler = async (event) => {
         const { response: cleanResponse, delegations } = parseDelegations(rawResponse);
         const { response: finalResponse, approvals } = parseApprovals(cleanResponse);
         
-        // Execute any delegations
-        let delegationResults = [];
-        if (delegations.length > 0) {
-            delegationResults = await executeDelegations(delegations);
+        // Skip heavy Firebase logging to save time
+        // Fire-and-forget status update (don't await)
+        try {
+            const db = getDb();
+            logActivity(AGENTS.MANAGER, 'chat_response', {
+                userMessage: message.substring(0, 100)
+            }).catch(() => {}); // Ignore errors
+        } catch (e) {
+            // Ignore Firebase errors
         }
-
-        // Log the chat
-        await logActivity(AGENTS.MANAGER, 'chat_response', {
-            userMessage: message.substring(0, 100),
-            delegations: delegations.length,
-            approvals: approvals.length
-        });
-
-        await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.IDLE);
 
         return {
             statusCode: 200,
@@ -956,21 +977,15 @@ exports.handler = async (event) => {
                 success: true,
                 data: {
                     response: finalResponse,
-                    delegations: delegationResults,
                     approvals,
-                    context: {
-                        pendingRecommendations: context.recommendations?.length || 0,
-                        openIssues: context.issues?.length || 0
-                    }
+                    context: {}
                 }
             })
         };
 
     } catch (error) {
         console.error('Manager error:', error);
-        await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.ERROR, {
-            lastError: error.message
-        });
+        // Don't await Firebase error logging - just return fast
         return {
             statusCode: 500,
             headers,
