@@ -14,8 +14,6 @@
     
     <!-- Dashboard CSS -->
     <link rel="stylesheet" href="css/insights.css">
-    
-    <!-- Chat Widget CSS -->
     <link rel="stylesheet" href="css/chat-widget.css">
 </head>
 <body>
@@ -42,6 +40,7 @@
             <a href="behavior.html" class="nav-tab">Behavior</a>
             <a href="seo.html" class="nav-tab">SEO</a>
             <a href="conversions.html" class="nav-tab">Conversions</a>
+            <a href="settings.html" class="nav-tab">⚙️ Settings</a>
         </nav>
 
         <!-- AI Insights Section (NEW) -->
@@ -113,34 +112,6 @@
             </div>
         </section>
 
-        <!-- API Usage/Billing Section -->
-        <section class="api-usage-section">
-            <h2>🤖 Claude API Usage</h2>
-            <div class="api-usage-grid" id="apiUsageGrid">
-                <div class="usage-card">
-                    <div class="usage-icon">💬</div>
-                    <div class="usage-value" id="totalRequests">--</div>
-                    <div class="usage-label">Total Requests</div>
-                </div>
-                <div class="usage-card">
-                    <div class="usage-icon">📊</div>
-                    <div class="usage-value" id="totalTokens">--</div>
-                    <div class="usage-label">Total Tokens</div>
-                </div>
-                <div class="usage-card">
-                    <div class="usage-icon">💰</div>
-                    <div class="usage-value" id="totalCost">--</div>
-                    <div class="usage-label">Total Cost</div>
-                </div>
-                <div class="usage-card">
-                    <div class="usage-icon">📈</div>
-                    <div class="usage-value" id="projectedCost">--</div>
-                    <div class="usage-label">Projected/Month</div>
-                </div>
-            </div>
-            <p class="usage-period" id="usagePeriod">Loading usage data...</p>
-        </section>
-
         <!-- Footer -->
         <footer class="dashboard-footer">
             <p>Last updated: <span id="lastUpdated">--</span></p>
@@ -153,10 +124,7 @@
     <script src="/js/admin/insights/ai-insights-ui.js"></script>
     <script src="/js/admin/insights/insights-charts.js"></script>
     <script src="/js/admin/insights/insights-ui.js"></script>
-    
-    <!-- Chat Widget -->
-    <script src="/js/admin/insights/chat-widget-v3.js"></script>
-    
+    <script src="/js/admin/insights/chat-widget-v2.js"></script>
     <script>
         // Initialize AI Insights after page load
         document.addEventListener('DOMContentLoaded', () => {

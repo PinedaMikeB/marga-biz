@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Analysis - Marga Insights</title>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="css/insights.css">
+    <link rel="stylesheet" href="css/chat-widget.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1>📊 Marga Insights</h1>
+            </div>
+            <div class="header-right">
+                <select id="dateRange" class="date-select">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d" selected>Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                </select>
+                <button id="refreshBtn" class="btn-refresh" title="Refresh Data">↻</button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="dashboard-nav">
+            <a href="index.html" class="nav-tab">Overview</a>
+            <a href="traffic.html" class="nav-tab active">Traffic</a>
+            <a href="behavior.html" class="nav-tab">Behavior</a>
+            <a href="seo.html" class="nav-tab">SEO</a>
+            <a href="conversions.html" class="nav-tab">Conversions</a>
+            <a href="settings.html" class="nav-tab">⚙️ Settings</a>
+        </nav>
+
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h2>📈 Traffic Analysis</h2>
+            <p>Detailed breakdown of your website traffic</p>
+        </div>
+
+        <!-- KPI Cards Row -->
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon">👥</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="totalUsers">--</div>
+                    <div class="kpi-label">Total Users</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🆕</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="newUsers">--</div>
+                    <div class="kpi-label">New Users</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">🔄</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="sessions">--</div>
+                    <div class="kpi-label">Sessions</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">⏱️</div>
+                <div class="kpi-content">
+                    <div class="kpi-value" id="avgDuration">--</div>
+                    <div class="kpi-label">Avg. Duration</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Row 1 -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3>Traffic Over Time</h3>
+                <canvas id="trafficTimeChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Traffic Sources</h3>
+                <canvas id="sourcesChart"></canvas>
+            </div>
+        </section>
+
+
+        <!-- Charts Row 2 -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3>Devices</h3>
+                <canvas id="devicesChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Top Countries</h3>
+                <div id="countriesList" class="top-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Pages Table -->
+        <section class="table-section">
+            <div class="table-card">
+                <h3>Top Landing Pages</h3>
+                <div id="landingPagesList" class="top-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Last updated: <span id="lastUpdated">--</span></p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/admin/insights/insights-api.js"></script>
+    <script src="/js/admin/insights/insights-charts.js"></script>
+    <script src="/js/admin/insights/traffic-ui.js"></script>
+    <script src="/js/admin/insights/chat-widget.js"></script>
+</body>
+</html>

@@ -6,6 +6,7 @@ package-lock.json
 service-account-key.json
 firebase-config.json
 .env
+.env.local
 
 # OS files
 .DS_Store

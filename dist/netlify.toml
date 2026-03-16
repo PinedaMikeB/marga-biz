@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "echo 'Skipping build - using pre-built dist folder'"
   publish = "dist"
   functions = "netlify/functions"
   
@@ -54,3 +54,12 @@
   for = "/*.ico"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+
+# Scheduled function - Daily snapshot at 6 AM PHT (10 PM UTC previous day)
+[functions."insights-snapshot"]
+  schedule = "0 22 * * *"
+
+# Extended timeout for AI agent (up to 26 seconds on free tier)
+[functions."agent-manager"]
+  external_node_modules = ["@anthropic-ai/sdk"]

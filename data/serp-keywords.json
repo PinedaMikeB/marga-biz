@@ -1,0 +1,134 @@
+{
+  "primary": [
+    {
+      "area": "Makati",
+      "keyword": "printer rental makati",
+      "searchLocation": "Makati, Metro Manila, Philippines"
+    },
+    {
+      "area": "BGC",
+      "keyword": "printer rental bgc",
+      "searchLocation": "Bonifacio Global City, Taguig, Metro Manila, Philippines",
+      "fallbackLocation": "Taguig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Pasig",
+      "keyword": "printer rental pasig",
+      "searchLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Ortigas",
+      "keyword": "printer rental ortigas",
+      "searchLocation": "Ortigas Center, Metro Manila, Philippines",
+      "fallbackLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Quezon City",
+      "keyword": "printer rental quezon city",
+      "searchLocation": "Quezon City, Metro Manila, Philippines"
+    },
+    {
+      "area": "Manila",
+      "keyword": "printer rental manila",
+      "searchLocation": "Manila, Metro Manila, Philippines"
+    }
+  ],
+  "secondary": [
+    {
+      "area": "Makati",
+      "keyword": "printer for rent makati",
+      "searchLocation": "Makati, Metro Manila, Philippines"
+    },
+    {
+      "area": "Makati",
+      "keyword": "office printer rental makati",
+      "searchLocation": "Makati, Metro Manila, Philippines"
+    },
+    {
+      "area": "Makati",
+      "keyword": "printer leasing makati",
+      "searchLocation": "Makati, Metro Manila, Philippines"
+    },
+    {
+      "area": "BGC",
+      "keyword": "printer rental bonifacio global city",
+      "searchLocation": "Bonifacio Global City, Taguig, Metro Manila, Philippines",
+      "fallbackLocation": "Taguig, Metro Manila, Philippines"
+    },
+    {
+      "area": "BGC",
+      "keyword": "office printer rental bgc",
+      "searchLocation": "Bonifacio Global City, Taguig, Metro Manila, Philippines",
+      "fallbackLocation": "Taguig, Metro Manila, Philippines"
+    },
+    {
+      "area": "BGC",
+      "keyword": "printer leasing bgc",
+      "searchLocation": "Bonifacio Global City, Taguig, Metro Manila, Philippines",
+      "fallbackLocation": "Taguig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Pasig",
+      "keyword": "printer for rent pasig",
+      "searchLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Pasig",
+      "keyword": "office printer rental pasig",
+      "searchLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Pasig",
+      "keyword": "printer leasing pasig",
+      "searchLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Ortigas",
+      "keyword": "printer for rent ortigas",
+      "searchLocation": "Ortigas Center, Metro Manila, Philippines",
+      "fallbackLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Ortigas",
+      "keyword": "office printer rental ortigas",
+      "searchLocation": "Ortigas Center, Metro Manila, Philippines",
+      "fallbackLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Ortigas",
+      "keyword": "printer leasing ortigas",
+      "searchLocation": "Ortigas Center, Metro Manila, Philippines",
+      "fallbackLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "area": "Quezon City",
+      "keyword": "printer for rent quezon city",
+      "searchLocation": "Quezon City, Metro Manila, Philippines"
+    },
+    {
+      "area": "Quezon City",
+      "keyword": "office printer rental quezon city",
+      "searchLocation": "Quezon City, Metro Manila, Philippines"
+    },
+    {
+      "area": "Quezon City",
+      "keyword": "printer rental qc",
+      "searchLocation": "Quezon City, Metro Manila, Philippines"
+    },
+    {
+      "area": "Manila",
+      "keyword": "printer for rent manila",
+      "searchLocation": "Manila, Metro Manila, Philippines"
+    },
+    {
+      "area": "Manila",
+      "keyword": "office printer rental manila",
+      "searchLocation": "Manila, Metro Manila, Philippines"
+    },
+    {
+      "area": "Manila",
+      "keyword": "printer leasing manila",
+      "searchLocation": "Manila, Metro Manila, Philippines"
+    }
+  ]
+}

@@ -1,0 +1,959 @@
+{
+  "generatedAt": "2026-03-16T02:08:56.926Z",
+  "trackedDomain": "marga.biz",
+  "options": {
+    "set": "primary",
+    "engines": [
+      "google",
+      "bing"
+    ]
+  },
+  "results": [
+    {
+      "checkedAt": "2026-03-16T02:07:38.808Z",
+      "engine": "google",
+      "keyword": "printer rental makati",
+      "area": "Makati",
+      "searchLocation": "Makati, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 77100,
+      "competitors": [
+        "facebook.com",
+        "printersforrent.com",
+        "asdi.ph",
+        "printerrentalsph.com",
+        "ubix.com.ph"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "Tetra Technologies Distribution Inc. | Makati",
+          "link": "https://www.facebook.com/TetraTechnologiesInc/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 2,
+          "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease ...",
+          "link": "https://printersforrent.com/",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 3,
+          "title": "Printer Rentals",
+          "link": "https://asdi.ph/pages/printer-rental",
+          "domain": "asdi.ph"
+        },
+        {
+          "position": 4,
+          "title": "DUB Printer Rental and Repair Service | Makati",
+          "link": "https://www.facebook.com/p/DUB-Printer-Rental-and-Repair-Service-100082935771977/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 5,
+          "title": "Printer Rentals PH - Printer Rental, Printer Repair and Ink and ...",
+          "link": "https://www.printerrentalsph.com/",
+          "domain": "printerrentalsph.com"
+        },
+        {
+          "position": 6,
+          "title": "U-BIX Corporation | Office Equipment, Copier, Rental, and ...",
+          "link": "https://ubix.com.ph/",
+          "domain": "ubix.com.ph"
+        },
+        {
+          "position": 7,
+          "title": "copieronlineph",
+          "link": "https://copieronlineph.com/",
+          "domain": "copieronlineph.com"
+        },
+        {
+          "position": 8,
+          "title": "Jared's Ink and Toner Printer Rentals | Makati",
+          "link": "https://www.facebook.com/printerexpressprinterrental/",
+          "domain": "facebook.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.google.com/search?q=printer+rental+makati&oq=printer+rental+makati&uule=w+CAIQICIfTWFrYXRpLE1ldHJvIE1hbmlsYSxQaGlsaXBwaW5lcw&hl=en&gl=ph&num=10&sourceid=chrome&ie=UTF-8",
+        "status": "Success"
+      },
+      "resolvedLocation": "Makati, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:07:42.907Z",
+      "engine": "google",
+      "keyword": "printer rental bgc",
+      "area": "BGC",
+      "searchLocation": "Bonifacio Global City, Taguig, Metro Manila, Philippines",
+      "ourRank": 7,
+      "ourUrl": "https://marga.biz/",
+      "totalResults": 260000,
+      "competitors": [
+        "facebook.com",
+        "printersforrent.com",
+        "mclinkphil.com",
+        "yelp.com",
+        "printerrentalsph.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "Inkhouse- Printer for Rent | Taguig",
+          "link": "https://www.facebook.com/inkhouseprinterforrent/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 2,
+          "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease ...",
+          "link": "https://printersforrent.com/",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 3,
+          "title": "Office Printer Lease BGC 2025: Trends, Costs & Best ...",
+          "link": "https://www.mclinkphil.com/office-printer-lease-bgc-2025-trends-costs-best-providers/",
+          "domain": "mclinkphil.com"
+        },
+        {
+          "position": 4,
+          "title": "JSG Printer Trading (@jsgprintertrading)",
+          "link": "https://www.facebook.com/jsgprintertrading/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 5,
+          "title": "Visit us! Fax Parcel Print Uptown Mall BGC #faxparcelprint ...",
+          "link": "https://www.facebook.com/FaxParcelPrint/posts/visit-us-fax-parcel-print-uptown-mall-bgc-faxparcelprint-printing-digitalprintin/648901843937560/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 6,
+          "title": "Top 10 Best Printing Services Near Taguig, Metro Manila",
+          "link": "https://www.yelp.com/search?cflt=copyshops&find_loc=Taguig%2C+Metro+Manila",
+          "domain": "yelp.com"
+        },
+        {
+          "position": 7,
+          "title": "Copier Rental | Printer Rental | Manila, Philippines",
+          "link": "https://marga.biz/",
+          "domain": "marga.biz"
+        },
+        {
+          "position": 8,
+          "title": "Printer Rental, Printer Repair and Ink and Toner Refill",
+          "link": "https://www.printerrentalsph.com/printers",
+          "domain": "printerrentalsph.com"
+        },
+        {
+          "position": 9,
+          "title": "Printer Rental",
+          "link": "https://ubix.com.ph/printer-rental/",
+          "domain": "ubix.com.ph"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.google.com/search?q=printer+rental+bgc&oq=printer+rental+bgc&uule=w+CAIQICIfVGFndWlnLE1ldHJvIE1hbmlsYSxQaGlsaXBwaW5lcw&hl=en&gl=ph&num=10&sourceid=chrome&ie=UTF-8",
+        "status": "Success"
+      },
+      "resolvedLocation": "Taguig, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:07:48.832Z",
+      "engine": "google",
+      "keyword": "printer rental pasig",
+      "area": "Pasig",
+      "searchLocation": "Pasig, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 146,
+      "competitors": [
+        "facebook.com",
+        "printersforrent.com",
+        "yelp.com",
+        "starofservice.ph"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "Printers For Rent | Pasig",
+          "link": "https://www.facebook.com/affordaink/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 2,
+          "title": "Printer Repair Pasig City",
+          "link": "https://www.facebook.com/PasigprinterRepairshop/posts/printer-rentalrms-avisha-enterprises-printer-repair-pasig-city/539667891989881/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 3,
+          "title": "AffordaInk, Inc. (Printers for Rent) transfers to a new location in ...",
+          "link": "https://printersforrent.com/blog/affordaink-inc-printers-rent-transfers-new-location-pasig-city",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 4,
+          "title": "Printer Repair Pasig City Printer Rental Epson Brother | Printer ...",
+          "link": "https://www.facebook.com/PasigprinterRepairshop/videos/printer-repair-pasig-city-printer-rental-epson-brother/760181796198993/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 5,
+          "title": "INK All-You-Can | Pasig",
+          "link": "https://www.facebook.com/inkallyoucan/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 6,
+          "title": "Top 10 Best Printing Services Near Pasig, Metro Manila",
+          "link": "https://www.yelp.com/search?find_desc=Printing+Services&find_loc=Pasig%2C+Metro+Manila",
+          "domain": "yelp.com"
+        },
+        {
+          "position": 7,
+          "title": "Contact | Printers for Rent | Metro Manila, Philippines",
+          "link": "https://printersforrent.com/contact",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 8,
+          "title": "+63 966 774 5227 📧 rmsavisha.pasig@ ...",
+          "link": "https://www.facebook.com/PasigprinterRepairshop/posts/%EF%B8%8F-printer-rentals-made-easyneed-a-reliable-printer-without-the-hassle-of-buying-/811801884776479/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 9,
+          "title": "The 10 best printers in Pasig - Last Updated January 2026",
+          "link": "https://www.starofservice.ph/dir/national-capital-region/pasig/pasig/printing",
+          "domain": "starofservice.ph"
+        },
+        {
+          "position": 10,
+          "title": "Infinitecom Distribution Inc. - Leasing | Pasig",
+          "link": "https://www.facebook.com/IDI.ForLeasing/",
+          "domain": "facebook.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.google.com/search?q=printer+rental+pasig&oq=printer+rental+pasig&uule=w+CAIQICIeUGFzaWcsTWV0cm8gTWFuaWxhLFBoaWxpcHBpbmVz&hl=en&gl=ph&num=10&sourceid=chrome&ie=UTF-8",
+        "status": "Success"
+      },
+      "resolvedLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:07:50.031Z",
+      "engine": "google",
+      "keyword": "printer rental ortigas",
+      "area": "Ortigas",
+      "searchLocation": "Ortigas Center, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 153,
+      "competitors": [
+        "facebook.com",
+        "asdi.ph",
+        "mclinkphil.com",
+        "globalinksolution.ph",
+        "yelp.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "I want to rent a printer in Ortigas",
+          "link": "https://www.facebook.com/groups/743706419676663/posts/1856452768402017/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 2,
+          "title": "Printer Rentals",
+          "link": "https://asdi.ph/pages/printer-rental",
+          "domain": "asdi.ph"
+        },
+        {
+          "position": 3,
+          "title": "McLink Copy Services Phil Inc | Photocopier Machine Sales ...",
+          "link": "https://www.mclinkphil.com/",
+          "domain": "mclinkphil.com"
+        },
+        {
+          "position": 4,
+          "title": "Global Ink Solutions - Printer Rental Philippines",
+          "link": "https://www.globalinksolution.ph/",
+          "domain": "globalinksolution.ph"
+        },
+        {
+          "position": 5,
+          "title": "Print ba hanap mo? Open kami 24/7! DM us now! 📩",
+          "link": "https://www.facebook.com/groups/UrbanDecaHomesOrtigas/posts/1943231506170544/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 6,
+          "title": "THE BEST 10 Printing Services near ORTIGAS AVE ...",
+          "link": "https://www.yelp.com/search?cflt=copyshops&find_loc=Ortigas+Ave%2C+Mandaluyong+City%2C+Metro+Manila",
+          "domain": "yelp.com"
+        },
+        {
+          "position": 7,
+          "title": "Short Term Printer Rental Services in the Philippines",
+          "link": "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental",
+          "domain": "fujifilm.com"
+        },
+        {
+          "position": 8,
+          "title": "AffordaInk, Inc. (Printers for Rent) transfers to a new location in ...",
+          "link": "https://printersforrent.com/blog/affordaink-inc-printers-rent-transfers-new-location-pasig-city",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 9,
+          "title": "Printer Rental, Printer Repair and Ink and Toner Refill",
+          "link": "https://www.printerrentalsph.com/printers",
+          "domain": "printerrentalsph.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.google.com/search?q=printer+rental+ortigas&oq=printer+rental+ortigas&uule=w+CAIQICInT3J0aWdhcyBDZW50ZXIsTWV0cm8gTWFuaWxhLFBoaWxpcHBpbmVz&hl=en&gl=ph&num=10&sourceid=chrome&ie=UTF-8",
+        "status": "Success"
+      },
+      "resolvedLocation": "Ortigas Center, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:07:51.259Z",
+      "engine": "google",
+      "keyword": "printer rental quezon city",
+      "area": "Quezon City",
+      "searchLocation": "Quezon City, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 98,
+      "competitors": [
+        "facebook.com",
+        "asdi.ph",
+        "printersforrent.com",
+        "copylink.ph",
+        "yelp.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "Eazy Rental Express Corp | Quezon City",
+          "link": "https://www.facebook.com/ezrentalexpress/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 2,
+          "title": "Printer Rentals",
+          "link": "https://asdi.ph/pages/printer-rental",
+          "domain": "asdi.ph"
+        },
+        {
+          "position": 3,
+          "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease ...",
+          "link": "https://printersforrent.com/",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 4,
+          "title": "Copylink Enterprises Inc. - Copiers & Print Services",
+          "link": "https://www.facebook.com/copylinkenterprises/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 5,
+          "title": "Bookbinding and Printing Services in Quezon City | Copylink",
+          "link": "https://copylink.ph/",
+          "domain": "copylink.ph"
+        },
+        {
+          "position": 6,
+          "title": "The Best 10 Printing Services near Quezon City, Manila ...",
+          "link": "https://www.yelp.com/search?cflt=copyshops&find_loc=Quezon+City%2C+Manila%2C+Metro+Manila",
+          "domain": "yelp.com"
+        },
+        {
+          "position": 7,
+          "title": "JKRFG Upgrade Business Solution Corp | Quezon City",
+          "link": "https://www.facebook.com/upgradebizsolution/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 8,
+          "title": "Services",
+          "link": "https://www.copyph.com/services",
+          "domain": "copyph.com"
+        },
+        {
+          "position": 9,
+          "title": "CopierOnline Philippines Inc",
+          "link": "https://www.facebook.com/copieronline/posts/%EF%B8%8F-copier-rental-made-easyrent-a-copier-for-as-low-as-3000-per-month-and-start-yo/884925123890120/",
+          "domain": "facebook.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.google.com/search?q=printer+rental+quezon+city&oq=printer+rental+quezon+city&uule=w+CAIQICIkUXVlem9uIENpdHksTWV0cm8gTWFuaWxhLFBoaWxpcHBpbmVz&hl=en&gl=ph&num=10&sourceid=chrome&ie=UTF-8",
+        "status": "Success"
+      },
+      "resolvedLocation": "Quezon City, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:07:52.491Z",
+      "engine": "google",
+      "keyword": "printer rental manila",
+      "area": "Manila",
+      "searchLocation": "Manila, Metro Manila, Philippines",
+      "ourRank": 4,
+      "ourUrl": "https://marga.biz/",
+      "totalResults": 177,
+      "competitors": [
+        "printersforrent.com",
+        "ubix.com.ph",
+        "asdi.ph",
+        "printerrentalsph.com",
+        "homevibe.ph"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease ...",
+          "link": "https://printersforrent.com/",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 2,
+          "title": "Printer Rental",
+          "link": "https://ubix.com.ph/printer-rental/",
+          "domain": "ubix.com.ph"
+        },
+        {
+          "position": 3,
+          "title": "Printer Rentals",
+          "link": "https://asdi.ph/pages/printer-rental",
+          "domain": "asdi.ph"
+        },
+        {
+          "position": 4,
+          "title": "Copier Rental | Printer Rental | Manila, Philippines",
+          "link": "https://marga.biz/",
+          "domain": "marga.biz"
+        },
+        {
+          "position": 5,
+          "title": "Printer Rentals PH - Printer Rental, Printer Repair and Ink and ...",
+          "link": "https://www.printerrentalsph.com/",
+          "domain": "printerrentalsph.com"
+        },
+        {
+          "position": 6,
+          "title": "Printer Rental",
+          "link": "https://www.homevibe.ph/collections/printer-rental?srsltid=AfmBOoqmGJIF-5GnhpdIr8WTHXWNnULcD8vhRE_b_27T8AIab74l2ZyQ",
+          "domain": "homevibe.ph"
+        },
+        {
+          "position": 7,
+          "title": "Copiers | Printers for Rent | Metro Manila, Philippines",
+          "link": "https://printersforrent.com/product-category/term/copiers",
+          "domain": "printersforrent.com"
+        },
+        {
+          "position": 8,
+          "title": "️ printer rental services available! 🖨️",
+          "link": "https://www.facebook.com/groups/394319649425493/posts/1303205445203571/",
+          "domain": "facebook.com"
+        },
+        {
+          "position": 9,
+          "title": "Short Term Printer Rental Services in the Philippines",
+          "link": "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental",
+          "domain": "fujifilm.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.google.com/search?q=printer+rental+manila&oq=printer+rental+manila&uule=w+CAIQICIfTWFuaWxhLE1ldHJvIE1hbmlsYSxQaGlsaXBwaW5lcw&hl=en&gl=ph&num=10&sourceid=chrome&ie=UTF-8",
+        "status": "Success"
+      },
+      "resolvedLocation": "Manila, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:08:00.935Z",
+      "engine": "bing",
+      "keyword": "printer rental makati",
+      "area": "Makati",
+      "searchLocation": "Makati, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 61,
+      "competitors": [
+        "reddit.com",
+        "answers.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "Your Cox.net email is moving soon to Yahoo Mail - Reddit",
+          "link": "https://www.reddit.com/r/CoxCommunications/comments/1ayodjx/your_coxnet_email_is_moving_soon_to_yahoo_mail/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 2,
+          "title": "How to stop Yahoo login from redirecting to AT&T login on Edge",
+          "link": "https://www.reddit.com/r/techsupport/comments/1d9cmta/how_to_stop_yahoo_login_from_redirecting_to_att/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 3,
+          "title": "Cox moving all email to Yahoo! : r/CoxCommunications - Reddit",
+          "link": "https://www.reddit.com/r/CoxCommunications/comments/18sl7b0/cox_moving_all_email_to_yahoo/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 4,
+          "title": "Does anyone know why Yahoo! mail is now so slow & terrible ... - Reddit",
+          "link": "https://www.reddit.com/r/yahoo/comments/yla6bq/does_anyone_know_why_yahoo_mail_is_now_so_slow/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 5,
+          "title": "My Yahoo Mail is not showing my e-mails : r/yahoo - Reddit",
+          "link": "https://www.reddit.com/r/yahoo/comments/14b9dq9/my_yahoo_mail_is_not_showing_my_emails/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 6,
+          "title": "PSA: email log in loop fix for yahoo/att problems : r/yahoo - Reddit",
+          "link": "https://www.reddit.com/r/yahoo/comments/ufcq1u/psa_email_log_in_loop_fix_for_yahooatt_problems/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 7,
+          "title": "How is Yahoo still relevant? : r/yahoo - Reddit",
+          "link": "https://www.reddit.com/r/yahoo/comments/183amiw/how_is_yahoo_still_relevant/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 8,
+          "title": "cannot login to my yahoo mail : ( : r/yahoo - Reddit",
+          "link": "https://www.reddit.com/r/yahoo/comments/15wji16/cannot_login_to_my_yahoo_mail/",
+          "domain": "reddit.com"
+        },
+        {
+          "position": 9,
+          "title": "How do you send high priority emails in yahoo? - Answers",
+          "link": "https://www.answers.com/computers/How_do_you_send_high_priority_emails_in_yahoo",
+          "domain": "answers.com"
+        },
+        {
+          "position": 10,
+          "title": "Yahoo | Email | App Password | \"Sorry, this feature is not available ...",
+          "link": "https://www.reddit.com/r/yahoo/comments/10stvrg/yahoo_email_app_password_sorry_this_feature_is/",
+          "domain": "reddit.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.bing.com/search?q=printer+rental+makati&mkt=en-PH&cc=ph",
+        "status": "Success"
+      },
+      "resolvedLocation": "Makati, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:08:13.614Z",
+      "engine": "bing",
+      "keyword": "printer rental bgc",
+      "area": "BGC",
+      "searchLocation": "Bonifacio Global City, Taguig, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 108000,
+      "competitors": [
+        "unotv.com",
+        "laopinion.com",
+        "lasillarota.com",
+        "abcnoticias.mx",
+        "posta.com.mx"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "José Antonio García, el mexicano que buscará el Oscar a Mejor Sonido ...",
+          "link": "https://www.unotv.com/entretenimiento/jose-antonio-garcia-el-mexicano-que-buscara-el-oscar-a-mejor-sonido-este-domingo/",
+          "domain": "unotv.com"
+        },
+        {
+          "position": 2,
+          "title": "Este mexicano podría ganar Oscar 2026 por Mejor Sonido",
+          "link": "https://laopinion.com/2026/02/28/conoce-al-mexicano-nominado-al-oscar-2026-por-mejor-sonido/",
+          "domain": "laopinion.com"
+        },
+        {
+          "position": 3,
+          "title": "Premios Óscar: ¿quién es José Antonio García?, el mexicano que …",
+          "link": "https://lasillarota.com/yo-soi-tu/2026/3/13/premios-oscar-quien-es-jose-antonio-garcia-el-mexicano-que-busca-hacer-historia-590202.html",
+          "domain": "lasillarota.com"
+        },
+        {
+          "position": 4,
+          "title": "¿Quién es José Antonio García, el mexicano que busca hacer historia …",
+          "link": "https://abcnoticias.mx/show/2026/3/13/quien-es-jose-antonio-garcia-el-mexicano-que-busca-hacer-historia-en-los-oscar-276100.html",
+          "domain": "abcnoticias.mx"
+        },
+        {
+          "position": 5,
+          "title": "Oscar 2026: Sonidista mexicano busca la estatuilla por tercera vez ...",
+          "link": "https://www.posta.com.mx/entretenimiento/oscar-2026-sonidista-mexicano-busca-la-estatuilla-por-tercera-vez/v-vl2176669",
+          "domain": "posta.com.mx"
+        },
+        {
+          "position": 6,
+          "title": "El mexicano José Antonio García aspira al Oscar por tercera vez",
+          "link": "https://jornada-digital.com.mx/2026/03/14/el-mexicano-jose-antonio-garcia-aspira-al-oscar-por-tercera-vez/",
+          "domain": "jornada-digital.com.mx"
+        },
+        {
+          "position": 7,
+          "title": "El mexicano José Antonio García aspira al Oscar por tercera vez",
+          "link": "https://diario.mx/espectaculos/2026/mar/14/el-mexicano-jose-antonio-garcia-aspira-al-oscar-por-tercera-vez-1109555.html",
+          "domain": "diario.mx"
+        },
+        {
+          "position": 8,
+          "title": "¿Quién es José Antonio García, sonidista mexicano nominado al Oscar ...",
+          "link": "https://www.infobae.com/mexico/2026/01/23/quien-es-jose-antonio-garcia-sonidista-mexicano-nominado-al-oscar-2026/",
+          "domain": "infobae.com"
+        },
+        {
+          "position": 9,
+          "title": "¿Quién es José Antonio García, el sonidista mexicano nominado al Oscar …",
+          "link": "https://www.tribuna.com.mx/tendencias/2026/1/23/quien-es-jose-antonio-garcia-el-sonidista-mexicano-nominado-al-oscar-2026-427324.html",
+          "domain": "tribuna.com.mx"
+        },
+        {
+          "position": 10,
+          "title": "Oscar 2026: Guillermo del Toro y José Antonio García representan a ...",
+          "link": "https://eltiempomexico.com/principal/oscar-2026-guillermo-del-toro-y-jose-antonio-garcia-representan-a-mexico/",
+          "domain": "eltiempomexico.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.bing.com/search?q=printer+rental+bgc&mkt=en-PH&cc=ph",
+        "status": "Success"
+      },
+      "resolvedLocation": "Taguig, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:08:32.391Z",
+      "engine": "bing",
+      "keyword": "printer rental pasig",
+      "area": "Pasig",
+      "searchLocation": "Pasig, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 265000,
+      "competitors": [
+        "dictionary.cambridge.org",
+        "uptogo.com.tw",
+        "tw.dictionary.search.yahoo.com",
+        "tw.ichacha.net",
+        "xuexi.yuesha.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "QUERY中文 (繁體)翻譯：劍橋詞典 - Cambridge Dictionary",
+          "link": "https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/query",
+          "domain": "dictionary.cambridge.org"
+        },
+        {
+          "position": 2,
+          "title": "深入探討 query 是什麼意思？從英語到科技領域的全面解析",
+          "link": "https://uptogo.com.tw/%e7%a7%91%e6%8a%80/%e7%a8%8b%e5%bc%8f%e8%a8%ad%e8%a8%88/query-%e6%98%af%e4%bb%80%e9%ba%bc%e6%84%8f%e6%80%9d%ef%bc%9f/",
+          "domain": "uptogo.com.tw"
+        },
+        {
+          "position": 3,
+          "title": "query - Yahoo奇摩字典 網頁搜尋",
+          "link": "https://tw.dictionary.search.yahoo.com/search?p=query",
+          "domain": "tw.dictionary.search.yahoo.com"
+        },
+        {
+          "position": 4,
+          "title": "query中文, query中文意思",
+          "link": "https://tw.ichacha.net/query.html",
+          "domain": "tw.ichacha.net"
+        },
+        {
+          "position": 5,
+          "title": "query是什麼意思，query的意思翻譯、用法、同義詞、例句 - 英語單詞 …",
+          "link": "https://xuexi.yuesha.com/zh-hant/danci/query.html",
+          "domain": "xuexi.yuesha.com"
+        },
+        {
+          "position": 6,
+          "title": "query中文，query的意思，query翻譯及用法 - 英漢詞典",
+          "link": "https://www.chinesewords.org/en/query",
+          "domain": "chinesewords.org"
+        },
+        {
+          "position": 7,
+          "title": "query - 搜索 词典",
+          "link": "https://global.bing.com/dict/search?q=query&FORM=BDVSP6&cc=cn",
+          "domain": "global.bing.com"
+        },
+        {
+          "position": 8,
+          "title": "QUERY 释义 | 柯林斯英语词典 - Collins Online Dictionary",
+          "link": "https://www.collinsdictionary.com/zh/dictionary/english/query",
+          "domain": "collinsdictionary.com"
+        },
+        {
+          "position": 9,
+          "title": "query - 維基詞典，自由的多語言詞典",
+          "link": "https://zh.wiktionary.org/zh-hant/query",
+          "domain": "zh.wiktionary.org"
+        },
+        {
+          "position": 10,
+          "title": "query的中文什麼意思，query的中文翻譯和情景例句 - 留聲詞典",
+          "link": "https://dictionary.liushengyingyu.com/zh-hant/ec/query",
+          "domain": "dictionary.liushengyingyu.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.bing.com/search?q=printer+rental+pasig&mkt=en-PH&cc=ph",
+        "status": "Success"
+      },
+      "resolvedLocation": "Pasig, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:08:40.464Z",
+      "engine": "bing",
+      "keyword": "printer rental ortigas",
+      "area": "Ortigas",
+      "searchLocation": "Ortigas Center, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 176000,
+      "competitors": [
+        "paloaltonetworks.com",
+        "merriam-webster.com",
+        "developer.mozilla.org",
+        "freecodecamp.org",
+        "computerhope.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "What Are SMB Null Sessions? Risks, Detection & Prevention",
+          "link": "https://www.paloaltonetworks.com/cyberpedia/what-are-smb-null-sessions",
+          "domain": "paloaltonetworks.com"
+        },
+        {
+          "position": 2,
+          "title": "NULL Definition & Meaning - Merriam-Webster",
+          "link": "https://www.merriam-webster.com/dictionary/null",
+          "domain": "merriam-webster.com"
+        },
+        {
+          "position": 3,
+          "title": "Null - Glossary | MDN",
+          "link": "https://developer.mozilla.org/en-US/docs/Glossary/Null",
+          "domain": "developer.mozilla.org"
+        },
+        {
+          "position": 4,
+          "title": "A quick and thorough guide to ‘null’: what it is, and how you should use it",
+          "link": "https://www.freecodecamp.org/news/a-quick-and-thorough-guide-to-null-what-it-is-and-how-you-should-use-it-d170cea62840/",
+          "domain": "freecodecamp.org"
+        },
+        {
+          "position": 5,
+          "title": "What Is Null? - Computer Hope",
+          "link": "https://www.computerhope.com/jargon/n/null.htm",
+          "domain": "computerhope.com"
+        },
+        {
+          "position": 6,
+          "title": "SQL NULL Values - IS NULL and IS NOT NULL - W3Schools",
+          "link": "https://www.w3schools.com/sql/sql_null_values.asp",
+          "domain": "w3schools.com"
+        },
+        {
+          "position": 7,
+          "title": "Null - Wikipedia",
+          "link": "https://en.wikipedia.org/wiki/Null",
+          "domain": "en.wikipedia.org"
+        },
+        {
+          "position": 8,
+          "title": "Null Definition & Meaning | YourDictionary",
+          "link": "https://www.yourdictionary.com/null",
+          "domain": "yourdictionary.com"
+        },
+        {
+          "position": 9,
+          "title": "What Is a Null Hypothesis? Definition and Examples",
+          "link": "https://scienceinsights.org/what-is-a-null-hypothesis-definition-and-examples/",
+          "domain": "scienceinsights.org"
+        },
+        {
+          "position": 10,
+          "title": "A quick and thorough guide to ‘null’: what it is, and how you should ...",
+          "link": "https://thelinuxcode.com/a-quick-and-thorough-guide-to-null-what-it-is-and-how-you-should-use-it/",
+          "domain": "thelinuxcode.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.bing.com/search?q=printer+rental+ortigas&mkt=en-PH&cc=ph",
+        "status": "Success"
+      },
+      "resolvedLocation": "Ortigas Center, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:08:48.632Z",
+      "engine": "bing",
+      "keyword": "printer rental quezon city",
+      "area": "Quezon City",
+      "searchLocation": "Quezon City, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 18800,
+      "competitors": [
+        "es.wikipedia.org",
+        "riocuarto.gov.ar",
+        "plataforma10.com.ar",
+        "turistum.com",
+        "ashotegariocuarto.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "Río Cuarto (ciudad) - Wikipedia, la enciclopedia libre",
+          "link": "https://es.wikipedia.org/wiki/R%C3%ADo_Cuarto_(ciudad)",
+          "domain": "es.wikipedia.org"
+        },
+        {
+          "position": 2,
+          "title": "Gobierno de Río Cuarto",
+          "link": "https://www.riocuarto.gov.ar/",
+          "domain": "riocuarto.gov.ar"
+        },
+        {
+          "position": 3,
+          "title": "Qué hacer en Río Cuarto: guía de lugares para visitar en cualquier ...",
+          "link": "https://www.plataforma10.com.ar/viajes/destinos/que-hacer-en-rio-cuarto/",
+          "domain": "plataforma10.com.ar"
+        },
+        {
+          "position": 4,
+          "title": "Río Cuarto - Turistum",
+          "link": "https://www.turistum.com/rio-cuarto",
+          "domain": "turistum.com"
+        },
+        {
+          "position": 5,
+          "title": "Ciudad de Rio Cuarto",
+          "link": "https://www.ashotegariocuarto.com/ciudad-de-rio-cuarto.htm",
+          "domain": "ashotegariocuarto.com"
+        },
+        {
+          "position": 6,
+          "title": "Rio Cuarto , Argentina - TravelAndes.com",
+          "link": "https://www.travelandes.com/es/argentina/rio-cuarto/",
+          "domain": "travelandes.com"
+        },
+        {
+          "position": 7,
+          "title": "Gobierno De Río Cuarto | Río Cuarto - Facebook",
+          "link": "https://www.facebook.com/gobderiocuarto/",
+          "domain": "facebook.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.bing.com/search?q=printer+rental+quezon+city&mkt=en-PH&cc=ph",
+        "status": "Success"
+      },
+      "resolvedLocation": "Quezon City, Metro Manila, Philippines"
+    },
+    {
+      "checkedAt": "2026-03-16T02:08:56.926Z",
+      "engine": "bing",
+      "keyword": "printer rental manila",
+      "area": "Manila",
+      "searchLocation": "Manila, Metro Manila, Philippines",
+      "ourRank": null,
+      "ourUrl": "",
+      "totalResults": 51,
+      "competitors": [
+        "thekaizencompany.com"
+      ],
+      "topOrganic": [
+        {
+          "position": 1,
+          "title": "The Kaizen Company",
+          "link": "https://www.thekaizencompany.com/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 2,
+          "title": "Who We Are - Kaizen",
+          "link": "https://www.thekaizencompany.com/who-we-are/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 3,
+          "title": "Our History - The Kaizen Company",
+          "link": "https://www.thekaizencompany.com/who-we-are/our-history/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 4,
+          "title": "What We Do - The Kaizen Company",
+          "link": "https://www.thekaizencompany.com/what-we-do/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 5,
+          "title": "Our Team - Kaizen - The Kaizen Company",
+          "link": "https://www.thekaizencompany.com/who-we-are/our-team/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 6,
+          "title": "Contact Us - Kaizen - The Kaizen Company",
+          "link": "https://www.thekaizencompany.com/contact-us/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 7,
+          "title": "Projects Archives - Kaizen - The Kaizen Company",
+          "link": "https://www.thekaizencompany.com/category/projects/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 8,
+          "title": "Mission, Vision, Values - Kaizen",
+          "link": "https://www.thekaizencompany.com/who-we-are/mission-vision-values/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 9,
+          "title": "Work With Us - Kaizen",
+          "link": "https://www.thekaizencompany.com/work-with-us/",
+          "domain": "thekaizencompany.com"
+        },
+        {
+          "position": 10,
+          "title": "Our Projects - Kaizen",
+          "link": "https://www.thekaizencompany.com/our-projects/",
+          "domain": "thekaizencompany.com"
+        }
+      ],
+      "rawMetadata": {
+        "searchUrl": "https://www.bing.com/search?q=printer+rental+manila&mkt=en-PH&cc=ph",
+        "status": "Success"
+      },
+      "resolvedLocation": "Manila, Metro Manila, Philippines"
+    }
+  ]
+}

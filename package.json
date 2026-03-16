@@ -5,6 +5,8 @@
   "scripts": {
     "generate": "node scripts/generate-site.js",
     "generate:old": "node scripts/generate-pages.js",
+    "serp:monitor": "node scripts/serp-monitor.js",
+    "serp:monitor:all": "node scripts/serp-monitor.js --set=all",
     "sync-images": "node scripts/sync-images.js",
     "serve": "cd dist && npx http-server . -p 8080 -o",
     "serve:root": "npx http-server . -p 8080 -o",

@@ -157,6 +157,39 @@ function ensureDir(dirPath) {
     }
 }
 
+function getStaticPageUrls() {
+    const staticPagesDir = path.join(__dirname, '..', 'static-pages');
+    const urls = [];
+
+    if (!fs.existsSync(staticPagesDir)) {
+        return urls;
+    }
+
+    function walk(dir, relativeDir = '') {
+        const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+        for (const entry of entries) {
+            if (entry.name.startsWith('.')) continue;
+
+            const entryPath = path.join(dir, entry.name);
+            const entryRelativePath = path.join(relativeDir, entry.name);
+
+            if (entry.isDirectory()) {
+                walk(entryPath, entryRelativePath);
+                continue;
+            }
+
+            if (entry.name !== 'index.html') continue;
+            if (!relativeDir) continue;
+
+            urls.push(`${CONFIG.baseUrl}/${relativeDir.replace(/\\/g, '/')}/`);
+        }
+    }
+
+    walk(staticPagesDir);
+    return urls.sort();
+}
+
 function slugToPath(slug, link) {
     // Convert WordPress link to file path
     // https://marga.biz/copier-rental/printer-rental/ -> copier-rental/printer-rental/index.html
@@ -472,6 +505,58 @@ function generateStructuredData(page, type = 'page') {
     return JSON.stringify(baseData, null, 2);
 }
 
+function getPrinterLocationLinkBlock(pageLink) {
+    const blocks = {
+        'https://marga.biz/printer-rental/printer-for-rent/': `
+<section class="quote-panel location-link-section">
+    <h2>Need a printer rental page by location?</h2>
+    <p>If you are comparing units for an office in Makati, review our <a href="/printer-rental/makati/">printer rental Makati</a> page for business-district coverage and office-focused setup guidance. If your team is based in Bonifacio Global City or Taguig, our <a href="/printer-rental/bgc/">printer rental BGC</a> page is a better local match. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for broader equipment options.</p>
+</section>`,
+        'https://marga.biz/printer-rental/printer-for-rent/color-printer-rental-benefits-for-your-business/laser-printer-rental/': `
+<section class="quote-panel location-link-section">
+    <h2>Where laser printer rental fits best</h2>
+    <p>Laser units are especially practical for document-heavy teams. If your office is in Ayala, Salcedo, or Legazpi, see our <a href="/printer-rental/makati/">printer rental Makati</a> page for local office-use guidance. For startup teams and commercial towers in Taguig, visit <a href="/printer-rental/bgc/">printer rental BGC</a>. For the full service overview, browse the main <a href="/printer-rental/">Printer Rental</a> page.</p>
+</section>`,
+        'https://marga.biz/printer-rental/best-printer-rental-company/inkjet-printer-rental/': `
+<section class="quote-panel location-link-section">
+    <h2>Looking for color-friendly office setups by location?</h2>
+    <p>Inkjet rentals can work well for lighter office color output, admin use, and smaller teams. If you need a Makati-focused option, check <a href="/printer-rental/makati/">printer rental Makati</a>. If your office is in Bonifacio Global City, Taguig, visit <a href="/printer-rental/bgc/">printer rental BGC</a>. You can compare these against the wider <a href="/printer-rental/">Printer Rental</a> hub before choosing a unit.</p>
+</section>`,
+        'https://marga.biz/printer-rental/print-all-you-can/': `
+<section class="quote-panel location-link-section">
+    <h2>High-volume printing by service area</h2>
+    <p>Unlimited or high-volume plans are more useful when the printer setup matches your actual office demand. For established Makati offices with steady document flow, visit <a href="/printer-rental/makati/">printer rental Makati</a>. For commercial teams and shared workspaces in Bonifacio Global City, see <a href="/printer-rental/bgc/">printer rental BGC</a>. You can also review all printer categories from the <a href="/printer-rental/">Printer Rental</a> mother page.</p>
+</section>`,
+        'https://marga.biz/printer-rental/best-printer-rental-company/': `
+<section class="quote-panel location-link-section">
+    <h2>Comparing the best printer rental option by area</h2>
+    <p>The best printer rental company for your team should also understand your office location and workflow. If your business is based in Makati, our <a href="/printer-rental/makati/">printer rental Makati</a> page is tailored to those office districts. If your team works in BGC or Taguig, review <a href="/printer-rental/bgc/">printer rental BGC</a>. For the broader parent service page, go back to <a href="/printer-rental/">Printer Rental</a>.</p>
+</section>`,
+        'https://marga.biz/printer-rental/types-of-printers-for-rent/office-printers-for-rent/': `
+<section class="quote-panel location-link-section">
+    <h2>Office printer rental by business district</h2>
+    <p>If your team is looking for a practical office printer rental matched to where the staff actually works, compare <a href="/printer-rental/makati/">printer rental Makati</a> for established Makati offices and <a href="/printer-rental/bgc/">printer rental BGC</a> for Bonifacio Global City, Taguig teams. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for the wider service overview.</p>
+</section>`,
+        'https://marga.biz/printer-rental/types-of-printers-for-rent/laser-printers-for-rent/': `
+<section class="quote-panel location-link-section">
+    <h2>Laser printer rental by location</h2>
+    <p>Document-heavy laser setups become more useful when they match your office location, print load, and support needs. For Makati office districts, visit <a href="/printer-rental/makati/">printer rental Makati</a>. For Bonifacio Global City and Taguig teams, review <a href="/printer-rental/bgc/">printer rental BGC</a>. You can compare both against the parent <a href="/printer-rental/">Printer Rental</a> page.</p>
+</section>`,
+        'https://marga.biz/printer-rental/types-of-printers-for-rent/multifunction-printers-for-rent/': `
+<section class="quote-panel location-link-section">
+    <h2>Multifunction printer rental by area</h2>
+    <p>A multifunction printer rental works best when scanning, copying, and printing needs are scoped to the office environment. If your users are in Makati, compare <a href="/printer-rental/makati/">printer rental Makati</a>. If your team is in Bonifacio Global City or Taguig, visit <a href="/printer-rental/bgc/">printer rental BGC</a>. For the broader category overview, return to <a href="/printer-rental/">Printer Rental</a>.</p>
+</section>`,
+        'https://marga.biz/printer-rental/cost-effective-printer-rentals-for-startups/': `
+<section class="quote-panel location-link-section">
+    <h2>Startup printer rental by location</h2>
+    <p>If your startup team needs a practical rental plan tied to office location and growth stage, compare <a href="/printer-rental/bgc/">printer rental BGC</a> for Bonifacio Global City, Taguig teams and <a href="/printer-rental/makati/">printer rental Makati</a> for established Makati office districts. For the wider service view, use the main <a href="/printer-rental/">Printer Rental</a> page.</p>
+</section>`
+    };
+
+    return blocks[pageLink] || '';
+}
+
 // ============================================
 // PAGE GENERATOR
 // ============================================
@@ -490,6 +575,29 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
     
     // Clean content
     let content = cleanContent(page.content, urlMap);
+
+    if (page.link === 'https://marga.biz/printer-rental/') {
+        content += `
+<section class="service-areas-section">
+    <h2>Printer Rental Service Areas in Metro Manila</h2>
+    <p>Need a printer rental provider that understands your office location, delivery requirements, and response-time expectations? We now have dedicated city pages for key business districts so you can find the most relevant rental solution faster.</p>
+    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a> or <a href="/printer-rental/bgc/">printer rental in BGC</a>, use these pages to compare local office fit, service coverage, and printer types before you request a quote.</p>
+    <div class="service-area-grid">
+        <a class="service-area-card" href="/printer-rental/makati/">
+            <span class="service-area-label">Makati</span>
+            <strong>Printer Rental Makati</strong>
+            <span>For Ayala, Legazpi, Salcedo, Rockwell, Chino Roces, and surrounding Makati offices.</span>
+        </a>
+        <a class="service-area-card" href="/printer-rental/bgc/">
+            <span class="service-area-label">BGC</span>
+            <strong>Printer Rental BGC</strong>
+            <span>For Bonifacio Global City, Taguig office towers, startup teams, clinics, and commercial spaces.</span>
+        </a>
+    </div>
+</section>`;
+    }
+
+    content += getPrinterLocationLinkBlock(page.link);
     
     // Remove H1 from content (we add it in template)
     content = content.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '');
@@ -753,6 +861,15 @@ function generateSitemap(pages, posts) {
     <priority>0.6</priority>
   </url>\n`;
     }
+
+    // Add static pages
+    for (const loc of getStaticPageUrls()) {
+        xml += `  <url>
+    <loc>${loc}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>\n`;
+    }
     
     xml += '</urlset>';
     
@@ -900,19 +1017,8 @@ function copyStaticAssets() {
     // Copy static pages (about, terms-of-service, etc.)
     const staticPagesDir = path.join(rootDir, 'static-pages');
     if (fs.existsSync(staticPagesDir)) {
-        const staticPages = fs.readdirSync(staticPagesDir);
-        for (const page of staticPages) {
-            const srcPageDir = path.join(staticPagesDir, page);
-            const destPageDir = path.join(CONFIG.distDir, page);
-            if (fs.statSync(srcPageDir).isDirectory()) {
-                ensureDir(destPageDir);
-                const files = fs.readdirSync(srcPageDir);
-                for (const file of files) {
-                    fs.copyFileSync(path.join(srcPageDir, file), path.join(destPageDir, file));
-                }
-                console.log(`   ✅ Copied static page: ${page}`);
-            }
-        }
+        copyDirRecursive(staticPagesDir, CONFIG.distDir);
+        console.log('   ✅ Copied static-pages/ recursively');
     }
     
     // Copy admin folder (Insights dashboard)
@@ -936,6 +1042,8 @@ function copyDirRecursive(src, dest) {
     const entries = fs.readdirSync(src, { withFileTypes: true });
     
     for (const entry of entries) {
+        if (entry.name.startsWith('.')) continue;
+
         const srcPath = path.join(src, entry.name);
         const destPath = path.join(dest, entry.name);
         

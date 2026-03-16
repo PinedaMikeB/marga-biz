@@ -1,8 +1,8 @@
 /**
  * Marga Enterprises - GA4 Custom Event Tracking
- * Version: 1.1.0
+ * Version: 1.2.0
  * Created: 2026-01-10
- * Updated: 2026-01-10
+ * Updated: 2026-03-16
  * 
  * Events tracked:
  * - click_quote_button: "Get Instant Quote" and similar CTA clicks
@@ -40,10 +40,27 @@
             // Add common parameters
             params.page_location = window.location.href;
             params.page_title = document.title;
+            Object.assign(params, getPageContext());
             
             gtag('event', eventName, params);
             console.log('GA4 Event:', eventName, params);
         }
+    }
+
+    function getPageContext() {
+        const body = document.body;
+        return {
+            page_type: body?.dataset.pageType || '',
+            service_area: body?.dataset.serviceArea || '',
+            service_category: body?.dataset.serviceCategory || ''
+        };
+    }
+
+    function getElementContext(element) {
+        return {
+            ga_label: element?.dataset.gaLabel || '',
+            ga_section: element?.dataset.gaSection || ''
+        };
     }
 
     // Get button text helper
@@ -75,7 +92,8 @@
                     trackEvent('click_quote_button', {
                         button_text: getButtonText(this),
                         button_url: this.href || '',
-                        button_location: this.closest('section')?.className || 'unknown'
+                        button_location: this.closest('section')?.className || 'unknown',
+                        ...getElementContext(this)
                     });
                 });
             }
@@ -89,7 +107,8 @@
                     trackEvent('click_quote_button', {
                         button_text: 'Get Instant Quote',
                         button_url: this.href,
-                        button_location: 'hero_section'
+                        button_location: 'hero_section',
+                        ...getElementContext(this)
                     });
                 });
             }
@@ -106,8 +125,9 @@
                 trackEvent('click_phone', {
                     phone_number: phoneNumber,
                     link_text: getButtonText(this),
-                    click_location: this.closest('section')?.className || 
-                                   this.closest('footer') ? 'footer' : 'body'
+                    click_location: this.closest('section')?.className ||
+                        (this.closest('footer') ? 'footer' : 'body'),
+                    ...getElementContext(this)
                 });
             });
         });
@@ -123,7 +143,8 @@
                 trackEvent('click_email', {
                     email_address: email,
                     link_text: getButtonText(this),
-                    click_location: this.closest('footer') ? 'footer' : 'body'
+                    click_location: this.closest('footer') ? 'footer' : 'body',
+                    ...getElementContext(this)
                 });
             });
         });
@@ -138,7 +159,8 @@
                 trackEvent('click_pricing_guide', {
                     link_text: getButtonText(this),
                     link_url: this.href,
-                    click_location: this.closest('section')?.className || 'body'
+                    click_location: this.closest('section')?.className || 'body',
+                    ...getElementContext(this)
                 });
             });
         });
@@ -197,7 +219,8 @@
                         trackEvent('outbound_click', {
                             outbound_url: this.href,
                             link_text: getButtonText(this),
-                            link_domain: linkDomain
+                            link_domain: linkDomain,
+                            ...getElementContext(this)
                         });
                     });
                 }
@@ -258,7 +281,8 @@
                         link_url: destinationPath,
                         link_type: linkType,
                         link_section: linkSection,
-                        source_page: window.location.pathname
+                        source_page: window.location.pathname,
+                        ...getElementContext(this)
                     });
                 });
                 
@@ -280,7 +304,8 @@
                 trackEvent('form_submit', {
                     form_id: formId,
                     form_action: formAction,
-                    form_location: window.location.pathname
+                    form_location: window.location.pathname,
+                    ...getElementContext(this)
                 });
             });
         });
@@ -315,7 +340,8 @@
                     cta_text: getButtonText(this),
                     cta_url: this.href || '',
                     cta_class: this.className,
-                    cta_location: window.location.pathname
+                    cta_location: window.location.pathname,
+                    ...getElementContext(this)
                 });
             });
         });
@@ -383,10 +409,16 @@
         setupEngagementTracking();
         
         console.log('GA4 Events: All tracking initialized');
+
+        if (document.body?.dataset.serviceArea) {
+            trackEvent('location_page_view', {
+                location_slug: document.body.dataset.serviceArea
+            });
+        }
         
         // Track that custom events are loaded (useful for debugging)
         trackEvent('ga4_events_loaded', {
-            version: '1.1.0',
+            version: '1.2.0',
             page_path: window.location.pathname
         });
     }
