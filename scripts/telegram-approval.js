@@ -100,6 +100,30 @@ function writeJson(filePath, payload) {
     fs.writeFileSync(filePath, JSON.stringify(payload, null, 2));
 }
 
+function dedupeDecisions(decisions) {
+    const seen = new Set();
+    const unique = [];
+
+    for (const decision of decisions) {
+        const key = [
+            decision.approvalId,
+            decision.decision,
+            decision.chatId,
+            decision.messageId,
+            decision.user
+        ].join('|');
+
+        if (seen.has(key)) {
+            continue;
+        }
+
+        seen.add(key);
+        unique.push(decision);
+    }
+
+    return unique;
+}
+
 function getRequiredEnv(name) {
     const value = process.env[name];
     if (!value) {
@@ -197,12 +221,12 @@ function buildApprovalMessage(title, bodyText, approvalId) {
 }
 
 async function sendReview(options) {
-    const chatId = options.chatId || process.env.TELEGRAM_CHAT_ID;
+    const chatId = options.chatId || options['chat-id'] || process.env.TELEGRAM_CHAT_ID;
     if (!chatId) {
         throw new Error('Missing TELEGRAM_CHAT_ID. Discover the chat first or pass --chatId=...');
     }
 
-    const approvalId = options.approvalId || `approval-${Date.now()}`;
+    const approvalId = options.approvalId || options['approval-id'] || `approval-${Date.now()}`;
     const title = options.title || 'SEO Review';
     const bodyFile = options['body-file'];
     const bodyText = bodyFile
@@ -230,15 +254,19 @@ async function sendReview(options) {
 }
 
 async function answerCallback(callbackQueryId, text) {
-    await telegramRequest('answerCallbackQuery', {
-        callback_query_id: callbackQueryId,
-        text
-    });
+    try {
+        await telegramRequest('answerCallbackQuery', {
+            callback_query_id: callbackQueryId,
+            text
+        });
+    } catch (error) {
+        process.stderr.write(`Callback acknowledgement skipped: ${error.message}\n`);
+    }
 }
 
 async function checkApprovals() {
     const offsetState = readJson(CONFIG.offsetFile, { updateOffset: 0 });
-    const decisions = readJson(CONFIG.decisionsFile, []);
+    const decisions = dedupeDecisions(readJson(CONFIG.decisionsFile, []));
     const updates = await telegramRequest('getUpdates', {
         offset: offsetState.updateOffset,
         allowed_updates: ['callback_query', 'message']
@@ -280,7 +308,7 @@ async function checkApprovals() {
     }
 
     writeJson(CONFIG.offsetFile, { updateOffset: highestUpdateId });
-    writeJson(CONFIG.decisionsFile, recorded);
+    writeJson(CONFIG.decisionsFile, dedupeDecisions(recorded));
 }
 
 function printHelp() {
@@ -296,6 +324,8 @@ function printHelp() {
 }
 
 async function main() {
+    loadLocalEnv();
+
     const { command, options } = parseArgs(process.argv.slice(2));
 
     switch (command) {
