@@ -110,6 +110,57 @@ Recommended reason for this order:
 - `Quezon City` has demand but needs a clearer local target page.
 - `Manila` already ranks, so it is slightly less urgent than the gaps above.
 
+## 5B. Release Workflow
+
+Working rule going forward:
+
+1. Make one small verified change set.
+2. Run the relevant local check, usually `npm run build`.
+3. Commit immediately to `main`.
+4. Push immediately to GitHub.
+5. Confirm production deploy before starting the next major step.
+
+Why:
+
+- smaller pushes expose deployment or generation errors earlier
+- easier rollback if something breaks
+- easier to map ranking changes to specific edits
+
+Guardrail:
+
+- still avoid pushing broken or unverified work just to push faster
+
+## 5C. Content Distribution
+
+For each important city page and support article, create a simple slide-style video and distribute it across owned channels.
+
+Primary distribution:
+
+- YouTube
+- Facebook page
+- Instagram reels or carousel adaptation
+- TikTok slide-style version if usable for the brand
+
+Recommended content format:
+
+- 5 to 10 slides only
+- one keyword/theme per video
+- simple office visuals, printer visuals, short text overlays, clear CTA
+- link back to the exact target URL in the description and profile links
+
+First video topics:
+
+- `Printer Rental Makati`
+- `How to Choose Printer Rental in Makati for Office Teams`
+- `Printer Rental BGC`
+- `Best Printer Rental Setup for BGC Offices and Startups`
+
+Goal:
+
+- support branded search
+- create more entity and topical signals around each city page
+- build reusable content for social, YouTube, and future embed opportunities
+
 ## 6. Off-Site Authority Work
 
 Manual actions required:
