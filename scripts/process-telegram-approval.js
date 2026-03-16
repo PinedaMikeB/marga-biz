@@ -60,6 +60,12 @@ function latestDecisionFor(approvalId, decisions) {
     return matches.sort((a, b) => new Date(b.decidedAt) - new Date(a.decidedAt))[0];
 }
 
+function normalizeDecision(decision) {
+    if (decision === 'approve') return 'approved';
+    if (decision === 'reject') return 'rejected';
+    return decision;
+}
+
 function writeStatusFile(request, decision) {
     const lines = [
         '# Approval Status',
@@ -91,8 +97,8 @@ function handleStatus() {
     const decisions = readJson(CONFIG.decisionsFile, []);
     const decision = latestDecisionFor(request.approvalId, decisions);
 
-    if (decision && request.status !== decision.decision) {
-        request.status = decision.decision;
+    if (decision && request.status !== normalizeDecision(decision.decision)) {
+        request.status = normalizeDecision(decision.decision);
         writeJson(CONFIG.requestFile, request);
     }
 
@@ -101,7 +107,7 @@ function handleStatus() {
     process.stdout.write((checkResult.stdout || '').trim() + '\n');
     process.stdout.write(`Current request status: ${request.status}\n`);
     if (decision) {
-        process.stdout.write(`Latest decision: ${decision.decision} by ${decision.user}\n`);
+        process.stdout.write(`Latest decision: ${normalizeDecision(decision.decision)} by ${decision.user}\n`);
     }
 }
 
