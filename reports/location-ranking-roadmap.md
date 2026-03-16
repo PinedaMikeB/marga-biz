@@ -27,6 +27,34 @@ Use these pages as the money pages:
 
 Do not retarget the homepage for these terms.
 
+## 1A. Recommended Site Model
+
+Use a controlled 4-tier topic model, not 4 layers of URL depth everywhere.
+
+Tier 1:
+
+- parent hub: `/printer-rental/`
+
+Tier 2:
+
+- city money pages: `/printer-rental/makati/`, `/printer-rental/bgc/`, then Pasig, Ortigas, Quezon City, Manila
+
+Tier 3:
+
+- city support articles with distinct intent
+- examples: buying guides, startup guides, office-fit guides, admin-team guides
+
+Tier 4:
+
+- proof and amplification assets
+- examples: testimonials, case snippets, FAQs, slide-video content, social posts, YouTube uploads, citations
+
+Important:
+
+- keep the architecture shallow and understandable
+- do not create deep nested URLs just to simulate authority
+- authority comes from relevance, internal linking, proof, and distribution, not URL depth alone
+
 ## 2. Internal Link System
 
 Already implemented in code:
