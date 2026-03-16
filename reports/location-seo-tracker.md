@@ -72,7 +72,7 @@ Use this file as the working checklist. When you ask what is finished or pending
 ## Monitoring
 
 - `[x]` SERP monitor setup
-- `[ ]` daily or morning review automation
+- `[x]` daily or morning review automation
 - `[ ]` weekly rank review note in tracker
 - `[ ]` GA4 custom dimensions registered manually
 - `[ ]` Search Console indexing and performance review
@@ -89,10 +89,12 @@ These items should be proposed before content or major code changes are pushed.
 
 ## Last Verified Snapshot
 
-- `printer rental makati`: rank 6 on Google snapshot, homepage still ranking
-- `printer rental bgc`: rank 8 on Google snapshot, homepage still ranking
-- `printer rental ortigas`: rank 9 on Google snapshot, homepage still ranking
-- `printer rental manila`: rank 5 on Google snapshot, homepage still ranking
+- `printer rental makati`: rank 5 on Google snapshot, ranking URL: https://marga.biz/printer-rental/print-all-you-can/multifunction-printer-rental-philippines/
+- `printer rental bgc`: rank 10 on Google snapshot, ranking URL: https://marga.biz/
+- `printer rental pasig`: rank Not in top 10 on Google snapshot, not ranking in top 10 yet
+- `printer rental ortigas`: rank 9 on Google snapshot, ranking URL: https://marga.biz/
+- `printer rental quezon city`: rank Not in top 10 on Google snapshot, not ranking in top 10 yet
+- `printer rental manila`: rank 5 on Google snapshot, ranking URL: https://marga.biz/
 
 ## Operating Rule
 

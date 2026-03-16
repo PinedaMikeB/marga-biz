@@ -1,0 +1,41 @@
+{
+  "approvalId": "seo-review-2026-03-16",
+  "generatedAt": "2026-03-16T15:11:17.881Z",
+  "proposedActions": [
+    "build Pasig money page",
+    "build Pasig first support article",
+    "build Ortigas money page"
+  ],
+  "summary": [
+    {
+      "keyword": "printer rental makati",
+      "rank": 5,
+      "url": "https://marga.biz/printer-rental/print-all-you-can/multifunction-printer-rental-philippines/"
+    },
+    {
+      "keyword": "printer rental bgc",
+      "rank": 10,
+      "url": "https://marga.biz/"
+    },
+    {
+      "keyword": "printer rental pasig",
+      "rank": "Not in top 10",
+      "url": "none"
+    },
+    {
+      "keyword": "printer rental ortigas",
+      "rank": 9,
+      "url": "https://marga.biz/"
+    },
+    {
+      "keyword": "printer rental quezon city",
+      "rank": "Not in top 10",
+      "url": "none"
+    },
+    {
+      "keyword": "printer rental manila",
+      "rank": 5,
+      "url": "https://marga.biz/"
+    }
+  ]
+}
