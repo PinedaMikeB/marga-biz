@@ -1,6 +1,6 @@
 # Location SEO Tracker
 
-Updated: 2026-03-16
+Updated: 2026-03-17
 
 Use this file as the working checklist. When you ask what is finished or pending, this is the source of truth.
 
@@ -36,13 +36,13 @@ Use this file as the working checklist. When you ask what is finished or pending
    - `[?]` add BGC or Taguig proof/testimonials if available
    - `[?]` submit page in Google Search Console
 3. `Pasig`
-   - `[ ]` money page
-   - `[ ]` first support article
-   - `[ ]` internal-link reinforcement
+   - `[x]` money page
+   - `[x]` first support article
+   - `[x]` internal-link reinforcement
 4. `Ortigas`
-   - `[ ]` money page
-   - `[ ]` first support article
-   - `[ ]` internal-link reinforcement
+   - `[x]` money page
+   - `[x]` first support article
+   - `[x]` internal-link reinforcement
 5. `Quezon City`
    - `[ ]` money page
    - `[ ]` first support article
@@ -85,6 +85,10 @@ These items should be proposed before content or major code changes are pushed.
 - `[?]` build Pasig first support article
 - `[?]` build Ortigas money page
 - `[?]` build Ortigas first support article
+- `[?]` build Quezon City money page
+- `[?]` build Quezon City first support article
+- `[?]` build Manila money page
+- `[?]` build Manila first support article
 - `[?]` create first 4 slide-video outlines
 
 ## Last Verified Snapshot

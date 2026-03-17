@@ -24,6 +24,8 @@ Use these pages as the money pages:
 
 - `/printer-rental/makati/`
 - `/printer-rental/bgc/`
+- `/printer-rental/ortigas/`
+- `/printer-rental/pasig/`
 
 Do not retarget the homepage for these terms.
 
@@ -114,6 +116,8 @@ Published:
 
 - `/printer-rental/how-to-choose-printer-rental-makati/`
 - `/printer-rental/best-printer-rental-setup-bgc/`
+- `/printer-rental/best-printer-rental-setup-ortigas/`
+- `/printer-rental/how-to-choose-printer-rental-pasig/`
 
 Next support pages to publish only if each page has unique intent and real value:
 
@@ -126,10 +130,8 @@ Each article should link to its matching money page.
 
 Next city pages to build after Makati and BGC:
 
-1. `Pasig`
-2. `Ortigas`
-3. `Quezon City`
-4. `Manila`
+1. `Quezon City`
+2. `Manila`
 
 Recommended reason for this order:
 
