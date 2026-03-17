@@ -1,28 +1,26 @@
 # Morning SEO Review
 
-Generated: 2026-03-16T15:11:17.881Z
-Approval ID: `seo-review-2026-03-16`
+Generated: 2026-03-16T15:20:00.000Z
+Approval ID: `pasig-money-page-2026-03-16`
 
-## Rank Snapshot
-
-- printer rental makati: 5 (https://marga.biz/printer-rental/print-all-you-can/multifunction-printer-rental-philippines/)
-- printer rental bgc: 10 (https://marga.biz/)
-- printer rental pasig: Not in top 10 (none)
-- printer rental ortigas: 9 (https://marga.biz/)
-- printer rental quezon city: Not in top 10 (none)
-- printer rental manila: 5 (https://marga.biz/)
-
-## SERP Monitor
-
-- SERP monitor completed for Google.
-
-## Proposed Next Actions
+## Current Target
 
 - build Pasig money page
-- build Pasig first support article
-- build Ortigas money page
+
+## Why This Action First
+
+- `printer rental pasig` is not in the Google top 10 yet
+- the current results are beatable and include weak directory and social pages
+- this is the next city in the tracker order after Makati and BGC
+
+## Scope If Approved
+
+- create the Pasig money page only
+- keep it aligned with the existing location-page pattern
+- verify locally
+- push the small change set to `main`
 
 ## Approval Rule
 
-- Approve = proceed with only the first approved action as one small verified change set.
-- Reject = no code or content changes will be made.
+- Approve = proceed with only `build Pasig money page`
+- Reject = do not make any code or content changes

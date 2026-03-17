@@ -16,7 +16,9 @@ const CONFIG = {
     repoRoot: path.join(__dirname, '..'),
     tempDir: path.join(__dirname, '../temp'),
     offsetFile: path.join(__dirname, '../temp/telegram-update-offset.json'),
-    decisionsFile: path.join(__dirname, '../temp/telegram-approvals.json')
+    decisionsFile: path.join(__dirname, '../temp/telegram-approvals.json'),
+    messagesFile: path.join(__dirname, '../temp/telegram-messages.json'),
+    inboxReportFile: path.join(__dirname, '../reports/telegram-bridge/inbox.md')
 };
 
 function ensureDir(dirPath) {
@@ -119,6 +121,28 @@ function dedupeDecisions(decisions) {
 
         seen.add(key);
         unique.push(decision);
+    }
+
+    return unique;
+}
+
+function dedupeMessages(messages) {
+    const seen = new Set();
+    const unique = [];
+
+    for (const message of messages) {
+        const key = [
+            message.chatId,
+            message.messageId,
+            message.text
+        ].join('|');
+
+        if (seen.has(key)) {
+            continue;
+        }
+
+        seen.add(key);
+        unique.push(message);
     }
 
     return unique;
@@ -253,6 +277,30 @@ async function sendReview(options) {
     process.stdout.write(`Message ID: ${result.message_id}\n`);
 }
 
+async function sendMessage(options) {
+    const chatId = options.chatId || options['chat-id'] || process.env.TELEGRAM_CHAT_ID;
+    if (!chatId) {
+        throw new Error('Missing TELEGRAM_CHAT_ID. Discover the chat first or pass --chatId=...');
+    }
+
+    const bodyFile = options['body-file'];
+    const text = bodyFile
+        ? fs.readFileSync(path.join(CONFIG.repoRoot, bodyFile), 'utf8')
+        : options.text;
+
+    if (!text) {
+        throw new Error('Missing message text. Pass --text="..." or --body-file=...');
+    }
+
+    const result = await telegramRequest('sendMessage', {
+        chat_id: chatId,
+        text
+    });
+
+    process.stdout.write(`Sent message to chat ${chatId}.\n`);
+    process.stdout.write(`Message ID: ${result.message_id}\n`);
+}
+
 async function answerCallback(callbackQueryId, text) {
     try {
         await telegramRequest('answerCallbackQuery', {
@@ -267,6 +315,7 @@ async function answerCallback(callbackQueryId, text) {
 async function checkApprovals() {
     const offsetState = readJson(CONFIG.offsetFile, { updateOffset: 0 });
     const decisions = dedupeDecisions(readJson(CONFIG.decisionsFile, []));
+    const messages = dedupeMessages(readJson(CONFIG.messagesFile, []));
     const updates = await telegramRequest('getUpdates', {
         offset: offsetState.updateOffset,
         allowed_updates: ['callback_query', 'message']
@@ -279,9 +328,21 @@ async function checkApprovals() {
 
     let highestUpdateId = offsetState.updateOffset;
     const recorded = [...decisions];
+    const recordedMessages = [...messages];
 
     for (const update of updates) {
         highestUpdateId = Math.max(highestUpdateId, update.update_id + 1);
+
+        const message = update.message;
+        if (message?.text) {
+            recordedMessages.push({
+                chatId: message.chat?.id || null,
+                messageId: message.message_id || null,
+                text: message.text,
+                user: message.from?.username || message.from?.first_name || 'unknown',
+                receivedAt: new Date().toISOString()
+            });
+        }
 
         const callback = update.callback_query;
         if (!callback || !callback.data) {
@@ -309,6 +370,31 @@ async function checkApprovals() {
 
     writeJson(CONFIG.offsetFile, { updateOffset: highestUpdateId });
     writeJson(CONFIG.decisionsFile, dedupeDecisions(recorded));
+    writeJson(CONFIG.messagesFile, dedupeMessages(recordedMessages));
+    writeInboxReport(dedupeMessages(recordedMessages));
+}
+
+function writeInboxReport(messages) {
+    ensureDir(path.dirname(CONFIG.inboxReportFile));
+
+    const lines = [
+        '# Telegram Inbox',
+        '',
+        `Updated: ${new Date().toISOString()}`,
+        ''
+    ];
+
+    const recent = messages.slice(-20).reverse();
+
+    if (!recent.length) {
+        lines.push('No Telegram messages captured yet.');
+    } else {
+        for (const message of recent) {
+            lines.push(`- ${message.receivedAt} | ${message.user} | ${message.text}`);
+        }
+    }
+
+    fs.writeFileSync(CONFIG.inboxReportFile, lines.join('\n'));
 }
 
 function printHelp() {
@@ -318,6 +404,7 @@ function printHelp() {
             '  node scripts/telegram-approval.js bot-info',
             '  node scripts/telegram-approval.js discover-chat',
             '  node scripts/telegram-approval.js send-review --approval-id=seo-2026-03-16 --title="SEO Review" --body-file=reports/location-seo-tracker.md',
+            '  node scripts/telegram-approval.js send-message --text="Reply from Codex"',
             '  node scripts/telegram-approval.js check-approvals'
         ].join('\n') + '\n'
     );
@@ -337,6 +424,9 @@ async function main() {
             break;
         case 'send-review':
             await sendReview(options);
+            break;
+        case 'send-message':
+            await sendMessage(options);
             break;
         case 'check-approvals':
             await checkApprovals();

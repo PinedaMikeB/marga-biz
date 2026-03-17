@@ -12,6 +12,7 @@
     "seo:approval-processed": "node scripts/process-telegram-approval.js mark-processed",
     "telegram:bot": "node scripts/telegram-approval.js bot-info",
     "telegram:discover": "node scripts/telegram-approval.js discover-chat",
+    "telegram:send": "node scripts/telegram-approval.js send-message",
     "telegram:check": "node scripts/telegram-approval.js check-approvals",
     "sync-images": "node scripts/sync-images.js",
     "serve": "cd dist && npx http-server . -p 8080 -o",
