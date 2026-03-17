@@ -44,13 +44,13 @@ Use this file as the working checklist. When you ask what is finished or pending
    - `[x]` first support article
    - `[x]` internal-link reinforcement
 5. `Quezon City`
-   - `[ ]` money page
-   - `[ ]` first support article
-   - `[ ]` internal-link reinforcement
+   - `[x]` money page
+   - `[x]` first support article
+   - `[x]` internal-link reinforcement
 6. `Manila`
-   - `[ ]` money page
-   - `[ ]` first support article
-   - `[ ]` internal-link reinforcement
+   - `[x]` money page
+   - `[x]` first support article
+   - `[x]` internal-link reinforcement
 
 ## Support Cluster Standards
 
@@ -99,6 +99,16 @@ These items should be proposed before content or major code changes are pushed.
 - `printer rental ortigas`: rank 9 on Google snapshot, ranking URL: https://marga.biz/
 - `printer rental quezon city`: rank Not in top 10 on Google snapshot, not ranking in top 10 yet
 - `printer rental manila`: rank 5 on Google snapshot, ranking URL: https://marga.biz/
+
+## Next Focus
+
+- `[ ]` build second support article for Makati
+- `[ ]` build second support article for BGC
+- `[ ]` build second support article for Pasig
+- `[ ]` build second support article for Ortigas
+- `[ ]` build second support article for Quezon City
+- `[ ]` build second support article for Manila
+- `[ ]` create slide-video outlines for the first 6 money pages
 
 ## Operating Rule
 

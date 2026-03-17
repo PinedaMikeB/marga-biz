@@ -510,12 +510,12 @@ function getPrinterLocationLinkBlock(pageLink) {
         'https://marga.biz/printer-rental/printer-for-rent/': `
 <section class="quote-panel location-link-section">
     <h2>Need a printer rental page by location?</h2>
-    <p>If you are comparing units for a specific office location, review our <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, and <a href="/printer-rental/bgc/">printer rental BGC</a> pages for local office-fit guidance. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for broader equipment options.</p>
+    <p>If you are comparing units for a specific office location, review our <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental Quezon City</a>, <a href="/printer-rental/manila/">printer rental Manila</a>, and <a href="/printer-rental/bgc/">printer rental BGC</a> pages for local office-fit guidance. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for broader equipment options.</p>
 </section>`,
         'https://marga.biz/printer-rental/printer-for-rent/color-printer-rental-benefits-for-your-business/laser-printer-rental/': `
 <section class="quote-panel location-link-section">
     <h2>Where laser printer rental fits best</h2>
-    <p>Laser units are especially practical for document-heavy teams. For local guidance, compare <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, and <a href="/printer-rental/bgc/">printer rental BGC</a>. For the full service overview, browse the main <a href="/printer-rental/">Printer Rental</a> page.</p>
+    <p>Laser units are especially practical for document-heavy teams. For local guidance, compare <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental Quezon City</a>, <a href="/printer-rental/manila/">printer rental Manila</a>, and <a href="/printer-rental/bgc/">printer rental BGC</a>. For the full service overview, browse the main <a href="/printer-rental/">Printer Rental</a> page.</p>
 </section>`,
         'https://marga.biz/printer-rental/best-printer-rental-company/inkjet-printer-rental/': `
 <section class="quote-panel location-link-section">
@@ -530,7 +530,7 @@ function getPrinterLocationLinkBlock(pageLink) {
         'https://marga.biz/printer-rental/best-printer-rental-company/': `
 <section class="quote-panel location-link-section">
     <h2>Comparing the best printer rental option by area</h2>
-    <p>The best printer rental company for your team should also understand your office location and workflow. Compare our dedicated pages for <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/ortigas/">Ortigas</a>, <a href="/printer-rental/pasig/">Pasig</a>, and <a href="/printer-rental/bgc/">BGC</a> before returning to the broader <a href="/printer-rental/">Printer Rental</a> parent service.</p>
+    <p>The best printer rental company for your team should also understand your office location and workflow. Compare our dedicated pages for <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/ortigas/">Ortigas</a>, <a href="/printer-rental/pasig/">Pasig</a>, <a href="/printer-rental/quezon-city/">Quezon City</a>, <a href="/printer-rental/manila/">Manila</a>, and <a href="/printer-rental/bgc/">BGC</a> before returning to the broader <a href="/printer-rental/">Printer Rental</a> parent service.</p>
 </section>`,
         'https://marga.biz/printer-rental/types-of-printers-for-rent/office-printers-for-rent/': `
 <section class="quote-panel location-link-section">
@@ -581,7 +581,7 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
 <section class="service-areas-section">
     <h2>Printer Rental Service Areas in Metro Manila</h2>
     <p>Need a printer rental provider that understands your office location, delivery requirements, and response-time expectations? We now have dedicated city pages for key business districts so you can find the most relevant rental solution faster.</p>
-    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, or <a href="/printer-rental/bgc/">printer rental in BGC</a>, use these pages to compare local office fit, service coverage, and printer types before you request a quote.</p>
+    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, or <a href="/printer-rental/bgc/">printer rental in BGC</a>, use these pages to compare local office fit, service coverage, and printer types before you request a quote.</p>
     <div class="service-area-grid">
         <a class="service-area-card" href="/printer-rental/makati/">
             <span class="service-area-label">Makati</span>
@@ -597,6 +597,16 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
             <span class="service-area-label">Pasig</span>
             <strong>Printer Rental Pasig</strong>
             <span>For Kapitolyo, Bridgetowne, Tiendesitas, Arcovia, Rosario, and surrounding Pasig offices.</span>
+        </a>
+        <a class="service-area-card" href="/printer-rental/quezon-city/">
+            <span class="service-area-label">Quezon City</span>
+            <strong>Printer Rental Quezon City</strong>
+            <span>For Cubao, Eastwood, Timog, Tomas Morato, Vertis North, and nearby QC offices.</span>
+        </a>
+        <a class="service-area-card" href="/printer-rental/manila/">
+            <span class="service-area-label">Manila</span>
+            <strong>Printer Rental Manila</strong>
+            <span>For Binondo, Ermita, Malate, Intramuros, Sampaloc, and surrounding Manila offices.</span>
         </a>
         <a class="service-area-card" href="/printer-rental/bgc/">
             <span class="service-area-label">BGC</span>
