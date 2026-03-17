@@ -638,6 +638,31 @@ body {
     font-size: 0.85rem;
 }
 
+.location-hero-figure {
+    margin: 0;
+    padding: 16px;
+    border: 1px solid rgba(0, 61, 122, 0.12);
+    border-radius: 22px;
+    background:
+        linear-gradient(180deg, rgba(245, 249, 255, 0.92) 0%, rgba(255, 247, 235, 0.92) 100%);
+    box-shadow: 0 22px 48px rgba(0, 61, 122, 0.08);
+}
+
+.location-hero-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 61, 122, 0.08);
+    background: #f6f9fe;
+}
+
+.location-hero-figure figcaption {
+    margin-top: 12px;
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
 .location-grid,
 .feature-grid,
 .included-grid,
