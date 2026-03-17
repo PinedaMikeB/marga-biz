@@ -81,15 +81,13 @@ Use this file as the working checklist. When you ask what is finished or pending
 
 These items should be proposed before content or major code changes are pushed.
 
-- `[?]` build Pasig money page
-- `[?]` build Pasig first support article
-- `[?]` build Ortigas money page
-- `[?]` build Ortigas first support article
-- `[?]` build Quezon City money page
-- `[?]` build Quezon City first support article
-- `[?]` build Manila money page
-- `[?]` build Manila first support article
-- `[?]` create first 4 slide-video outlines
+- `[?]` build second support article for Makati
+- `[?]` build second support article for BGC
+- `[?]` build second support article for Pasig
+- `[?]` build second support article for Ortigas
+- `[?]` build second support article for Quezon City
+- `[?]` build second support article for Manila
+- `[?]` create first 6 slide-video outlines
 
 ## Last Verified Snapshot
 
