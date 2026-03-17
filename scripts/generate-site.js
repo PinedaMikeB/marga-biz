@@ -1040,6 +1040,13 @@ function copyStaticAssets() {
         copyDirRecursive(staticPagesDir, CONFIG.distDir);
         console.log('   ✅ Copied static-pages/ recursively');
     }
+
+    // Copy shared image assets
+    const imagesDir = path.join(rootDir, 'images');
+    if (fs.existsSync(imagesDir)) {
+        copyDirRecursive(imagesDir, path.join(CONFIG.distDir, 'images'));
+        console.log('   ✅ Copied images/ folder');
+    }
     
     // Copy admin folder (Insights dashboard)
     const adminDir = path.join(rootDir, 'admin');
