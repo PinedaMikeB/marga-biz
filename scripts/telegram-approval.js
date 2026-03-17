@@ -322,26 +322,31 @@ async function checkApprovals() {
     });
 
     if (!updates.length) {
-        process.stdout.write('No new approval updates.\n');
+        process.stdout.write('No new Telegram updates.\n');
         return;
     }
 
     let highestUpdateId = offsetState.updateOffset;
     const recorded = [...decisions];
     const recordedMessages = [...messages];
+    const newMessages = [];
+    const newDecisions = [];
 
     for (const update of updates) {
         highestUpdateId = Math.max(highestUpdateId, update.update_id + 1);
 
         const message = update.message;
         if (message?.text) {
-            recordedMessages.push({
+            const messageEntry = {
                 chatId: message.chat?.id || null,
                 messageId: message.message_id || null,
                 text: message.text,
                 user: message.from?.username || message.from?.first_name || 'unknown',
                 receivedAt: new Date().toISOString()
-            });
+            };
+
+            recordedMessages.push(messageEntry);
+            newMessages.push(messageEntry);
         }
 
         const callback = update.callback_query;
@@ -364,14 +369,26 @@ async function checkApprovals() {
         };
 
         recorded.push(entry);
+        newDecisions.push(entry);
         await answerCallback(callback.id, `Recorded: ${decision}`);
         process.stdout.write(`Approval ${approvalId}: ${decision} by ${entry.user}\n`);
     }
 
     writeJson(CONFIG.offsetFile, { updateOffset: highestUpdateId });
-    writeJson(CONFIG.decisionsFile, dedupeDecisions(recorded));
-    writeJson(CONFIG.messagesFile, dedupeMessages(recordedMessages));
-    writeInboxReport(dedupeMessages(recordedMessages));
+    const uniqueDecisions = dedupeDecisions(recorded);
+    const uniqueMessages = dedupeMessages(recordedMessages);
+    writeJson(CONFIG.decisionsFile, uniqueDecisions);
+    writeJson(CONFIG.messagesFile, uniqueMessages);
+    writeInboxReport(uniqueMessages);
+
+    if (!newMessages.length && !newDecisions.length) {
+        process.stdout.write('No new Telegram updates.\n');
+        return;
+    }
+
+    for (const message of newMessages) {
+        process.stdout.write(`Message from ${message.user}: ${message.text}\n`);
+    }
 }
 
 function writeInboxReport(messages) {
