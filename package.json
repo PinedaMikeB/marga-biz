@@ -14,6 +14,7 @@
     "telegram:discover": "node scripts/telegram-approval.js discover-chat",
     "telegram:send": "node scripts/telegram-approval.js send-message",
     "telegram:check": "node scripts/telegram-approval.js check-approvals",
+    "telegram:daemon": "node scripts/telegram-chat-daemon.js",
     "sync-images": "node scripts/sync-images.js",
     "serve": "cd dist && npx http-server . -p 8080 -o",
     "serve:root": "npx http-server . -p 8080 -o",
