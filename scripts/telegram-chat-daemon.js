@@ -13,6 +13,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const { spawnSync } = require('child_process');
 
 const CONFIG = {
     telegramApiBase: 'https://api.telegram.org',
@@ -22,7 +24,8 @@ const CONFIG = {
     decisionsFile: path.join(__dirname, '../temp/telegram-approvals.json'),
     messagesFile: path.join(__dirname, '../temp/telegram-messages.json'),
     inboxReportFile: path.join(__dirname, '../reports/telegram-bridge/inbox.md'),
-    daemonStateFile: path.join(__dirname, '../temp/telegram-chat-daemon-state.json')
+    daemonStateFile: path.join(__dirname, '../temp/telegram-chat-daemon-state.json'),
+    historyFile: path.join(__dirname, '../temp/telegram-chat-history.json')
 };
 
 function ensureDir(dirPath) {
@@ -170,11 +173,98 @@ async function sendReply(chatId, text) {
     });
 }
 
+function recentHistoryFor(chatId, history) {
+    return (history[String(chatId)] || []).slice(-6);
+}
+
+function appendHistory(chatId, role, text, history) {
+    const key = String(chatId);
+    const updated = Array.isArray(history[key]) ? [...history[key]] : [];
+    updated.push({
+        role,
+        text,
+        timestamp: new Date().toISOString()
+    });
+    history[key] = updated.slice(-12);
+}
+
+function buildCodexPrompt(message, history) {
+    const historyLines = history.length
+        ? history.map(entry => `${entry.role}: ${entry.text}`).join('\n')
+        : 'No prior chat history.';
+
+    return [
+        'You are Codex replying through a Telegram bot for Marga Enterprises.',
+        'Answer the user directly and helpfully.',
+        'Keep the reply concise and practical.',
+        'Use plain text only.',
+        'Do not mention internal tools, polling, daemon, bridge, queue, or implementation details unless the user asks about them.',
+        'If the user asks about the website or SEO work, answer based on the current Marga repo context.',
+        '',
+        'Recent conversation:',
+        historyLines,
+        '',
+        `Latest user message: ${message.text}`,
+        '',
+        'Reply now.'
+    ].join('\n');
+}
+
+function generateReplyWithCodex(message, history) {
+    const prompt = buildCodexPrompt(message, history);
+    const outputFile = path.join(
+        os.tmpdir(),
+        `codex-telegram-reply-${Date.now()}-${message.messageId || 'msg'}.txt`
+    );
+
+    const result = spawnSync(
+        'codex',
+        [
+            'exec',
+            '--skip-git-repo-check',
+            '--ephemeral',
+            '--dangerously-bypass-approvals-and-sandbox',
+            '--output-last-message',
+            outputFile,
+            '-'
+        ],
+        {
+            cwd: CONFIG.repoRoot,
+            encoding: 'utf8',
+            input: prompt,
+            timeout: 25000,
+            maxBuffer: 1024 * 1024 * 8
+        }
+    );
+
+    if (result.error) {
+        throw result.error;
+    }
+
+    if (result.status !== 0) {
+        throw new Error((result.stderr || result.stdout || 'codex exec failed').trim());
+    }
+
+    if (!fs.existsSync(outputFile)) {
+        throw new Error('codex exec completed without producing an output file');
+    }
+
+    const reply = fs.readFileSync(outputFile, 'utf8').trim();
+    fs.unlinkSync(outputFile);
+
+    if (!reply) {
+        throw new Error('codex exec produced an empty reply');
+    }
+
+    return reply;
+}
+
 async function pollOnce() {
     const offsetState = readJson(CONFIG.offsetFile, { updateOffset: 0 });
     const daemonState = readJson(CONFIG.daemonStateFile, { repliedMessageIds: [] });
     const decisions = readJson(CONFIG.decisionsFile, []);
     const messages = readJson(CONFIG.messagesFile, []);
+    const history = readJson(CONFIG.historyFile, {});
 
     const updates = await telegramRequest('getUpdates', {
         offset: offsetState.updateOffset,
@@ -208,9 +298,20 @@ async function pollOnce() {
 
             recordedMessages.push(entry);
             messageCount += 1;
+            appendHistory(entry.chatId, 'user', entry.text, history);
 
             if (!repliedMessageIds.has(entry.messageId) && !entry.text.startsWith('/')) {
-                await sendReply(entry.chatId, buildReplyText(entry));
+                let replyText;
+
+                try {
+                    replyText = generateReplyWithCodex(entry, recentHistoryFor(entry.chatId, history));
+                } catch (error) {
+                    replyText = buildReplyText(entry);
+                    process.stderr.write(`[${new Date().toISOString()}] codex reply failed: ${error.message}\n`);
+                }
+
+                await sendReply(entry.chatId, replyText);
+                appendHistory(entry.chatId, 'assistant', replyText, history);
                 repliedMessageIds.add(entry.messageId);
                 replyCount += 1;
             }
@@ -246,6 +347,7 @@ async function pollOnce() {
     writeJson(CONFIG.daemonStateFile, {
         repliedMessageIds: Array.from(repliedMessageIds).slice(-200)
     });
+    writeJson(CONFIG.historyFile, history);
     writeInboxReport(readJson(CONFIG.messagesFile, []));
 
     return { messageCount, replyCount, approvalCount };
