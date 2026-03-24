@@ -1,14 +1,36 @@
 {
-  "approvalId": "pasig-money-page-2026-03-16",
-  "generatedAt": "2026-03-16T15:20:00.000Z",
-  "proposedActions": [
-    "build Pasig money page"
+  "generatedAt": "2026-03-24T22:00:00+08:00",
+  "mode": "autonomous",
+  "runType": "manual sample run",
+  "rankStatus": {
+    "liveSerpRun": true,
+    "snapshotTimestamp": "2026-03-24T14:52:50.399Z",
+    "changes": [
+      "printer rental bgc: 10 -> 3, URL changed from homepage to /printer-rental/",
+      "printer rental ortigas: 9 -> 3, URL changed from homepage to /printer-rental/",
+      "printer rental makati: stayed 5, URL changed from multifunction page to /contact/",
+      "printer rental manila: 5 -> 6, homepage still ranking",
+      "printer rental pasig: still not in top 10",
+      "printer rental quezon city: still not in top 10"
+    ]
+  },
+  "actionsToday": [
+    "ran the live Google SERP monitor",
+    "compared the fresh snapshot against the stored 2026-03-16 snapshot",
+    "added stronger BGC city-intent reinforcement to the BGC support article",
+    "rebuilt the site locally",
+    "updated the tracker and morning review report"
   ],
-  "summary": [
-    {
-      "keyword": "printer rental pasig",
-      "rank": "Not in top 10",
-      "url": "none"
-    }
-  ]
+  "filesChanged": [
+    "static-pages/printer-rental/best-printer-rental-setup-bgc/index.html",
+    "reports/location-seo-tracker.md",
+    "reports/morning-seo-review/latest.md",
+    "reports/morning-seo-review/latest.json"
+  ],
+  "verification": [
+    "npm run serp:monitor -- --engines=google completed successfully",
+    "npm run build completed successfully",
+    "fresh serp-monitor latest.json and latest.md were written"
+  ],
+  "nextCheck": "On the next live run, verify whether Google replaces /printer-rental/ with /printer-rental/bgc/ for the BGC query."
 }
