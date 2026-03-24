@@ -4,7 +4,7 @@
  * Behavior:
  * - polls Telegram for new messages and callback queries
  * - records inbound messages and approval callbacks
- * - replies once per new plain-text message
+ * - replies once per new text or captioned-media message
  *
  * Usage:
  *   node scripts/telegram-chat-daemon.js
@@ -19,7 +19,9 @@ const { spawnSync } = require('child_process');
 const CONFIG = {
     telegramApiBase: 'https://api.telegram.org',
     repoRoot: path.join(__dirname, '..'),
+    codexBinary: process.env.CODEX_BIN || '/Applications/Codex.app/Contents/Resources/codex',
     tempDir: path.join(__dirname, '../temp'),
+    lockFile: path.join(__dirname, '../temp/telegram-chat-daemon.lock'),
     offsetFile: path.join(__dirname, '../temp/telegram-update-offset.json'),
     decisionsFile: path.join(__dirname, '../temp/telegram-approvals.json'),
     messagesFile: path.join(__dirname, '../temp/telegram-messages.json'),
@@ -85,6 +87,45 @@ function writeJson(filePath, payload) {
     fs.writeFileSync(filePath, JSON.stringify(payload, null, 2));
 }
 
+function isPidRunning(pid) {
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    try {
+        process.kill(pid, 0);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function acquireSingletonLock() {
+    ensureDir(path.dirname(CONFIG.lockFile));
+
+    if (fs.existsSync(CONFIG.lockFile)) {
+        const existingPid = Number(fs.readFileSync(CONFIG.lockFile, 'utf8').trim());
+        if (isPidRunning(existingPid)) {
+            throw new Error(`Telegram daemon already running with pid ${existingPid}`);
+        }
+
+        fs.unlinkSync(CONFIG.lockFile);
+    }
+
+    fs.writeFileSync(CONFIG.lockFile, String(process.pid));
+}
+
+function releaseSingletonLock() {
+    if (!fs.existsSync(CONFIG.lockFile)) {
+        return;
+    }
+
+    const existingPid = Number(fs.readFileSync(CONFIG.lockFile, 'utf8').trim());
+    if (existingPid === process.pid) {
+        fs.unlinkSync(CONFIG.lockFile);
+    }
+}
+
 function dedupeBy(messages, keyBuilder) {
     const seen = new Set();
     const unique = [];
@@ -143,7 +184,7 @@ function writeInboxReport(messages) {
         lines.push('No Telegram messages captured yet.');
     } else {
         for (const message of recent) {
-            lines.push(`- ${message.receivedAt} | ${message.user} | ${message.text}`);
+            lines.push(`- ${message.receivedAt} | ${message.user} | ${message.text || message.displayText || '(no text)'}`);
         }
     }
 
@@ -161,9 +202,30 @@ async function answerCallback(callbackQueryId, text) {
     }
 }
 
-function buildReplyText(message) {
-    const shortText = message.text.length > 140 ? `${message.text.slice(0, 137)}...` : message.text;
-    return `Received in Codex: "${shortText}"`;
+function buildFallbackReply(message, error = null) {
+    const normalized = String(message.text || '').trim().toLowerCase();
+
+    if (!normalized && message.hasMedia) {
+        return 'I received your attachment, but this Telegram bridge can only read the caption text right now. Add a caption or paste the key text here and I will answer directly.';
+    }
+
+    if (['hi', 'hello', 'hey', 'test', 'ping'].includes(normalized)) {
+        return 'Hi. I can receive your Telegram messages now. Send me what you need and I will reply here.';
+    }
+
+    if (normalized.includes('can you receive') || normalized.includes('do you receive')) {
+        return 'Yes. I can receive your Telegram messages now. Send your question here and I will answer directly.';
+    }
+
+    if (normalized.includes('can you reply') || normalized.includes('reply now') || normalized.includes('this is a test')) {
+        return 'Yes. I can reply here now.';
+    }
+
+    if (error && String(error.message || '').includes('ETIMEDOUT')) {
+        return 'Reply generation timed out on my side. Send a shorter message or retry and I will answer directly.';
+    }
+
+    return 'I hit a reply error on my side. Retry once and I will answer directly.';
 }
 
 async function sendReply(chatId, text) {
@@ -174,7 +236,39 @@ async function sendReply(chatId, text) {
 }
 
 function recentHistoryFor(chatId, history) {
-    return (history[String(chatId)] || []).slice(-6);
+    return (history[String(chatId)] || []).slice(-4);
+}
+
+function describeIncomingMedia(message) {
+    const media = [];
+
+    if (Array.isArray(message.photo) && message.photo.length) media.push('photo');
+    if (message.document) media.push('document');
+    if (message.video) media.push('video');
+    if (message.audio) media.push('audio');
+    if (message.voice) media.push('voice message');
+    if (message.animation) media.push('animation');
+
+    return media.join(', ');
+}
+
+function buildIncomingEntry(message) {
+    const text = typeof message.text === 'string'
+        ? message.text.trim()
+        : typeof message.caption === 'string'
+            ? message.caption.trim()
+            : '';
+    const mediaSummary = describeIncomingMedia(message);
+
+    return {
+        chatId: message.chat?.id || null,
+        messageId: message.message_id || null,
+        text,
+        displayText: text || (mediaSummary ? `[${mediaSummary} with no caption]` : '(no text)'),
+        hasMedia: Boolean(mediaSummary),
+        user: message.from?.username || message.from?.first_name || 'unknown',
+        receivedAt: new Date().toISOString()
+    };
 }
 
 function appendHistory(chatId, role, text, history) {
@@ -195,11 +289,27 @@ function buildCodexPrompt(message, history) {
 
     return [
         'You are Codex replying through a Telegram bot for Marga Enterprises.',
-        'Answer the user directly and helpfully.',
+        'Answer the user directly as if you are replying inside the same Telegram chat.',
+        'Match the same direct, concise style used in the Codex desktop thread.',
         'Keep the reply concise and practical.',
+        'Prefer 2 to 5 short sentences.',
         'Use plain text only.',
-        'Do not mention internal tools, polling, daemon, bridge, queue, or implementation details unless the user asks about them.',
-        'If the user asks about the website or SEO work, answer based on the current Marga repo context.',
+        'When the user asks about SEO automation, stored instructions, latest reports, what changed today, or whether something already ran, do not rely on prior chat history alone.',
+        'For those questions, verify the current files on disk before answering.',
+        'Check these files first for SEO automation questions:',
+        '- /Users/mike/.codex/automations/morning-seo-review/automation.toml',
+        '- /Users/mike/.codex/automations/morning-seo-review/memory.md',
+        '- reports/morning-seo-review/latest.md',
+        '- reports/morning-seo-review/latest.json',
+        '- reports/location-seo-tracker.md',
+        'Prefer the newest timestamp you can verify from those files.',
+        'If a prior assistant message in the chat history conflicts with the current files, trust the current files and say so plainly.',
+        message.hasMedia
+            ? 'The user attached media with this message. Only use the text or caption you were given. Do not claim to have inspected the attachment itself.'
+            : 'No media was attached to this message.',
+        'Do not mention internal tools, polling, daemon, bridge, queue, fallback behavior, or implementation details unless the user asks about them.',
+        'Do not say "Received in Codex" or describe the handoff process.',
+        'Do not add email-style sign-offs like "Best regards".',
         '',
         'Recent conversation:',
         historyLines,
@@ -218,7 +328,7 @@ function generateReplyWithCodex(message, history) {
     );
 
     const result = spawnSync(
-        'codex',
+        CONFIG.codexBinary,
         [
             'exec',
             '--skip-git-repo-check',
@@ -232,7 +342,7 @@ function generateReplyWithCodex(message, history) {
             cwd: CONFIG.repoRoot,
             encoding: 'utf8',
             input: prompt,
-            timeout: 25000,
+            timeout: 60000,
             maxBuffer: 1024 * 1024 * 8
         }
     );
@@ -287,27 +397,30 @@ async function pollOnce() {
         highestUpdateId = Math.max(highestUpdateId, update.update_id + 1);
 
         const message = update.message;
-        if (message?.text && !message.from?.is_bot) {
-            const entry = {
-                chatId: message.chat?.id || null,
-                messageId: message.message_id || null,
-                text: message.text,
-                user: message.from?.username || message.from?.first_name || 'unknown',
-                receivedAt: new Date().toISOString()
-            };
+        if (message && !message.from?.is_bot) {
+            const entry = buildIncomingEntry(message);
+            if (!entry.text && !entry.hasMedia) {
+                continue;
+            }
 
             recordedMessages.push(entry);
             messageCount += 1;
-            appendHistory(entry.chatId, 'user', entry.text, history);
+            if (entry.text) {
+                appendHistory(entry.chatId, 'user', entry.text, history);
+            }
 
             if (!repliedMessageIds.has(entry.messageId) && !entry.text.startsWith('/')) {
                 let replyText;
 
-                try {
-                    replyText = generateReplyWithCodex(entry, recentHistoryFor(entry.chatId, history));
-                } catch (error) {
-                    replyText = buildReplyText(entry);
-                    process.stderr.write(`[${new Date().toISOString()}] codex reply failed: ${error.message}\n`);
+                if (!entry.text && entry.hasMedia) {
+                    replyText = buildFallbackReply(entry);
+                } else {
+                    try {
+                        replyText = generateReplyWithCodex(entry, recentHistoryFor(entry.chatId, history));
+                    } catch (error) {
+                        replyText = buildFallbackReply(entry, error);
+                        process.stderr.write(`[${new Date().toISOString()}] codex reply failed: ${error.message}\n`);
+                    }
                 }
 
                 await sendReply(entry.chatId, replyText);
@@ -338,7 +451,7 @@ async function pollOnce() {
     writeJson(CONFIG.offsetFile, { updateOffset: highestUpdateId });
     writeJson(
         CONFIG.messagesFile,
-        dedupeBy(recordedMessages, item => [item.chatId, item.messageId, item.text].join('|'))
+        dedupeBy(recordedMessages, item => [item.chatId, item.messageId, item.text || item.displayText].join('|'))
     );
     writeJson(
         CONFIG.decisionsFile,
@@ -355,6 +468,18 @@ async function pollOnce() {
 
 async function main() {
     loadLocalEnv();
+    acquireSingletonLock();
+
+    const cleanup = () => releaseSingletonLock();
+    process.on('exit', cleanup);
+    process.on('SIGINT', () => {
+        cleanup();
+        process.exit(130);
+    });
+    process.on('SIGTERM', () => {
+        cleanup();
+        process.exit(143);
+    });
 
     const arg = process.argv.slice(2).find(item => item.startsWith('--interval='));
     const intervalSeconds = arg ? Number(arg.split('=')[1]) : 5;
