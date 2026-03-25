@@ -91,36 +91,36 @@ These items should be proposed before content or major code changes are pushed.
 
 ## Last Verified Snapshot
 
-- Google snapshot refreshed live on 2026-03-24 using `SERPAPI_KEY`.
-- Snapshot timestamp: 2026-03-24T14:52:50.399Z
-- `printer rental makati`: rank 5 on Google snapshot, ranking URL: https://marga.biz/contact/
+- Google snapshot refreshed live on 2026-03-25 using `SERPAPI_KEY`.
+- Snapshot timestamp: 2026-03-25T12:37:03.527Z
+- `printer rental makati`: rank 7 on Google snapshot, ranking URL: https://marga.biz/printer-rental/
 - `printer rental bgc`: rank 3 on Google snapshot, ranking URL: https://marga.biz/printer-rental/
-- `printer rental pasig`: rank Not in top 10 on Google snapshot, not ranking in top 10 yet
-- `printer rental ortigas`: rank 3 on Google snapshot, ranking URL: https://marga.biz/printer-rental/
+- `printer rental pasig`: rank 7 on Google snapshot, ranking URL: https://marga.biz/contact/
+- `printer rental ortigas`: rank 3 on Google snapshot, ranking URL: https://marga.biz/contact/
 - `printer rental quezon city`: rank Not in top 10 on Google snapshot, not ranking in top 10 yet
-- `printer rental manila`: rank 6 on Google snapshot, ranking URL: https://marga.biz/
+- `printer rental manila`: rank 5 on Google snapshot, ranking URL: https://marga.biz/
 
 ## Current Rank Notes
 
-- No fresh live snapshot was captured on 2026-03-25 from this worktree because the Google SERP monitor could not reach SerpApi and returned `fetch failed`. Current rank notes below still reflect the last verified 2026-03-24 snapshot.
-- `printer rental makati`: held at rank 5, but Google is now choosing `/contact/` instead of a printer-rental landing page. This is a URL-targeting problem, not a visibility win.
-- `printer rental bgc`: improved from rank 10 to rank 3, but Google is ranking `/printer-rental/` instead of `/printer-rental/bgc/`.
-- `printer rental pasig`: still not in the top 10. This remains the clearest gap among the city pages.
-- `printer rental ortigas`: improved from rank 9 to rank 3, but Google is ranking `/printer-rental/` instead of `/printer-rental/ortigas/`.
+- `printer rental makati`: slipped from rank 5 to rank 7, but Google at least shifted from `/contact/` to `/printer-rental/`. The ranking URL is less off-target now, but the dedicated Makati page is still not winning.
+- `printer rental bgc`: held at rank 3, but Google is still ranking `/printer-rental/` instead of `/printer-rental/bgc/`.
+- `printer rental pasig`: improved from outside the top 10 to rank 7, but Google is ranking `/contact/` instead of `/printer-rental/pasig/`. This is the clearest new targeting opportunity.
+- `printer rental ortigas`: held at rank 3, but Google shifted from `/printer-rental/` to `/contact/`, which is a stronger URL-targeting warning even though rank held.
 - `printer rental quezon city`: still not in the top 10 with no verified breakthrough yet.
-- `printer rental manila`: slipped from rank 5 to rank 6, and the homepage still ranks instead of `/printer-rental/manila/`.
+- `printer rental manila`: improved from rank 6 to rank 5, but the homepage still ranks instead of `/printer-rental/manila/`.
 
 ## Review Note 2026-03-25
 
-- Finished this review cycle: attempted the live Google SERP monitor using the shared automation env, but the request returned `fetch failed`, so no fresh 2026-03-25 snapshot is available from this worktree. The last verified rank snapshot remains 2026-03-24.
-- Autonomous action completed: added a stronger contextual handoff inside `best-printer-rental-setup-ortigas` pointing users and search intent more clearly to `/printer-rental/ortigas/`.
+- Finished this review cycle: ran the live Google SERP monitor and compared the fresh `2026-03-25T12:37:03.527Z` snapshot against the stored `2026-03-24T14:52:50.399Z` snapshot.
+- Autonomous action completed: added a stronger contextual handoff inside `how-to-choose-printer-rental-pasig` pointing users and search intent more clearly to `/printer-rental/pasig/`.
 - Verification completed: `npm run build` passed successfully after the content change.
 
 ## Next Focus
 
+- `[ ]` correct Pasig targeting so Google stops choosing `/contact/` for `printer rental pasig`
+- `[ ]` correct Ortigas targeting so Google stops choosing `/contact/` for `printer rental ortigas`
 - `[ ]` strengthen the dedicated BGC money page so Google replaces `/printer-rental/` with `/printer-rental/bgc/`
-- `[ ]` strengthen the dedicated Ortigas money page so Google replaces `/printer-rental/` with `/printer-rental/ortigas/`
-- `[ ]` correct Makati targeting so Google stops choosing `/contact/`
+- `[ ]` correct Makati targeting so Google replaces `/printer-rental/` with `/printer-rental/makati/`
 - `[ ]` build second support article for Pasig
 - `[ ]` build second support article for Quezon City
 - `[ ]` build second support article for Makati

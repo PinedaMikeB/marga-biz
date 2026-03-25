@@ -1,37 +1,40 @@
 {
-  "generatedAt": "2026-03-25T08:31:28+08:00",
+  "generatedAt": "2026-03-25T20:33:04+08:00",
   "mode": "autonomous",
-  "runType": "daily automation",
+  "runType": "8:30 PM trigger",
   "rankStatus": {
-    "liveSerpRun": false,
-    "snapshotTimestamp": "2026-03-24T14:52:50.399Z",
+    "liveSerpRun": true,
+    "snapshotTimestamp": "2026-03-25T12:37:03.527Z",
     "changes": [
-      "No fresh verified rank movement for 2026-03-25 because the live SERP request failed with fetch failed.",
-      "Carry-forward baseline: printer rental bgc is #3 with /printer-rental/ ranking instead of /printer-rental/bgc/.",
-      "Carry-forward baseline: printer rental ortigas is #3 with /printer-rental/ ranking instead of /printer-rental/ortigas/.",
-      "Carry-forward baseline: printer rental makati is #5 with /contact/ ranking.",
-      "Carry-forward baseline: printer rental manila is #6 with the homepage ranking.",
-      "Carry-forward baseline: printer rental pasig and printer rental quezon city are still outside the top 10."
+      "printer rental makati: 5 -> 7, URL changed from /contact/ to /printer-rental/",
+      "printer rental bgc: held at 3, still ranking with /printer-rental/",
+      "printer rental pasig: outside top 10 -> 7, URL is /contact/",
+      "printer rental ortigas: held at 3, URL changed from /printer-rental/ to /contact/",
+      "printer rental quezon city: still not in top 10",
+      "printer rental manila: 6 -> 5, homepage still ranking"
     ]
   },
   "actionsToday": [
-    "attempted the live Google SERP monitor using the shared automation env file",
-    "reused the 2026-03-24 verified snapshot after the live request failed",
-    "added stronger Ortigas city-intent reinforcement to the Ortigas support article",
+    "ran the live Google SERP monitor",
+    "compared the fresh snapshot against the prior 2026-03-24 snapshot",
+    "added stronger Pasig city-intent reinforcement to the Pasig support article",
     "rebuilt the site locally",
-    "updated the tracker and morning review report artifacts"
+    "updated the tracker and latest run report artifacts"
   ],
   "filesChanged": [
-    "static-pages/printer-rental/best-printer-rental-setup-ortigas/index.html",
-    "dist/printer-rental/best-printer-rental-setup-ortigas/index.html",
+    "static-pages/printer-rental/how-to-choose-printer-rental-pasig/index.html",
+    "dist/printer-rental/how-to-choose-printer-rental-pasig/index.html",
     "reports/location-seo-tracker.md",
+    "reports/serp-monitor/latest.md",
+    "reports/serp-monitor/latest.json",
+    "reports/serp-monitor/serp-report-2026-03-25T12-37-03-527Z.json",
     "reports/morning-seo-review/latest.md",
     "reports/morning-seo-review/latest.json"
   ],
   "verification": [
-    "npm run serp:monitor -- --engines=google was attempted with the shared env file and failed with fetch failed",
+    "npm run serp:monitor -- --engines=google completed successfully",
     "npm run build completed successfully",
-    "verified the generated Ortigas support page contains the new money-page handoff copy"
+    "verified the generated Pasig support page contains the new money-page handoff copy"
   ],
-  "nextCheck": "On the next live run, verify whether Google replaces /printer-rental/ with /printer-rental/ortigas/ for the Ortigas query."
+  "nextCheck": "On the next live run, verify whether Google replaces /contact/ with /printer-rental/pasig/ for the Pasig query."
 }
