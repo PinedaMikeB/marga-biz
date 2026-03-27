@@ -1,6 +1,6 @@
 # Location SEO Tracker
 
-Updated: 2026-03-25
+Updated: 2026-03-27
 
 Use this file as the working checklist. When you ask what is finished or pending, this is the source of truth.
 
@@ -115,10 +115,17 @@ These items should be proposed before content or major code changes are pushed.
 - Autonomous action completed: added a stronger contextual handoff inside `how-to-choose-printer-rental-pasig` pointing users and search intent more clearly to `/printer-rental/pasig/`.
 - Verification completed: `npm run build` passed successfully after the content change.
 
+## Review Note 2026-03-27
+
+- Finished this review cycle: compared the latest stored Google snapshot `2026-03-25T12:37:03.527Z` against the prior stored `2026-03-24T14:52:50.399Z` snapshot because `SERPAPI_KEY` is not configured in this worktree for a fresh live pull.
+- Rank movement available this cycle stayed based on that stored comparison: `printer rental makati` dropped `5 -> 7`, `printer rental bgc` held at `3`, `printer rental pasig` improved from not in the top 10 to `7`, `printer rental ortigas` held at `3` but shifted from `/printer-rental/` to `/contact/`, `printer rental quezon city` stayed outside the top 10, and `printer rental manila` improved `6 -> 5`.
+- Autonomous action completed: added one stronger Ortigas support-article handoff covering `printer leasing Ortigas`, `printer for rent`, and `Print All You Can` while pointing city-level intent back to `/printer-rental/ortigas/`.
+- Verification completed: `PATH=/opt/homebrew/bin:$PATH npm run build` passed, and the generated `dist/printer-rental/best-printer-rental-setup-ortigas/index.html` contains the new Ortigas reinforcement copy.
+
 ## Next Focus
 
-- `[ ]` correct Pasig targeting so Google stops choosing `/contact/` for `printer rental pasig`
 - `[ ]` correct Ortigas targeting so Google stops choosing `/contact/` for `printer rental ortigas`
+- `[ ]` correct Pasig targeting so Google stops choosing `/contact/` for `printer rental pasig`
 - `[ ]` strengthen the dedicated BGC money page so Google replaces `/printer-rental/` with `/printer-rental/bgc/`
 - `[ ]` correct Makati targeting so Google replaces `/printer-rental/` with `/printer-rental/makati/`
 - `[ ]` build second support article for Pasig
