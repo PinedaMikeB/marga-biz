@@ -117,7 +117,7 @@ These items should be proposed before content or major code changes are pushed.
 
 ## Review Note 2026-03-27
 
-- Finished this review cycle: compared the latest stored Google snapshot `2026-03-25T12:37:03.527Z` against the prior stored `2026-03-24T14:52:50.399Z` snapshot because `SERPAPI_KEY` is not configured in this worktree for a fresh live pull.
+- Finished this review cycle: attempted a fresh live Google pull using the shared `SERPAPI_KEY`, but the request failed immediately with `fetch failed` in this sandbox, so this run compared the latest stored Google snapshot `2026-03-25T12:37:03.527Z` against the prior stored `2026-03-24T14:52:50.399Z` snapshot instead.
 - Rank movement available this cycle stayed based on that stored comparison: `printer rental makati` dropped `5 -> 7`, `printer rental bgc` held at `3`, `printer rental pasig` improved from not in the top 10 to `7`, `printer rental ortigas` held at `3` but shifted from `/printer-rental/` to `/contact/`, `printer rental quezon city` stayed outside the top 10, and `printer rental manila` improved `6 -> 5`.
 - Autonomous action completed: added one stronger Ortigas support-article handoff covering `printer leasing Ortigas`, `printer for rent`, and `Print All You Can` while pointing city-level intent back to `/printer-rental/ortigas/`.
 - Verification completed: `PATH=/opt/homebrew/bin:$PATH npm run build` passed, and the generated `dist/printer-rental/best-printer-rental-setup-ortigas/index.html` contains the new Ortigas reinforcement copy.

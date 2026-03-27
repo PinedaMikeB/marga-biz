@@ -1,40 +1,47 @@
 {
-  "generatedAt": "2026-03-25T20:33:04+08:00",
+  "generatedAt": "2026-03-27T08:06:32+08:00",
   "mode": "autonomous",
-  "runType": "8:30 PM trigger",
   "rankStatus": {
-    "liveSerpRun": true,
-    "snapshotTimestamp": "2026-03-25T12:37:03.527Z",
+    "liveSerpAttempted": true,
+    "liveSerpSucceeded": false,
+    "liveSerpError": "fetch failed",
+    "latestStoredSnapshotTimestamp": "2026-03-25T12:37:03.527Z",
+    "priorStoredSnapshotTimestamp": "2026-03-24T14:52:50.399Z",
     "changes": [
-      "printer rental makati: 5 -> 7, URL changed from /contact/ to /printer-rental/",
+      "printer rental makati: 5 -> 7, ranking URL changed from /contact/ to /printer-rental/",
       "printer rental bgc: held at 3, still ranking with /printer-rental/",
-      "printer rental pasig: outside top 10 -> 7, URL is /contact/",
-      "printer rental ortigas: held at 3, URL changed from /printer-rental/ to /contact/",
+      "printer rental pasig: outside top 10 -> 7, ranking URL is /contact/",
+      "printer rental ortigas: held at 3, ranking URL changed from /printer-rental/ to /contact/",
       "printer rental quezon city: still not in top 10",
       "printer rental manila: 6 -> 5, homepage still ranking"
     ]
   },
   "actionsToday": [
-    "ran the live Google SERP monitor",
-    "compared the fresh snapshot against the prior 2026-03-24 snapshot",
-    "added stronger Pasig city-intent reinforcement to the Pasig support article",
+    "attempted one live Google SERP pull using the shared SERPAPI_KEY",
+    "fell back to comparing the latest stored 2026-03-25 snapshot against the stored 2026-03-24 snapshot after the live request failed",
+    "added stronger Ortigas support-article reinforcement pointing local intent back to /printer-rental/ortigas/",
     "rebuilt the site locally",
-    "updated the tracker and latest run report artifacts"
+    "updated the SEO tracker and latest run report artifacts"
   ],
   "filesChanged": [
-    "static-pages/printer-rental/how-to-choose-printer-rental-pasig/index.html",
-    "dist/printer-rental/how-to-choose-printer-rental-pasig/index.html",
+    "static-pages/printer-rental/best-printer-rental-setup-ortigas/index.html",
+    "dist/printer-rental/best-printer-rental-setup-ortigas/index.html",
     "reports/location-seo-tracker.md",
-    "reports/serp-monitor/latest.md",
-    "reports/serp-monitor/latest.json",
-    "reports/serp-monitor/serp-report-2026-03-25T12-37-03-527Z.json",
     "reports/morning-seo-review/latest.md",
     "reports/morning-seo-review/latest.json"
   ],
   "verification": [
-    "npm run serp:monitor -- --engines=google completed successfully",
-    "npm run build completed successfully",
-    "verified the generated Pasig support page contains the new money-page handoff copy"
+    "PATH=/opt/homebrew/bin:$PATH npm run build completed successfully",
+    "verified the generated Ortigas support page contains the new reinforcement copy"
   ],
-  "nextCheck": "On the next live run, verify whether Google replaces /contact/ with /printer-rental/pasig/ for the Pasig query."
+  "commit": {
+    "sha": "a6b3302",
+    "message": "Autonomous SEO run for Ortigas reinforcement"
+  },
+  "push": {
+    "attempted": true,
+    "succeeded": false,
+    "error": "fatal: unable to access 'https://github.com/PinedaMikeB/marga-biz.git/': Could not resolve host: github.com"
+  },
+  "nextCheck": "Re-run the live Google SERP monitor when outbound network access works, then verify whether printer rental ortigas still ranks with /contact/ or shifts toward /printer-rental/ortigas/."
 }
