@@ -1,6 +1,6 @@
 # Location SEO Tracker
 
-Updated: 2026-03-27
+Updated: 2026-03-28
 
 Use this file as the working checklist. When you ask what is finished or pending, this is the source of truth.
 
@@ -91,23 +91,23 @@ These items should be proposed before content or major code changes are pushed.
 
 ## Last Verified Snapshot
 
-- Google snapshot refreshed live on 2026-03-25 using `SERPAPI_KEY`.
-- Snapshot timestamp: 2026-03-25T12:37:03.527Z
-- `printer rental makati`: rank 7 on Google snapshot, ranking URL: https://marga.biz/printer-rental/
+- Google snapshot refreshed live on 2026-03-28 using `SERPAPI_KEY`.
+- Snapshot timestamp: 2026-03-28T01:50:13.295Z
+- `printer rental makati`: rank 5 on Google snapshot, ranking URL: https://marga.biz/printer-rental/
 - `printer rental bgc`: rank 3 on Google snapshot, ranking URL: https://marga.biz/printer-rental/
-- `printer rental pasig`: rank 7 on Google snapshot, ranking URL: https://marga.biz/contact/
-- `printer rental ortigas`: rank 3 on Google snapshot, ranking URL: https://marga.biz/contact/
-- `printer rental quezon city`: rank Not in top 10 on Google snapshot, not ranking in top 10 yet
+- `printer rental pasig`: rank Not in top 10 on Google snapshot, not ranking in top 10 yet
+- `printer rental ortigas`: rank 4 on Google snapshot, ranking URL: https://marga.biz/contact/
+- `printer rental quezon city`: rank 8 on Google snapshot, ranking URL: https://marga.biz/contact/
 - `printer rental manila`: rank 5 on Google snapshot, ranking URL: https://marga.biz/
 
 ## Current Rank Notes
 
-- `printer rental makati`: slipped from rank 5 to rank 7, but Google at least shifted from `/contact/` to `/printer-rental/`. The ranking URL is less off-target now, but the dedicated Makati page is still not winning.
+- `printer rental makati`: improved from rank 7 to rank 5, but Google is still choosing `/printer-rental/` instead of `/printer-rental/makati/`.
 - `printer rental bgc`: held at rank 3, but Google is still ranking `/printer-rental/` instead of `/printer-rental/bgc/`.
-- `printer rental pasig`: improved from outside the top 10 to rank 7, but Google is ranking `/contact/` instead of `/printer-rental/pasig/`. This is the clearest new targeting opportunity.
-- `printer rental ortigas`: held at rank 3, but Google shifted from `/printer-rental/` to `/contact/`, which is a stronger URL-targeting warning even though rank held.
-- `printer rental quezon city`: still not in the top 10 with no verified breakthrough yet.
-- `printer rental manila`: improved from rank 6 to rank 5, but the homepage still ranks instead of `/printer-rental/manila/`.
+- `printer rental pasig`: dropped from rank 7 to outside the top 10. The immediate response on 2026-03-28 was to strengthen `/printer-rental/pasig/` with clearer `printer leasing Pasig` and `printer for rent in Pasig` intent copy so Google has a stronger local target than the generic site pages.
+- `printer rental ortigas`: slipped from rank 3 to rank 4 and Google is still ranking `/contact/` instead of `/printer-rental/ortigas/`.
+- `printer rental quezon city`: improved from outside the top 10 to rank 8, but Google is still choosing `/contact/` instead of `/printer-rental/quezon-city/`.
+- `printer rental manila`: held at rank 5, but the homepage still ranks instead of `/printer-rental/manila/`.
 
 ## Review Note 2026-03-25
 
@@ -121,6 +121,13 @@ These items should be proposed before content or major code changes are pushed.
 - Rank movement available this cycle stayed based on that stored comparison: `printer rental makati` dropped `5 -> 7`, `printer rental bgc` held at `3`, `printer rental pasig` improved from not in the top 10 to `7`, `printer rental ortigas` held at `3` but shifted from `/printer-rental/` to `/contact/`, `printer rental quezon city` stayed outside the top 10, and `printer rental manila` improved `6 -> 5`.
 - Autonomous action completed: added one stronger Ortigas support-article handoff covering `printer leasing Ortigas`, `printer for rent`, and `Print All You Can` while pointing city-level intent back to `/printer-rental/ortigas/`.
 - Verification completed: `PATH=/opt/homebrew/bin:$PATH npm run build` passed, and the generated `dist/printer-rental/best-printer-rental-setup-ortigas/index.html` contains the new Ortigas reinforcement copy.
+
+## Review Note 2026-03-28
+
+- Finished this review cycle: ran a fresh live Google SERP pull using the shared `SERPAPI_KEY` and compared the new `2026-03-28T01:50:13.295Z` snapshot against the stored `2026-03-25T12:37:03.527Z` snapshot.
+- Rank movement this cycle: `printer rental makati` improved `7 -> 5`, `printer rental bgc` held at `3`, `printer rental pasig` dropped `7 -> outside the top 10`, `printer rental ortigas` slipped `3 -> 4`, `printer rental quezon city` improved from outside the top 10 to `8`, and `printer rental manila` held at `5`.
+- Autonomous action completed: strengthened the Pasig money page with a tighter local-intent handoff covering `printer rental Pasig`, `printer leasing Pasig`, `printer for rent in Pasig`, and `Print All You Can` while explicitly positioning `/printer-rental/pasig/` as the main Pasig quote page.
+- Verification completed: `PATH=/opt/homebrew/bin:$PATH npm run build` passed, and the generated `dist/printer-rental/pasig/index.html` contains the new Pasig intent copy.
 
 ## Next Focus
 
