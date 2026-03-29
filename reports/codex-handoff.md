@@ -1,6 +1,6 @@
 # Codex Handoff
 
-Updated: 2026-03-16
+Updated: 2026-03-24
 
 ## What Transfers Cleanly
 
@@ -47,14 +47,14 @@ Use these first on the other Mac:
 
 ## Current Workflow
 
-- morning review prepares the SEO brief and sends Telegram approval
-- approval status script checks whether the request is approved
-- only one approved action should be executed at a time
-- all verified work should be committed and pushed to `main` immediately
+- morning SEO automation is now intended to run autonomously each day
+- every run should update `reports/morning-seo-review/latest.md` and `latest.json`
+- the report should state what changed that day, which files changed, and what to check next
+- homepage and copier-rental pages remain protected and should not be edited by this automation
 
-## Current Next Approved Candidate
+## Current Next Focus
 
-- `build Pasig money page`
+- verify that the next scheduled run produces a same-day report artifact instead of leaving March 16 data in place
 
 ## Notes
 

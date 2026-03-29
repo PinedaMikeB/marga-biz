@@ -10,6 +10,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const {
+    loadLocalEnv,
+    getRequiredEnv,
+    telegramRequest,
+    sendMessage: sendSharedMessage
+} = require('./lib/telegram-gateway');
 
 const CONFIG = {
     telegramApiBase: 'https://api.telegram.org',
@@ -25,47 +31,6 @@ function ensureDir(dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
     }
-}
-
-function loadEnvFile(filePath) {
-    if (!fs.existsSync(filePath)) {
-        return;
-    }
-
-    const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
-
-    for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.startsWith('#')) {
-            continue;
-        }
-
-        const separatorIndex = trimmed.indexOf('=');
-        if (separatorIndex === -1) {
-            continue;
-        }
-
-        const key = trimmed.slice(0, separatorIndex).trim();
-        let value = trimmed.slice(separatorIndex + 1).trim();
-
-        if (!key || process.env[key]) {
-            continue;
-        }
-
-        if (
-            (value.startsWith('"') && value.endsWith('"')) ||
-            (value.startsWith("'") && value.endsWith("'"))
-        ) {
-            value = value.slice(1, -1);
-        }
-
-        process.env[key] = value;
-    }
-}
-
-function loadLocalEnv() {
-    loadEnvFile(path.join(CONFIG.repoRoot, '.env.local'));
-    loadEnvFile(path.join(CONFIG.repoRoot, '.env'));
 }
 
 function parseArgs(argv) {
@@ -146,36 +111,6 @@ function dedupeMessages(messages) {
     }
 
     return unique;
-}
-
-function getRequiredEnv(name) {
-    const value = process.env[name];
-    if (!value) {
-        throw new Error(`Missing ${name}. Add it to .env.local first.`);
-    }
-    return value;
-}
-
-async function telegramRequest(method, payload = {}, requestMethod = 'POST') {
-    loadLocalEnv();
-
-    const token = getRequiredEnv('TELEGRAM_BOT_TOKEN');
-    const url = `${CONFIG.telegramApiBase}/bot${token}/${method}`;
-
-    const response = await fetch(url, {
-        method: requestMethod,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: requestMethod === 'POST' ? JSON.stringify(payload) : undefined
-    });
-
-    const data = await response.json();
-    if (!response.ok || !data.ok) {
-        throw new Error(data.description || `Telegram API error (${response.status})`);
-    }
-
-    return data.result;
 }
 
 async function botInfo() {
@@ -292,10 +227,7 @@ async function sendMessage(options) {
         throw new Error('Missing message text. Pass --text="..." or --body-file=...');
     }
 
-    const result = await telegramRequest('sendMessage', {
-        chat_id: chatId,
-        text
-    });
+    const result = await sendSharedMessage(text, { chatId });
 
     process.stdout.write(`Sent message to chat ${chatId}.\n`);
     process.stdout.write(`Message ID: ${result.message_id}\n`);
@@ -313,81 +245,23 @@ async function answerCallback(callbackQueryId, text) {
 }
 
 async function checkApprovals() {
-    const offsetState = readJson(CONFIG.offsetFile, { updateOffset: 0 });
     const decisions = dedupeDecisions(readJson(CONFIG.decisionsFile, []));
     const messages = dedupeMessages(readJson(CONFIG.messagesFile, []));
-    const updates = await telegramRequest('getUpdates', {
-        offset: offsetState.updateOffset,
-        allowed_updates: ['callback_query', 'message']
-    });
-
-    if (!updates.length) {
+    if (!messages.length && !decisions.length) {
         process.stdout.write('No new Telegram updates.\n');
         return;
     }
 
-    let highestUpdateId = offsetState.updateOffset;
-    const recorded = [...decisions];
-    const recordedMessages = [...messages];
-    const newMessages = [];
-    const newDecisions = [];
+    process.stdout.write('Telegram updates are handled by the shared telegram-chat-daemon.\n');
+    process.stdout.write(`Stored messages: ${messages.length}\n`);
+    process.stdout.write(`Stored decisions: ${decisions.length}\n`);
 
-    for (const update of updates) {
-        highestUpdateId = Math.max(highestUpdateId, update.update_id + 1);
-
-        const message = update.message;
-        if (message?.text) {
-            const messageEntry = {
-                chatId: message.chat?.id || null,
-                messageId: message.message_id || null,
-                text: message.text,
-                user: message.from?.username || message.from?.first_name || 'unknown',
-                receivedAt: new Date().toISOString()
-            };
-
-            recordedMessages.push(messageEntry);
-            newMessages.push(messageEntry);
-        }
-
-        const callback = update.callback_query;
-        if (!callback || !callback.data) {
-            continue;
-        }
-
-        const [decision, approvalId] = callback.data.split(':');
-        if (!decision || !approvalId) {
-            continue;
-        }
-
-        const entry = {
-            approvalId,
-            decision,
-            chatId: callback.message?.chat?.id || null,
-            user: callback.from?.username || callback.from?.first_name || 'unknown',
-            decidedAt: new Date().toISOString(),
-            messageId: callback.message?.message_id || null
-        };
-
-        recorded.push(entry);
-        newDecisions.push(entry);
-        await answerCallback(callback.id, `Recorded: ${decision}`);
-        process.stdout.write(`Approval ${approvalId}: ${decision} by ${entry.user}\n`);
-    }
-
-    writeJson(CONFIG.offsetFile, { updateOffset: highestUpdateId });
-    const uniqueDecisions = dedupeDecisions(recorded);
-    const uniqueMessages = dedupeMessages(recordedMessages);
-    writeJson(CONFIG.decisionsFile, uniqueDecisions);
-    writeJson(CONFIG.messagesFile, uniqueMessages);
-    writeInboxReport(uniqueMessages);
-
-    if (!newMessages.length && !newDecisions.length) {
-        process.stdout.write('No new Telegram updates.\n');
-        return;
-    }
-
-    for (const message of newMessages) {
+    for (const message of messages.slice(-5)) {
         process.stdout.write(`Message from ${message.user}: ${message.text}\n`);
+    }
+
+    for (const decision of decisions.slice(-5)) {
+        process.stdout.write(`Decision ${decision.approvalId}: ${decision.decision} by ${decision.user}\n`);
     }
 }
 

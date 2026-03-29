@@ -194,8 +194,19 @@ async function runSerpQuery(apiKey, engine, keywordEntry) {
             searchParams.set(key, value);
         }
 
-        const response = await fetch(`${CONFIG.apiUrl}?${searchParams.toString()}`);
-        const payload = await response.json();
+        let response;
+        try {
+            response = await fetch(`${CONFIG.apiUrl}?${searchParams.toString()}`);
+        } catch (error) {
+            throw new Error(`SERPAPI ${engine} ${keywordEntry.keyword} fetch failed`);
+        }
+
+        let payload;
+        try {
+            payload = await response.json();
+        } catch (error) {
+            throw new Error(`SERPAPI ${engine} ${keywordEntry.keyword} invalid JSON response (${response.status})`);
+        }
 
         if (response.ok && !payload.error) {
             const summary = summarizeResults(engine, keywordEntry, payload);

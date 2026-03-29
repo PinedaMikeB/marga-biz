@@ -8,8 +8,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { spawnSync } = require('child_process');
-
 const CONFIG = {
     repoRoot: path.join(__dirname, '..'),
     requestFile: path.join(__dirname, '../temp/current-approval-request.json'),
@@ -32,15 +30,6 @@ function readJson(filePath, fallback = null) {
 
 function writeJson(filePath, payload) {
     fs.writeFileSync(filePath, JSON.stringify(payload, null, 2));
-}
-
-function runTelegramCheck() {
-    const result = spawnSync('node', [path.join(CONFIG.repoRoot, 'scripts/telegram-approval.js'), 'check-approvals'], {
-        cwd: CONFIG.repoRoot,
-        encoding: 'utf8'
-    });
-
-    return result;
 }
 
 function loadRequest() {
@@ -92,7 +81,6 @@ function writeStatusFile(request, decision) {
 }
 
 function handleStatus() {
-    const checkResult = runTelegramCheck();
     const request = loadRequest();
     const decisions = readJson(CONFIG.decisionsFile, []);
     const decision = latestDecisionFor(request.approvalId, decisions);
@@ -104,7 +92,6 @@ function handleStatus() {
 
     writeStatusFile(request, decision);
 
-    process.stdout.write((checkResult.stdout || '').trim() + '\n');
     process.stdout.write(`Current request status: ${request.status}\n`);
     if (decision) {
         process.stdout.write(`Latest decision: ${normalizeDecision(decision.decision)} by ${decision.user}\n`);
