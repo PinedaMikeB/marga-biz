@@ -3,18 +3,16 @@
   "version": "2.0.0",
   "description": "Marga Enterprises official website - Static Site Generator",
   "scripts": {
+    "facebook:list": "node scripts/facebook-page-publisher.js list",
+    "facebook:preview": "node scripts/facebook-page-publisher.js preview-next",
+    "facebook:publish": "node scripts/facebook-page-publisher.js publish-next",
     "generate": "node scripts/generate-site.js",
     "generate:old": "node scripts/generate-pages.js",
-    "serp:monitor": "node scripts/serp-monitor.js",
-    "serp:monitor:all": "node scripts/serp-monitor.js --set=all",
-    "seo:morning-review": "node scripts/morning-seo-review.js",
-    "seo:approval-status": "node scripts/process-telegram-approval.js status",
-    "seo:approval-processed": "node scripts/process-telegram-approval.js mark-processed",
     "telegram:bot": "node scripts/telegram-approval.js bot-info",
     "telegram:discover": "node scripts/telegram-approval.js discover-chat",
     "telegram:send": "node scripts/telegram-approval.js send-message",
     "telegram:check": "node scripts/telegram-approval.js check-approvals",
-    "telegram:daemon": "node scripts/telegram-chat-daemon.js",
+    "telegram:daemon": "node scripts/telegram-chat-daemon.js --interval=5",
     "sync-images": "node scripts/sync-images.js",
     "serve": "cd dist && npx http-server . -p 8080 -o",
     "serve:root": "npx http-server . -p 8080 -o",
@@ -29,8 +27,11 @@
     "http-server": "^14.1.1"
   },
   "dependencies": {
-    "firebase-admin": "^12.7.0",
     "@google-analytics/data": "^4.0.0",
-    "googleapis": "^128.0.0"
+    "firebase-admin": "^12.7.0",
+    "googleapis": "^128.0.0",
+    "imapflow": "^1.2.15",
+    "mailparser": "^3.9.4",
+    "nodemailer": "^8.0.3"
   }
 }

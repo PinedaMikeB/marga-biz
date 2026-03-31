@@ -209,12 +209,13 @@ Do not create fake staffed locations.
 
 ## 7. Weekly Monitoring Routine
 
-Run:
+Historical note:
 
 ```bash
 npm run build
-node scripts/serp-monitor.js --engines=google
 ```
+
+The prior SERP monitor command was removed from this repo on 2026-03-31 along with the SEO automation scripts. Weekly rank checks are now manual unless that automation is reintroduced.
 
 Track each week:
 

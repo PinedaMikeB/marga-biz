@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { spawnSync } = require('child_process');
+const { loadLocalEnv, getRequiredEnv, telegramRequest } = require('./lib/telegram-gateway');
 
 const CONFIG = {
     telegramApiBase: 'https://api.telegram.org',
@@ -36,40 +37,6 @@ function ensureDir(dirPath) {
     }
 }
 
-function loadEnvFile(filePath) {
-    if (!fs.existsSync(filePath)) {
-        return;
-    }
-
-    const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
-    for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.startsWith('#')) continue;
-
-        const separatorIndex = trimmed.indexOf('=');
-        if (separatorIndex === -1) continue;
-
-        const key = trimmed.slice(0, separatorIndex).trim();
-        let value = trimmed.slice(separatorIndex + 1).trim();
-
-        if (!key || process.env[key]) continue;
-
-        if (
-            (value.startsWith('"') && value.endsWith('"')) ||
-            (value.startsWith("'") && value.endsWith("'"))
-        ) {
-            value = value.slice(1, -1);
-        }
-
-        process.env[key] = value;
-    }
-}
-
-function loadLocalEnv() {
-    loadEnvFile(path.join(CONFIG.repoRoot, '.env.local'));
-    loadEnvFile(path.join(CONFIG.repoRoot, '.env'));
-}
-
 function readJson(filePath, fallback) {
     if (!fs.existsSync(filePath)) {
         return fallback;
@@ -85,6 +52,21 @@ function readJson(filePath, fallback) {
 function writeJson(filePath, payload) {
     ensureDir(path.dirname(filePath));
     fs.writeFileSync(filePath, JSON.stringify(payload, null, 2));
+}
+
+function writeDaemonState(state, repliedMessageIds) {
+    writeJson(CONFIG.daemonStateFile, {
+        pid: process.pid,
+        startedAt: state.startedAt || new Date().toISOString(),
+        lastHeartbeatAt: new Date().toISOString(),
+        lastPollAt: state.lastPollAt || null,
+        lastMessageAt: state.lastMessageAt || null,
+        lastReplyAt: state.lastReplyAt || null,
+        lastApprovalAt: state.lastApprovalAt || null,
+        lastErrorAt: state.lastErrorAt || null,
+        lastErrorMessage: state.lastErrorMessage || '',
+        repliedMessageIds: Array.from(repliedMessageIds || []).slice(-200)
+    });
 }
 
 function isPidRunning(pid) {
@@ -138,34 +120,6 @@ function dedupeBy(messages, keyBuilder) {
     }
 
     return unique;
-}
-
-function getRequiredEnv(name) {
-    const value = process.env[name];
-    if (!value) {
-        throw new Error(`Missing ${name}. Add it to .env.local first.`);
-    }
-    return value;
-}
-
-async function telegramRequest(method, payload = {}, requestMethod = 'POST') {
-    const token = getRequiredEnv('TELEGRAM_BOT_TOKEN');
-    const url = `${CONFIG.telegramApiBase}/bot${token}/${method}`;
-
-    const response = await fetch(url, {
-        method: requestMethod,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: requestMethod === 'POST' ? JSON.stringify(payload) : undefined
-    });
-
-    const data = await response.json();
-    if (!response.ok || !data.ok) {
-        throw new Error(data.description || `Telegram API error (${response.status})`);
-    }
-
-    return data.result;
 }
 
 function writeInboxReport(messages) {
@@ -288,21 +242,21 @@ function buildCodexPrompt(message, history) {
         : 'No prior chat history.';
 
     return [
-        'You are Codex replying through a Telegram bot for Marga Enterprises.',
+        'You are Jevigoy replying through the shared Telegram bot for Marga Enterprises.',
         'Answer the user directly as if you are replying inside the same Telegram chat.',
         'Match the same direct, concise style used in the Codex desktop thread.',
         'Keep the reply concise and practical.',
         'Prefer 2 to 5 short sentences.',
         'Use plain text only.',
-        'When the user asks about SEO automation, stored instructions, latest reports, what changed today, or whether something already ran, do not rely on prior chat history alone.',
+        'Jevigoy is the single shared Telegram bot for chat replies, automation updates, and operational notices.',
+        'When the user asks about stored instructions, automation status, current repo behavior, or latest reports, do not rely on prior chat history alone.',
         'For those questions, verify the current files on disk before answering.',
-        'Check these files first for SEO automation questions:',
-        '- /Users/mike/.codex/automations/morning-seo-review/automation.toml',
-        '- /Users/mike/.codex/automations/morning-seo-review/memory.md',
-        '- reports/morning-seo-review/latest.md',
-        '- reports/morning-seo-review/latest.json',
-        '- reports/location-seo-tracker.md',
-        'Prefer the newest timestamp you can verify from those files.',
+        'Check these files first:',
+        '- AGENTS.md',
+        '- automations/README.md',
+        '- reports/codex-handoff.md',
+        '- reports/telegram-bridge/inbox.md',
+        'If a requested report or automation file is missing, say plainly that it is not present in the repo.',
         'If a prior assistant message in the chat history conflicts with the current files, trust the current files and say so plainly.',
         message.hasMedia
             ? 'The user attached media with this message. Only use the text or caption you were given. Do not claim to have inspected the attachment itself.'
@@ -371,7 +325,16 @@ function generateReplyWithCodex(message, history) {
 
 async function pollOnce() {
     const offsetState = readJson(CONFIG.offsetFile, { updateOffset: 0 });
-    const daemonState = readJson(CONFIG.daemonStateFile, { repliedMessageIds: [] });
+    const daemonState = readJson(CONFIG.daemonStateFile, {
+        startedAt: new Date().toISOString(),
+        lastPollAt: null,
+        lastMessageAt: null,
+        lastReplyAt: null,
+        lastApprovalAt: null,
+        lastErrorAt: null,
+        lastErrorMessage: '',
+        repliedMessageIds: []
+    });
     const decisions = readJson(CONFIG.decisionsFile, []);
     const messages = readJson(CONFIG.messagesFile, []);
     const history = readJson(CONFIG.historyFile, {});
@@ -380,9 +343,11 @@ async function pollOnce() {
         offset: offsetState.updateOffset,
         allowed_updates: ['callback_query', 'message']
     });
+    daemonState.lastPollAt = new Date().toISOString();
 
     if (!updates.length) {
-        return { messageCount: 0, replyCount: 0, approvalCount: 0 };
+        writeDaemonState(daemonState, new Set(daemonState.repliedMessageIds || []));
+        return { messageCount: 0, replyCount: 0, approvalCount: 0, daemonState };
     }
 
     let highestUpdateId = offsetState.updateOffset;
@@ -426,8 +391,11 @@ async function pollOnce() {
                 await sendReply(entry.chatId, replyText);
                 appendHistory(entry.chatId, 'assistant', replyText, history);
                 repliedMessageIds.add(entry.messageId);
+                daemonState.lastReplyAt = new Date().toISOString();
                 replyCount += 1;
             }
+
+            daemonState.lastMessageAt = entry.receivedAt;
         }
 
         const callback = update.callback_query;
@@ -443,6 +411,7 @@ async function pollOnce() {
                     messageId: callback.message?.message_id || null
                 });
                 await answerCallback(callback.id, `Recorded: ${decision}`);
+                daemonState.lastApprovalAt = new Date().toISOString();
                 approvalCount += 1;
             }
         }
@@ -457,18 +426,20 @@ async function pollOnce() {
         CONFIG.decisionsFile,
         dedupeBy(recordedDecisions, item => [item.approvalId, item.decision, item.chatId, item.messageId, item.user].join('|'))
     );
-    writeJson(CONFIG.daemonStateFile, {
-        repliedMessageIds: Array.from(repliedMessageIds).slice(-200)
-    });
+    writeDaemonState(daemonState, repliedMessageIds);
     writeJson(CONFIG.historyFile, history);
     writeInboxReport(readJson(CONFIG.messagesFile, []));
 
-    return { messageCount, replyCount, approvalCount };
+    return { messageCount, replyCount, approvalCount, daemonState };
 }
 
 async function main() {
     loadLocalEnv();
     acquireSingletonLock();
+
+    const initialState = readJson(CONFIG.daemonStateFile, {});
+    initialState.startedAt = initialState.startedAt || new Date().toISOString();
+    writeDaemonState(initialState, new Set(initialState.repliedMessageIds || []));
 
     const cleanup = () => releaseSingletonLock();
     process.on('exit', cleanup);
@@ -499,6 +470,10 @@ async function main() {
                 );
             }
         } catch (error) {
+            const state = readJson(CONFIG.daemonStateFile, {});
+            state.lastErrorAt = new Date().toISOString();
+            state.lastErrorMessage = error.message;
+            writeDaemonState(state, new Set(state.repliedMessageIds || []));
             process.stderr.write(`[${new Date().toISOString()}] ${error.message}\n`);
         }
 

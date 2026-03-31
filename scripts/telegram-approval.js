@@ -1,10 +1,10 @@
 /**
- * Telegram approval helper for morning SEO reviews.
+ * Telegram helper for bot discovery, manual sends, and callback inspection.
  *
  * Commands:
  *   node scripts/telegram-approval.js bot-info
  *   node scripts/telegram-approval.js discover-chat
- *   node scripts/telegram-approval.js send-review --approval-id=seo-2026-03-16 --title="SEO Review" --body-file=reports/location-seo-tracker.md
+ *   node scripts/telegram-approval.js send-review --approval-id=review-001 --title="Review" --body-file=README.md
  *   node scripts/telegram-approval.js check-approvals
  */
 
@@ -186,7 +186,7 @@ async function sendReview(options) {
     }
 
     const approvalId = options.approvalId || options['approval-id'] || `approval-${Date.now()}`;
-    const title = options.title || 'SEO Review';
+    const title = options.title || 'Review';
     const bodyFile = options['body-file'];
     const bodyText = bodyFile
         ? fs.readFileSync(path.join(CONFIG.repoRoot, bodyFile), 'utf8')
@@ -294,7 +294,7 @@ function printHelp() {
             'Commands:',
             '  node scripts/telegram-approval.js bot-info',
             '  node scripts/telegram-approval.js discover-chat',
-            '  node scripts/telegram-approval.js send-review --approval-id=seo-2026-03-16 --title="SEO Review" --body-file=reports/location-seo-tracker.md',
+            '  node scripts/telegram-approval.js send-review --approval-id=review-001 --title="Review" --body-file=README.md',
             '  node scripts/telegram-approval.js send-message --text="Reply from Codex"',
             '  node scripts/telegram-approval.js check-approvals'
         ].join('\n') + '\n'

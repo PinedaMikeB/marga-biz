@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.marga.telegram-chat-daemon</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/opt/node/bin/node</string>
+        <string>/Volumes/Wotg Drive Mike/GitHub/marga-biz/scripts/telegram-chat-daemon.js</string>
+        <string>--interval=5</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Volumes/Wotg Drive Mike/GitHub/marga-biz</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/mike/Library/Logs/marga-telegram-chat-daemon.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/mike/Library/Logs/marga-telegram-chat-daemon.error.log</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/opt/homebrew/opt/node/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
