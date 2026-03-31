@@ -5,7 +5,8 @@
     "browser-based web search fallback for one live keyword check: printer rental ortigas",
     "local file inspection in the repo",
     "PATH=/opt/homebrew/bin:$PATH npm run build",
-    "local git commit and push attempt from the detached worktree"
+    "local git commit and push attempt from the detached worktree",
+    "direct Telegram send attempt using the shared primary-repo .env.local"
   ],
   "rankStatus": {
     "liveSerpAttempted": true,
@@ -21,7 +22,8 @@
     "strengthened the Ortigas money page with clearer printer rental Ortigas, printer leasing Ortigas, and printer for rent Ortigas local-intent copy",
     "rebuilt the site locally",
     "updated the SEO tracker and latest morning review artifacts",
-    "committed the site change locally"
+    "committed the site change locally",
+    "committed the report refresh locally"
   ],
   "filesChanged": [
     "static-pages/printer-rental/ortigas/index.html",
@@ -33,17 +35,29 @@
   "verification": [
     "PATH=/opt/homebrew/bin:$PATH npm run build completed successfully",
     "verified dist/printer-rental/ortigas/index.html contains the new Ortigas intent paragraph",
-    "verified local git commit 356c825 exists",
-    "verified git push origin HEAD:main failed with Could not resolve host: github.com"
+    "verified local git commits 356c825 and 36095e7 exist",
+    "verified repeated git push origin HEAD:main attempts failed with Could not resolve host: github.com",
+    "verified Telegram send failed with fetch failed even when using the shared primary-repo env"
   ],
   "commit": {
-    "sha": "356c825",
-    "message": "Reinforce Ortigas local intent page"
+    "sha": "36095e7",
+    "message": "Refresh morning SEO review for Ortigas run",
+    "localCommits": [
+      {
+        "sha": "356c825",
+        "message": "Reinforce Ortigas local intent page"
+      },
+      {
+        "sha": "36095e7",
+        "message": "Refresh morning SEO review for Ortigas run"
+      }
+    ]
   },
   "push": {
     "attempted": true,
     "succeeded": false,
-    "error": "Could not resolve host: github.com"
+    "error": "Could not resolve host: github.com",
+    "attempts": 2
   },
   "deploy": {
     "attempted": false,
@@ -52,9 +66,10 @@
     "check": "Blocked because the site change was not pushed to origin/main"
   },
   "telegram": {
-    "attempted": false,
+    "attempted": true,
     "succeeded": false,
-    "error": "Pending final send attempt after report write"
+    "error": "fetch failed",
+    "note": "Shared TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID exist in the primary repo .env.local, but the network call failed"
   },
-  "nextCheck": "Restore outbound git/DNS access for this automation environment, push commit 356c825 to origin/main, verify the Ortigas page is live, then re-check printer rental ortigas."
+  "nextCheck": "Restore outbound git/DNS access for this automation environment, push commits 356c825 and 36095e7 to origin/main, verify the Ortigas page is live, then re-check printer rental ortigas."
 }
