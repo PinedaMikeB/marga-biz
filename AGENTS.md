@@ -48,6 +48,16 @@ Do not rely on chat history alone when current repo files can answer the questio
 - Keep docs aligned when automation behavior changes materially.
 - Keep changes narrow and reversible.
 
+## SEO Execution Policy
+
+- For the printer SEO monitor and any daily SEO automation, do not stop at audit or recommendations.
+- A daily SEO run is only complete when every scheduled daily task for that run has been implemented, pushed, deployed, and recorded with a live URL.
+- Do not hand over a daily SEO report while any daily task is still incomplete.
+- Do not use `Recommended` or `Queued` as end-of-run status labels for daily SEO turnover.
+- During active execution, use a working status such as `Active`; after deployment, use `Done`.
+- If a task cannot be finished because of a real external blocker, mark it `Blocked` with the exact blocker and continue all other tasks before turning over the report.
+- Stay autonomous on printer-rental SEO execution until the full daily task set is complete or a real blocker is documented.
+
 ## Verification
 
 Before closing work, verify the minimum relevant outcome:

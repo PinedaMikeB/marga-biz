@@ -23,6 +23,7 @@ This folder is the repo-local index for automation work in `marga-biz`.
 - Action endpoint: `/.netlify/functions/seo-monitor-actions`
 - Current role: printer-focused SEO monitor with a manual task runner backed by Firebase data
 - Completion tracking: completed page/blog implementations can be recorded and reflected as `Done` with the live URL in the queue
+- Daily execution rule: do not treat the queue as a recommendation list at turnover time; the intended end-of-run state is that all daily SEO tasks are either `Done` with live URLs or explicitly `Blocked` with a real reason
 - Scope guardrail: do not use this viewer to automate changes against the home page or copier-rental pages
 
 ## Local Scheduling / Daemons

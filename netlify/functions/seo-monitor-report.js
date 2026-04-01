@@ -218,7 +218,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Improve 5 existing money pages today',
             implementation: 'Daily target: improve 5 existing printer money pages by tightening title tags, meta descriptions, H1/H2 flow, FAQ coverage, CTA copy, and supporting internal links across the live cluster.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(weakestMoneyPath || lowestScorePage)
         },
         {
@@ -226,7 +226,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Strengthen 5 weak city or service pages today',
             implementation: 'Daily target: improve 5 existing city or service pages with clearer local intent, supported service coverage, business-use copy, trust signals, and stronger quote CTAs instead of letting them sit as low-value pages.',
             targetPageKeyword: `${weakestCityKeyword} -> ${cityPageTargets}`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(weakestCityPath)
         },
         {
@@ -234,7 +234,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Refresh 5 existing support pages today',
             implementation: 'Daily target: review and upgrade 5 existing printer-rental support pages first so they stop occupying space for nothing and contribute to ranking the printer-rental cluster.',
             targetPageKeyword: supportRefreshTargets,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(weakestCityPath)
         },
         {
@@ -242,7 +242,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Create up to 2 new support pages today',
             implementation: 'Daily target: create up to 2 new support pages only when a real supported keyword gap is confirmed after reviewing the existing printer-rental cluster, and only when the new pages will add unique business value.',
             targetPageKeyword: `${weakestCityKeyword}, printer rental taguig`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(weakestCityPath)
         },
         {
@@ -250,7 +250,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Publish 5 supporting blogs today',
             implementation: 'Daily target: publish 5 supporting blogs only when they answer real buyer objections, cover real use cases, and link back to the target printer landing pages with commercial intent. Refresh existing blog assets first when they are thin or overlapping.',
             targetPageKeyword: blogSupportTargets,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl('/printer-rental/')
         },
         {
@@ -258,7 +258,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Add 5 internal links today',
             implementation: 'Daily target: add 5 contextual internal links from existing printer pages and blog posts into the priority money page and the weakest city page.',
             targetPageKeyword: `${weakestMoneyKeyword}, ${weakestCityKeyword} -> ${moneyPageTargets}`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(lowestScorePage)
         },
         {
@@ -266,7 +266,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Fix 5 on-page SEO issues today',
             implementation: 'Daily target: resolve 5 concrete on-page issues on live printer pages such as title, meta, heading structure, canonical, schema, image alt text, or thin copy.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(lowestScorePage)
         },
         {
@@ -274,7 +274,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Add or refresh 5 FAQ and schema blocks today',
             implementation: 'Daily target: add or refresh FAQ content and valid schema on 5 existing printer pages where it improves commercial relevance, buyer intent coverage, and rich-result eligibility.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${supportRefreshTargets}`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(lowestScorePage)
         },
         {
@@ -282,7 +282,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Improve 5 conversion sections today',
             implementation: 'Daily target: strengthen 5 live printer pages with better quote CTAs, talk-to-sales prompts, form framing, or contact actions so traffic turns into leads.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(lowestScorePage)
         },
         {
@@ -290,7 +290,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             task: 'Close 5 competitor gaps today',
             implementation: 'Daily target: use the competitor findings to add 5 missing trust signals, comparison angles, service inclusions, or buyer-proof sections across the existing printer-rental pages that matter most.',
             targetPageKeyword: `${primaryCompetitorKeyword} -> ${moneyPageTargets}`,
-            status: 'Recommended',
+            status: 'Active',
             link: toAbsoluteUrl(weakestMoneyPath)
         }
     ];
