@@ -4,6 +4,7 @@ const admin = require('firebase-admin');
 
 const TIMEZONE = 'Asia/Manila';
 const DEFAULT_DAYS = 5;
+const SITE_ORIGIN = 'https://marga.biz';
 const DEFAULT_PRIORITY_KEYWORDS = [
     'Printer Rental',
     'Printer For Rent',
@@ -129,6 +130,13 @@ function formatDateTime(value) {
     }).format(date);
 }
 
+function toAbsoluteUrl(value) {
+    if (!value) return null;
+    if (/^https?:\/\//i.test(value)) return value;
+    const normalized = String(value).startsWith('/') ? value : `/${value}`;
+    return `${SITE_ORIGIN}${normalized}`;
+}
+
 function dedupeKeywords(priorityKeywords, configuredKeywords) {
     const ordered = [];
     const seen = new Set();
@@ -211,7 +219,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: improve 5 existing printer money pages by tightening title tags, meta descriptions, H1/H2 flow, FAQ coverage, CTA copy, and supporting internal links across the live cluster.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
-            link: weakestMoneyPath || lowestScorePage
+            link: toAbsoluteUrl(weakestMoneyPath || lowestScorePage)
         },
         {
             taskKey: 'strengthen_city_service_pages',
@@ -219,7 +227,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: improve 5 existing city or service pages with clearer local intent, supported service coverage, business-use copy, trust signals, and stronger quote CTAs instead of letting them sit as low-value pages.',
             targetPageKeyword: `${weakestCityKeyword} -> ${cityPageTargets}`,
             status: 'Recommended',
-            link: weakestCityPath
+            link: toAbsoluteUrl(weakestCityPath)
         },
         {
             taskKey: 'refresh_support_pages',
@@ -227,7 +235,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: review and upgrade 5 existing printer-rental support pages first so they stop occupying space for nothing and contribute to ranking the printer-rental cluster.',
             targetPageKeyword: supportRefreshTargets,
             status: 'Recommended',
-            link: weakestCityPath
+            link: toAbsoluteUrl(weakestCityPath)
         },
         {
             taskKey: 'create_new_support_pages',
@@ -235,7 +243,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: create up to 2 new support pages only when a real supported keyword gap is confirmed after reviewing the existing printer-rental cluster, and only when the new pages will add unique business value.',
             targetPageKeyword: `${weakestCityKeyword}, printer rental taguig`,
             status: 'Recommended',
-            link: weakestCityPath
+            link: toAbsoluteUrl(weakestCityPath)
         },
         {
             taskKey: 'publish_supporting_blogs',
@@ -243,7 +251,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: publish 5 supporting blogs only when they answer real buyer objections, cover real use cases, and link back to the target printer landing pages with commercial intent. Refresh existing blog assets first when they are thin or overlapping.',
             targetPageKeyword: blogSupportTargets,
             status: 'Recommended',
-            link: '/printer-rental/'
+            link: toAbsoluteUrl('/printer-rental/')
         },
         {
             taskKey: 'add_internal_links',
@@ -251,7 +259,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: add 5 contextual internal links from existing printer pages and blog posts into the priority money page and the weakest city page.',
             targetPageKeyword: `${weakestMoneyKeyword}, ${weakestCityKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
-            link: lowestScorePage
+            link: toAbsoluteUrl(lowestScorePage)
         },
         {
             taskKey: 'fix_on_page_issues',
@@ -259,7 +267,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: resolve 5 concrete on-page issues on live printer pages such as title, meta, heading structure, canonical, schema, image alt text, or thin copy.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
-            link: lowestScorePage
+            link: toAbsoluteUrl(lowestScorePage)
         },
         {
             taskKey: 'refresh_faq_schema',
@@ -267,7 +275,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: add or refresh FAQ content and valid schema on 5 existing printer pages where it improves commercial relevance, buyer intent coverage, and rich-result eligibility.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${supportRefreshTargets}`,
             status: 'Recommended',
-            link: lowestScorePage
+            link: toAbsoluteUrl(lowestScorePage)
         },
         {
             taskKey: 'improve_conversion_sections',
@@ -275,7 +283,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: strengthen 5 live printer pages with better quote CTAs, talk-to-sales prompts, form framing, or contact actions so traffic turns into leads.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
-            link: lowestScorePage
+            link: toAbsoluteUrl(lowestScorePage)
         },
         {
             taskKey: 'close_competitor_gaps',
@@ -283,7 +291,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             implementation: 'Daily target: use the competitor findings to add 5 missing trust signals, comparison angles, service inclusions, or buyer-proof sections across the existing printer-rental pages that matter most.',
             targetPageKeyword: `${primaryCompetitorKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
-            link: weakestMoneyPath
+            link: toAbsoluteUrl(weakestMoneyPath)
         }
     ];
 }
@@ -318,7 +326,7 @@ function mergeDailyTasks(tasks, completionMap) {
             implementation: completion.implementation || task.implementation,
             targetPageKeyword: completion.targetPageKeyword || task.targetPageKeyword,
             status: completion.status || TASK_STATUS_DONE,
-            link: completion.link || task.link,
+            link: toAbsoluteUrl(completion.link || task.link),
             completedAt: completion.completedAt || null
         };
     });
@@ -337,7 +345,7 @@ function summarizeTask(task) {
     return {
         timestamp: formatDateTime(task.completedAt || task.updatedAt || task.createdAt),
         task: taskName,
-        link,
+        link: toAbsoluteUrl(link),
         status: (task.status || 'pending').toUpperCase()
     };
 }
@@ -351,7 +359,7 @@ function summarizeActivity(item) {
     return {
         timestamp: formatDateTime(item.timestamp),
         task: displayKeyword(taskLabel),
-        link: details.url || details.path || null,
+        link: toAbsoluteUrl(details.url || details.path || null),
         status: 'LOG'
     };
 }
