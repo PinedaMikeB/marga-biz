@@ -122,36 +122,42 @@ function buildRecommendedDailyTasks(config = {}) {
         {
             task: 'Capture printer keyword rankings',
             implementation: 'Run SERP checks for the core printer money keywords and save the latest positions to Firebase.',
+            targetPageKeyword: 'Printer Rental, Printer For Rent, Print All You Can',
             status: 'Recommended',
             link: '/.netlify/functions/seo-monitor-actions'
         },
         {
             task: 'Store daily analytics and Search Console snapshot',
             implementation: 'Save GA4 and Search Console data into `insights_snapshots` so ranking and traffic trends stay visible.',
+            targetPageKeyword: 'Printer Rental',
             status: scheduleStatus('dailySnapshot'),
             link: '/.netlify/functions/seo-monitor-actions'
         },
         {
             task: 'Watch for ranking drops on printer pages',
             implementation: 'Compare today versus yesterday for Printer Rental, Printer For Rent, Print All You Can, BGC, Makati, and Manila keywords.',
+            targetPageKeyword: 'Printer Rental BGC, Printer Rental Makati, Printer Rental Manila',
             status: scheduleStatus('keywordAlerts'),
             link: '/automations/seo-monitor/'
         },
         {
             task: 'Track printer SERP competitors',
             implementation: 'Log the domains ranking above marga.biz for printer rental terms and keep the strongest competing page visible.',
+            targetPageKeyword: 'Printer Rental Philippines',
             status: scheduleStatus('competitorCheck', 'Recommended'),
             link: '/.netlify/functions/seo-monitor-actions'
         },
         {
             task: 'Scan key printer landing pages',
             implementation: 'Review crawlability, titles, canonicals, headings, links, and schema on the main printer hub and city pages.',
+            targetPageKeyword: '/printer-rental/, /printer-rental/bgc/, /printer-rental/makati/',
             status: 'Recommended',
             link: '/.netlify/functions/seo-monitor-actions'
         },
         {
             task: 'Create one next-best printer SEO action',
             implementation: 'Turn the day’s printer ranking or competitor findings into one concrete content, internal-link, or technical action.',
+            targetPageKeyword: 'Highest-opportunity printer keyword',
             status: 'Recommended',
             link: '/automations/seo-monitor/'
         }

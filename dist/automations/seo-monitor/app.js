@@ -147,12 +147,13 @@ function renderTasks(data) {
         <tr>
             <td>${escapeHtml(item.task || '--')}</td>
             <td>${escapeHtml(item.implementation || '--')}</td>
+            <td>${escapeHtml(item.targetPageKeyword || '--')}</td>
             <td><span class="status-pill ${(item.status || '').toLowerCase()}">${escapeHtml(item.status || '--')}</span></td>
             <td>${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">Open</a>` : '&ndash;'}</td>
         </tr>
     `);
 
-    renderSimpleTable(elements.tasksTable, ['Daily Task', 'Implementation', 'Status', 'Link'], rows);
+    renderSimpleTable(elements.tasksTable, ['Daily Task', 'Implementation', 'Target Page Keyword', 'Status', 'Link'], rows);
 }
 
 function renderTodayRun(todayRun) {
