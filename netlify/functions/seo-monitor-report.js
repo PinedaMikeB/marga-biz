@@ -5,13 +5,13 @@ const admin = require('firebase-admin');
 const TIMEZONE = 'Asia/Manila';
 const DEFAULT_DAYS = 5;
 const DEFAULT_PRIORITY_KEYWORDS = [
-    'Copier Rental',
-    'Copier for Rent',
     'Printer Rental',
     'Printer For Rent',
     'Print All You Can',
     'Printer Rental BGC',
-    'Printer Rental Makati'
+    'Printer Rental Makati',
+    'Printer Rental Manila',
+    'Printer Rental Philippines'
 ];
 
 function getServiceAccount() {
@@ -53,6 +53,11 @@ function displayKeyword(keyword = '') {
         .join(' ');
 }
 
+function isPrinterKeyword(keyword = '') {
+    const normalized = normalizeKeyword(keyword);
+    return normalized.includes('printer') || normalized === 'print all you can';
+}
+
 function formatDateKey(input) {
     const value = typeof input === 'string' ? input : input?.toISOString?.();
     if (!value) return '';
@@ -91,6 +96,7 @@ function dedupeKeywords(priorityKeywords, configuredKeywords) {
         const clean = keyword?.trim();
         if (!clean) continue;
         const normalized = normalizeKeyword(clean);
+        if (!isPrinterKeyword(normalized)) continue;
         if (seen.has(normalized)) continue;
         seen.add(normalized);
         ordered.push({
@@ -114,40 +120,40 @@ function buildRecommendedDailyTasks(config = {}) {
 
     return [
         {
-            task: 'Capture priority keyword rankings',
-            implementation: 'Run SERP checks for the core money keywords and save the latest positions to Firebase.',
+            task: 'Capture printer keyword rankings',
+            implementation: 'Run SERP checks for the core printer money keywords and save the latest positions to Firebase.',
             status: 'Recommended',
-            link: '/.netlify/functions/agent-search?action=monitor'
+            link: '/.netlify/functions/seo-monitor-actions'
         },
         {
             task: 'Store daily analytics and Search Console snapshot',
             implementation: 'Save GA4 and Search Console data into `insights_snapshots` so ranking and traffic trends stay visible.',
             status: scheduleStatus('dailySnapshot'),
-            link: '/.netlify/functions/insights-snapshot'
+            link: '/.netlify/functions/seo-monitor-actions'
         },
         {
-            task: 'Watch for ranking drops on money pages',
-            implementation: 'Compare today versus yesterday for Printer Rental, Copier Rental, BGC, Makati, and Print All You Can keywords.',
+            task: 'Watch for ranking drops on printer pages',
+            implementation: 'Compare today versus yesterday for Printer Rental, Printer For Rent, Print All You Can, BGC, Makati, and Manila keywords.',
             status: scheduleStatus('keywordAlerts'),
-            link: '/admin/insights/settings.html'
+            link: '/automations/seo-monitor/'
         },
         {
-            task: 'Track direct competitors on top keywords',
-            implementation: 'Log the domains ranking above marga.biz and capture the strongest competing page for each keyword.',
+            task: 'Track printer SERP competitors',
+            implementation: 'Log the domains ranking above marga.biz for printer rental terms and keep the strongest competing page visible.',
             status: scheduleStatus('competitorCheck', 'Recommended'),
-            link: '/.netlify/functions/agent-search?action=find_competitors&keyword=printer%20rental%20philippines'
+            link: '/.netlify/functions/seo-monitor-actions'
         },
         {
-            task: 'Check indexability and broken-page risks',
-            implementation: 'Review crawlability, robots access, broken links, and page-level SEO issues on key landing pages.',
+            task: 'Scan key printer landing pages',
+            implementation: 'Review crawlability, titles, canonicals, headings, links, and schema on the main printer hub and city pages.',
             status: 'Recommended',
-            link: '/.netlify/functions/page-scanner?action=issues&limit=50'
+            link: '/.netlify/functions/seo-monitor-actions'
         },
         {
-            task: 'Create one next-best SEO action',
-            implementation: 'Turn the day’s ranking or competitor findings into one concrete content, internal-link, or technical task.',
+            task: 'Create one next-best printer SEO action',
+            implementation: 'Turn the day’s printer ranking or competitor findings into one concrete content, internal-link, or technical action.',
             status: 'Recommended',
-            link: '/admin/insights/settings.html'
+            link: '/automations/seo-monitor/'
         }
     ];
 }
@@ -228,6 +234,16 @@ async function getSnapshotFallback(db, days) {
     } catch (error) {
         console.warn('Unable to load insights snapshots:', error.message);
         return [];
+    }
+}
+
+async function getLatestDailyRun(db) {
+    try {
+        const doc = await db.collection('marga_shared').doc('seo_monitor_daily_run').get();
+        return doc.exists ? doc.data() : null;
+    } catch (error) {
+        console.warn('Unable to load latest SEO monitor run:', error.message);
+        return null;
     }
 }
 
@@ -348,6 +364,7 @@ exports.handler = async (event) => {
         const recentActivity = recentTasks.length > 0 ? recentTasks : await getRecentActivity(db);
         const activeAutomations = buildRecommendedDailyTasks(config);
         const latestSnapshot = snapshots[0] || null;
+        const latestDailyRun = await getLatestDailyRun(db);
 
         return {
             statusCode: 200,
@@ -359,6 +376,7 @@ exports.handler = async (event) => {
                 rankings,
                 logs: recentActivity,
                 dailyTasks: activeAutomations,
+                todayRun: latestDailyRun,
                 meta: {
                     keywordsTracked: trackedKeywords.length,
                     latestSnapshotDate: latestSnapshot?.date || null,
@@ -368,7 +386,8 @@ exports.handler = async (event) => {
                         'marga_rankings',
                         'insights_snapshots',
                         'marga_tasks',
-                        'marga_activity_log'
+                        'marga_activity_log',
+                        'marga_shared'
                     ]
                 }
             })

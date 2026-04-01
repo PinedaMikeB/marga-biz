@@ -20,7 +20,9 @@ This folder is the repo-local index for automation work in `marga-biz`.
 - Viewer source: `automations/seo-monitor/`
 - Published path after build: `/automations/seo-monitor/`
 - Report endpoint: `/.netlify/functions/seo-monitor-report`
-- Current role: report viewer for daily SEO monitoring backed by Firebase data
+- Action endpoint: `/.netlify/functions/seo-monitor-actions`
+- Current role: printer-focused SEO monitor with a manual task runner backed by Firebase data
+- Scope guardrail: do not use this viewer to automate changes against the home page or copier-rental pages
 
 ## Local Scheduling / Daemons
 
@@ -31,4 +33,4 @@ This folder is the repo-local index for automation work in `marga-biz`.
 
 Codex desktop recurring automation definitions are not stored in this repo by default. Those scheduler files live in Codex app storage.
 
-SEO automation and email automation were removed from this repo on 2026-03-31. Telegram chat tooling remains active here.
+SEO automation and email automation were removed from this repo on 2026-03-31. Telegram chat tooling remains active here. The SEO monitor viewer added later is an on-demand tool, not a background daemon defined in this repo.
