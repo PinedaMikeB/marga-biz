@@ -11,6 +11,13 @@ const elements = {
     manualKeywordInput: document.getElementById('manualKeywordInput'),
     manualKeywordButton: document.getElementById('manualKeywordButton'),
     manualKeywordResult: document.getElementById('manualKeywordResult'),
+    completionForm: document.getElementById('completionForm'),
+    completionTaskSelect: document.getElementById('completionTaskSelect'),
+    completionImplementationInput: document.getElementById('completionImplementationInput'),
+    completionTargetInput: document.getElementById('completionTargetInput'),
+    completionLinkInput: document.getElementById('completionLinkInput'),
+    completionButton: document.getElementById('completionButton'),
+    completionResult: document.getElementById('completionResult'),
     runTodayResult: document.getElementById('runTodayResult'),
     trackedKeywords: document.getElementById('trackedKeywords'),
     latestSnapshot: document.getElementById('latestSnapshot'),
@@ -156,6 +163,18 @@ function renderTasks(data) {
     renderSimpleTable(elements.tasksTable, ['Daily Task', 'Implementation', 'Target Page Keyword', 'Status', 'Link'], rows);
 }
 
+function renderCompletionOptions(data) {
+    const tasks = data.dailyTasks || [];
+    const options = ['<option value="">Select a task</option>']
+        .concat(tasks.map(item => `
+            <option value="${escapeHtml(item.taskKey || '')}">
+                ${escapeHtml(item.task || '--')}
+            </option>
+        `));
+
+    elements.completionTaskSelect.innerHTML = options.join('');
+}
+
 function renderTodayRun(todayRun) {
     if (!todayRun?.ranAt) {
         elements.runTodayResult.className = 'result-card result-muted';
@@ -197,6 +216,11 @@ function renderManualKeywordResult(result, isError = false) {
     `;
 }
 
+function renderCompletionResult(message, isError = false) {
+    elements.completionResult.className = isError ? 'result-card' : 'result-card';
+    elements.completionResult.innerHTML = message;
+}
+
 async function fetchJson(url, options) {
     const response = await fetch(url, options);
     const payload = await response.json().catch(() => ({}));
@@ -220,6 +244,7 @@ async function loadReport() {
         renderRankings(data);
         renderLogs(data);
         renderTasks(data);
+        renderCompletionOptions(data);
         elements.statusText.textContent = `Report updated ${formatDateTime(data.generatedAt)}.`;
     } catch (error) {
         console.error(error);
@@ -295,6 +320,75 @@ async function submitManualKeyword(event) {
     }
 }
 
+async function submitCompletion(event) {
+    event.preventDefault();
+
+    const taskKey = elements.completionTaskSelect.value.trim();
+    const implementation = elements.completionImplementationInput.value.trim();
+    const targetPageKeyword = elements.completionTargetInput.value.trim();
+    const link = elements.completionLinkInput.value.trim();
+    const task = (state.data?.dailyTasks || []).find(item => item.taskKey === taskKey);
+
+    if (!taskKey || !task) {
+        renderCompletionResult('<strong>Pick a task first.</strong><br>Select the queue item you finished.', true);
+        return;
+    }
+
+    if (!implementation || !link) {
+        renderCompletionResult('<strong>Missing details.</strong><br>Add the implementation summary and live page URL.', true);
+        return;
+    }
+
+    setButtonState(elements.completionButton, true, 'Saving...', 'Mark Done');
+    elements.statusText.textContent = `Recording completed work for "${task.task}"...`;
+
+    try {
+        const payload = await fetchJson('/.netlify/functions/seo-monitor-actions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: 'complete_task',
+                taskKey,
+                task: task.task,
+                implementation,
+                targetPageKeyword: targetPageKeyword || task.targetPageKeyword || '',
+                link,
+                status: 'Done'
+            })
+        });
+
+        renderCompletionResult(`
+            <strong>Saved as Done.</strong><br>
+            ${escapeHtml(task.task)}<br>
+            <a href="${escapeHtml(payload.data.link)}" target="_blank" rel="noopener">${escapeHtml(payload.data.link)}</a>
+        `);
+        elements.completionForm.reset();
+        elements.statusText.textContent = `Recorded completed work for "${task.task}".`;
+        await loadReport();
+    } catch (error) {
+        console.error(error);
+        renderCompletionResult(`<strong>Unable to save completion.</strong><br>${escapeHtml(error.message)}`, true);
+        elements.statusText.textContent = `Unable to record completed work: ${error.message}`;
+    } finally {
+        setButtonState(elements.completionButton, false, 'Saving...', 'Mark Done');
+    }
+}
+
+elements.completionTaskSelect.addEventListener('change', () => {
+    const taskKey = elements.completionTaskSelect.value.trim();
+    const task = (state.data?.dailyTasks || []).find(item => item.taskKey === taskKey);
+    if (!task) return;
+
+    elements.completionTargetInput.value = task.targetPageKeyword || '';
+    if (task.link) {
+        elements.completionLinkInput.value = task.link.startsWith('http')
+            ? task.link
+            : `${window.location.origin}${task.link}`;
+    }
+});
+
 elements.daysSelect.addEventListener('change', () => {
     state.days = Number(elements.daysSelect.value || 5);
     loadReport();
@@ -309,5 +403,6 @@ elements.runTodayButton.addEventListener('click', () => {
 });
 
 elements.manualKeywordForm.addEventListener('submit', submitManualKeyword);
+elements.completionForm.addEventListener('submit', submitCompletion);
 
 loadReport();

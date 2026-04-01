@@ -22,6 +22,7 @@ This folder is the repo-local index for automation work in `marga-biz`.
 - Report endpoint: `/.netlify/functions/seo-monitor-report`
 - Action endpoint: `/.netlify/functions/seo-monitor-actions`
 - Current role: printer-focused SEO monitor with a manual task runner backed by Firebase data
+- Completion tracking: completed page/blog implementations can be recorded and reflected as `Done` with the live URL in the queue
 - Scope guardrail: do not use this viewer to automate changes against the home page or copier-rental pages
 
 ## Local Scheduling / Daemons

@@ -41,6 +41,19 @@ const EXISTING_BLOG_SUPPORT_PAGES = [
     '/printer-rental/comparing-printer-rentals/',
     '/printer-rental/cost-savings-printer-rental/'
 ];
+const TASK_STATUS_DONE = 'Done';
+
+function getManilaDateKey(input = new Date()) {
+    const date = input instanceof Date ? input : new Date(input);
+    const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: TIMEZONE,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).formatToParts(date);
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+}
 
 function getServiceAccount() {
     if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
@@ -193,6 +206,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
 
     return [
         {
+            taskKey: 'improve_money_pages',
             task: 'Improve 5 existing money pages today',
             implementation: 'Daily target: improve 5 existing printer money pages by tightening title tags, meta descriptions, H1/H2 flow, FAQ coverage, CTA copy, and supporting internal links across the live cluster.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
@@ -200,6 +214,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: weakestMoneyPath || lowestScorePage
         },
         {
+            taskKey: 'strengthen_city_service_pages',
             task: 'Strengthen 5 weak city or service pages today',
             implementation: 'Daily target: improve 5 existing city or service pages with clearer local intent, supported service coverage, business-use copy, trust signals, and stronger quote CTAs instead of letting them sit as low-value pages.',
             targetPageKeyword: `${weakestCityKeyword} -> ${cityPageTargets}`,
@@ -207,6 +222,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: weakestCityPath
         },
         {
+            taskKey: 'refresh_support_pages',
             task: 'Refresh 5 existing support pages today',
             implementation: 'Daily target: review and upgrade 5 existing printer-rental support pages first so they stop occupying space for nothing and contribute to ranking the printer-rental cluster.',
             targetPageKeyword: supportRefreshTargets,
@@ -214,6 +230,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: weakestCityPath
         },
         {
+            taskKey: 'create_new_support_pages',
             task: 'Create up to 2 new support pages today',
             implementation: 'Daily target: create up to 2 new support pages only when a real supported keyword gap is confirmed after reviewing the existing printer-rental cluster, and only when the new pages will add unique business value.',
             targetPageKeyword: `${weakestCityKeyword}, printer rental taguig`,
@@ -221,6 +238,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: weakestCityPath
         },
         {
+            taskKey: 'publish_supporting_blogs',
             task: 'Publish 5 supporting blogs today',
             implementation: 'Daily target: publish 5 supporting blogs only when they answer real buyer objections, cover real use cases, and link back to the target printer landing pages with commercial intent. Refresh existing blog assets first when they are thin or overlapping.',
             targetPageKeyword: blogSupportTargets,
@@ -228,6 +246,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: '/printer-rental/'
         },
         {
+            taskKey: 'add_internal_links',
             task: 'Add 5 internal links today',
             implementation: 'Daily target: add 5 contextual internal links from existing printer pages and blog posts into the priority money page and the weakest city page.',
             targetPageKeyword: `${weakestMoneyKeyword}, ${weakestCityKeyword} -> ${moneyPageTargets}`,
@@ -235,6 +254,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: lowestScorePage
         },
         {
+            taskKey: 'fix_on_page_issues',
             task: 'Fix 5 on-page SEO issues today',
             implementation: 'Daily target: resolve 5 concrete on-page issues on live printer pages such as title, meta, heading structure, canonical, schema, image alt text, or thin copy.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
@@ -242,6 +262,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: lowestScorePage
         },
         {
+            taskKey: 'refresh_faq_schema',
             task: 'Add or refresh 5 FAQ and schema blocks today',
             implementation: 'Daily target: add or refresh FAQ content and valid schema on 5 existing printer pages where it improves commercial relevance, buyer intent coverage, and rich-result eligibility.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${supportRefreshTargets}`,
@@ -249,6 +270,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: lowestScorePage
         },
         {
+            taskKey: 'improve_conversion_sections',
             task: 'Improve 5 conversion sections today',
             implementation: 'Daily target: strengthen 5 live printer pages with better quote CTAs, talk-to-sales prompts, form framing, or contact actions so traffic turns into leads.',
             targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
@@ -256,6 +278,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: lowestScorePage
         },
         {
+            taskKey: 'close_competitor_gaps',
             task: 'Close 5 competitor gaps today',
             implementation: 'Daily target: use the competitor findings to add 5 missing trust signals, comparison angles, service inclusions, or buyer-proof sections across the existing printer-rental pages that matter most.',
             targetPageKeyword: `${primaryCompetitorKeyword} -> ${moneyPageTargets}`,
@@ -263,6 +286,42 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: weakestMoneyPath
         }
     ];
+}
+
+async function getTaskCompletions(db, dateKey) {
+    try {
+        const snapshot = await db.collection('seo_monitor_task_completions')
+            .where('date', '==', dateKey)
+            .get();
+
+        const map = new Map();
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.taskKey) {
+                map.set(data.taskKey, { id: doc.id, ...data });
+            }
+        });
+        return map;
+    } catch (error) {
+        console.warn('Unable to load SEO monitor task completions:', error.message);
+        return new Map();
+    }
+}
+
+function mergeDailyTasks(tasks, completionMap) {
+    return tasks.map(task => {
+        const completion = completionMap.get(task.taskKey);
+        if (!completion) return task;
+
+        return {
+            ...task,
+            implementation: completion.implementation || task.implementation,
+            targetPageKeyword: completion.targetPageKeyword || task.targetPageKeyword,
+            status: completion.status || TASK_STATUS_DONE,
+            link: completion.link || task.link,
+            completedAt: completion.completedAt || null
+        };
+    });
 }
 
 function summarizeTask(task) {
@@ -472,7 +531,11 @@ exports.handler = async (event) => {
         const recentActivity = recentTasks.length > 0 ? recentTasks : await getRecentActivity(db);
         const latestSnapshot = snapshots[0] || null;
         const latestDailyRun = await getLatestDailyRun(db);
-        const activeAutomations = buildRecommendedDailyTasks(rankings, latestDailyRun);
+        const completionMap = await getTaskCompletions(db, getManilaDateKey());
+        const activeAutomations = mergeDailyTasks(
+            buildRecommendedDailyTasks(rankings, latestDailyRun),
+            completionMap
+        );
 
         return {
             statusCode: 200,
@@ -488,14 +551,15 @@ exports.handler = async (event) => {
                 meta: {
                     keywordsTracked: trackedKeywords.length,
                     latestSnapshotDate: latestSnapshot?.date || null,
-                    openTaskCount: recentTasks.filter(item => item.status !== 'DONE').length,
+                    openTaskCount: activeAutomations.filter(item => String(item.status).toLowerCase() !== 'done').length,
                     sourceCollections: [
                         'marga_config',
                         'marga_rankings',
                         'insights_snapshots',
                         'marga_tasks',
                         'marga_activity_log',
-                        'marga_shared'
+                        'marga_shared',
+                        'seo_monitor_task_completions'
                     ]
                 }
             })

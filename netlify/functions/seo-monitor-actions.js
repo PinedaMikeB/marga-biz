@@ -23,6 +23,18 @@ const DAILY_PRINTER_PAGES = [
     '/printer-rental/quezon-city/'
 ];
 
+function getManilaDateKey(input = new Date()) {
+    const date = input instanceof Date ? input : new Date(input);
+    const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).formatToParts(date);
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+}
+
 function getServiceAccount() {
     if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
         return JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
@@ -191,6 +203,47 @@ async function logActivity(db, action, details) {
         details,
         timestamp: admin.firestore.FieldValue.serverTimestamp()
     });
+}
+
+async function recordTaskCompletion(db, payload) {
+    const taskKey = String(payload.taskKey || '').trim();
+    const task = String(payload.task || '').trim();
+    const implementation = String(payload.implementation || '').trim();
+    const targetPageKeyword = String(payload.targetPageKeyword || '').trim();
+    const link = String(payload.link || '').trim();
+    const status = String(payload.status || 'Done').trim();
+
+    if (!taskKey) throw new Error('taskKey is required.');
+    if (!task) throw new Error('task is required.');
+    if (!implementation) throw new Error('implementation is required.');
+    if (!link) throw new Error('link is required.');
+
+    const date = payload.date || getManilaDateKey();
+    const docId = `${date}__${taskKey}`;
+    const completion = {
+        date,
+        taskKey,
+        task,
+        implementation,
+        targetPageKeyword,
+        link,
+        status,
+        completedAt: new Date().toISOString(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+
+    await db.collection('seo_monitor_task_completions').doc(docId).set(completion, { merge: true });
+    await logActivity(db, 'seo_monitor_task_completed', {
+        taskKey,
+        task,
+        link,
+        status
+    });
+
+    return {
+        ...completion,
+        updatedAt: undefined
+    };
 }
 
 async function callSiteFunction(endpoint) {
@@ -373,10 +426,23 @@ exports.handler = async (event) => {
             };
         }
 
+        if (action === 'complete_task') {
+            const result = await recordTaskCompletion(db, body);
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    success: true,
+                    data: result
+                })
+            };
+        }
+
         return {
             statusCode: 400,
             headers,
-            body: JSON.stringify({ success: false, error: 'Invalid action. Use run_today or track_keyword.' })
+            body: JSON.stringify({ success: false, error: 'Invalid action. Use run_today, track_keyword, or complete_task.' })
         };
     } catch (error) {
         console.error('SEO monitor action error:', error);
