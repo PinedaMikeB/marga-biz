@@ -29,10 +29,9 @@ function getServiceAccount() {
 
 function getFirebaseApp() {
     if (admin.apps.length === 0) {
-        const serviceAccount = getServiceAccount();
         admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: serviceAccount.project_id || 'sah-spiritual-journal'
+            credential: admin.credential.cert(getServiceAccount()),
+            projectId: 'sah-spiritual-journal'
         });
     }
 
