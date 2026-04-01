@@ -207,9 +207,16 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
             link: weakestCityPath
         },
         {
-            task: 'Refresh 5 existing support pages before adding more',
-            implementation: 'Daily target: review and upgrade 5 existing printer-rental support pages first so they stop occupying space for nothing. Only create up to 2 new support pages after the existing cluster has been refreshed and only for real supported gaps.',
+            task: 'Refresh 5 existing support pages today',
+            implementation: 'Daily target: review and upgrade 5 existing printer-rental support pages first so they stop occupying space for nothing and contribute to ranking the printer-rental cluster.',
             targetPageKeyword: supportRefreshTargets,
+            status: 'Recommended',
+            link: weakestCityPath
+        },
+        {
+            task: 'Create up to 2 new support pages today',
+            implementation: 'Daily target: create up to 2 new support pages only when a real supported keyword gap is confirmed after reviewing the existing printer-rental cluster, and only when the new pages will add unique business value.',
+            targetPageKeyword: `${weakestCityKeyword}, printer rental taguig`,
             status: 'Recommended',
             link: weakestCityPath
         },
