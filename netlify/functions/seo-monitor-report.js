@@ -334,7 +334,8 @@ exports.handler = async (event) => {
         const config = await getConfig(db);
         const configuredKeywords = [
             ...(config.seo?.keywords?.primary || []),
-            ...(config.seo?.keywords?.growth || [])
+            ...(config.seo?.keywords?.growth || []),
+            ...(config.seo?.keywords?.manual || [])
         ];
         const trackedKeywords = dedupeKeywords(DEFAULT_PRIORITY_KEYWORDS, configuredKeywords);
         const snapshots = await getSnapshotFallback(db, days);

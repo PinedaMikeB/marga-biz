@@ -6,6 +6,12 @@ const state = {
 const elements = {
     daysSelect: document.getElementById('daysSelect'),
     refreshButton: document.getElementById('refreshButton'),
+    runTodayButton: document.getElementById('runTodayButton'),
+    manualKeywordForm: document.getElementById('manualKeywordForm'),
+    manualKeywordInput: document.getElementById('manualKeywordInput'),
+    manualKeywordButton: document.getElementById('manualKeywordButton'),
+    manualKeywordResult: document.getElementById('manualKeywordResult'),
+    runTodayResult: document.getElementById('runTodayResult'),
     trackedKeywords: document.getElementById('trackedKeywords'),
     latestSnapshot: document.getElementById('latestSnapshot'),
     openTasks: document.getElementById('openTasks'),
@@ -38,6 +44,11 @@ function escapeHtml(value) {
         .replace(/'/g, '&#039;');
 }
 
+function setButtonState(button, busy, busyLabel, idleLabel) {
+    button.disabled = busy;
+    button.textContent = busy ? busyLabel : idleLabel;
+}
+
 function renderSummary(data) {
     elements.trackedKeywords.textContent = data.meta?.keywordsTracked ?? '--';
     elements.latestSnapshot.textContent = data.meta?.latestSnapshotDate || 'No snapshot yet';
@@ -47,6 +58,8 @@ function renderSummary(data) {
     elements.sourceCollections.innerHTML = (data.meta?.sourceCollections || [])
         .map(item => `<span class="chip">${escapeHtml(item)}</span>`)
         .join('');
+
+    renderTodayRun(data.todayRun || null);
 }
 
 function getDeltaClass(delta) {
@@ -103,13 +116,13 @@ function renderRankings(data) {
     `).join('');
 }
 
-function renderSimpleTable(table, headings, rows) {
+function renderSimpleTable(table, headings, rows, emptyMessage = 'No entries yet.') {
     table.querySelector('thead').innerHTML = `
         <tr>${headings.map(item => `<th>${escapeHtml(item)}</th>`).join('')}</tr>
     `;
 
     if (!rows.length) {
-        table.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">No entries yet.</td></tr>';
+        table.querySelector('tbody').innerHTML = `<tr><td colspan="99" class="empty-row">${escapeHtml(emptyMessage)}</td></tr>`;
         return;
     }
 
@@ -142,18 +155,64 @@ function renderTasks(data) {
     renderSimpleTable(elements.tasksTable, ['Daily Task', 'Implementation', 'Status', 'Link'], rows);
 }
 
+function renderTodayRun(todayRun) {
+    if (!todayRun?.ranAt) {
+        elements.runTodayResult.className = 'result-card result-muted';
+        elements.runTodayResult.innerHTML = 'Waiting to run today’s printer task pack.';
+        return;
+    }
+
+    const rankingChecks = todayRun.rankings?.length ?? 0;
+    const pagesScanned = todayRun.pageScans?.length ?? 0;
+    const competitorLabel = todayRun.competitors?.topDomains?.length
+        ? `Top competitors: ${todayRun.competitors.topDomains.slice(0, 3).map(item => `${item.domain} (#${item.position})`).join(', ')}`
+        : 'Competitor snapshot not available yet.';
+
+    elements.runTodayResult.className = 'result-card';
+    elements.runTodayResult.innerHTML = `
+        <strong>Last run: ${escapeHtml(formatDateTime(todayRun.ranAt))}</strong><br>
+        Checked ${escapeHtml(String(rankingChecks))} printer keywords, scanned ${escapeHtml(String(pagesScanned))} printer pages, and ${todayRun.snapshot?.success ? 'saved' : 'attempted'} the daily analytics snapshot.<br>
+        ${escapeHtml(competitorLabel)}
+    `;
+}
+
+function renderManualKeywordResult(result, isError = false) {
+    elements.manualKeywordResult.className = `result-card${isError ? '' : ''}`;
+    if (isError) {
+        elements.manualKeywordResult.innerHTML = `<strong>Unable to check keyword.</strong><br>${escapeHtml(result)}`;
+        return;
+    }
+
+    const competitors = (result.competitors || [])
+        .slice(0, 3)
+        .map(item => `${item.domain} (#${item.position})`)
+        .join(', ');
+
+    elements.manualKeywordResult.innerHTML = `
+        <strong>${escapeHtml(result.keyword)}</strong><br>
+        ${result.notFound ? 'Not found in the top 20 results yet.' : `Marga is at position ${escapeHtml(String(result.ranking?.position ?? '--'))}.`}<br>
+        ${result.ranking?.url ? `Ranking page: <a href="${escapeHtml(result.ranking.url)}" target="_blank" rel="noopener">${escapeHtml(result.ranking.url)}</a><br>` : ''}
+        ${competitors ? `Top competitors: ${escapeHtml(competitors)}` : 'No competitor snapshot returned.'}
+    `;
+}
+
+async function fetchJson(url, options) {
+    const response = await fetch(url, options);
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok || payload.success === false) {
+        throw new Error(payload.error || payload.message || `Request failed with status ${response.status}`);
+    }
+
+    return payload;
+}
+
 async function loadReport() {
     elements.statusText.textContent = 'Loading Firebase report data...';
-    elements.refreshButton.disabled = true;
-    elements.refreshButton.textContent = 'Refreshing...';
+    setButtonState(elements.refreshButton, true, 'Refreshing...', 'Refresh');
 
     try {
-        const response = await fetch(`/.netlify/functions/seo-monitor-report?days=${encodeURIComponent(state.days)}`);
-        if (!response.ok) {
-            throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
+        const data = await fetchJson(`/.netlify/functions/seo-monitor-report?days=${encodeURIComponent(state.days)}`);
         state.data = data;
 
         renderSummary(data);
@@ -168,8 +227,70 @@ async function loadReport() {
         elements.logsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load logs.</td></tr>';
         elements.tasksTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load tasks.</td></tr>';
     } finally {
-        elements.refreshButton.disabled = false;
-        elements.refreshButton.textContent = 'Refresh Report';
+        setButtonState(elements.refreshButton, false, 'Refreshing...', 'Refresh');
+    }
+}
+
+async function runToday() {
+    elements.statusText.textContent = 'Running today’s printer SEO task pack...';
+    setButtonState(elements.runTodayButton, true, 'Running...', 'Run Today');
+
+    try {
+        const payload = await fetchJson('/.netlify/functions/seo-monitor-actions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action: 'run_today' })
+        });
+
+        renderTodayRun(payload.data);
+        elements.statusText.textContent = `Today’s printer SEO task pack finished at ${formatDateTime(payload.data.ranAt)}.`;
+        await loadReport();
+    } catch (error) {
+        console.error(error);
+        elements.runTodayResult.className = 'result-card';
+        elements.runTodayResult.innerHTML = `<strong>Run failed.</strong><br>${escapeHtml(error.message)}`;
+        elements.statusText.textContent = `Unable to run today’s printer tasks: ${error.message}`;
+    } finally {
+        setButtonState(elements.runTodayButton, false, 'Running...', 'Run Today');
+    }
+}
+
+async function submitManualKeyword(event) {
+    event.preventDefault();
+
+    const keyword = elements.manualKeywordInput.value.trim();
+    if (!keyword) {
+        renderManualKeywordResult('Enter a keyword to check and save.', true);
+        return;
+    }
+
+    setButtonState(elements.manualKeywordButton, true, 'Checking...', 'Check And Save');
+    elements.statusText.textContent = `Checking ranking for "${keyword}"...`;
+
+    try {
+        const payload = await fetchJson('/.netlify/functions/seo-monitor-actions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: 'track_keyword',
+                keyword
+            })
+        });
+
+        renderManualKeywordResult(payload.data);
+        elements.manualKeywordInput.value = '';
+        elements.statusText.textContent = `Tracked keyword "${keyword}" saved at ${formatDateTime(payload.data.checkedAt)}.`;
+        await loadReport();
+    } catch (error) {
+        console.error(error);
+        renderManualKeywordResult(error.message, true);
+        elements.statusText.textContent = `Unable to check keyword: ${error.message}`;
+    } finally {
+        setButtonState(elements.manualKeywordButton, false, 'Checking...', 'Check And Save');
     }
 }
 
@@ -181,5 +302,11 @@ elements.daysSelect.addEventListener('change', () => {
 elements.refreshButton.addEventListener('click', () => {
     loadReport();
 });
+
+elements.runTodayButton.addEventListener('click', () => {
+    runToday();
+});
+
+elements.manualKeywordForm.addEventListener('submit', submitManualKeyword);
 
 loadReport();
