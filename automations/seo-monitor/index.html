@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marga SEO Daily Viewer</title>
+    <meta name="description" content="Daily SEO report viewer for keyword rankings, logs, and recommended automated tasks.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="hero">
+            <div>
+                <p class="eyebrow">Marga Biz Automation</p>
+                <h1>SEO Daily Viewer</h1>
+                <p class="hero-copy">A compact Firebase-backed report board for keyword rankings, recent SEO work, and the daily automation queue.</p>
+            </div>
+            <div class="hero-actions">
+                <label class="field">
+                    <span>Days</span>
+                    <select id="daysSelect">
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                    </select>
+                </label>
+                <button id="refreshButton" class="button-primary">Refresh Report</button>
+                <a class="button-secondary" href="/admin/insights/seo.html">Open Insights</a>
+            </div>
+        </header>
+
+        <section class="summary-grid" id="summaryGrid">
+            <article class="summary-card">
+                <span class="summary-label">Tracked Keywords</span>
+                <strong id="trackedKeywords">--</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Latest Snapshot</span>
+                <strong id="latestSnapshot">--</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Open Tasks</span>
+                <strong id="openTasks">--</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Generated</span>
+                <strong id="generatedAt">--</strong>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker">Daily rank sheet</p>
+                    <h2>Keyword Positions</h2>
+                </div>
+                <div class="panel-meta" id="sourceCollections"></div>
+            </div>
+            <div class="table-wrap">
+                <table class="report-table" id="rankingsTable">
+                    <thead></thead>
+                    <tbody>
+                        <tr><td class="loading-row">Loading keyword positions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="split-panels">
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Recent movement</p>
+                        <h2>Logs</h2>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="report-table compact-table" id="logsTable">
+                        <thead></thead>
+                        <tbody>
+                            <tr><td class="loading-row">Loading logs...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Daily automation queue</p>
+                        <h2>Recommended Tasks</h2>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="report-table compact-table" id="tasksTable">
+                        <thead></thead>
+                        <tbody>
+                            <tr><td class="loading-row">Loading tasks...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer-note">
+            <span id="statusText">Waiting for report data...</span>
+        </footer>
+    </div>
+
+    <script src="./app.js" defer></script>
+</body>
+</html>

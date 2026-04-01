@@ -15,6 +15,13 @@ This folder is the repo-local index for automation work in `marga-biz`.
 - Shared gateway: `scripts/lib/telegram-gateway.js`
 - Inbox report: `reports/telegram-bridge/inbox.md`
 
+## SEO Monitor Viewer
+
+- Viewer source: `automations/seo-monitor/`
+- Published path after build: `/automations/seo-monitor/`
+- Report endpoint: `/.netlify/functions/seo-monitor-report`
+- Current role: report viewer for daily SEO monitoring backed by Firebase data
+
 ## Local Scheduling / Daemons
 
 - Launchd files:

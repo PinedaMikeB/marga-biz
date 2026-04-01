@@ -1041,6 +1041,16 @@ function copyStaticAssets() {
         console.log('   ✅ Copied static-pages/ recursively');
     }
 
+    // Copy SEO monitor viewer app
+    const automationViewerDir = [
+        path.join(rootDir, 'automations', 'seo-monitor'),
+        path.join(rootDir, 'automations', 'SEO-monitor')
+    ].find(fs.existsSync);
+    if (automationViewerDir) {
+        copyDirRecursive(automationViewerDir, path.join(CONFIG.distDir, 'automations', 'seo-monitor'));
+        console.log('   ✅ Copied automations/seo-monitor viewer');
+    }
+
     // Copy shared image assets
     const imagesDir = path.join(rootDir, 'images');
     if (fs.existsSync(imagesDir)) {
