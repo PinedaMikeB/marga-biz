@@ -108,58 +108,120 @@ function dedupeKeywords(priorityKeywords, configuredKeywords) {
     return ordered;
 }
 
-function buildRecommendedDailyTasks(config = {}) {
-    const schedules = config.seo?.schedules || {};
+function getRankingOpportunityValue(item) {
+    return item?.latestPosition == null ? 999 : Number(item.latestPosition);
+}
 
-    const scheduleStatus = (key, fallback = 'Planned') => {
-        if (!schedules[key]) return fallback;
-        if (schedules[key].enabled === true) return 'Active';
-        if (schedules[key].enabled === false) return 'Off';
-        return fallback;
-    };
+function pickWorstKeyword(rankings = [], matcher, fallback) {
+    const pool = rankings
+        .filter(item => !matcher || matcher(item))
+        .sort((left, right) => getRankingOpportunityValue(right) - getRankingOpportunityValue(left));
+
+    return pool[0]?.keyword || fallback;
+}
+
+function pickLowestScorePage(todayRun = {}, fallback = '/printer-rental/') {
+    const pageScans = Array.isArray(todayRun.pageScans) ? todayRun.pageScans : [];
+    const sorted = [...pageScans].sort((left, right) => {
+        const leftScore = left.seoScore ?? 999;
+        const rightScore = right.seoScore ?? 999;
+        if (leftScore !== rightScore) return leftScore - rightScore;
+        return (right.issueCount || 0) - (left.issueCount || 0);
+    });
+
+    return sorted[0]?.path || fallback;
+}
+
+function getKeywordTargetPath(keyword = '') {
+    const normalized = normalizeKeyword(keyword);
+
+    if (normalized.includes('bgc')) return '/printer-rental/bgc/';
+    if (normalized.includes('makati')) return '/printer-rental/makati/';
+    if (normalized.includes('manila')) return '/printer-rental/manila/';
+    if (normalized.includes('pasig')) return '/printer-rental/pasig/';
+    if (normalized.includes('quezon')) return '/printer-rental/quezon-city/';
+    return '/printer-rental/';
+}
+
+function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
+    const weakestMoneyKeyword = pickWorstKeyword(
+        rankings,
+        item => /^printer rental$|^printer for rent$|^print all you can$/i.test(item.keyword),
+        'Printer Rental'
+    );
+    const weakestCityKeyword = pickWorstKeyword(
+        rankings,
+        item => /\b(BGC|Makati|Manila)\b/i.test(item.keyword),
+        'Printer Rental BGC'
+    );
+    const lowestScorePage = pickLowestScorePage(todayRun, '/printer-rental/');
+    const primaryCompetitorKeyword = todayRun?.competitors?.keyword || 'Printer Rental Philippines';
+    const weakestCityPath = getKeywordTargetPath(weakestCityKeyword);
+    const weakestMoneyPath = getKeywordTargetPath(weakestMoneyKeyword);
 
     return [
         {
-            task: 'Capture printer keyword rankings',
-            implementation: 'Run SERP checks for the core printer money keywords and save the latest positions to Firebase.',
-            targetPageKeyword: 'Printer Rental, Printer For Rent, Print All You Can',
+            task: 'Improve 1 existing money page today',
+            implementation: 'Daily target: improve 1 live printer money page by tightening title tag, meta description, H1/H2 flow, FAQ coverage, CTA copy, and supporting internal links.',
+            targetPageKeyword: weakestMoneyKeyword,
             status: 'Recommended',
-            link: '/.netlify/functions/seo-monitor-actions'
+            link: weakestMoneyPath || lowestScorePage
         },
         {
-            task: 'Store daily analytics and Search Console snapshot',
-            implementation: 'Save GA4 and Search Console data into `insights_snapshots` so ranking and traffic trends stay visible.',
-            targetPageKeyword: 'Printer Rental',
-            status: scheduleStatus('dailySnapshot'),
-            link: '/.netlify/functions/seo-monitor-actions'
-        },
-        {
-            task: 'Watch for ranking drops on printer pages',
-            implementation: 'Compare today versus yesterday for Printer Rental, Printer For Rent, Print All You Can, BGC, Makati, and Manila keywords.',
-            targetPageKeyword: 'Printer Rental BGC, Printer Rental Makati, Printer Rental Manila',
-            status: scheduleStatus('keywordAlerts'),
-            link: '/automations/seo-monitor/'
-        },
-        {
-            task: 'Track printer SERP competitors',
-            implementation: 'Log the domains ranking above marga.biz for printer rental terms and keep the strongest competing page visible.',
-            targetPageKeyword: 'Printer Rental Philippines',
-            status: scheduleStatus('competitorCheck', 'Recommended'),
-            link: '/.netlify/functions/seo-monitor-actions'
-        },
-        {
-            task: 'Scan key printer landing pages',
-            implementation: 'Review crawlability, titles, canonicals, headings, links, and schema on the main printer hub and city pages.',
-            targetPageKeyword: '/printer-rental/, /printer-rental/bgc/, /printer-rental/makati/',
+            task: 'Strengthen 1 weak city or service page today',
+            implementation: 'Daily target: improve 1 live city/service page with clearer local intent, supported service coverage, business-use copy, trust signals, and stronger quote CTAs instead of making filler pages.',
+            targetPageKeyword: weakestCityKeyword,
             status: 'Recommended',
-            link: '/.netlify/functions/seo-monitor-actions'
+            link: weakestCityPath
         },
         {
-            task: 'Create one next-best printer SEO action',
-            implementation: 'Turn the day’s printer ranking or competitor findings into one concrete content, internal-link, or technical action.',
-            targetPageKeyword: 'Highest-opportunity printer keyword',
+            task: 'Create 0 to 1 new support page today',
+            implementation: 'Daily target: create only 0 to 1 new service or location page when there is a real supported gap, a weak or missing ranking, and enough unique business value to avoid doorway content.',
+            targetPageKeyword: weakestCityKeyword,
             status: 'Recommended',
-            link: '/automations/seo-monitor/'
+            link: weakestCityPath
+        },
+        {
+            task: 'Publish 1 supporting blog today',
+            implementation: 'Daily target: publish 1 blog or support article that answers buyer objections, covers a real use case, and links back to the target printer landing page with commercial intent.',
+            targetPageKeyword: weakestCityKeyword,
+            status: 'Recommended',
+            link: weakestCityPath
+        },
+        {
+            task: 'Add 5 internal links today',
+            implementation: 'Daily target: add 5 contextual internal links from existing printer pages and blog posts into the priority money page and the weakest city page.',
+            targetPageKeyword: `${weakestMoneyKeyword}, ${weakestCityKeyword}`,
+            status: 'Recommended',
+            link: lowestScorePage
+        },
+        {
+            task: 'Fix 1 on-page SEO issue today',
+            implementation: 'Daily target: resolve 1 concrete on-page issue on a live printer page such as title, meta, heading structure, canonical, schema, image alt text, or thin copy.',
+            targetPageKeyword: weakestMoneyKeyword,
+            status: 'Recommended',
+            link: lowestScorePage
+        },
+        {
+            task: 'Add or refresh 1 FAQ and schema block today',
+            implementation: 'Daily target: add 3 to 5 commercial FAQs and valid FAQ schema on one priority printer page when it improves relevance and search intent coverage.',
+            targetPageKeyword: weakestMoneyKeyword,
+            status: 'Recommended',
+            link: lowestScorePage
+        },
+        {
+            task: 'Improve 1 conversion section today',
+            implementation: 'Daily target: strengthen 1 live printer page with a better quote CTA, talk-to-sales prompt, form framing, or contact action so traffic turns into leads.',
+            targetPageKeyword: weakestMoneyKeyword,
+            status: 'Recommended',
+            link: lowestScorePage
+        },
+        {
+            task: 'Close 1 competitor gap today',
+            implementation: 'Daily target: use the competitor findings to add one missing trust signal, comparison angle, service inclusion, or buyer-proof section on the relevant printer page.',
+            targetPageKeyword: primaryCompetitorKeyword,
+            status: 'Recommended',
+            link: weakestMoneyPath
         }
     ];
 }
@@ -369,9 +431,9 @@ exports.handler = async (event) => {
 
         const recentTasks = await getRecentTasks(db);
         const recentActivity = recentTasks.length > 0 ? recentTasks : await getRecentActivity(db);
-        const activeAutomations = buildRecommendedDailyTasks(config);
         const latestSnapshot = snapshots[0] || null;
         const latestDailyRun = await getLatestDailyRun(db);
+        const activeAutomations = buildRecommendedDailyTasks(rankings, latestDailyRun);
 
         return {
             statusCode: 200,
