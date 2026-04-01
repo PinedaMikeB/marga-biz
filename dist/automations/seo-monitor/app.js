@@ -51,6 +51,12 @@ function escapeHtml(value) {
         .replace(/'/g, '&#039;');
 }
 
+function toAbsoluteUrl(value) {
+    if (!value) return '';
+    if (/^https?:\/\//i.test(value)) return value;
+    return `${window.location.origin}${value.startsWith('/') ? value : `/${value}`}`;
+}
+
 function setButtonState(button, busy, busyLabel, idleLabel) {
     button.disabled = busy;
     button.textContent = busy ? busyLabel : idleLabel;
@@ -141,7 +147,7 @@ function renderLogs(data) {
         <tr>
             <td>${escapeHtml(item.timestamp || '--')}</td>
             <td>${escapeHtml(item.task || '--')}</td>
-            <td>${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">Open</a>` : '&ndash;'}</td>
+            <td>${item.link ? `<a href="${escapeHtml(toAbsoluteUrl(item.link))}" target="_blank" rel="noopener">${escapeHtml(toAbsoluteUrl(item.link))}</a>` : '&ndash;'}</td>
             <td><span class="status-pill ${(item.status || '').toLowerCase()}">${escapeHtml(item.status || '--')}</span></td>
         </tr>
     `);
@@ -156,7 +162,7 @@ function renderTasks(data) {
             <td>${escapeHtml(item.implementation || '--')}</td>
             <td>${escapeHtml(item.targetPageKeyword || '--')}</td>
             <td><span class="status-pill ${(item.status || '').toLowerCase()}">${escapeHtml(item.status || '--')}</span></td>
-            <td>${item.link ? `<a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">Open</a>` : '&ndash;'}</td>
+            <td>${item.link ? `<a href="${escapeHtml(toAbsoluteUrl(item.link))}" target="_blank" rel="noopener">${escapeHtml(toAbsoluteUrl(item.link))}</a>` : '&ndash;'}</td>
         </tr>
     `);
 
