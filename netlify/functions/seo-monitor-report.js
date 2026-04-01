@@ -13,6 +13,34 @@ const DEFAULT_PRIORITY_KEYWORDS = [
     'Printer Rental Manila',
     'Printer Rental Philippines'
 ];
+const EXISTING_MONEY_PAGES = [
+    '/printer-rental/',
+    '/printer-rental/bgc/',
+    '/printer-rental/makati/',
+    '/printer-rental/manila/',
+    '/printer-rental/pasig/'
+];
+const EXISTING_CITY_SUPPORT_PAGES = [
+    '/printer-rental/quezon-city/',
+    '/printer-rental/ortigas/',
+    '/printer-rental/best-printer-rental-setup-bgc/',
+    '/printer-rental/best-printer-rental-setup-manila/',
+    '/printer-rental/best-printer-rental-setup-ortigas/'
+];
+const EXISTING_SUPPORT_REFRESH_PAGES = [
+    '/printer-rental/how-to-choose-printer-rental-makati/',
+    '/printer-rental/how-to-choose-printer-rental-pasig/',
+    '/printer-rental/how-to-choose-printer-rental-quezon-city/',
+    '/printer-rental/bgc/',
+    '/printer-rental/makati/'
+];
+const EXISTING_BLOG_SUPPORT_PAGES = [
+    '/printer-rental/how-much-does-printer-rental-cost/',
+    '/printer-rental/how-is-printer-maintenance-handled-in-rentals/',
+    '/printer-rental/how-do-i-choose-the-right-printer-rental-company/',
+    '/printer-rental/comparing-printer-rentals/',
+    '/printer-rental/cost-savings-printer-rental/'
+];
 
 function getServiceAccount() {
     if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
@@ -158,68 +186,72 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
     const primaryCompetitorKeyword = todayRun?.competitors?.keyword || 'Printer Rental Philippines';
     const weakestCityPath = getKeywordTargetPath(weakestCityKeyword);
     const weakestMoneyPath = getKeywordTargetPath(weakestMoneyKeyword);
+    const moneyPageTargets = EXISTING_MONEY_PAGES.join(', ');
+    const cityPageTargets = EXISTING_CITY_SUPPORT_PAGES.join(', ');
+    const supportRefreshTargets = EXISTING_SUPPORT_REFRESH_PAGES.join(', ');
+    const blogSupportTargets = EXISTING_BLOG_SUPPORT_PAGES.join(', ');
 
     return [
         {
-            task: 'Improve 1 existing money page today',
-            implementation: 'Daily target: improve 1 live printer money page by tightening title tag, meta description, H1/H2 flow, FAQ coverage, CTA copy, and supporting internal links.',
-            targetPageKeyword: weakestMoneyKeyword,
+            task: 'Improve 5 existing money pages today',
+            implementation: 'Daily target: improve 5 existing printer money pages by tightening title tags, meta descriptions, H1/H2 flow, FAQ coverage, CTA copy, and supporting internal links across the live cluster.',
+            targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
             link: weakestMoneyPath || lowestScorePage
         },
         {
-            task: 'Strengthen 1 weak city or service page today',
-            implementation: 'Daily target: improve 1 live city/service page with clearer local intent, supported service coverage, business-use copy, trust signals, and stronger quote CTAs instead of making filler pages.',
-            targetPageKeyword: weakestCityKeyword,
+            task: 'Strengthen 5 weak city or service pages today',
+            implementation: 'Daily target: improve 5 existing city or service pages with clearer local intent, supported service coverage, business-use copy, trust signals, and stronger quote CTAs instead of letting them sit as low-value pages.',
+            targetPageKeyword: `${weakestCityKeyword} -> ${cityPageTargets}`,
             status: 'Recommended',
             link: weakestCityPath
         },
         {
-            task: 'Create 0 to 1 new support page today',
-            implementation: 'Daily target: create only 0 to 1 new service or location page when there is a real supported gap, a weak or missing ranking, and enough unique business value to avoid doorway content.',
-            targetPageKeyword: weakestCityKeyword,
+            task: 'Refresh 5 existing support pages before adding more',
+            implementation: 'Daily target: review and upgrade 5 existing printer-rental support pages first so they stop occupying space for nothing. Only create up to 2 new support pages after the existing cluster has been refreshed and only for real supported gaps.',
+            targetPageKeyword: supportRefreshTargets,
             status: 'Recommended',
             link: weakestCityPath
         },
         {
-            task: 'Publish 1 supporting blog today',
-            implementation: 'Daily target: publish 1 blog or support article that answers buyer objections, covers a real use case, and links back to the target printer landing page with commercial intent.',
-            targetPageKeyword: weakestCityKeyword,
+            task: 'Publish 5 supporting blogs today',
+            implementation: 'Daily target: publish 5 supporting blogs only when they answer real buyer objections, cover real use cases, and link back to the target printer landing pages with commercial intent. Refresh existing blog assets first when they are thin or overlapping.',
+            targetPageKeyword: blogSupportTargets,
             status: 'Recommended',
-            link: weakestCityPath
+            link: '/printer-rental/'
         },
         {
             task: 'Add 5 internal links today',
             implementation: 'Daily target: add 5 contextual internal links from existing printer pages and blog posts into the priority money page and the weakest city page.',
-            targetPageKeyword: `${weakestMoneyKeyword}, ${weakestCityKeyword}`,
+            targetPageKeyword: `${weakestMoneyKeyword}, ${weakestCityKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
             link: lowestScorePage
         },
         {
-            task: 'Fix 1 on-page SEO issue today',
-            implementation: 'Daily target: resolve 1 concrete on-page issue on a live printer page such as title, meta, heading structure, canonical, schema, image alt text, or thin copy.',
-            targetPageKeyword: weakestMoneyKeyword,
+            task: 'Fix 5 on-page SEO issues today',
+            implementation: 'Daily target: resolve 5 concrete on-page issues on live printer pages such as title, meta, heading structure, canonical, schema, image alt text, or thin copy.',
+            targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
             link: lowestScorePage
         },
         {
-            task: 'Add or refresh 1 FAQ and schema block today',
-            implementation: 'Daily target: add 3 to 5 commercial FAQs and valid FAQ schema on one priority printer page when it improves relevance and search intent coverage.',
-            targetPageKeyword: weakestMoneyKeyword,
+            task: 'Add or refresh 5 FAQ and schema blocks today',
+            implementation: 'Daily target: add or refresh FAQ content and valid schema on 5 existing printer pages where it improves commercial relevance, buyer intent coverage, and rich-result eligibility.',
+            targetPageKeyword: `${weakestMoneyKeyword} -> ${supportRefreshTargets}`,
             status: 'Recommended',
             link: lowestScorePage
         },
         {
-            task: 'Improve 1 conversion section today',
-            implementation: 'Daily target: strengthen 1 live printer page with a better quote CTA, talk-to-sales prompt, form framing, or contact action so traffic turns into leads.',
-            targetPageKeyword: weakestMoneyKeyword,
+            task: 'Improve 5 conversion sections today',
+            implementation: 'Daily target: strengthen 5 live printer pages with better quote CTAs, talk-to-sales prompts, form framing, or contact actions so traffic turns into leads.',
+            targetPageKeyword: `${weakestMoneyKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
             link: lowestScorePage
         },
         {
-            task: 'Close 1 competitor gap today',
-            implementation: 'Daily target: use the competitor findings to add one missing trust signal, comparison angle, service inclusion, or buyer-proof section on the relevant printer page.',
-            targetPageKeyword: primaryCompetitorKeyword,
+            task: 'Close 5 competitor gaps today',
+            implementation: 'Daily target: use the competitor findings to add 5 missing trust signals, comparison angles, service inclusions, or buyer-proof sections across the existing printer-rental pages that matter most.',
+            targetPageKeyword: `${primaryCompetitorKeyword} -> ${moneyPageTargets}`,
             status: 'Recommended',
             link: weakestMoneyPath
         }
