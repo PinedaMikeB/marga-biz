@@ -44,7 +44,8 @@ Use these first on the other Mac:
 
 - Telegram bridge and chat daemon remain active in this repo.
 - SEO automation and email automation were removed from the repo on 2026-03-31.
-- Do not expect morning SEO review or email-monitor artifacts to keep updating unless those systems are reintroduced.
+- A printer SEO monitor and a local email report helper can be reintroduced selectively when explicitly configured on the Mac that runs Codex.
+- Do not expect older morning SEO review or email-monitor artifacts to keep updating unless those systems are reintroduced.
 
 ## Current Next Focus
 

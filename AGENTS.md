@@ -12,7 +12,8 @@ Repo-specific instructions for Codex and automation working inside `marga-biz`.
 
 - Telegram chat tooling remains active in this repo.
 - SEO automation and email automation were intentionally removed from this repo on 2026-03-31.
-- Do not assume SEO report generators, SERP monitors, or email-monitor daemons still exist unless they are reintroduced later.
+- A printer SEO monitor and email report helper may be reintroduced selectively when the user explicitly asks for them.
+- Do not assume older SEO daemons, SERP monitors, or email-monitor daemons still exist unless current repo files show they were reintroduced.
 
 ## Source Of Truth
 
@@ -35,6 +36,13 @@ Do not rely on chat history alone when current repo files can answer the questio
 - Do not treat `reports/telegram-bridge/inbox.md` as a durable planning document. It is an activity log.
 - Do not commit temp runtime state unless the user explicitly wants that behavior captured.
 
+## Email Delivery
+
+- Use repo helpers before inventing ad hoc email steps.
+- The current report email helper is `scripts/send-email-report.js`.
+- Prefer SMTP when configured in local env, and fall back to Apple Mail on this Mac when SMTP is unavailable.
+- Do not commit local mail credentials, SMTP credentials, or Apple Mail state.
+
 ## Git Rules
 
 - Commit only files relevant to the task you are pushing.
@@ -47,6 +55,16 @@ Do not rely on chat history alone when current repo files can answer the questio
 - Prefer changing source files, not generated output alone, unless the task is explicitly a direct hotfix.
 - Keep docs aligned when automation behavior changes materially.
 - Keep changes narrow and reversible.
+
+## SEO Guardrails
+
+- Treat the home page (`/`) and the Copier Rental page/cluster as protected when doing SEO work unless the user explicitly asks to change them.
+- For SEO tasks in this repo, the current priority keyword/theme is `printer rental`.
+- Focus improvements on the printer-rental cluster, supporting internal links, conversion paths, and crawlable service pages.
+- Do not create doorway pages, spun location pages, keyword stuffing, or low-value filler content.
+- Follow Google people-first content principles and preserve the existing brand/design language unless a UX or SEO improvement is clearly justified.
+- Before changing printer-rental pages, audit current titles, meta descriptions, headings, canonicals, schema, internal links, and conversion elements in the repo.
+- When adding or improving printer-rental pages, keep copy clear for business buyers in the Philippines and include only supportable claims.
 
 ## Verification
 
