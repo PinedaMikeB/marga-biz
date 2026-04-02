@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.marga.printer-seo-daily</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/opt/node/bin/node</string>
+        <string>__REPO_ROOT__/scripts/printer-seo-scheduler.js</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__REPO_ROOT__</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>StartInterval</key>
+    <integer>300</integer>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <key>StandardOutPath</key>
+    <string>__HOME__/Library/Logs/marga-printer-seo-daily.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>__HOME__/Library/Logs/marga-printer-seo-daily.error.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/opt/homebrew/opt/node/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>PRINTER_SEO_TIMEZONE</key>
+        <string>Asia/Manila</string>
+        <key>PRINTER_SEO_TARGET_HOUR</key>
+        <string>9</string>
+        <key>PRINTER_SEO_TARGET_MINUTE</key>
+        <string>0</string>
+        <key>PRINTER_SEO_REPO_ROOT</key>
+        <string>__REPO_ROOT__</string>
+        <key>PRINTER_SEO_RUNNER</key>
+        <string>__REPO_ROOT__/scripts/run-printer-seo-daily.js</string>
+    </dict>
+</dict>
+</plist>

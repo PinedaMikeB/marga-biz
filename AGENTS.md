@@ -50,6 +50,7 @@ Do not rely on chat history alone when current repo files can answer the questio
 - The production deploy helper is `scripts/deploy-site.js`; prefer `npm run deploy` over raw Netlify CLI calls.
 - The durable automation root for scheduled runs is the internal clone at `~/.codex/repos/marga-biz-automation`, not the external-drive repo path.
 - Scheduled automation runs should sync to the latest `origin/main` and pass `npm run automation:preflight -- --sync-main --strict` before making content edits.
+- If Codex app-scheduled automations keep failing on sandboxed git/network access, prefer the local Codex CLI runner plus `launchd` from the internal automation clone instead of retrying the same restricted runtime.
 
 ## Git Rules
 

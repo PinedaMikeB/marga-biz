@@ -28,8 +28,12 @@ This folder is the repo-local index for automation work in `marga-biz`.
 - Production deploy helper: `scripts/deploy-site.js`
 - Automation preflight: `npm run automation:preflight -- --sync-main --strict`
 - Scheduled automation root: `~/.codex/repos/marga-biz-automation`
+- Local unsandboxed executor: `scripts/run-printer-seo-daily.js`
+- Launchd scheduler tick: `scripts/printer-seo-scheduler.js`
+- Launchd install helper: `ops/install-printer-seo-daily-launchd.sh`
 - Daily execution rule: do not treat the queue as a recommendation list at turnover time; the intended end-of-run state is that all daily SEO tasks are either `Done` with live URLs or explicitly `Blocked` with a real reason
 - Scope guardrail: do not use this viewer to automate changes against the home page or copier-rental pages
+- If the Codex desktop scheduler reports sandboxed DNS or git-worktree errors, use the launchd executor as the authoritative automation path.
 
 ## Local Scheduling / Daemons
 

@@ -4,6 +4,8 @@
   "description": "Marga Enterprises official website - Static Site Generator",
   "scripts": {
     "automation:preflight": "node scripts/automation-preflight.js",
+    "automation:printer-seo-run": "node scripts/run-printer-seo-daily.js",
+    "automation:printer-seo-scheduler": "node scripts/printer-seo-scheduler.js",
     "facebook:list": "node scripts/facebook-page-publisher.js list",
     "facebook:preview": "node scripts/facebook-page-publisher.js preview-next",
     "facebook:publish": "node scripts/facebook-page-publisher.js publish-next",
