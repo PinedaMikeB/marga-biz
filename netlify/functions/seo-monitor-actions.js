@@ -12,7 +12,8 @@ const DAILY_PRINTER_KEYWORDS = [
     'Printer Rental BGC',
     'Printer Rental Makati',
     'Printer Rental Manila',
-    'Printer Rental Philippines'
+    'Printer Rental Philippines',
+    'Printer Rental Taguig'
 ];
 const DAILY_PRINTER_PAGES = [
     '/printer-rental/',
@@ -20,7 +21,8 @@ const DAILY_PRINTER_PAGES = [
     '/printer-rental/makati/',
     '/printer-rental/manila/',
     '/printer-rental/pasig/',
-    '/printer-rental/quezon-city/'
+    '/printer-rental/quezon-city/',
+    '/printer-rental/taguig/'
 ];
 
 function getManilaDateKey(input = new Date()) {

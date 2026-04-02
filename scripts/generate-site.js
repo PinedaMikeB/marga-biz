@@ -32,6 +32,126 @@ const stats = {
     startTime: Date.now()
 };
 
+const PRINTER_PAGE_SEO_OVERRIDES = {
+    'https://marga.biz/printer-rental/': {
+        title: 'Printer Rental Philippines | Office Printer Rental & Support',
+        metaDescription: 'Printer rental in the Philippines for offices, clinics, schools, and growing teams. Delivery, setup, maintenance, and flexible rental plans.'
+    },
+    'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': {
+        title: 'Printer Rental Cost Guide | Budgeting for Office Teams',
+        metaDescription: 'Use this printer rental cost guide to compare office volume, service inclusions, and setup needs before requesting a quote.'
+    },
+    'https://marga.biz/printer-rental/how-is-printer-maintenance-handled-in-rentals/': {
+        title: 'Rental Printer Maintenance | What Office Teams Should Expect',
+        metaDescription: 'Learn how rental printer maintenance is handled, what support is included, and which service questions office teams should ask first.'
+    },
+    'https://marga.biz/printer-rental/how-do-i-choose-the-right-printer-rental-company/': {
+        title: 'How to Choose the Right Printer Rental Company | Office Guide',
+        metaDescription: 'Choose the right printer rental company by comparing support coverage, setup process, scaling options, and quote transparency.'
+    },
+    'https://marga.biz/printer-rental/comparing-printer-rentals/': {
+        title: 'Printer Rental vs Leasing | Compare Cost, Flexibility, Support',
+        metaDescription: 'Compare printer rental vs leasing for office teams that need lower upfront cost, better flexibility, and clearer support coverage.'
+    },
+    'https://marga.biz/printer-rental/cost-savings-printer-rental/': {
+        title: 'Cost Savings with Printer Rentals | Lower Upfront Office Costs',
+        metaDescription: 'See how printer rentals reduce upfront office costs by matching the right unit, service package, and print volume to your team.'
+    }
+};
+
+const PRINTER_PAGE_FAQS = {
+    'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': [
+        {
+            question: 'What usually affects printer rental cost the most?',
+            answer: 'Monthly print volume, mono versus color output, number of users, and the service package usually affect printer rental cost the most.'
+        },
+        {
+            question: 'Is maintenance usually part of the rental cost?',
+            answer: 'Maintenance expectations should be confirmed in the quote because service coverage, consumables, and callout handling can differ by package.'
+        },
+        {
+            question: 'Should a small office use the same rental plan as a larger team?',
+            answer: 'No. A small admin office and a heavier shared department usually need different printer classes, support levels, and pricing structures.'
+        },
+        {
+            question: 'What should we prepare before asking for a printer rental quote?',
+            answer: 'Prepare your office location, estimated monthly volume, number of users, and whether you need mono, color, scanning, or copying.'
+        }
+    ],
+    'https://marga.biz/printer-rental/how-is-printer-maintenance-handled-in-rentals/': [
+        {
+            question: 'What does rental printer maintenance usually include?',
+            answer: 'Rental printer maintenance usually covers service guidance, troubleshooting, and agreed support steps based on the unit, package, and office workload.'
+        },
+        {
+            question: 'Do office teams still need to handle printer issues alone?',
+            answer: 'No. A good rental setup should clarify who to contact, what support is included, and how service issues are handled before downtime spreads.'
+        },
+        {
+            question: 'Why should maintenance terms be reviewed before signing?',
+            answer: 'Maintenance terms affect uptime, response expectations, and whether the rental will stay practical as print demand changes.'
+        },
+        {
+            question: 'Can support expectations change based on the printer package?',
+            answer: 'Yes. Support coverage often depends on the agreed package, print volume, and the type of device installed in the office.'
+        }
+    ],
+    'https://marga.biz/printer-rental/how-do-i-choose-the-right-printer-rental-company/': [
+        {
+            question: 'What should I compare first when choosing a printer rental company?',
+            answer: 'Start with support coverage, equipment fit, quote clarity, and whether the provider can match the rental plan to your office workflow.'
+        },
+        {
+            question: 'Why is quote transparency important in printer rental?',
+            answer: 'Quote transparency helps teams compare what is actually included, such as setup, maintenance expectations, and upgrade or replacement planning.'
+        },
+        {
+            question: 'Should location matter when choosing a rental company?',
+            answer: 'Yes. Office location matters because delivery planning, building access, and practical support expectations should match the area your team works in.'
+        },
+        {
+            question: 'What details should be shared before requesting a recommendation?',
+            answer: 'Share your office location, monthly volume, user count, and whether you need mono, color, scanning, or copying so the recommendation is more accurate.'
+        }
+    ],
+    'https://marga.biz/printer-rental/comparing-printer-rentals/': [
+        {
+            question: 'When is printer rental more practical than leasing?',
+            answer: 'Printer rental is usually more practical when a team needs lower upfront cost, shorter commitment, or room to adjust the setup as office demand changes.'
+        },
+        {
+            question: 'Why do office teams compare rental support before deciding?',
+            answer: 'Support matters because service handling, maintenance coverage, and replacement planning affect whether the printer stays reliable during daily operations.'
+        },
+        {
+            question: 'Does office size affect whether rental or leasing is the better fit?',
+            answer: 'Yes. Smaller or changing teams often value flexibility, while larger departments may compare longer-term structure against actual print demand and support needs.'
+        },
+        {
+            question: 'What should be reviewed before choosing rental over leasing?',
+            answer: 'Review volume expectations, contract flexibility, service inclusions, and how quickly the provider can adjust the equipment if requirements change.'
+        }
+    ],
+    'https://marga.biz/printer-rental/cost-savings-printer-rental/': [
+        {
+            question: 'How do printer rentals help reduce upfront cost?',
+            answer: 'Printer rentals reduce upfront cost by avoiding a full equipment purchase and spreading the setup into a more manageable operating expense.'
+        },
+        {
+            question: 'Why does the right machine size affect savings?',
+            answer: 'The right machine size matters because overpaying for unused capacity or under-sizing the printer can create extra cost and workflow problems later.'
+        },
+        {
+            question: 'Do service inclusions affect the total savings?',
+            answer: 'Yes. Delivery, setup, maintenance expectations, and support structure all influence the real cost of a printer rental arrangement.'
+        },
+        {
+            question: 'What should a business prepare before comparing rental savings?',
+            answer: 'Prepare your expected print volume, office location, number of users, and whether the team needs mono, color, or multifunction capability.'
+        }
+    ]
+};
+
 console.log('🚀 Marga Static Site Generator v2.0\n');
 console.log('=' .repeat(50));
 
@@ -342,6 +462,12 @@ function cleanContent(content, urlMap = {}) {
     // Clean up empty paragraphs
     content = content.replace(/<p>\s*<\/p>/gi, '');
     content = content.replace(/<p>&nbsp;<\/p>/gi, '');
+
+    // Restore alt text for a known printer-rental image that often arrives blank from the export.
+    content = content.replace(
+        /(printer-rental-33\.webp\?alt=media" alt=")"/gi,
+        '$1Printer rental Philippines office setup"'
+    );
     
     // Remove WordPress comments
     content = content.replace(/<!--.*?-->/gs, '');
@@ -412,12 +538,69 @@ function formatDateISO(dateString) {
     }
 }
 
+function getResolvedSeo(page) {
+    const override = PRINTER_PAGE_SEO_OVERRIDES[page.link] || {};
+    const seo = page.seo || {};
+    return {
+        ...seo,
+        ...override
+    };
+}
+
+function getPrinterFaqSchema(pageLink) {
+    const entries = PRINTER_PAGE_FAQS[pageLink];
+    if (!entries || !entries.length) {
+        return null;
+    }
+
+    return {
+        '@type': 'FAQPage',
+        mainEntity: entries.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+                '@type': 'Answer',
+                text: item.answer
+            }
+        }))
+    };
+}
+
+function getPrinterFaqSection(pageLink) {
+    const entries = PRINTER_PAGE_FAQS[pageLink];
+    if (!entries || !entries.length) {
+        return '';
+    }
+
+    const headingMap = {
+        'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': 'Frequently asked questions about printer rental cost',
+        'https://marga.biz/printer-rental/how-is-printer-maintenance-handled-in-rentals/': 'Frequently asked questions about rental printer maintenance',
+        'https://marga.biz/printer-rental/how-do-i-choose-the-right-printer-rental-company/': 'Frequently asked questions about choosing a printer rental company',
+        'https://marga.biz/printer-rental/comparing-printer-rentals/': 'Frequently asked questions about printer rental vs leasing',
+        'https://marga.biz/printer-rental/cost-savings-printer-rental/': 'Frequently asked questions about printer rental savings'
+    };
+
+    const items = entries.map((item) => `
+        <article class="faq-item">
+            <h3>${escapeHtml(item.question)}</h3>
+            <p>${escapeHtml(item.answer)}</p>
+        </article>`).join('');
+
+    return `
+<section class="faq-section">
+    <h2>${escapeHtml(headingMap[pageLink] || 'Frequently asked questions')}</h2>
+    <div class="faq-stack">${items}
+    </div>
+</section>`;
+}
+
 // ============================================
 // STRUCTURED DATA GENERATOR
 // ============================================
 
 function generateStructuredData(page, type = 'page') {
     const isHomepage = page.link === 'https://marga.biz/' || page.slug === 'copier-rental';
+    const resolvedSeo = getResolvedSeo(page);
     
     const baseData = {
         "@context": "https://schema.org",
@@ -458,8 +641,8 @@ function generateStructuredData(page, type = 'page') {
     if (type === 'post') {
         baseData["@graph"].push({
             "@type": "BlogPosting",
-            "headline": page.seo?.title || page.title,
-            "description": page.seo?.metaDescription || '',
+            "headline": resolvedSeo.title || page.title,
+            "description": resolvedSeo.metaDescription || '',
             "datePublished": page.publishedDate,
             "author": {
                 "@type": "Organization",
@@ -476,8 +659,8 @@ function generateStructuredData(page, type = 'page') {
             "@type": "WebPage",
             "@id": page.link || CONFIG.baseUrl,
             "url": page.link || CONFIG.baseUrl,
-            "name": page.seo?.title || page.title,
-            "description": page.seo?.metaDescription || '',
+            "name": resolvedSeo.title || page.title,
+            "description": resolvedSeo.metaDescription || '',
             "inLanguage": "en-US",
             "isPartOf": {"@id": "https://marga.biz/#website"}
         });
@@ -501,6 +684,11 @@ function generateStructuredData(page, type = 'page') {
             "areaServed": ["Metro Manila", "Cavite", "Laguna", "Rizal", "Bulacan"]
         });
     }
+
+    const faqSchema = getPrinterFaqSchema(page.link);
+    if (faqSchema) {
+        baseData["@graph"].push(faqSchema);
+    }
     
     return JSON.stringify(baseData, null, 2);
 }
@@ -510,17 +698,17 @@ function getPrinterLocationLinkBlock(pageLink) {
         'https://marga.biz/printer-rental/printer-for-rent/': `
 <section class="quote-panel location-link-section">
     <h2>Need a printer rental page by location?</h2>
-    <p>If you are comparing units for a specific office location, review our <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental Quezon City</a>, <a href="/printer-rental/manila/">printer rental Manila</a>, and <a href="/printer-rental/bgc/">printer rental BGC</a> pages for local office-fit guidance. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for broader equipment options.</p>
+    <p>If you are comparing units for a specific office location, review our <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental Quezon City</a>, <a href="/printer-rental/manila/">printer rental Manila</a>, <a href="/printer-rental/bgc/">printer rental BGC</a>, and <a href="/printer-rental/taguig/">printer rental Taguig</a> pages for local office-fit guidance. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for broader equipment options.</p>
 </section>`,
         'https://marga.biz/printer-rental/printer-for-rent/color-printer-rental-benefits-for-your-business/laser-printer-rental/': `
 <section class="quote-panel location-link-section">
     <h2>Where laser printer rental fits best</h2>
-    <p>Laser units are especially practical for document-heavy teams. For local guidance, compare <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental Quezon City</a>, <a href="/printer-rental/manila/">printer rental Manila</a>, and <a href="/printer-rental/bgc/">printer rental BGC</a>. For the full service overview, browse the main <a href="/printer-rental/">Printer Rental</a> page.</p>
+    <p>Laser units are especially practical for document-heavy teams. For local guidance, compare <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/ortigas/">printer rental Ortigas</a>, <a href="/printer-rental/pasig/">printer rental Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental Quezon City</a>, <a href="/printer-rental/manila/">printer rental Manila</a>, <a href="/printer-rental/bgc/">printer rental BGC</a>, and <a href="/printer-rental/taguig/">printer rental Taguig</a>. For the full service overview, browse the main <a href="/printer-rental/">Printer Rental</a> page.</p>
 </section>`,
         'https://marga.biz/printer-rental/best-printer-rental-company/inkjet-printer-rental/': `
 <section class="quote-panel location-link-section">
     <h2>Looking for color-friendly office setups by location?</h2>
-    <p>Inkjet rentals can work well for lighter office color output, admin use, and smaller teams. If you need a Makati-focused option, check <a href="/printer-rental/makati/">printer rental Makati</a>. If your office is in Bonifacio Global City, Taguig, visit <a href="/printer-rental/bgc/">printer rental BGC</a>. You can compare these against the wider <a href="/printer-rental/">Printer Rental</a> hub before choosing a unit.</p>
+    <p>Inkjet rentals can work well for lighter office color output, admin use, and smaller teams. If you need a Makati-focused option, check <a href="/printer-rental/makati/">printer rental Makati</a>. If your office is in Bonifacio Global City or elsewhere in Taguig, compare <a href="/printer-rental/bgc/">printer rental BGC</a> and <a href="/printer-rental/taguig/">printer rental Taguig</a>. You can compare these against the wider <a href="/printer-rental/">Printer Rental</a> hub before choosing a unit.</p>
 </section>`,
         'https://marga.biz/printer-rental/print-all-you-can/': `
 <section class="quote-panel location-link-section">
@@ -535,22 +723,47 @@ function getPrinterLocationLinkBlock(pageLink) {
         'https://marga.biz/printer-rental/types-of-printers-for-rent/office-printers-for-rent/': `
 <section class="quote-panel location-link-section">
     <h2>Office printer rental by business district</h2>
-    <p>If your team is looking for a practical office printer rental matched to where the staff actually works, compare <a href="/printer-rental/makati/">printer rental Makati</a> for established Makati offices and <a href="/printer-rental/bgc/">printer rental BGC</a> for Bonifacio Global City, Taguig teams. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for the wider service overview.</p>
+    <p>If your team is looking for a practical office printer rental matched to where the staff actually works, compare <a href="/printer-rental/makati/">printer rental Makati</a> for established Makati offices and <a href="/printer-rental/bgc/">printer rental BGC</a> or <a href="/printer-rental/taguig/">printer rental Taguig</a> for Taguig-based teams. You can also return to the main <a href="/printer-rental/">Printer Rental</a> hub for the wider service overview.</p>
 </section>`,
         'https://marga.biz/printer-rental/types-of-printers-for-rent/laser-printers-for-rent/': `
 <section class="quote-panel location-link-section">
     <h2>Laser printer rental by location</h2>
-    <p>Document-heavy laser setups become more useful when they match your office location, print load, and support needs. For Makati office districts, visit <a href="/printer-rental/makati/">printer rental Makati</a>. For Bonifacio Global City and Taguig teams, review <a href="/printer-rental/bgc/">printer rental BGC</a>. You can compare both against the parent <a href="/printer-rental/">Printer Rental</a> page.</p>
+    <p>Document-heavy laser setups become more useful when they match your office location, print load, and support needs. For Makati office districts, visit <a href="/printer-rental/makati/">printer rental Makati</a>. For Bonifacio Global City and Taguig teams, review <a href="/printer-rental/bgc/">printer rental BGC</a> and <a href="/printer-rental/taguig/">printer rental Taguig</a>. You can compare both against the parent <a href="/printer-rental/">Printer Rental</a> page.</p>
 </section>`,
         'https://marga.biz/printer-rental/types-of-printers-for-rent/multifunction-printers-for-rent/': `
 <section class="quote-panel location-link-section">
     <h2>Multifunction printer rental by area</h2>
-    <p>A multifunction printer rental works best when scanning, copying, and printing needs are scoped to the office environment. If your users are in Makati, compare <a href="/printer-rental/makati/">printer rental Makati</a>. If your team is in Bonifacio Global City or Taguig, visit <a href="/printer-rental/bgc/">printer rental BGC</a>. For the broader category overview, return to <a href="/printer-rental/">Printer Rental</a>.</p>
+    <p>A multifunction printer rental works best when scanning, copying, and printing needs are scoped to the office environment. If your users are in Makati, compare <a href="/printer-rental/makati/">printer rental Makati</a>. If your team is in Bonifacio Global City or elsewhere in Taguig, compare <a href="/printer-rental/bgc/">printer rental BGC</a> and <a href="/printer-rental/taguig/">printer rental Taguig</a>. For the broader category overview, return to <a href="/printer-rental/">Printer Rental</a>.</p>
 </section>`,
         'https://marga.biz/printer-rental/cost-effective-printer-rentals-for-startups/': `
 <section class="quote-panel location-link-section">
     <h2>Startup printer rental by location</h2>
-    <p>If your startup team needs a practical rental plan tied to office location and growth stage, compare <a href="/printer-rental/bgc/">printer rental BGC</a> for Bonifacio Global City, Taguig teams and <a href="/printer-rental/makati/">printer rental Makati</a> for established Makati office districts. For the wider service view, use the main <a href="/printer-rental/">Printer Rental</a> page.</p>
+    <p>If your startup team needs a practical rental plan tied to office location and growth stage, compare <a href="/printer-rental/bgc/">printer rental BGC</a> or <a href="/printer-rental/taguig/">printer rental Taguig</a> for Taguig teams and <a href="/printer-rental/makati/">printer rental Makati</a> for established Makati office districts. For the wider service view, use the main <a href="/printer-rental/">Printer Rental</a> page.</p>
+</section>`,
+        'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': `
+<section class="quote-panel location-link-section">
+    <h2>Use cost estimates that match your office setup</h2>
+    <p>A realistic printer rental cost estimate starts with office location, print volume, number of users, and whether your team needs mono, color, or multifunction use. Compare <a href="/printer-rental/makati/">printer rental Makati</a>, <a href="/printer-rental/bgc/">printer rental BGC</a>, and <a href="/printer-rental/taguig/">printer rental Taguig</a> if you want city-specific guidance before requesting a quote from the main <a href="/printer-rental/">Printer Rental</a> hub.</p>
+</section>`,
+        'https://marga.biz/printer-rental/how-is-printer-maintenance-handled-in-rentals/': `
+<section class="quote-panel location-link-section">
+    <h2>Check maintenance expectations before you approve the rental</h2>
+    <p>Printer maintenance becomes easier to compare when the quote clearly explains setup, troubleshooting, service-call handling, and replacement planning. Use our <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/bgc/">BGC</a>, and <a href="/printer-rental/taguig/">Taguig</a> service pages to see how office requirements can affect the support conversation before you contact us.</p>
+</section>`,
+        'https://marga.biz/printer-rental/how-do-i-choose-the-right-printer-rental-company/': `
+<section class="quote-panel location-link-section">
+    <h2>Compare printer rental providers using office-fit criteria</h2>
+    <p>When choosing a printer rental company, compare quote clarity, office-fit recommendations, maintenance expectations, and how the provider handles scaling. Review our <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/bgc/">BGC</a>, and <a href="/printer-rental/taguig/">Taguig</a> pages to see how printer rental decisions can change by location and workflow.</p>
+</section>`,
+        'https://marga.biz/printer-rental/comparing-printer-rentals/': `
+<section class="quote-panel location-link-section">
+    <h2>Compare rental flexibility against real office demand</h2>
+    <p>If your office is comparing rental against leasing or outright purchase, start with the print load and support needs that actually affect day-to-day operations. The <a href="/printer-rental/">Printer Rental</a> hub plus our <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/bgc/">BGC</a>, and <a href="/printer-rental/taguig/">Taguig</a> pages make it easier to compare setup options by office environment.</p>
+</section>`,
+        'https://marga.biz/printer-rental/cost-savings-printer-rental/': `
+<section class="quote-panel location-link-section">
+    <h2>Cost savings come from matching the unit to the office</h2>
+    <p>Printer rental savings improve when the unit, support package, and print volume match how the team actually works. Use our <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/bgc/">BGC</a>, and <a href="/printer-rental/taguig/">Taguig</a> pages to compare office-fit setups before you ask for a quote from the main <a href="/printer-rental/">Printer Rental</a> page.</p>
 </section>`
     };
 
@@ -562,7 +775,7 @@ function getPrinterLocationLinkBlock(pageLink) {
 // ============================================
 
 function generatePage(page, templates, components, isHomepage = false, urlMap = {}) {
-    const seo = page.seo || {};
+    const seo = getResolvedSeo(page);
     
     // Extract data
     const title = seo.title || page.title || 'Marga Enterprises';
@@ -580,8 +793,8 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
         content += `
 <section class="service-areas-section">
     <h2>Printer Rental Service Areas in Metro Manila</h2>
-    <p>Need a printer rental provider that understands your office location, delivery requirements, and response-time expectations? We now have dedicated city pages for key business districts so you can find the most relevant rental solution faster.</p>
-    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, or <a href="/printer-rental/bgc/">printer rental in BGC</a>, use these pages to compare local office fit, service coverage, and printer types before you request a quote.</p>
+    <p>Need a printer rental provider that understands your office location, delivery requirements, support expectations, and print volume? We now have dedicated city pages for key business districts so you can find the most relevant rental solution faster.</p>
+    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, <a href="/printer-rental/bgc/">printer rental in BGC</a>, or <a href="/printer-rental/taguig/">printer rental in Taguig</a>, use these pages to compare local office fit, service coverage, and printer types before you request a quote.</p>
     <div class="service-area-grid">
         <a class="service-area-card" href="/printer-rental/makati/">
             <span class="service-area-label">Makati</span>
@@ -613,11 +826,25 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
             <strong>Printer Rental BGC</strong>
             <span>For Bonifacio Global City, Taguig office towers, startup teams, clinics, and commercial spaces.</span>
         </a>
+        <a class="service-area-card" href="/printer-rental/taguig/">
+            <span class="service-area-label">Taguig</span>
+            <strong>Printer Rental Taguig</strong>
+            <span>For BGC, McKinley Hill, Arca South, Market! Market!, and wider Taguig office locations.</span>
+        </a>
     </div>
+</section>
+<section class="quote-panel">
+    <h2>What serious office buyers compare before approving a printer rental</h2>
+    <p>Before you approve a quote, compare what is included: delivery planning, installation scope, maintenance expectations, service-call handling, and whether the printer setup can scale if your workload changes. That is often the difference between a practical rental plan and a cheap quote that creates more downtime later.</p>
+</section>
+<section class="quote-panel">
+    <h2>What to prepare before requesting a quote</h2>
+    <p>Send your office location, estimated monthly print volume, number of users, and whether you need mono, color, scanning, or copying. If you already know your service area, compare the dedicated <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/bgc/">BGC</a>, and <a href="/printer-rental/taguig/">Taguig</a> pages before you contact us.</p>
 </section>`;
     }
 
     content += getPrinterLocationLinkBlock(page.link);
+    content += getPrinterFaqSection(page.link);
     
     // Remove H1 from content (we add it in template)
     content = content.replace(/<h1[^>]*>[\s\S]*?<\/h1>/gi, '');

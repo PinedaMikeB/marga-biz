@@ -11,18 +11,21 @@ const DEFAULT_PRIORITY_KEYWORDS = [
     'Printer Rental BGC',
     'Printer Rental Makati',
     'Printer Rental Manila',
-    'Printer Rental Philippines'
+    'Printer Rental Philippines',
+    'Printer Rental Taguig'
 ];
 const EXISTING_MONEY_PAGES = [
     '/printer-rental/',
     '/printer-rental/bgc/',
     '/printer-rental/makati/',
     '/printer-rental/manila/',
-    '/printer-rental/pasig/'
+    '/printer-rental/pasig/',
+    '/printer-rental/taguig/'
 ];
 const EXISTING_CITY_SUPPORT_PAGES = [
     '/printer-rental/quezon-city/',
     '/printer-rental/ortigas/',
+    '/printer-rental/taguig/',
     '/printer-rental/best-printer-rental-setup-bgc/',
     '/printer-rental/best-printer-rental-setup-manila/',
     '/printer-rental/best-printer-rental-setup-ortigas/'
@@ -31,6 +34,7 @@ const EXISTING_SUPPORT_REFRESH_PAGES = [
     '/printer-rental/how-to-choose-printer-rental-makati/',
     '/printer-rental/how-to-choose-printer-rental-pasig/',
     '/printer-rental/how-to-choose-printer-rental-quezon-city/',
+    '/printer-rental/taguig/',
     '/printer-rental/bgc/',
     '/printer-rental/makati/'
 ];
@@ -182,6 +186,7 @@ function getKeywordTargetPath(keyword = '') {
     if (normalized.includes('manila')) return '/printer-rental/manila/';
     if (normalized.includes('pasig')) return '/printer-rental/pasig/';
     if (normalized.includes('quezon')) return '/printer-rental/quezon-city/';
+    if (normalized.includes('taguig')) return '/printer-rental/taguig/';
     return '/printer-rental/';
 }
 
