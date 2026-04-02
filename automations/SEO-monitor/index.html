@@ -90,7 +90,30 @@
                         </div>
                     </div>
 
+                    <div class="progress-cluster">
+                        <div class="progress-row">
+                            <div class="progress-meta">
+                                <span class="summary-label">Automation Progress</span>
+                                <strong id="automationProgressLabel">Waiting to start</strong>
+                            </div>
+                            <div class="progress-track">
+                                <div id="automationProgressBar" class="progress-fill scheduled" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-row">
+                            <div class="progress-meta">
+                                <span class="summary-label">Today’s Task Completion</span>
+                                <strong id="taskProgressLabel">0 of 0 done</strong>
+                            </div>
+                            <div class="progress-track progress-track-soft">
+                                <div id="taskProgressBar" class="progress-fill progress-fill-secondary" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="automationMessage" class="result-card result-muted">The local launcher will post its progress here while the SEO batch runs.</div>
+                    <p id="heartbeatHint" class="heartbeat-hint">Waiting for automation heartbeat...</p>
 
                     <div class="log-excerpt-wrap">
                         <span class="summary-label">Live Log Excerpt</span>
@@ -220,6 +243,7 @@
                     <div>
                         <p class="panel-kicker">Regular daily tasks</p>
                         <h2>Task Queue</h2>
+                        <p class="panel-note">`Active` means the task is still outstanding for today. `Done` means it was implemented, pushed, deployed, and linked live.</p>
                     </div>
                 </div>
                 <div class="table-wrap">

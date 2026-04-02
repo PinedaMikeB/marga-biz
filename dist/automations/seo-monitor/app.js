@@ -29,7 +29,12 @@ const elements = {
     automationUpdatedAt: document.getElementById('automationUpdatedAt'),
     automationNextRun: document.getElementById('automationNextRun'),
     automationLastSuccess: document.getElementById('automationLastSuccess'),
+    automationProgressLabel: document.getElementById('automationProgressLabel'),
+    automationProgressBar: document.getElementById('automationProgressBar'),
+    taskProgressLabel: document.getElementById('taskProgressLabel'),
+    taskProgressBar: document.getElementById('taskProgressBar'),
     automationMessage: document.getElementById('automationMessage'),
+    heartbeatHint: document.getElementById('heartbeatHint'),
     automationLogExcerpt: document.getElementById('automationLogExcerpt'),
     automationEventsTable: document.getElementById('automationEventsTable'),
     sourceCollections: document.getElementById('sourceCollections'),
@@ -75,6 +80,71 @@ function getStatusClass(value) {
     return String(value || 'scheduled').trim().toLowerCase().replace(/\s+/g, '-');
 }
 
+function getRelativeTime(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    const diffMs = Date.now() - date.getTime();
+    if (Number.isNaN(diffMs)) return '';
+    const diffMinutes = Math.round(diffMs / 60000);
+    if (diffMinutes <= 0) return 'just now';
+    if (diffMinutes === 1) return '1 minute ago';
+    if (diffMinutes < 60) return `${diffMinutes} minutes ago`;
+    const diffHours = Math.round(diffMinutes / 60);
+    if (diffHours === 1) return '1 hour ago';
+    return `${diffHours} hours ago`;
+}
+
+function clampPercent(value) {
+    return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function estimateAutomationProgress(status, step) {
+    const label = String(status || 'Scheduled').toLowerCase();
+    const stepText = String(step || '').toLowerCase();
+
+    if (label === 'done') {
+        return { percent: 100, label: 'Completed' };
+    }
+
+    if (label === 'failed' || label === 'blocked') {
+        return { percent: 100, label: 'Stopped before completion' };
+    }
+
+    if (label === 'scheduled') {
+        return { percent: 0, label: 'Waiting for run window' };
+    }
+
+    if (label !== 'running') {
+        return { percent: 12, label: 'Preparing automation' };
+    }
+
+    const stages = [
+        { match: /(launch|spawn|starting)/, percent: 8, label: 'Launching runner' },
+        { match: /(preflight|sync|fetch|origin)/, percent: 18, label: 'Preflight and sync' },
+        { match: /(rank|scan|audit|check|snapshot)/, percent: 34, label: 'Gathering SEO signals' },
+        { match: /(improve|edit|refresh|create|publish|internal link|schema|faq|conversion|competitor)/, percent: 58, label: 'Implementing SEO work' },
+        { match: /(build|generate)/, percent: 76, label: 'Building site output' },
+        { match: /(commit|push|github)/, percent: 84, label: 'Pushing code' },
+        { match: /(deploy|netlify)/, percent: 91, label: 'Deploying production' },
+        { match: /(verify|live|url)/, percent: 96, label: 'Verifying live URLs' },
+        { match: /(email|telegram|report|handoff)/, percent: 98, label: 'Sending turnover' }
+    ];
+
+    return stages.find((item) => item.match.test(stepText)) || { percent: 42, label: 'Automation running' };
+}
+
+function summarizeTaskProgress(tasks) {
+    const total = tasks.length;
+    const done = tasks.filter((item) => String(item.status || '').toLowerCase() === 'done').length;
+    const blocked = tasks.filter((item) => String(item.status || '').toLowerCase() === 'blocked').length;
+    return {
+        total,
+        done,
+        blocked,
+        percent: total ? clampPercent((done / total) * 100) : 0
+    };
+}
+
 function renderSummary(data) {
     elements.trackedKeywords.textContent = data.meta?.keywordsTracked ?? '--';
     elements.latestSnapshot.textContent = data.meta?.latestSnapshotDate || 'No snapshot yet';
@@ -87,7 +157,7 @@ function renderSummary(data) {
         .join('');
 
     renderTodayRun(data.todayRun || null);
-    renderAutomationStatus(data.automationStatus || null, data.automationEvents || []);
+    renderAutomationStatus(data.automationStatus || null, data.automationEvents || [], data.dailyTasks || []);
 }
 
 function getDeltaClass(delta) {
@@ -217,18 +287,47 @@ function renderTodayRun(todayRun) {
     `;
 }
 
-function renderAutomationStatus(status, events) {
+function renderAutomationStatus(status, events, tasks) {
     const safeStatus = status || {};
     const label = safeStatus.status || 'Scheduled';
+    const progress = estimateAutomationProgress(label, safeStatus.currentStep);
+    const taskProgress = summarizeTaskProgress(tasks || []);
+    const updatedAt = safeStatus.updatedAtIso || safeStatus.updatedAt;
+    const relative = getRelativeTime(updatedAt);
 
     elements.automationStatusPill.className = `status-pill ${getStatusClass(label)}`;
     elements.automationStatusPill.textContent = label;
     elements.automationStep.textContent = safeStatus.currentStep || 'Waiting for a live automation status update.';
-    elements.automationUpdatedAt.textContent = formatDateTime(safeStatus.updatedAtIso || safeStatus.updatedAt);
+    elements.automationUpdatedAt.textContent = formatDateTime(updatedAt);
     elements.automationNextRun.textContent = formatDateTime(safeStatus.nextRunAt);
     elements.automationLastSuccess.textContent = formatDateTime(safeStatus.lastSuccessAt);
     elements.automationMessage.textContent = safeStatus.message || 'The local launcher will post its progress here while the SEO batch runs.';
-    elements.automationLogExcerpt.textContent = safeStatus.liveLogExcerpt || safeStatus.lastMessageExcerpt || 'Waiting for automation output...';
+    elements.automationLogExcerpt.textContent = safeStatus.liveLogExcerpt || safeStatus.lastMessageExcerpt || (label === 'Scheduled'
+        ? 'No live output yet because the runner is waiting for the next scheduled attempt.'
+        : 'Waiting for automation output...');
+    elements.automationProgressLabel.textContent = `${progress.label} · ${progress.percent}%`;
+    elements.automationProgressBar.style.width = `${progress.percent}%`;
+    elements.automationProgressBar.className = `progress-fill ${getStatusClass(label)} ${label.toLowerCase() === 'running' ? 'is-running' : ''}`;
+    elements.taskProgressLabel.textContent = `${taskProgress.done} of ${taskProgress.total} done${taskProgress.blocked ? ` · ${taskProgress.blocked} blocked` : ''}`;
+    elements.taskProgressBar.style.width = `${taskProgress.percent}%`;
+
+    if (label.toLowerCase() === 'running') {
+        elements.heartbeatHint.textContent = relative
+            ? `Heartbeat live. Last movement ${relative}.`
+            : 'Heartbeat live now.';
+    } else if (label.toLowerCase() === 'scheduled') {
+        elements.heartbeatHint.textContent = safeStatus.nextRunAt
+            ? `Not running right now. Next attempt is scheduled for ${formatDateTime(safeStatus.nextRunAt)}.`
+            : 'Not running right now. Waiting for the next scheduled attempt.';
+    } else if (label.toLowerCase() === 'done') {
+        elements.heartbeatHint.textContent = safeStatus.lastSuccessAt
+            ? `Last successful run finished ${getRelativeTime(safeStatus.lastSuccessAt)}.`
+            : 'Daily automation completed.';
+    } else {
+        elements.heartbeatHint.textContent = relative
+            ? `Last automation update was ${relative}.`
+            : 'Waiting for the next automation update.';
+    }
 
     const rows = (events || []).map((item) => `
         <tr>
