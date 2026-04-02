@@ -48,6 +48,8 @@ Do not rely on chat history alone when current repo files can answer the questio
 - Automation worktrees may not have the repo-local `.env.local` file available directly.
 - Shared local automation env can be loaded from `~/.codex/env/marga-biz.env` or `~/.codex/env/marga-biz.local.env`.
 - The production deploy helper is `scripts/deploy-site.js`; prefer `npm run deploy` over raw Netlify CLI calls.
+- The durable automation root for scheduled runs is the internal clone at `~/.codex/repos/marga-biz-automation`, not the external-drive repo path.
+- Scheduled automation runs should sync to the latest `origin/main` and pass `npm run automation:preflight -- --sync-main --strict` before making content edits.
 
 ## Git Rules
 
@@ -79,6 +81,7 @@ Before closing work, verify the minimum relevant outcome:
 - script logic changed: run available checks if the runtime exists
 - report logic changed: inspect the generated report paths
 - telegram logic changed: verify daemon/helper references stay consistent
+- automation runtime changed: verify the preflight from the automation-visible runtime, not only from the interactive shell
 
 If local runtime tools are missing, state that clearly in the final handoff.
 
