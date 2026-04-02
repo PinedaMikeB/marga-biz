@@ -246,6 +246,89 @@ async function recordTaskCompletion(db, payload) {
     };
 }
 
+function normalizeAutomationStatus(value = '') {
+    const text = String(value || '').trim().toLowerCase();
+    if (!text) return 'Scheduled';
+    if (text === 'running') return 'Running';
+    if (text === 'done' || text === 'completed' || text === 'success') return 'Done';
+    if (text === 'failed' || text === 'error') return 'Failed';
+    if (text === 'blocked') return 'Blocked';
+    if (text === 'scheduled' || text === 'idle' || text === 'waiting') return 'Scheduled';
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+async function updateAutomationStatus(db, payload) {
+    const automationId = String(payload.automationId || 'printer-seo-daily').trim();
+    const status = normalizeAutomationStatus(payload.status);
+    const currentStep = String(payload.currentStep || '').trim();
+    const message = String(payload.message || '').trim();
+    const liveLogExcerpt = String(payload.liveLogExcerpt || '').trim();
+    const lastMessageExcerpt = String(payload.lastMessageExcerpt || '').trim();
+    const runId = String(payload.runId || '').trim();
+    const runLog = String(payload.runLog || '').trim();
+    const lastMessageFile = String(payload.lastMessageFile || '').trim();
+    const heartbeat = Boolean(payload.heartbeat);
+    const ref = db.collection('marga_shared').doc('seo_monitor_automation_status');
+    const currentDoc = await ref.get();
+    const current = currentDoc.exists ? currentDoc.data() : {};
+    const nowIso = String(payload.updatedAt || new Date().toISOString());
+
+    const next = {
+        automationId,
+        name: String(payload.name || current.name || 'Printer SEO Daily'),
+        source: String(payload.source || current.source || 'launchd'),
+        runner: String(payload.runner || current.runner || 'codex-cli'),
+        mode: String(payload.mode || current.mode || 'local-launchd'),
+        status,
+        currentStep: currentStep || current.currentStep || '',
+        message: message || current.message || '',
+        liveLogExcerpt: liveLogExcerpt || current.liveLogExcerpt || '',
+        lastMessageExcerpt: lastMessageExcerpt || current.lastMessageExcerpt || '',
+        runId: runId || current.runId || '',
+        runLog: runLog || current.runLog || '',
+        lastMessageFile: lastMessageFile || current.lastMessageFile || '',
+        timezone: String(payload.timezone || current.timezone || 'Asia/Manila'),
+        targetHour: payload.targetHour ?? current.targetHour ?? null,
+        targetMinute: payload.targetMinute ?? current.targetMinute ?? null,
+        nextRunAt: payload.nextRunAt || current.nextRunAt || null,
+        startedAt: payload.startedAt || current.startedAt || null,
+        finishedAt: payload.finishedAt || current.finishedAt || null,
+        lastSuccessAt: payload.lastSuccessAt || current.lastSuccessAt || null,
+        lastFailureAt: payload.lastFailureAt || current.lastFailureAt || null,
+        updatedAtIso: nowIso,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+
+    if (status === 'Running' && payload.startedAt) {
+        next.finishedAt = null;
+    }
+
+    await ref.set(next, { merge: true });
+
+    if (!heartbeat) {
+        await db.collection('seo_monitor_automation_events').add({
+            automationId,
+            status,
+            currentStep: next.currentStep,
+            message: next.message,
+            runId: next.runId || null,
+            source: next.source,
+            runner: next.runner,
+            updatedAtIso: nowIso,
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        await logActivity(db, 'seo_monitor_automation_status', {
+            automationId,
+            status,
+            currentStep: next.currentStep,
+            message: next.message
+        });
+    }
+
+    return next;
+}
+
 async function callSiteFunction(endpoint) {
     const response = await fetch(`${SITE_ORIGIN}${endpoint}`);
     const payload = await response.json().catch(() => ({}));
@@ -439,10 +522,23 @@ exports.handler = async (event) => {
             };
         }
 
+        if (action === 'update_automation_status') {
+            const result = await updateAutomationStatus(db, body);
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    success: true,
+                    data: result
+                })
+            };
+        }
+
         return {
             statusCode: 400,
             headers,
-            body: JSON.stringify({ success: false, error: 'Invalid action. Use run_today, track_keyword, or complete_task.' })
+            body: JSON.stringify({ success: false, error: 'Invalid action. Use run_today, track_keyword, complete_task, or update_automation_status.' })
         };
     } catch (error) {
         console.error('SEO monitor action error:', error);

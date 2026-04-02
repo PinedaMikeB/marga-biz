@@ -23,6 +23,15 @@ const elements = {
     latestSnapshot: document.getElementById('latestSnapshot'),
     openTasks: document.getElementById('openTasks'),
     generatedAt: document.getElementById('generatedAt'),
+    automationState: document.getElementById('automationState'),
+    automationStatusPill: document.getElementById('automationStatusPill'),
+    automationStep: document.getElementById('automationStep'),
+    automationUpdatedAt: document.getElementById('automationUpdatedAt'),
+    automationNextRun: document.getElementById('automationNextRun'),
+    automationLastSuccess: document.getElementById('automationLastSuccess'),
+    automationMessage: document.getElementById('automationMessage'),
+    automationLogExcerpt: document.getElementById('automationLogExcerpt'),
+    automationEventsTable: document.getElementById('automationEventsTable'),
     sourceCollections: document.getElementById('sourceCollections'),
     rankingsTable: document.getElementById('rankingsTable'),
     logsTable: document.getElementById('logsTable'),
@@ -62,17 +71,23 @@ function setButtonState(button, busy, busyLabel, idleLabel) {
     button.textContent = busy ? busyLabel : idleLabel;
 }
 
+function getStatusClass(value) {
+    return String(value || 'scheduled').trim().toLowerCase().replace(/\s+/g, '-');
+}
+
 function renderSummary(data) {
     elements.trackedKeywords.textContent = data.meta?.keywordsTracked ?? '--';
     elements.latestSnapshot.textContent = data.meta?.latestSnapshotDate || 'No snapshot yet';
     elements.openTasks.textContent = data.meta?.openTaskCount ?? '--';
     elements.generatedAt.textContent = formatDateTime(data.generatedAt);
+    elements.automationState.textContent = data.meta?.automationState || '--';
 
     elements.sourceCollections.innerHTML = (data.meta?.sourceCollections || [])
-        .map(item => `<span class="chip">${escapeHtml(item)}</span>`)
+        .map((item) => `<span class="chip">${escapeHtml(item)}</span>`)
         .join('');
 
     renderTodayRun(data.todayRun || null);
+    renderAutomationStatus(data.automationStatus || null, data.automationEvents || []);
 }
 
 function getDeltaClass(delta) {
@@ -97,7 +112,7 @@ function renderRankings(data) {
     table.querySelector('thead').innerHTML = `
         <tr>
             <th class="rank-keyword">Keyword</th>
-            ${dates.map(item => `<th>${escapeHtml(item.label)}</th>`).join('')}
+            ${dates.map((item) => `<th>${escapeHtml(item.label)}</th>`).join('')}
         </tr>
     `;
 
@@ -106,7 +121,7 @@ function renderRankings(data) {
         return;
     }
 
-    table.querySelector('tbody').innerHTML = rankings.map(item => `
+    table.querySelector('tbody').innerHTML = rankings.map((item) => `
         <tr>
             <td class="rank-keyword">
                 <strong>${escapeHtml(item.keyword)}</strong>
@@ -115,7 +130,7 @@ function renderRankings(data) {
                     <span class="delta ${getDeltaClass(item.delta)}">${getDeltaLabel(item.delta)}</span>
                 </div>
             </td>
-            ${dates.map(date => {
+            ${dates.map((date) => {
                 const value = item.positionsByDate?.[date.key];
                 return `
                     <td class="position-cell">
@@ -131,7 +146,7 @@ function renderRankings(data) {
 
 function renderSimpleTable(table, headings, rows, emptyMessage = 'No entries yet.') {
     table.querySelector('thead').innerHTML = `
-        <tr>${headings.map(item => `<th>${escapeHtml(item)}</th>`).join('')}</tr>
+        <tr>${headings.map((item) => `<th>${escapeHtml(item)}</th>`).join('')}</tr>
     `;
 
     if (!rows.length) {
@@ -143,7 +158,7 @@ function renderSimpleTable(table, headings, rows, emptyMessage = 'No entries yet
 }
 
 function renderLogs(data) {
-    const rows = (data.logs || []).map(item => `
+    const rows = (data.logs || []).map((item) => `
         <tr>
             <td>${escapeHtml(item.timestamp || '--')}</td>
             <td>${escapeHtml(item.task || '--')}</td>
@@ -156,7 +171,7 @@ function renderLogs(data) {
 }
 
 function renderTasks(data) {
-    const rows = (data.dailyTasks || []).map(item => `
+    const rows = (data.dailyTasks || []).map((item) => `
         <tr>
             <td>${escapeHtml(item.task || '--')}</td>
             <td>${escapeHtml(item.implementation || '--')}</td>
@@ -172,7 +187,7 @@ function renderTasks(data) {
 function renderCompletionOptions(data) {
     const tasks = data.dailyTasks || [];
     const options = ['<option value="">Select a task</option>']
-        .concat(tasks.map(item => `
+        .concat(tasks.map((item) => `
             <option value="${escapeHtml(item.taskKey || '')}">
                 ${escapeHtml(item.task || '--')}
             </option>
@@ -191,7 +206,7 @@ function renderTodayRun(todayRun) {
     const rankingChecks = todayRun.rankings?.length ?? 0;
     const pagesScanned = todayRun.pageScans?.length ?? 0;
     const competitorLabel = todayRun.competitors?.topDomains?.length
-        ? `Top competitors: ${todayRun.competitors.topDomains.slice(0, 3).map(item => `${item.domain} (#${item.position})`).join(', ')}`
+        ? `Top competitors: ${todayRun.competitors.topDomains.slice(0, 3).map((item) => `${item.domain} (#${item.position})`).join(', ')}`
         : 'Competitor snapshot not available yet.';
 
     elements.runTodayResult.className = 'result-card';
@@ -202,8 +217,33 @@ function renderTodayRun(todayRun) {
     `;
 }
 
+function renderAutomationStatus(status, events) {
+    const safeStatus = status || {};
+    const label = safeStatus.status || 'Scheduled';
+
+    elements.automationStatusPill.className = `status-pill ${getStatusClass(label)}`;
+    elements.automationStatusPill.textContent = label;
+    elements.automationStep.textContent = safeStatus.currentStep || 'Waiting for a live automation status update.';
+    elements.automationUpdatedAt.textContent = formatDateTime(safeStatus.updatedAtIso || safeStatus.updatedAt);
+    elements.automationNextRun.textContent = formatDateTime(safeStatus.nextRunAt);
+    elements.automationLastSuccess.textContent = formatDateTime(safeStatus.lastSuccessAt);
+    elements.automationMessage.textContent = safeStatus.message || 'The local launcher will post its progress here while the SEO batch runs.';
+    elements.automationLogExcerpt.textContent = safeStatus.liveLogExcerpt || safeStatus.lastMessageExcerpt || 'Waiting for automation output...';
+
+    const rows = (events || []).map((item) => `
+        <tr>
+            <td>${escapeHtml(item.timestamp || '--')}</td>
+            <td><span class="status-pill ${getStatusClass(item.status)}">${escapeHtml(item.status || '--')}</span></td>
+            <td>${escapeHtml(item.step || '--')}</td>
+            <td>${escapeHtml(item.message || '--')}</td>
+        </tr>
+    `);
+
+    renderSimpleTable(elements.automationEventsTable, ['Time', 'Status', 'Step', 'Message'], rows, 'No automation activity yet.');
+}
+
 function renderManualKeywordResult(result, isError = false) {
-    elements.manualKeywordResult.className = `result-card${isError ? '' : ''}`;
+    elements.manualKeywordResult.className = 'result-card';
     if (isError) {
         elements.manualKeywordResult.innerHTML = `<strong>Unable to check keyword.</strong><br>${escapeHtml(result)}`;
         return;
@@ -211,7 +251,7 @@ function renderManualKeywordResult(result, isError = false) {
 
     const competitors = (result.competitors || [])
         .slice(0, 3)
-        .map(item => `${item.domain} (#${item.position})`)
+        .map((item) => `${item.domain} (#${item.position})`)
         .join(', ');
 
     elements.manualKeywordResult.innerHTML = `
@@ -222,8 +262,8 @@ function renderManualKeywordResult(result, isError = false) {
     `;
 }
 
-function renderCompletionResult(message, isError = false) {
-    elements.completionResult.className = isError ? 'result-card' : 'result-card';
+function renderCompletionResult(message) {
+    elements.completionResult.className = 'result-card';
     elements.completionResult.innerHTML = message;
 }
 
@@ -258,6 +298,7 @@ async function loadReport() {
         elements.rankingsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load ranking report.</td></tr>';
         elements.logsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load logs.</td></tr>';
         elements.tasksTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load tasks.</td></tr>';
+        elements.automationEventsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load automation activity.</td></tr>';
     } finally {
         setButtonState(elements.refreshButton, false, 'Refreshing...', 'Refresh');
     }
@@ -333,15 +374,15 @@ async function submitCompletion(event) {
     const implementation = elements.completionImplementationInput.value.trim();
     const targetPageKeyword = elements.completionTargetInput.value.trim();
     const link = elements.completionLinkInput.value.trim();
-    const task = (state.data?.dailyTasks || []).find(item => item.taskKey === taskKey);
+    const task = (state.data?.dailyTasks || []).find((item) => item.taskKey === taskKey);
 
     if (!taskKey || !task) {
-        renderCompletionResult('<strong>Pick a task first.</strong><br>Select the queue item you finished.', true);
+        renderCompletionResult('<strong>Pick a task first.</strong><br>Select the queue item you finished.');
         return;
     }
 
     if (!implementation || !link) {
-        renderCompletionResult('<strong>Missing details.</strong><br>Add the implementation summary and live page URL.', true);
+        renderCompletionResult('<strong>Missing details.</strong><br>Add the implementation summary and live page URL.');
         return;
     }
 
@@ -375,7 +416,7 @@ async function submitCompletion(event) {
         await loadReport();
     } catch (error) {
         console.error(error);
-        renderCompletionResult(`<strong>Unable to save completion.</strong><br>${escapeHtml(error.message)}`, true);
+        renderCompletionResult(`<strong>Unable to save completion.</strong><br>${escapeHtml(error.message)}`);
         elements.statusText.textContent = `Unable to record completed work: ${error.message}`;
     } finally {
         setButtonState(elements.completionButton, false, 'Saving...', 'Mark Done');
@@ -384,7 +425,7 @@ async function submitCompletion(event) {
 
 elements.completionTaskSelect.addEventListener('change', () => {
     const taskKey = elements.completionTaskSelect.value.trim();
-    const task = (state.data?.dailyTasks || []).find(item => item.taskKey === taskKey);
+    const task = (state.data?.dailyTasks || []).find((item) => item.taskKey === taskKey);
     if (!task) return;
 
     elements.completionTargetInput.value = task.targetPageKeyword || '';
@@ -412,3 +453,6 @@ elements.manualKeywordForm.addEventListener('submit', submitManualKeyword);
 elements.completionForm.addEventListener('submit', submitCompletion);
 
 loadReport();
+window.setInterval(() => {
+    loadReport();
+}, 15000);

@@ -184,8 +184,60 @@ input {
 }
 
 .summary-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     margin: 18px 0;
+}
+
+.automation-panel {
+    margin-bottom: 18px;
+}
+
+.automation-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 18px;
+}
+
+.automation-card {
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.74);
+}
+
+.automation-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.automation-info-grid strong {
+    display: block;
+    margin-top: 6px;
+    line-height: 1.45;
+}
+
+.panel-heading-tight {
+    margin-bottom: 12px;
+}
+
+.log-excerpt-wrap {
+    margin-top: 16px;
+}
+
+.log-excerpt {
+    margin: 10px 0 0;
+    padding: 16px;
+    min-height: 150px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: rgba(16, 23, 20, 0.94);
+    color: #f3f6f4;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .summary-card,
@@ -274,19 +326,23 @@ input {
 
 .delta.up,
 .status-pill.done,
-.status-pill.active {
+.status-pill.active,
+.status-pill.running {
     color: var(--accent);
     background: var(--accent-soft);
 }
 
-.delta.down {
+.delta.down,
+.status-pill.failed,
+.status-pill.blocked {
     color: #ab4334;
     background: var(--red-soft);
 }
 
 .delta.flat,
 .status-pill.pending,
-.status-pill.off {
+.status-pill.off,
+.status-pill.scheduled {
     color: #8f6620;
     background: var(--amber-soft);
 }
@@ -406,7 +462,9 @@ input {
     .action-grid,
     .summary-grid,
     .split-panels,
-    .toolbar {
+    .toolbar,
+    .automation-grid,
+    .automation-info-grid {
         grid-template-columns: 1fr;
     }
 

@@ -52,6 +52,69 @@
                 <span class="summary-label">Generated</span>
                 <strong id="generatedAt">--</strong>
             </article>
+            <article class="summary-card">
+                <span class="summary-label">Automation</span>
+                <strong id="automationState">--</strong>
+            </article>
+        </section>
+
+        <section class="panel automation-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker">Automation</p>
+                    <h2>Live Run Status</h2>
+                </div>
+                <div class="panel-meta">
+                    <span id="automationStatusPill" class="status-pill scheduled">Scheduled</span>
+                </div>
+            </div>
+
+            <div class="automation-grid">
+                <article class="automation-card">
+                    <div class="automation-info-grid">
+                        <div>
+                            <span class="summary-label">Current Step</span>
+                            <strong id="automationStep">Waiting for a live automation status update.</strong>
+                        </div>
+                        <div>
+                            <span class="summary-label">Last Update</span>
+                            <strong id="automationUpdatedAt">--</strong>
+                        </div>
+                        <div>
+                            <span class="summary-label">Next Run</span>
+                            <strong id="automationNextRun">--</strong>
+                        </div>
+                        <div>
+                            <span class="summary-label">Last Success</span>
+                            <strong id="automationLastSuccess">--</strong>
+                        </div>
+                    </div>
+
+                    <div id="automationMessage" class="result-card result-muted">The local launcher will post its progress here while the SEO batch runs.</div>
+
+                    <div class="log-excerpt-wrap">
+                        <span class="summary-label">Live Log Excerpt</span>
+                        <pre id="automationLogExcerpt" class="log-excerpt">Waiting for automation output...</pre>
+                    </div>
+                </article>
+
+                <article class="automation-card">
+                    <div class="panel-heading panel-heading-tight">
+                        <div>
+                            <p class="panel-kicker">Automation activity</p>
+                            <h2>Recent Steps</h2>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="report-table compact-table" id="automationEventsTable">
+                            <thead></thead>
+                            <tbody>
+                                <tr><td class="loading-row">Loading automation activity...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+            </div>
         </section>
 
         <section class="action-grid">

@@ -4,6 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
+const { clipText, updateAutomationStatus } = require('./lib/seo-monitor-status');
 
 function getArg(name) {
     const prefix = `--${name}=`;
@@ -30,7 +31,29 @@ function nowStamp() {
     return new Date().toISOString().replace(/[:.]/g, '-');
 }
 
-function main() {
+function readFileIfExists(filePath, maxLength = 1400) {
+    if (!fs.existsSync(filePath)) {
+        return '';
+    }
+
+    return clipText(fs.readFileSync(filePath, 'utf8'), maxLength);
+}
+
+function appendChunkToBuffer(buffer, chunk) {
+    const combined = `${buffer.pending}${chunk}`;
+    const parts = combined.split(/\r?\n/);
+    buffer.pending = parts.pop() || '';
+
+    for (const line of parts) {
+        const clean = line.trimEnd();
+        if (!clean) continue;
+        buffer.lines.push(clean);
+    }
+
+    buffer.lines = buffer.lines.slice(-16);
+}
+
+async function main() {
     const dryRun = Boolean(getArg('dry-run'));
     const homeDir = os.homedir();
     const repoRoot = process.env.PRINTER_SEO_REPO_ROOT || path.join(homeDir, '.codex', 'repos', 'marga-biz-automation');
@@ -42,6 +65,18 @@ function main() {
     const stamp = nowStamp();
     const runLog = path.join(logDir, `printer-seo-daily-${stamp}.log`);
     const lastMessageFile = path.join(logDir, 'printer-seo-daily-last-message.txt');
+    const runId = `printer-seo-daily-${stamp}`;
+    const statusBase = {
+        automationId: 'printer-seo-daily',
+        name: 'Printer SEO Daily',
+        source: 'launchd',
+        runner: 'codex-cli',
+        mode: 'local-launchd',
+        timezone: 'Asia/Manila',
+        runId,
+        runLog,
+        lastMessageFile
+    };
 
     ensureDir(logDir);
     ensureDir(lockDir);
@@ -91,6 +126,13 @@ function main() {
     }
 
     if (fs.existsSync(lockPath)) {
+        await updateAutomationStatus({
+            ...statusBase,
+            status: 'Blocked',
+            currentStep: 'Waiting for previous run',
+            message: `Another printer SEO run is still active at ${lockPath}.`,
+            updatedAt: new Date().toISOString()
+        }).catch(() => {});
         throw new Error(`Printer SEO run already active: ${lockPath}`);
     }
 
@@ -99,6 +141,20 @@ function main() {
     const prompt = fs.readFileSync(promptFile, 'utf8');
     const output = fs.createWriteStream(runLog, { flags: 'a' });
     output.write(`[${new Date().toISOString()}] Starting printer SEO Codex run\n`);
+    const logBuffer = {
+        lines: [],
+        pending: ''
+    };
+    let lastHeartbeatAt = 0;
+
+    await updateAutomationStatus({
+        ...statusBase,
+        status: 'Running',
+        currentStep: 'Launching Codex CLI',
+        message: 'Launchd triggered the local Codex automation runner.',
+        startedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+    }).catch(() => {});
 
     const child = spawn(command, args, {
         cwd: repoRoot,
@@ -106,25 +162,78 @@ function main() {
         stdio: ['pipe', 'pipe', 'pipe']
     });
 
+    const pushHeartbeat = async (force = false) => {
+        const now = Date.now();
+        if (!force && now - lastHeartbeatAt < 8000) {
+            return;
+        }
+
+        lastHeartbeatAt = now;
+        const liveLogExcerpt = logBuffer.lines.slice(-8).join('\n');
+        const message = logBuffer.lines[logBuffer.lines.length - 1] || 'Codex is working through the printer SEO batch.';
+
+        await updateAutomationStatus({
+            ...statusBase,
+            status: 'Running',
+            currentStep: 'Codex execution in progress',
+            message,
+            liveLogExcerpt,
+            updatedAt: new Date().toISOString(),
+            heartbeat: true
+        }).catch(() => {});
+    };
+
     child.stdout.on('data', (chunk) => {
         output.write(chunk);
+        appendChunkToBuffer(logBuffer, chunk.toString('utf8'));
+        pushHeartbeat();
     });
 
     child.stderr.on('data', (chunk) => {
         output.write(chunk);
+        appendChunkToBuffer(logBuffer, chunk.toString('utf8'));
+        pushHeartbeat(true);
     });
 
-    child.on('exit', (code, signal) => {
+    child.on('exit', async (code, signal) => {
         output.write(`\n[${new Date().toISOString()}] Finished with code=${code} signal=${signal || ''}\n`);
         output.end();
         fs.rmSync(lockPath, { force: true });
+        const finishedAt = new Date().toISOString();
+        const success = (code || 0) === 0;
+
+        await updateAutomationStatus({
+            ...statusBase,
+            status: success ? 'Done' : 'Failed',
+            currentStep: success ? 'Automation completed' : 'Automation failed',
+            message: success
+                ? 'Daily printer SEO run finished and handed off.'
+                : `Local Codex runner exited with code ${code || 0}${signal ? ` (${signal})` : ''}.`,
+            liveLogExcerpt: logBuffer.lines.slice(-10).join('\n'),
+            lastMessageExcerpt: readFileIfExists(lastMessageFile),
+            finishedAt,
+            updatedAt: finishedAt,
+            lastSuccessAt: success ? finishedAt : undefined,
+            lastFailureAt: success ? undefined : finishedAt
+        }).catch(() => {});
         process.exit(code || 0);
     });
 
-    child.on('error', (error) => {
+    child.on('error', async (error) => {
         output.write(`\n[${new Date().toISOString()}] Spawn error: ${error.message}\n`);
         output.end();
         fs.rmSync(lockPath, { force: true });
+        const failedAt = new Date().toISOString();
+
+        await updateAutomationStatus({
+            ...statusBase,
+            status: 'Failed',
+            currentStep: 'Unable to spawn Codex CLI',
+            message: error.message,
+            finishedAt: failedAt,
+            updatedAt: failedAt,
+            lastFailureAt: failedAt
+        }).catch(() => {});
         process.exit(1);
     });
 
