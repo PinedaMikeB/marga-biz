@@ -36,9 +36,9 @@
         <key>PRINTER_SEO_TIMEZONE</key>
         <string>Asia/Manila</string>
         <key>PRINTER_SEO_TARGET_HOUR</key>
-        <string>9</string>
+        <string>__TARGET_HOUR__</string>
         <key>PRINTER_SEO_TARGET_MINUTE</key>
-        <string>0</string>
+        <string>__TARGET_MINUTE__</string>
         <key>PRINTER_SEO_REPO_ROOT</key>
         <string>__REPO_ROOT__</string>
         <key>PRINTER_SEO_RUNNER</key>
