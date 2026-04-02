@@ -1,0 +1,470 @@
+{
+  "generatedAt": "2026-04-02T05:10:15.892Z",
+  "productionUrl": "https://marga.biz",
+  "deployUrl": "https://69cdf9299555bc3e913fe95a--marga-biz.netlify.app",
+  "commit": "45c63977ab691fe96f2ee2c05c07732b6a30fd74",
+  "verifiedUrls": [
+    "https://marga.biz/printer-rental/",
+    "https://marga.biz/printer-rental/bgc/",
+    "https://marga.biz/printer-rental/makati/",
+    "https://marga.biz/printer-rental/manila/",
+    "https://marga.biz/printer-rental/pasig/",
+    "https://marga.biz/printer-rental/quezon-city/",
+    "https://marga.biz/printer-rental/ortigas/",
+    "https://marga.biz/printer-rental/taguig/",
+    "https://marga.biz/printer-rental/how-much-does-printer-rental-cost/",
+    "https://marga.biz/printer-rental/how-to-choose-printer-rental-makati/"
+  ],
+  "openTaskCount": 0,
+  "report": {
+    "generatedAt": "2026-04-02T05:10:15.892Z",
+    "timezone": "Asia/Manila",
+    "reportDates": [
+      {
+        "key": "2026-04-02",
+        "label": "4/2/26"
+      },
+      {
+        "key": "2026-04-01",
+        "label": "4/1/26"
+      },
+      {
+        "key": "2026-03-31",
+        "label": "3/31/26"
+      },
+      {
+        "key": "2026-03-30",
+        "label": "3/30/26"
+      },
+      {
+        "key": "2026-03-29",
+        "label": "3/29/26"
+      }
+    ],
+    "rankings": [
+      {
+        "keyword": "Printer Rental",
+        "latestPosition": 7,
+        "previousPosition": 6,
+        "delta": -1,
+        "positionsByDate": {
+          "2026-04-02": 7,
+          "2026-04-01": 6,
+          "2026-03-31": 14.5,
+          "2026-03-30": 16.7
+        }
+      },
+      {
+        "keyword": "Printer For Rent",
+        "latestPosition": 4,
+        "previousPosition": 7,
+        "delta": 3,
+        "positionsByDate": {
+          "2026-04-02": 4,
+          "2026-04-01": 7
+        }
+      },
+      {
+        "keyword": "Print All You Can",
+        "latestPosition": null,
+        "previousPosition": 3,
+        "delta": null,
+        "positionsByDate": {
+          "2026-04-02": null,
+          "2026-04-01": 3
+        }
+      },
+      {
+        "keyword": "Printer Rental BGC",
+        "latestPosition": 10,
+        "previousPosition": null,
+        "delta": null,
+        "positionsByDate": {
+          "2026-04-02": 10,
+          "2026-04-01": null
+        }
+      },
+      {
+        "keyword": "Printer Rental Makati",
+        "latestPosition": 6,
+        "previousPosition": 9,
+        "delta": 3,
+        "positionsByDate": {
+          "2026-04-02": 6,
+          "2026-04-01": 9
+        }
+      },
+      {
+        "keyword": "Printer Rental Manila",
+        "latestPosition": 5,
+        "previousPosition": 10,
+        "delta": 5,
+        "positionsByDate": {
+          "2026-04-02": 5,
+          "2026-04-01": 10
+        }
+      },
+      {
+        "keyword": "Printer Rental Philippines",
+        "latestPosition": 6,
+        "previousPosition": 6,
+        "delta": 0,
+        "positionsByDate": {
+          "2026-04-02": 6,
+          "2026-04-01": 6
+        }
+      },
+      {
+        "keyword": "Printer Rental Taguig",
+        "latestPosition": 10,
+        "previousPosition": null,
+        "delta": null,
+        "positionsByDate": {
+          "2026-04-02": 10,
+          "2026-04-01": null
+        }
+      }
+    ],
+    "logs": [
+      {
+        "timestamp": "1/12/26, 10:28 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      },
+      {
+        "timestamp": "1/12/26, 10:24 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      },
+      {
+        "timestamp": "1/12/26, 10:18 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      },
+      {
+        "timestamp": "1/12/26, 10:18 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      },
+      {
+        "timestamp": "1/12/26, 10:10 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      },
+      {
+        "timestamp": "1/12/26, 10:06 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      },
+      {
+        "timestamp": "1/12/26, 10:03 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      },
+      {
+        "timestamp": "1/12/26, 10:00 PM",
+        "task": "SEO task",
+        "link": null,
+        "status": "PENDING"
+      }
+    ],
+    "dailyTasks": [
+      {
+        "taskKey": "improve_money_pages",
+        "task": "Improve 5 existing money pages today",
+        "implementation": "Improved /printer-rental/, /printer-rental/bgc/, /printer-rental/makati/, /printer-rental/manila/, and /printer-rental/pasig/ with tighter titles/meta, buyer-comparison sections, stronger CTA copy, and Taguig/internal-link support, then deployed live.",
+        "targetPageKeyword": "Printer Rental, Printer Rental BGC, Printer Rental Makati, Printer Rental Manila, Printer Rental Pasig",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/",
+        "completedAt": "2026-04-02T05:09:04.851Z"
+      },
+      {
+        "taskKey": "strengthen_city_service_pages",
+        "task": "Strengthen 5 weak city or service pages today",
+        "implementation": "Strengthened /printer-rental/quezon-city/, /printer-rental/ortigas/, /printer-rental/best-printer-rental-setup-bgc/, /printer-rental/best-printer-rental-setup-manila/, and /printer-rental/best-printer-rental-setup-ortigas/ with better buyer-checklist guidance, stronger CTAs, and refreshed city/service intent, then deployed live.",
+        "targetPageKeyword": "Printer Rental Quezon City, Printer Rental Ortigas, BGC setup guide, Manila setup guide, Ortigas setup guide",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/taguig/",
+        "completedAt": "2026-04-02T05:09:05.380Z"
+      },
+      {
+        "taskKey": "refresh_support_pages",
+        "task": "Refresh 5 existing support pages today",
+        "implementation": "Refreshed /printer-rental/how-to-choose-printer-rental-makati/, /printer-rental/how-to-choose-printer-rental-pasig/, /printer-rental/how-to-choose-printer-rental-quezon-city/, plus the BGC and Makati printer flows with quote-prep sections and stronger internal-link paths, then deployed live.",
+        "targetPageKeyword": "How to choose printer rental Makati, Pasig, Quezon City, plus BGC and Makati support flows",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/how-to-choose-printer-rental-makati/",
+        "completedAt": "2026-04-02T05:09:05.851Z"
+      },
+      {
+        "taskKey": "create_new_support_pages",
+        "task": "Create up to 2 new support pages today",
+        "implementation": "Published the new /printer-rental/taguig/ page to close the live printer rental Taguig gap and updated the SEO monitor to scan and target Taguig in future daily runs.",
+        "targetPageKeyword": "Printer Rental Taguig",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/taguig/",
+        "completedAt": "2026-04-02T05:09:06.307Z"
+      },
+      {
+        "taskKey": "publish_supporting_blogs",
+        "task": "Publish 5 supporting blogs today",
+        "implementation": "Refreshed /printer-rental/how-much-does-printer-rental-cost/, /printer-rental/how-is-printer-maintenance-handled-in-rentals/, /printer-rental/how-do-i-choose-the-right-printer-rental-company/, /printer-rental/comparing-printer-rentals/, and /printer-rental/cost-savings-printer-rental/ with stronger SEO titles/meta, internal links, FAQ blocks, and quote framing, then redeployed live.",
+        "targetPageKeyword": "Printer rental cost, maintenance, company choice, rental vs leasing, cost savings",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/how-much-does-printer-rental-cost/",
+        "completedAt": "2026-04-02T05:09:06.736Z"
+      },
+      {
+        "taskKey": "add_internal_links",
+        "task": "Add 5 internal links today",
+        "implementation": "Added internal links across the printer-rental cluster, including new Taguig references from the main printer hub, BGC page, printer type pages, startup support content, and refreshed support pages.",
+        "targetPageKeyword": "Printer Rental, Printer Rental BGC, Printer Rental Taguig",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/",
+        "completedAt": "2026-04-02T05:09:07.186Z"
+      },
+      {
+        "taskKey": "fix_on_page_issues",
+        "task": "Fix 5 on-page SEO issues today",
+        "implementation": "Resolved title, meta-description, internal-link, and image-alt issues across the priority printer pages and improved the live scanner grades after deploy.",
+        "targetPageKeyword": "Printer Rental cluster on-page fixes",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/bgc/",
+        "completedAt": "2026-04-02T05:09:07.614Z"
+      },
+      {
+        "taskKey": "refresh_faq_schema",
+        "task": "Add or refresh 5 FAQ and schema blocks today",
+        "implementation": "Added and refreshed FAQ/schema content on the five printer-rental support pages through the generator so the live pages now include buyer-intent FAQs and matching structured data.",
+        "targetPageKeyword": "Printer rental cost, maintenance, provider choice, rental vs leasing, cost savings FAQ",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/how-much-does-printer-rental-cost/",
+        "completedAt": "2026-04-02T05:09:08.030Z"
+      },
+      {
+        "taskKey": "improve_conversion_sections",
+        "task": "Improve 5 conversion sections today",
+        "implementation": "Strengthened conversion copy and quote prompts across the printer hub, city landing pages, and support guides by asking for office location, volume, and user count before quote review.",
+        "targetPageKeyword": "Printer Rental conversions",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/makati/",
+        "completedAt": "2026-04-02T05:09:08.516Z"
+      },
+      {
+        "taskKey": "close_competitor_gaps",
+        "task": "Close 5 competitor gaps today",
+        "implementation": "Added buyer-checklist, service-inclusion, and support-clarity sections across the priority printer pages and launched a Taguig city page to cover the gap between BGC-only and wider Taguig intent.",
+        "targetPageKeyword": "Printer Rental Philippines, Printer Rental Taguig, Printer Rental BGC",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/taguig/",
+        "completedAt": "2026-04-02T05:09:09.026Z"
+      }
+    ],
+    "todayRun": {
+      "focus": "printer-only",
+      "date": "2026-04-02",
+      "snapshot": {
+        "success": true,
+        "date": "2026-04-02",
+        "clicks": 1
+      },
+      "rankings": [
+        {
+          "keyword": "Printer Rental",
+          "position": 7,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer For Rent",
+          "position": 4,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Print All You Can",
+          "position": null,
+          "url": null,
+          "notFound": true
+        },
+        {
+          "keyword": "Printer Rental BGC",
+          "position": 10,
+          "url": "https://marga.biz/contact/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Makati",
+          "position": 6,
+          "url": "https://marga.biz/contact/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Manila",
+          "position": 5,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Philippines",
+          "position": 6,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Taguig",
+          "position": 10,
+          "url": "https://marga.biz/",
+          "notFound": false
+        }
+      ],
+      "competitors": {
+        "peopleAlsoAsk": [],
+        "relatedSearches": [],
+        "keyword": "Printer Rental Philippines",
+        "topDomains": [
+          {
+            "domain": "printerrentalsph.com",
+            "position": 1,
+            "url": "https://www.printerrentalsph.com/"
+          },
+          {
+            "domain": "printersforrent.com",
+            "position": 2,
+            "url": "https://www.printersforrent.com/"
+          },
+          {
+            "domain": "ubix.com.ph",
+            "position": 3,
+            "url": "https://ubix.com.ph/printer-rental/"
+          },
+          {
+            "domain": "fujifilm.com",
+            "position": 4,
+            "url": "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental"
+          },
+          {
+            "domain": "facebook.com",
+            "position": 5,
+            "url": "https://www.facebook.com/ezrentalexpress/"
+          }
+        ]
+      },
+      "ranAt": "2026-04-02T05:08:11.326Z",
+      "pageScans": [
+        {
+          "path": "/printer-rental/",
+          "success": true,
+          "seoScore": 90,
+          "grade": "A",
+          "issueCount": 2
+        },
+        {
+          "path": "/printer-rental/bgc/",
+          "success": true,
+          "seoScore": 95,
+          "grade": "A",
+          "issueCount": 1
+        },
+        {
+          "path": "/printer-rental/makati/",
+          "success": true,
+          "seoScore": 95,
+          "grade": "A",
+          "issueCount": 1
+        },
+        {
+          "path": "/printer-rental/manila/",
+          "success": true,
+          "seoScore": 95,
+          "grade": "A",
+          "issueCount": 1
+        },
+        {
+          "path": "/printer-rental/pasig/",
+          "success": true,
+          "seoScore": 100,
+          "grade": "A",
+          "issueCount": 0
+        },
+        {
+          "path": "/printer-rental/quezon-city/",
+          "success": true,
+          "seoScore": 100,
+          "grade": "A",
+          "issueCount": 0
+        },
+        {
+          "path": "/printer-rental/taguig/",
+          "success": true,
+          "seoScore": 95,
+          "grade": "A",
+          "issueCount": 1
+        }
+      ],
+      "updatedAt": {
+        "_seconds": 1775106491,
+        "_nanoseconds": 343000000
+      }
+    },
+    "automationStatus": {
+      "lastMessageFile": "",
+      "automationId": "printer-seo-daily",
+      "lastFailureAt": null,
+      "lastMessageExcerpt": "",
+      "timezone": "Asia/Manila",
+      "targetMinute": null,
+      "startedAt": null,
+      "source": "launchd",
+      "message": "The local launchd runner is active. It will retry the printer SEO batch on the next 5-minute tick because today has not completed yet.",
+      "targetHour": null,
+      "finishedAt": null,
+      "currentStep": "Waiting for next launchd retry",
+      "mode": "local-launchd",
+      "lastSuccessAt": null,
+      "runLog": "",
+      "name": "Printer SEO Daily",
+      "runId": "",
+      "runner": "codex-cli",
+      "liveLogExcerpt": "",
+      "nextRunAt": "2026-04-02T04:55:00.000Z",
+      "updatedAtIso": "2026-04-02T04:54:46.037Z",
+      "status": "Scheduled",
+      "updatedAt": {
+        "_seconds": 1775105688,
+        "_nanoseconds": 824000000
+      }
+    },
+    "automationEvents": [
+      {
+        "timestamp": "4/2/26, 12:54 PM",
+        "status": "Scheduled",
+        "step": "Waiting for next launchd retry",
+        "message": "The local launchd runner is active. It will retry the printer SEO batch on the next 5-minute tick because today has not completed yet."
+      }
+    ],
+    "meta": {
+      "keywordsTracked": 8,
+      "latestSnapshotDate": "2026-04-02",
+      "openTaskCount": 0,
+      "automationState": "Scheduled",
+      "sourceCollections": [
+        "marga_config",
+        "marga_rankings",
+        "insights_snapshots",
+        "marga_tasks",
+        "marga_activity_log",
+        "marga_shared",
+        "seo_monitor_task_completions",
+        "seo_monitor_automation_events"
+      ]
+    }
+  }
+}
