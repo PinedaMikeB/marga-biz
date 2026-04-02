@@ -4,6 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { execFileSync, execSync, spawnSync } = require('child_process');
+const { createRequire } = require('module');
 const { loadLocalEnv } = require('./lib/telegram-gateway');
 
 const REPO_ROOT = path.join(__dirname, '..');
@@ -65,11 +66,41 @@ function getSubject(options) {
     return options.subject || `SEO Automation Report ${new Date().toISOString()}`;
 }
 
-function maybeCreateSmtpTransport() {
-    let nodemailer;
+function getGitCommonDir() {
     try {
-        nodemailer = require('nodemailer');
+        return execSync('git rev-parse --path-format=absolute --git-common-dir', {
+            cwd: REPO_ROOT,
+            encoding: 'utf8',
+            stdio: ['ignore', 'pipe', 'ignore']
+        }).trim();
     } catch {
+        return '';
+    }
+}
+
+function loadNodemailer() {
+    try {
+        return require('nodemailer');
+    } catch {}
+
+    const commonDir = getGitCommonDir();
+    if (commonDir) {
+        const repoRootFromCommonDir = path.dirname(commonDir);
+        const packageJson = path.join(repoRootFromCommonDir, 'package.json');
+        if (fs.existsSync(packageJson)) {
+            try {
+                const repoRequire = createRequire(packageJson);
+                return repoRequire('nodemailer');
+            } catch {}
+        }
+    }
+
+    return null;
+}
+
+function maybeCreateSmtpTransport() {
+    const nodemailer = loadNodemailer();
+    if (!nodemailer) {
         return null;
     }
 
