@@ -18,7 +18,7 @@
     "serve": "cd dist && npx http-server . -p 8080 -o",
     "serve:root": "npx http-server . -p 8080 -o",
     "build": "npm run generate",
-    "deploy": "netlify deploy --prod --dir=dist",
+    "deploy": "node scripts/deploy-site.js",
     "clean": "rm -rf dist/*"
   },
   "author": "Marga Enterprises",

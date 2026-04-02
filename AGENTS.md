@@ -43,6 +43,12 @@ Do not rely on chat history alone when current repo files can answer the questio
 - Prefer SMTP when configured in local env, and fall back to Apple Mail on this Mac when SMTP is unavailable.
 - Do not commit local mail credentials, SMTP credentials, or Apple Mail state.
 
+## Local Env / Deploy
+
+- Automation worktrees may not have the repo-local `.env.local` file available directly.
+- Shared local automation env can be loaded from `~/.codex/env/marga-biz.env` or `~/.codex/env/marga-biz.local.env`.
+- The production deploy helper is `scripts/deploy-site.js`; prefer `npm run deploy` over raw Netlify CLI calls.
+
 ## Git Rules
 
 - Commit only files relevant to the task you are pushing.

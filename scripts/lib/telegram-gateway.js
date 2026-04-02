@@ -1,5 +1,7 @@
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const CONFIG = {
     telegramApiBase: 'https://api.telegram.org',
@@ -43,8 +45,30 @@ function loadEnvFile(filePath) {
 }
 
 function loadLocalEnv() {
+    const sharedEnvDir = path.join(os.homedir(), '.codex', 'env');
+    const sharedEnvFile = path.join(sharedEnvDir, 'marga-biz.env');
+    const sharedLocalEnvFile = path.join(sharedEnvDir, 'marga-biz.local.env');
+
+    loadEnvFile(sharedEnvFile);
+    loadEnvFile(sharedLocalEnvFile);
     loadEnvFile(path.join(CONFIG.repoRoot, '.env.local'));
     loadEnvFile(path.join(CONFIG.repoRoot, '.env'));
+
+    try {
+        const commonDir = execSync('git rev-parse --path-format=absolute --git-common-dir', {
+            cwd: CONFIG.repoRoot,
+            encoding: 'utf8',
+            stdio: ['ignore', 'pipe', 'ignore']
+        }).trim();
+
+        const commonRepoRoot = path.dirname(commonDir);
+        if (commonRepoRoot && commonRepoRoot !== CONFIG.repoRoot) {
+            loadEnvFile(path.join(commonRepoRoot, '.env.local'));
+            loadEnvFile(path.join(commonRepoRoot, '.env'));
+        }
+    } catch {
+        // Ignore git discovery failures and continue with local env only.
+    }
 }
 
 function getRequiredEnv(name) {
