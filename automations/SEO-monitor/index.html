@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marga SEO Monitor</title>
+    <meta name="description" content="Printer-focused daily SEO monitor for Marga Biz with rankings, daily tasks, and a manual keyword checker.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="topbar-copy">
+                <p class="eyebrow">Marga Biz</p>
+                <h1>SEO Monitor</h1>
+                <p class="lede">A simple daily board for printer ranking checks, task runs, and manual keyword tracking.</p>
+            </div>
+
+            <div class="toolbar">
+                <label class="field">
+                    <span>Days</span>
+                    <select id="daysSelect">
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                    </select>
+                </label>
+                <button id="refreshButton" class="button button-primary" type="button">Refresh</button>
+                <button id="runTodayButton" class="button button-secondary" type="button">Run Today</button>
+                <a class="button button-tertiary" href="/admin/insights/seo.html">Open Insights</a>
+            </div>
+        </header>
+
+        <section class="summary-grid" id="summaryGrid">
+            <article class="summary-card">
+                <span class="summary-label">Tracked Keywords</span>
+                <strong id="trackedKeywords">--</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Latest Snapshot</span>
+                <strong id="latestSnapshot">--</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Open Tasks</span>
+                <strong id="openTasks">--</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Generated</span>
+                <strong id="generatedAt">--</strong>
+            </article>
+        </section>
+
+        <section class="action-grid">
+            <article class="action-card">
+                <div class="card-heading">
+                    <div>
+                        <p class="panel-kicker">Daily printer run</p>
+                        <h2>Run Today</h2>
+                    </div>
+                    <span class="chip">Printer only</span>
+                </div>
+                <p class="card-copy">Runs today’s printer SEO checks: rankings, competitor snapshot, analytics snapshot, and printer page scans.</p>
+                <div id="runTodayResult" class="result-card result-muted">Waiting to run today’s printer task pack.</div>
+            </article>
+
+            <article class="action-card">
+                <div class="card-heading">
+                    <div>
+                        <p class="panel-kicker">Manual tracking</p>
+                        <h2>Check A Keyword</h2>
+                    </div>
+                </div>
+                <form id="manualKeywordForm" class="stack-form">
+                    <label class="field">
+                        <span>Manual Keyword</span>
+                        <input id="manualKeywordInput" name="keyword" type="text" placeholder="Example: printer rental taguig">
+                    </label>
+                    <button id="manualKeywordButton" class="button button-primary" type="submit">Check And Save</button>
+                </form>
+                <div id="manualKeywordResult" class="result-card result-muted">Manual keywords get checked live and added to your tracked keyword list.</div>
+            </article>
+
+            <article class="action-card">
+                <div class="card-heading">
+                    <div>
+                        <p class="panel-kicker">Completed work</p>
+                        <h2>Record Published Work</h2>
+                    </div>
+                </div>
+                <form id="completionForm" class="stack-form">
+                    <label class="field">
+                        <span>Task</span>
+                        <select id="completionTaskSelect" name="task_key">
+                            <option value="">Select a task</option>
+                        </select>
+                    </label>
+                    <label class="field">
+                        <span>Implementation Summary</span>
+                        <input id="completionImplementationInput" name="implementation" type="text" placeholder="Example: Improved printer-rental page FAQ, CTA, and schema then deployed live">
+                    </label>
+                    <label class="field">
+                        <span>Target Page Keyword</span>
+                        <input id="completionTargetInput" name="target" type="text" placeholder="Example: Printer Rental">
+                    </label>
+                    <label class="field">
+                        <span>Live Page URL</span>
+                        <input id="completionLinkInput" name="link" type="url" placeholder="https://marga.biz/printer-rental/">
+                    </label>
+                    <button id="completionButton" class="button button-primary" type="submit">Mark Done</button>
+                </form>
+                <div id="completionResult" class="result-card result-muted">After a page or blog is deployed, record it here and the task queue will show Done plus the live URL.</div>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker">Daily rank sheet</p>
+                    <h2>Keyword Positions</h2>
+                </div>
+                <div class="panel-meta" id="sourceCollections"></div>
+            </div>
+            <div class="table-wrap">
+                <table class="report-table" id="rankingsTable">
+                    <thead></thead>
+                    <tbody>
+                        <tr><td class="loading-row">Loading keyword positions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="split-panels">
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Recent movement</p>
+                        <h2>Logs</h2>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="report-table compact-table" id="logsTable">
+                        <thead></thead>
+                        <tbody>
+                            <tr><td class="loading-row">Loading logs...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="panel-kicker">Regular daily tasks</p>
+                        <h2>Task Queue</h2>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="report-table compact-table" id="tasksTable">
+                        <thead></thead>
+                        <tbody>
+                            <tr><td class="loading-row">Loading tasks...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer-note">
+            <span id="statusText">Waiting for report data...</span>
+        </footer>
+    </div>
+
+    <script src="./app.js" defer></script>
+</body>
+</html>
