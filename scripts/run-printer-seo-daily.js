@@ -66,7 +66,6 @@ function main() {
         process.env.PRINTER_SEO_MODEL || 'gpt-5.4',
         '--cd',
         repoRoot,
-        '--search',
         '--color',
         'never',
         '--output-last-message',
