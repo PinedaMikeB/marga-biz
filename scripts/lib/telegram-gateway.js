@@ -7,6 +7,7 @@ const CONFIG = {
     telegramApiBase: 'https://api.telegram.org',
     repoRoot: path.join(__dirname, '../..')
 };
+const TELEGRAM_SAFE_CHUNK_SIZE = 3500;
 
 function loadEnvFile(filePath) {
     if (!fs.existsSync(filePath)) {
@@ -124,10 +125,68 @@ async function telegramRequest(method, payload = {}, requestMethod = 'POST', lab
 
 async function sendMessage(text, options = {}) {
     const chatId = options.chatId || getRequiredEnv('TELEGRAM_CHAT_ID');
-    return telegramRequest('sendMessage', {
-        chat_id: chatId,
-        text
-    }, 'POST', options.label || 'Telegram sendMessage');
+    const chunks = splitTelegramMessage(String(text || ''));
+    const messageIds = [];
+    let lastResult = null;
+
+    for (let index = 0; index < chunks.length; index += 1) {
+        const chunkText = chunks.length === 1
+            ? chunks[index]
+            : `[${index + 1}/${chunks.length}]\n${chunks[index]}`;
+
+        lastResult = await telegramRequest('sendMessage', {
+            chat_id: chatId,
+            text: chunkText
+        }, 'POST', options.label || 'Telegram sendMessage');
+
+        messageIds.push(lastResult.message_id);
+    }
+
+    if (lastResult && messageIds.length > 1) {
+        lastResult.message_ids = messageIds;
+        lastResult.chunk_count = messageIds.length;
+    }
+
+    return lastResult;
+}
+
+function splitTelegramMessage(text) {
+    if (text.length <= TELEGRAM_SAFE_CHUNK_SIZE) {
+        return [text];
+    }
+
+    const chunks = [];
+    const lines = text.split(/\r?\n/);
+    let current = '';
+
+    for (const line of lines) {
+        const next = current ? `${current}\n${line}` : line;
+
+        if (next.length <= TELEGRAM_SAFE_CHUNK_SIZE) {
+            current = next;
+            continue;
+        }
+
+        if (current) {
+            chunks.push(current);
+            current = '';
+        }
+
+        if (line.length <= TELEGRAM_SAFE_CHUNK_SIZE) {
+            current = line;
+            continue;
+        }
+
+        for (let offset = 0; offset < line.length; offset += TELEGRAM_SAFE_CHUNK_SIZE) {
+            chunks.push(line.slice(offset, offset + TELEGRAM_SAFE_CHUNK_SIZE));
+        }
+    }
+
+    if (current) {
+        chunks.push(current);
+    }
+
+    return chunks.length ? chunks : [''];
 }
 
 module.exports = {
