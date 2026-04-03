@@ -34,8 +34,8 @@ const stats = {
 
 const PRINTER_PAGE_SEO_OVERRIDES = {
     'https://marga.biz/printer-rental/': {
-        title: 'Printer Rental Philippines | Office Printer Rental & Support',
-        metaDescription: 'Printer rental in the Philippines for offices, clinics, schools, and growing teams. Delivery, setup, maintenance, and flexible rental plans.'
+        title: 'Printer Rental Philippines | Office Printer Rentals',
+        metaDescription: 'Printer rental in the Philippines for offices, clinics, schools, and growing teams. Delivery, setup, maintenance, flexible plans, and quote-first support.'
     },
     'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': {
         title: 'Printer Rental Cost Guide | Budgeting for Office Teams',
@@ -46,36 +46,54 @@ const PRINTER_PAGE_SEO_OVERRIDES = {
         metaDescription: 'Learn how rental printer maintenance is handled, what support is included, and which service questions office teams should ask first.'
     },
     'https://marga.biz/printer-rental/how-do-i-choose-the-right-printer-rental-company/': {
-        title: 'How to Choose the Right Printer Rental Company | Office Guide',
+        title: 'Choose the Right Printer Rental Company | Office Guide',
         metaDescription: 'Choose the right printer rental company by comparing support coverage, setup process, scaling options, and quote transparency.'
     },
     'https://marga.biz/printer-rental/comparing-printer-rentals/': {
-        title: 'Printer Rental vs Leasing | Compare Cost, Flexibility, Support',
+        title: 'Printer Rental vs Leasing | Cost, Flexibility, Support',
         metaDescription: 'Compare printer rental vs leasing for office teams that need lower upfront cost, better flexibility, and clearer support coverage.'
     },
     'https://marga.biz/printer-rental/cost-savings-printer-rental/': {
-        title: 'Cost Savings with Printer Rentals | Lower Upfront Office Costs',
+        title: 'Printer Rental Cost Savings | Lower Upfront Office Costs',
         metaDescription: 'See how printer rentals reduce upfront office costs by matching the right unit, service package, and print volume to your team.'
     }
 };
 
 const PRINTER_PAGE_FAQS = {
+    'https://marga.biz/printer-rental/': [
+        {
+            question: 'What should I send before asking for a printer rental quote?',
+            answer: 'Share your office location, monthly print volume, number of users, and whether your team needs mono, color, scanning, or copying so the recommendation is based on real office demand.'
+        },
+        {
+            question: 'Which city pages should Metro Manila offices compare first?',
+            answer: 'Start with the Makati, BGC, Taguig, Manila, Pasig, Quezon City, or Ortigas printer rental pages if your office search has local intent, then use the main printer rental hub to compare broader equipment options.'
+        },
+        {
+            question: 'Does printer rental include setup and maintenance planning?',
+            answer: 'Rental quotes should clarify delivery, installation, support coverage, service-call handling, and replacement or upgrade planning so your team can compare more than just the monthly fee.'
+        },
+        {
+            question: 'When should a team compare Print All You Can instead of a standard rental?',
+            answer: 'Compare Print All You Can when your office has steady or high-volume recurring print demand and wants to test whether a higher-usage package is more practical than a lighter standard setup.'
+        }
+    ],
     'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': [
         {
-            question: 'What usually affects printer rental cost the most?',
-            answer: 'Monthly print volume, mono versus color output, number of users, and the service package usually affect printer rental cost the most.'
+            question: 'What usually affects printer rental cost in the Philippines the most?',
+            answer: 'Monthly print volume, mono versus color output, number of users, service coverage, and your office location usually affect printer rental cost more than brand preference alone.'
+        },
+        {
+            question: 'Should Makati, BGC, Taguig, or Manila offices expect different rental pricing?',
+            answer: 'The location itself is not the only factor, but delivery planning, office access, and support expectations can change how a quote is scoped for Makati, BGC, Taguig, Manila, Pasig, or Quezon City.'
         },
         {
             question: 'Is maintenance usually part of the rental cost?',
-            answer: 'Maintenance expectations should be confirmed in the quote because service coverage, consumables, and callout handling can differ by package.'
-        },
-        {
-            question: 'Should a small office use the same rental plan as a larger team?',
-            answer: 'No. A small admin office and a heavier shared department usually need different printer classes, support levels, and pricing structures.'
+            answer: 'Maintenance expectations should be confirmed in the quote because service coverage, consumables, and callout handling can differ by package, unit type, and print volume.'
         },
         {
             question: 'What should we prepare before asking for a printer rental quote?',
-            answer: 'Prepare your office location, estimated monthly volume, number of users, and whether you need mono, color, scanning, or copying.'
+            answer: 'Prepare your office location, estimated monthly volume, number of users, preferred contract term, and whether you need mono, color, scanning, or copying so the quote is easier to compare.'
         }
     ],
     'https://marga.biz/printer-rental/how-is-printer-maintenance-handled-in-rentals/': [
@@ -92,8 +110,8 @@ const PRINTER_PAGE_FAQS = {
             answer: 'Maintenance terms affect uptime, response expectations, and whether the rental will stay practical as print demand changes.'
         },
         {
-            question: 'Can support expectations change based on the printer package?',
-            answer: 'Yes. Support coverage often depends on the agreed package, print volume, and the type of device installed in the office.'
+            question: 'What should local offices in Makati, BGC, Taguig, or Pasig confirm before installation?',
+            answer: 'Confirm delivery access, placement, network setup needs, expected response path, and who inside your team will coordinate service requests after the printer is installed.'
         }
     ],
     'https://marga.biz/printer-rental/how-do-i-choose-the-right-printer-rental-company/': [
@@ -111,7 +129,7 @@ const PRINTER_PAGE_FAQS = {
         },
         {
             question: 'What details should be shared before requesting a recommendation?',
-            answer: 'Share your office location, monthly volume, user count, and whether you need mono, color, scanning, or copying so the recommendation is more accurate.'
+            answer: 'Share your office location, monthly volume, user count, building or floor constraints, and whether you need mono, color, scanning, or copying so the recommendation is more accurate.'
         }
     ],
     'https://marga.biz/printer-rental/comparing-printer-rentals/': [
@@ -129,7 +147,7 @@ const PRINTER_PAGE_FAQS = {
         },
         {
             question: 'What should be reviewed before choosing rental over leasing?',
-            answer: 'Review volume expectations, contract flexibility, service inclusions, and how quickly the provider can adjust the equipment if requirements change.'
+            answer: 'Review volume expectations, contract flexibility, service inclusions, early-adjustment options, and how quickly the provider can adjust the equipment if requirements change.'
         }
     ],
     'https://marga.biz/printer-rental/cost-savings-printer-rental/': [
@@ -147,7 +165,7 @@ const PRINTER_PAGE_FAQS = {
         },
         {
             question: 'What should a business prepare before comparing rental savings?',
-            answer: 'Prepare your expected print volume, office location, number of users, and whether the team needs mono, color, or multifunction capability.'
+            answer: 'Prepare your expected print volume, office location, number of users, current support pain points, and whether the team needs mono, color, or multifunction capability.'
         }
     ]
 };
@@ -573,6 +591,7 @@ function getPrinterFaqSection(pageLink) {
     }
 
     const headingMap = {
+        'https://marga.biz/printer-rental/': 'Frequently asked questions about printer rental in the Philippines',
         'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': 'Frequently asked questions about printer rental cost',
         'https://marga.biz/printer-rental/how-is-printer-maintenance-handled-in-rentals/': 'Frequently asked questions about rental printer maintenance',
         'https://marga.biz/printer-rental/how-do-i-choose-the-right-printer-rental-company/': 'Frequently asked questions about choosing a printer rental company',
@@ -793,8 +812,8 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
         content += `
 <section class="service-areas-section">
     <h2>Printer Rental Service Areas in Metro Manila</h2>
-    <p>Need a printer rental provider that understands your office location, delivery requirements, support expectations, and print volume? We now have dedicated city pages for key business districts so you can find the most relevant rental solution faster.</p>
-    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, <a href="/printer-rental/bgc/">printer rental in BGC</a>, or <a href="/printer-rental/taguig/">printer rental in Taguig</a>, use these pages to compare local office fit, service coverage, and printer types before you request a quote.</p>
+    <p>Need a printer rental provider that understands your office location, delivery requirements, support expectations, and print volume? Use the city pages below to send stronger local relevance into the right service page and compare what the quote should include before you contact us.</p>
+    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, <a href="/printer-rental/bgc/">printer rental in BGC</a>, or <a href="/printer-rental/taguig/">printer rental in Taguig</a>, use these pages to compare local office fit, service coverage, and printer types before requesting a quote. For setup-level guidance, pair those pages with the <a href="/printer-rental/how-to-choose-printer-rental-makati/">Makati</a>, <a href="/printer-rental/how-to-choose-printer-rental-pasig/">Pasig</a>, <a href="/printer-rental/how-to-choose-printer-rental-quezon-city/">Quezon City</a>, and <a href="/printer-rental/how-to-choose-printer-rental-taguig/">Taguig</a> decision guides.</p>
     <div class="service-area-grid">
         <a class="service-area-card" href="/printer-rental/makati/">
             <span class="service-area-label">Makati</span>
@@ -835,11 +854,11 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
 </section>
 <section class="quote-panel">
     <h2>What serious office buyers compare before approving a printer rental</h2>
-    <p>Before you approve a quote, compare what is included: delivery planning, installation scope, maintenance expectations, service-call handling, and whether the printer setup can scale if your workload changes. That is often the difference between a practical rental plan and a cheap quote that creates more downtime later.</p>
+    <p>Before you approve a quote, compare what is included: delivery planning, installation scope, maintenance expectations, service-call handling, consumable assumptions, and whether the printer setup can scale if your workload changes. That is often the difference between a practical rental plan and a cheap quote that creates more downtime later.</p>
 </section>
 <section class="quote-panel">
     <h2>What to prepare before requesting a quote</h2>
-    <p>Send your office location, estimated monthly print volume, number of users, and whether you need mono, color, scanning, or copying. If you already know your service area, compare the dedicated <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/bgc/">BGC</a>, and <a href="/printer-rental/taguig/">Taguig</a> pages before you contact us.</p>
+    <p>Send your office location, estimated monthly print volume, number of users, service timeline, and whether you need mono, color, scanning, or copying. If you already know your service area, compare the dedicated <a href="/printer-rental/makati/">Makati</a>, <a href="/printer-rental/bgc/">BGC</a>, <a href="/printer-rental/taguig/">Taguig</a>, and <a href="/printer-rental/manila/">Manila</a> pages plus the <a href="/printer-rental/how-much-does-printer-rental-cost/">printer rental cost guide</a> before you contact us.</p>
 </section>`;
     }
 
@@ -1121,7 +1140,7 @@ function generateSitemap(pages, posts) {
     xml += '</urlset>';
     
     fs.writeFileSync(path.join(CONFIG.distDir, 'sitemap.xml'), xml);
-    console.log(`   ✅ Generated sitemap with ${pages.length + posts.length + 1} URLs`);
+    console.log(`   ✅ Generated sitemap with ${pages.length + posts.length + 1 + getStaticPageUrls().length} URLs`);
 }
 
 // ============================================

@@ -28,12 +28,14 @@ const EXISTING_CITY_SUPPORT_PAGES = [
     '/printer-rental/taguig/',
     '/printer-rental/best-printer-rental-setup-bgc/',
     '/printer-rental/best-printer-rental-setup-manila/',
-    '/printer-rental/best-printer-rental-setup-ortigas/'
+    '/printer-rental/best-printer-rental-setup-ortigas/',
+    '/printer-rental/how-to-choose-printer-rental-taguig/'
 ];
 const EXISTING_SUPPORT_REFRESH_PAGES = [
     '/printer-rental/how-to-choose-printer-rental-makati/',
     '/printer-rental/how-to-choose-printer-rental-pasig/',
     '/printer-rental/how-to-choose-printer-rental-quezon-city/',
+    '/printer-rental/how-to-choose-printer-rental-taguig/',
     '/printer-rental/taguig/',
     '/printer-rental/bgc/',
     '/printer-rental/makati/'
@@ -198,7 +200,7 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null) {
     );
     const weakestCityKeyword = pickWorstKeyword(
         rankings,
-        item => /\b(BGC|Makati|Manila)\b/i.test(item.keyword),
+        item => /\b(BGC|Makati|Manila|Pasig|Quezon City|Ortigas|Taguig)\b/i.test(item.keyword),
         'Printer Rental BGC'
     );
     const lowestScorePage = pickLowestScorePage(todayRun, '/printer-rental/');
