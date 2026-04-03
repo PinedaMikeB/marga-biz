@@ -810,10 +810,10 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
 
     if (page.link === 'https://marga.biz/printer-rental/') {
         content += `
-<section class="service-areas-section">
-    <h2>Printer Rental Service Areas in Metro Manila</h2>
-    <p>Need a printer rental provider that understands your office location, delivery requirements, support expectations, and print volume? Use the city pages below to send stronger local relevance into the right service page and compare what the quote should include before you contact us.</p>
-    <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, <a href="/printer-rental/bgc/">printer rental in BGC</a>, or <a href="/printer-rental/taguig/">printer rental in Taguig</a>, use these pages to compare local office fit, service coverage, and printer types before requesting a quote. For setup-level guidance, pair those pages with the <a href="/printer-rental/how-to-choose-printer-rental-makati/">Makati</a>, <a href="/printer-rental/how-to-choose-printer-rental-pasig/">Pasig</a>, <a href="/printer-rental/how-to-choose-printer-rental-quezon-city/">Quezon City</a>, and <a href="/printer-rental/how-to-choose-printer-rental-taguig/">Taguig</a> decision guides.</p>
+    <section class="service-areas-section">
+        <h2>Printer Rental Service Areas in Metro Manila</h2>
+        <p>Need a printer rental provider that understands your office location, delivery requirements, support expectations, and print volume? Use the city pages below to send stronger local relevance into the right service page and compare what the quote should include before you contact us.</p>
+        <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, <a href="/printer-rental/bgc/">printer rental in BGC</a>, or <a href="/printer-rental/taguig/">printer rental in Taguig</a>, use these pages to compare local office fit, service coverage, and printer types before requesting a quote. For setup-level guidance, pair those pages with the <a href="/printer-rental/how-to-choose-printer-rental-makati/">Makati</a>, <a href="/printer-rental/how-to-choose-printer-rental-pasig/">Pasig</a>, <a href="/printer-rental/how-to-choose-printer-rental-quezon-city/">Quezon City</a>, <a href="/printer-rental/how-to-choose-printer-rental-taguig/">Taguig</a>, <a href="/printer-rental/printer-rental-taguig-volume-planning/">Taguig volume planning</a>, <a href="/printer-rental/how-to-plan-print-all-you-can-for-bgc-teams/">BGC Print All You Can planning</a>, and <a href="/printer-rental/printer-rental-makati-vs-bgc-office-setup/">Makati vs BGC setup</a> guides.</p>
     <div class="service-area-grid">
         <a class="service-area-card" href="/printer-rental/makati/">
             <span class="service-area-label">Makati</span>
@@ -851,6 +851,10 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
             <span>For BGC, McKinley Hill, Arca South, Market! Market!, and wider Taguig office locations.</span>
         </a>
     </div>
+</section>
+<section class="service-areas-section">
+    <h2>Related Copier Location Pages</h2>
+    <p>If shared copying and scanning are more important than printer-only planning, compare the new <a href="/copier-rental/bgc/">Copier Rental BGC</a> and <a href="/copier-rental/makati/">Copier Rental Makati</a> local pages for city-specific quote guidance and office-fit details.</p>
 </section>
 <section class="quote-panel">
     <h2>What serious office buyers compare before approving a printer rental</h2>
