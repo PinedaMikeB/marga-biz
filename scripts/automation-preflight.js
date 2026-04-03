@@ -96,15 +96,27 @@ function ensureCleanWorktree() {
 function checkEnvVisibility() {
     loadLocalEnv();
 
-    return {
+    const env = {
         telegramBotToken: Boolean(process.env.TELEGRAM_BOT_TOKEN),
         telegramChatId: Boolean(process.env.TELEGRAM_CHAT_ID),
         netlifyAuthToken: Boolean(process.env.NETLIFY_AUTH_TOKEN || process.env.NETLIFY_TOKEN),
         netlifySiteId: Boolean(process.env.NETLIFY_SITE_ID),
         reportEmailTo: Boolean(process.env.SEO_REPORT_EMAIL_TO || process.env.REPORT_EMAIL_TO || process.env.EMAIL_TO),
+        googleServiceAccountKey: Boolean(process.env.GOOGLE_SERVICE_ACCOUNT_KEY),
+        serperApiKey: Boolean(process.env.SERPER_API_KEY),
         smtpHost: process.env.SMTP_HOST || process.env.EMAIL_SMTP_HOST || process.env.MAIL_SMTP_HOST || null,
         smtpUser: Boolean(process.env.SMTP_USER || process.env.EMAIL_SMTP_USER || process.env.MAIL_SMTP_USER)
     };
+
+    const missing = Object.entries(env)
+        .filter(([, value]) => !value)
+        .map(([key]) => key);
+
+    if (missing.length) {
+        throw new Error(`Missing automation env values: ${missing.join(', ')}`);
+    }
+
+    return env;
 }
 
 function ensureOriginReachable() {
