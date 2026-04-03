@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO_ROOT="${1:-$HOME/.codex/repos/marga-biz-automation}"
-TARGET_HOUR="${2:-9}"
+TARGET_HOUR="${2:-15}"
 TARGET_MINUTE="${3:-0}"
 TEMPLATE_PATH="$REPO_ROOT/ops/printer-seo-daily.plist"
 TARGET_PATH="$HOME/Library/LaunchAgents/com.marga.printer-seo-daily.plist"
