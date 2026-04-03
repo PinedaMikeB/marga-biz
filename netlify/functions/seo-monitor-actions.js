@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
+const { loadLocalEnv } = require('../../scripts/lib/telegram-gateway');
 
 const SERPER_API_URL = 'https://google.serper.dev/search';
 const TARGET_DOMAIN = 'marga.biz';
@@ -38,6 +39,8 @@ function getManilaDateKey(input = new Date()) {
 }
 
 function getServiceAccount() {
+    loadLocalEnv();
+
     if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
         return JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
     }

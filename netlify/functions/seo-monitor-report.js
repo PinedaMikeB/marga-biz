@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
+const { loadLocalEnv } = require('../../scripts/lib/telegram-gateway');
 
 const TIMEZONE = 'Asia/Manila';
 const DEFAULT_DAYS = 5;
@@ -63,6 +64,8 @@ function getManilaDateKey(input = new Date()) {
 }
 
 function getServiceAccount() {
+    loadLocalEnv();
+
     if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
         return JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
     }
