@@ -32,31 +32,46 @@ function getTimeParts(timeZone) {
 
     return {
         date: `${values.year}-${values.month}-${values.day}`,
+        weekday: new Intl.DateTimeFormat('en-US', {
+            timeZone,
+            weekday: 'short'
+        }).format(new Date()),
         hour: Number(values.hour),
         minute: Number(values.minute)
     };
 }
 
-function getNextRunAt(timeZone, targetHour, targetMinute, currentMinutes) {
-    const targetToday = (targetHour * 60) + targetMinute;
-    const next = new Date();
-    if (currentMinutes >= targetToday) {
-        next.setUTCDate(next.getUTCDate() + 1);
-    }
-
-    const parts = new Intl.DateTimeFormat('en-CA', {
+function getLocalDateParts(date, timeZone) {
+    const formatter = new Intl.DateTimeFormat('en-CA', {
         timeZone,
         year: 'numeric',
         month: '2-digit',
-        day: '2-digit'
-    }).formatToParts(next);
+        day: '2-digit',
+        weekday: 'short'
+    });
     const values = {};
-    for (const part of parts) {
+    for (const part of formatter.formatToParts(date)) {
         if (part.type !== 'literal') {
             values[part.type] = part.value;
         }
     }
+    return values;
+}
 
+function getNextRunAt(timeZone, targetHour, targetMinute, currentMinutes, skipWeekdays = []) {
+    const targetToday = (targetHour * 60) + targetMinute;
+    const skipSet = new Set(skipWeekdays);
+    const next = new Date();
+
+    if (currentMinutes >= targetToday) {
+        next.setUTCDate(next.getUTCDate() + 1);
+    }
+
+    while (skipSet.has(getLocalDateParts(next, timeZone).weekday)) {
+        next.setUTCDate(next.getUTCDate() + 1);
+    }
+
+    const values = getLocalDateParts(next, timeZone);
     return `${values.year}-${values.month}-${values.day}T${String(targetHour).padStart(2, '0')}:${String(targetMinute).padStart(2, '0')}:00+08:00`;
 }
 
@@ -65,8 +80,9 @@ async function main() {
     const stateDir = process.env.PRINTER_SEO_STATE_DIR || path.join(homeDir, '.codex', 'automation-state');
     const runner = process.env.PRINTER_SEO_RUNNER || path.join(process.cwd(), 'scripts', 'run-printer-seo-daily.js');
     const timeZone = process.env.PRINTER_SEO_TIMEZONE || 'Asia/Manila';
-    const targetHour = Number(process.env.PRINTER_SEO_TARGET_HOUR || '9');
+    const targetHour = Number(process.env.PRINTER_SEO_TARGET_HOUR || '10');
     const targetMinute = Number(process.env.PRINTER_SEO_TARGET_MINUTE || '0');
+    const skipWeekdays = ['Sun'];
     const stateFile = path.join(stateDir, 'printer-seo-daily-last-success.txt');
     const failureFile = path.join(stateDir, 'printer-seo-daily-last-failure.txt');
     const parts = getTimeParts(timeZone);
@@ -75,7 +91,7 @@ async function main() {
 
     const targetMinutes = (targetHour * 60) + targetMinute;
     const currentMinutes = (parts.hour * 60) + parts.minute;
-    const nextRunAt = getNextRunAt(timeZone, targetHour, targetMinute, currentMinutes);
+    const nextRunAt = getNextRunAt(timeZone, targetHour, targetMinute, currentMinutes, skipWeekdays);
     const statusBase = {
         automationId: 'printer-seo-daily',
         name: 'Printer SEO Daily',
@@ -88,6 +104,17 @@ async function main() {
         nextRunAt,
         updatedAt: new Date().toISOString()
     };
+
+    if (skipWeekdays.includes(parts.weekday)) {
+        await updateAutomationStatus({
+            ...statusBase,
+            status: 'Scheduled',
+            currentStep: 'Waiting for next run day',
+            message: `Skipping Sunday. Next run is ${nextRunAt}.`
+        }).catch(() => {});
+        process.stdout.write(`Skipping ${parts.weekday} for ${timeZone} daily run.\n`);
+        return;
+    }
 
     if (currentMinutes < targetMinutes) {
         await updateAutomationStatus({

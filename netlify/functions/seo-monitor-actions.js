@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
-const { loadLocalEnv } = require('../../scripts/lib/telegram-gateway');
 
 const SERPER_API_URL = 'https://google.serper.dev/search';
 const TARGET_DOMAIN = 'marga.biz';
@@ -16,14 +15,25 @@ const DAILY_PRINTER_KEYWORDS = [
     'Printer Rental Philippines',
     'Printer Rental Taguig'
 ];
+const DAILY_COPIER_KEYWORDS = [
+    'Copier Rental',
+    'Copier For Rent',
+    'Copier Rental BGC',
+    'Copier Rental Makati',
+    'Copier Rental Manila',
+    'Copier Rental Taguig',
+    'Copier Rental Quezon City',
+    'Copier Rental Pasig',
+    'Copier Rental Ortigas',
+    'Copier Rental Philippines'
+];
 const DAILY_PRINTER_PAGES = [
     '/printer-rental/',
     '/printer-rental/bgc/',
     '/printer-rental/makati/',
     '/printer-rental/manila/',
     '/printer-rental/pasig/',
-    '/printer-rental/quezon-city/',
-    '/printer-rental/taguig/'
+    '/printer-rental/quezon-city/'
 ];
 
 function getManilaDateKey(input = new Date()) {
@@ -39,8 +49,6 @@ function getManilaDateKey(input = new Date()) {
 }
 
 function getServiceAccount() {
-    loadLocalEnv();
-
     if (process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
         return JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
     }
@@ -300,12 +308,22 @@ async function updateAutomationStatus(db, payload) {
         finishedAt: payload.finishedAt || current.finishedAt || null,
         lastSuccessAt: payload.lastSuccessAt || current.lastSuccessAt || null,
         lastFailureAt: payload.lastFailureAt || current.lastFailureAt || null,
+        queueStatus: payload.queueStatus || current.queueStatus || null,
+        latestReportGeneratedAt: payload.latestReportGeneratedAt || current.latestReportGeneratedAt || null,
+        completedTasks: Array.isArray(payload.completedTasks) ? payload.completedTasks.slice(0, 20) : (current.completedTasks || []),
         updatedAtIso: nowIso,
         updatedAt: admin.firestore.FieldValue.serverTimestamp()
     };
 
     if (status === 'Running' && payload.startedAt) {
         next.finishedAt = null;
+        next.queueStatus = null;
+        next.completedTasks = [];
+        next.latestReportGeneratedAt = null;
+    }
+
+    if ((status === 'Scheduled' || status === 'Failed' || status === 'Blocked') && payload.queueStatus == null) {
+        next.queueStatus = current.queueStatus || null;
     }
 
     await ref.set(next, { merge: true });
@@ -404,7 +422,7 @@ function buildCompetitorSummary(result) {
 async function runToday(db) {
     const rankings = [];
 
-    for (const keyword of DAILY_PRINTER_KEYWORDS) {
+    for (const keyword of [...DAILY_PRINTER_KEYWORDS, ...DAILY_COPIER_KEYWORDS]) {
         const result = await checkRanking(keyword);
         await storeRankingHistory(db, keyword, result);
         rankings.push({
@@ -423,15 +441,18 @@ async function runToday(db) {
 
     const competitorSource = await checkRanking('Printer Rental Philippines');
     const competitors = buildCompetitorSummary(competitorSource);
+    const copierCompetitorSource = await checkRanking('Copier Rental Philippines');
+    const copierCompetitors = buildCompetitorSummary(copierCompetitorSource);
     const snapshot = await runInsightsSnapshot();
     const pageScans = await scanPrinterPages();
 
     const result = {
         ranAt: new Date().toISOString(),
         date: new Date().toISOString().slice(0, 10),
-        focus: 'printer-only',
+        focus: 'printer-and-copier-local',
         rankings,
         competitors,
+        copierCompetitors,
         snapshot,
         pageScans
     };

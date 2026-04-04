@@ -39,6 +39,31 @@ function readFileIfExists(filePath, maxLength = 1400) {
     return clipText(fs.readFileSync(filePath, 'utf8'), maxLength);
 }
 
+function readLatestSeoReport(repoRoot) {
+    const reportPath = path.join(repoRoot, 'reports', 'seo-monitor', 'latest.json');
+    if (!fs.existsSync(reportPath)) {
+        return null;
+    }
+
+    try {
+        const payload = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+        const completedTasks = Array.isArray(payload?.report?.completedTasks) ? payload.report.completedTasks : [];
+        return {
+            queueStatus: payload?.report?.queueStatus || null,
+            latestReportGeneratedAt: payload?.generatedAt || payload?.report?.generatedAt || null,
+            completedTasks: completedTasks.map((item) => ({
+                task: item.task || '',
+                status: item.status || 'Done',
+                link: item.link || '',
+                implementation: item.implementation || '',
+                notes: Array.isArray(payload?.report?.notes) ? payload.report.notes.join(' ') : ''
+            }))
+        };
+    } catch {
+        return null;
+    }
+}
+
 function appendChunkToBuffer(buffer, chunk) {
     const combined = `${buffer.pending}${chunk}`;
     const parts = combined.split(/\r?\n/);
@@ -202,6 +227,8 @@ async function main() {
         const finishedAt = new Date().toISOString();
         const success = (code || 0) === 0;
 
+        const reportSummary = success ? readLatestSeoReport(repoRoot) : null;
+
         await updateAutomationStatus({
             ...statusBase,
             status: success ? 'Done' : 'Failed',
@@ -214,7 +241,10 @@ async function main() {
             finishedAt,
             updatedAt: finishedAt,
             lastSuccessAt: success ? finishedAt : undefined,
-            lastFailureAt: success ? undefined : finishedAt
+            lastFailureAt: success ? undefined : finishedAt,
+            queueStatus: reportSummary?.queueStatus || undefined,
+            latestReportGeneratedAt: reportSummary?.latestReportGeneratedAt || undefined,
+            completedTasks: reportSummary?.completedTasks || undefined
         }).catch(() => {});
         process.exit(code || 0);
     });

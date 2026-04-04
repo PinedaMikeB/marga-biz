@@ -43,7 +43,16 @@ async function updateAutomationStatus(payload = {}) {
         ...payload,
         message: clipText(payload.message, 700),
         liveLogExcerpt: clipText(payload.liveLogExcerpt, 1800),
-        lastMessageExcerpt: clipText(payload.lastMessageExcerpt, 1400)
+        lastMessageExcerpt: clipText(payload.lastMessageExcerpt, 1400),
+        completedTasks: Array.isArray(payload.completedTasks)
+            ? payload.completedTasks.slice(0, 20).map((item) => ({
+                task: clipText(item?.task, 160),
+                status: clipText(item?.status, 40),
+                link: clipText(item?.link, 300),
+                implementation: clipText(item?.implementation, 700),
+                notes: clipText(item?.notes, 700)
+            }))
+            : undefined
     });
 }
 
