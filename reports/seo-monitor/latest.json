@@ -1,20 +1,22 @@
 {
-  "generatedAt": "2026-04-03T07:25:36.310Z",
+  "generatedAt": "2026-04-04T07:27:46Z",
   "productionUrl": "https://marga.biz",
-  "deployUrl": "https://69cf6a659d55f84131cdb6d0--marga-biz.netlify.app",
-  "commit": "9fda4a6",
+  "deployUrl": "https://69d0bc8af6e5cf4f891fe83c--marga-biz.netlify.app",
+  "commit": "3b0c130",
   "verifiedUrls": [
-    "https://marga.biz/copier-rental/bgc/",
-    "https://marga.biz/copier-rental/makati/",
-    "https://marga.biz/copier-rental/bgc/how-to-choose-copier-rental-bgc/",
-    "https://marga.biz/copier-rental/makati/copier-rental-makati-service-cost-checklist/",
-    "https://marga.biz/printer-rental/how-to-plan-print-all-you-can-for-bgc-teams/",
-    "https://marga.biz/printer-rental/printer-rental-taguig-volume-planning/",
-    "https://marga.biz/printer-rental/printer-rental-makati-vs-bgc-office-setup/",
-    "https://marga.biz/printer-rental/taguig/",
+    "https://marga.biz/printer-rental/",
     "https://marga.biz/printer-rental/bgc/",
     "https://marga.biz/printer-rental/makati/",
-    "https://marga.biz/printer-rental/"
+    "https://marga.biz/printer-rental/taguig/",
+    "https://marga.biz/printer-rental/printer-rental-bgc-hidden-fees-checklist/",
+    "https://marga.biz/printer-rental/printer-for-rent-makati-procurement-checklist/",
+    "https://marga.biz/printer-rental/print-all-you-can-vs-standard-printer-rental/",
+    "https://marga.biz/copier-rental/bgc/",
+    "https://marga.biz/copier-rental/makati/",
+    "https://marga.biz/copier-rental/pasig/",
+    "https://marga.biz/copier-rental/pasig/copier-rental-pasig-service-checklist/",
+    "https://marga.biz/copier-rental/quezon-city/",
+    "https://marga.biz/copier-rental/quezon-city/copier-rental-quezon-city-volume-planning/"
   ],
   "openTaskCount": 0,
   "localValidation": {
@@ -27,754 +29,205 @@
     "liveSmokeTests": "passed"
   },
   "report": {
-    "generatedAt": "2026-04-03T07:25:36.310Z",
+    "generatedAt": "2026-04-04T07:27:46Z",
     "timezone": "Asia/Manila",
+    "queueStatus": "Done",
+    "focus": "printer-rental cluster plus copier-location growth pages only",
+    "guardrails": [
+      "No home page edits",
+      "No copier-rental core money page edits"
+    ],
     "rankings": [
       {
         "keyword": "Printer Rental",
-        "latestPosition": 8,
+        "latestPosition": 9,
         "previousPosition": 8,
-        "delta": 0,
+        "delta": -1,
         "latestUrl": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
-        "latestTitle": "Print All You Can Rental Philippines: 5 Ways to Save Money on",
         "competitors": [
-          {
-            "position": 1,
-            "domain": "printerrentalsph.com",
-            "title": "Printer Rentals PH - Printer Rental, Printer Repair and Ink and Toner ...",
-            "url": "https://www.printerrentalsph.com/"
-          },
-          {
-            "position": 2,
-            "domain": "printersforrent.com",
-            "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease, Copiers ...",
-            "url": "https://www.printersforrent.com/"
-          },
-          {
-            "position": 3,
-            "domain": "ubix.com.ph",
-            "title": "Printer Rental",
-            "url": "https://ubix.com.ph/printer-rental/"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Eazy Rental Express Corp | Quezon City",
-            "url": "https://www.facebook.com/ezrentalexpress/"
-          },
-          {
-            "position": 5,
-            "domain": "fujifilm.com",
-            "title": "Short Term Printer Rental Services in the Philippines",
-            "url": "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental"
-          }
+          { "position": 1, "domain": "printerrentalsph.com", "url": "https://www.printerrentalsph.com/" },
+          { "position": 2, "domain": "ubix.com.ph", "url": "https://ubix.com.ph/printer-rental/" },
+          { "position": 5, "domain": "printersforrent.com", "url": "https://www.printersforrent.com/" }
         ]
       },
       {
         "keyword": "Printer For Rent",
-        "latestPosition": 5,
-        "previousPosition": 7,
-        "delta": 2,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "printersforrent.com",
-            "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease, Copiers ...",
-            "url": "https://www.printersforrent.com/"
-          },
-          {
-            "position": 2,
-            "domain": "printerrentalsph.com",
-            "title": "Printer Rentals PH - Printer Rental, Printer Repair and Ink and Toner ...",
-            "url": "https://www.printerrentalsph.com/"
-          },
-          {
-            "position": 3,
-            "domain": "fujifilm.com",
-            "title": "Short Term Printer Rental Services in the Philippines",
-            "url": "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Eazy Rental Express Corp | Quezon City",
-            "url": "https://www.facebook.com/ezrentalexpress/"
-          },
-          {
-            "position": 6,
-            "domain": "ubix.com.ph",
-            "title": "Printer Rental",
-            "url": "https://ubix.com.ph/printer-rental/"
-          }
-        ]
+        "latestPosition": 8,
+        "previousPosition": 5,
+        "delta": -3,
+        "latestUrl": "https://marga.biz/"
       },
       {
         "keyword": "Print All You Can",
-        "latestPosition": 2,
+        "latestPosition": 3,
         "previousPosition": 2,
-        "delta": 0,
-        "latestUrl": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/",
-        "latestTitle": "Print All You Can Philippines - Copier Rental | Printer Rental",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "Print All You Can | Cebu City",
-            "url": "https://www.facebook.com/printallyoucan.pisoprint/"
-          },
-          {
-            "position": 3,
-            "domain": "facebook.com",
-            "title": "INK All-You-Can | Pasig",
-            "url": "https://www.facebook.com/inkallyoucan/"
-          },
-          {
-            "position": 4,
-            "domain": "m.yelp.com",
-            "title": "THE BEST 10 PRINTING SERVICES near COVELANDIA RD, KAWIT, ...",
-            "url": "https://m.yelp.com/search?cflt=copyshops&find_loc=Covelandia+Rd%2C+Kawit%2C+Cavite"
-          },
-          {
-            "position": 5,
-            "domain": "mackimprintsinc.com",
-            "title": "Mackim Prints, Inc.",
-            "url": "https://www.mackimprintsinc.com/"
-          },
-          {
-            "position": 6,
-            "domain": "philstar.com",
-            "title": "Print all you can! | The Freeman",
-            "url": "https://www.philstar.com/the-freeman/cebu-lifestyle/2013/08/21/1115571/print-all-you-can"
-          }
-        ]
+        "delta": -1,
+        "latestUrl": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/"
       },
       {
         "keyword": "Printer Rental BGC",
-        "latestPosition": 2,
-        "previousPosition": 10,
-        "delta": 8,
-        "latestUrl": "https://marga.biz/printer-rental/",
-        "latestTitle": "Printer Rental Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "Inkhouse- Printer for Rent | Taguig",
-            "url": "https://www.facebook.com/inkhouseprinterforrent/"
-          },
-          {
-            "position": 3,
-            "domain": "mclinkphil.com",
-            "title": "Office Printer Lease BGC 2025: Trends, Costs & Best Providers",
-            "url": "https://www.mclinkphil.com/office-printer-lease-bgc-2025-trends-costs-best-providers/"
-          },
-          {
-            "position": 4,
-            "domain": "bir-cdn.bir.gov.ph",
-            "title": "list of accredited printers",
-            "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/List%20of%20Accredited%20Printers%20as%20of%20June%2030,%202024.pdf"
-          },
-          {
-            "position": 5,
-            "domain": "facebook.com",
-            "title": "Visit us! Fax Parcel Print Uptown Mall BGC #faxparcelprint # ...",
-            "url": "https://www.facebook.com/FaxParcelPrint/posts/visit-us-fax-parcel-print-uptown-mall-bgc-faxparcelprint-printing-digitalprintin/648901843937560/"
-          },
-          {
-            "position": 6,
-            "domain": "marga.biz",
-            "title": "Contact Us - Marga Enterprises | Copier & Printer Rental Philippines",
-            "url": "https://marga.biz/contact/"
-          }
-        ]
+        "latestPosition": 3,
+        "previousPosition": 2,
+        "delta": -1,
+        "latestUrl": "https://marga.biz/printer-rental/"
       },
       {
         "keyword": "Printer Rental Makati",
         "latestPosition": 5,
         "previousPosition": 5,
         "delta": 0,
-        "latestUrl": "https://marga.biz/printer-rental/",
-        "latestTitle": "Printer Rental Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "printersforrent.com",
-            "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease, Copiers ...",
-            "url": "https://www.printersforrent.com/"
-          },
-          {
-            "position": 2,
-            "domain": "printerrentalsph.com",
-            "title": "Printer Rentals PH - Printer Rental, Printer Repair and Ink and Toner ...",
-            "url": "https://www.printerrentalsph.com/"
-          },
-          {
-            "position": 3,
-            "domain": "facebook.com",
-            "title": "Jared's Ink and Toner Printer Rentals | Makati - Facebook",
-            "url": "https://www.facebook.com/printerexpressprinterrental/"
-          },
-          {
-            "position": 4,
-            "domain": "asdi.ph",
-            "title": "Printer Rentals - ASDI.ph",
-            "url": "https://asdi.ph/pages/printer-rental"
-          },
-          {
-            "position": 6,
-            "domain": "facebook.com",
-            "title": "DUB Printer Rental and Repair Service | Makati - Facebook",
-            "url": "https://www.facebook.com/p/DUB-Printer-Rental-and-Repair-Service-100082935771977/"
-          }
-        ]
+        "latestUrl": "https://marga.biz/contact/"
       },
       {
         "keyword": "Printer Rental Manila",
         "latestPosition": 6,
-        "previousPosition": 5,
-        "delta": -1,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "printersforrent.com",
-            "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease, Copiers ...",
-            "url": "https://www.printersforrent.com/"
-          },
-          {
-            "position": 2,
-            "domain": "ubix.com.ph",
-            "title": "Printer Rental",
-            "url": "https://ubix.com.ph/printer-rental/"
-          },
-          {
-            "position": 3,
-            "domain": "printerrentalsph.com",
-            "title": "Printer Rentals PH - Printer Rental, Printer Repair and Ink and Toner ...",
-            "url": "https://www.printerrentalsph.com/"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Eazy Rental Express Corp | Quezon City",
-            "url": "https://www.facebook.com/ezrentalexpress/"
-          },
-          {
-            "position": 5,
-            "domain": "asdi.ph",
-            "title": "Printer Rentals",
-            "url": "https://asdi.ph/pages/printer-rental"
-          }
-        ]
+        "previousPosition": 6,
+        "delta": 0,
+        "latestUrl": "https://marga.biz/"
       },
       {
         "keyword": "Printer Rental Philippines",
-        "latestPosition": 6,
+        "latestPosition": 7,
         "previousPosition": 6,
-        "delta": 0,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "printerrentalsph.com",
-            "title": "Printer Rentals PH - Printer Rental, Printer Repair and Ink and Toner ...",
-            "url": "https://www.printerrentalsph.com/"
-          },
-          {
-            "position": 2,
-            "domain": "ubix.com.ph",
-            "title": "Printer Rental | U-BIX Corporation",
-            "url": "https://ubix.com.ph/printer-rental/"
-          },
-          {
-            "position": 3,
-            "domain": "fujifilm.com",
-            "title": "Short Term Printer Rental Services in the Philippines - Fujifilm",
-            "url": "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Eazy Rental Express Corp | Quezon City - Facebook",
-            "url": "https://www.facebook.com/ezrentalexpress/"
-          },
-          {
-            "position": 5,
-            "domain": "asdi.ph",
-            "title": "Printer Rentals - ASDI.ph",
-            "url": "https://asdi.ph/pages/printer-rental"
-          }
-        ]
+        "delta": -1,
+        "latestUrl": "https://marga.biz/"
       },
       {
         "keyword": "Printer Rental Taguig",
-        "latestPosition": 5,
+        "latestPosition": 10,
         "previousPosition": 5,
-        "delta": 0,
-        "latestUrl": "https://marga.biz/printer-rental/",
-        "latestTitle": "Printer Rental Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "Inkhouse- Printer for Rent | Taguig",
-            "url": "https://www.facebook.com/inkhouseprinterforrent/"
-          },
-          {
-            "position": 2,
-            "domain": "printersforrent.com",
-            "title": "Printers for Rent | Printer Rental, Printer Leasing, Lease, Copiers ...",
-            "url": "https://www.printersforrent.com/"
-          },
-          {
-            "position": 3,
-            "domain": "waze.com",
-            "title": "Jared's Ink & Toner Printer Rentals",
-            "url": "https://www.waze.com/live-map/directions/ph/ncr/taguig/jareds-ink-and-toner-printer-rentals?to=place.ChIJD5ZIjsjJlzMRabT7-IhZfFo"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Naotech Incorporated | Taguig",
-            "url": "https://www.facebook.com/naotech.incorporated/"
-          },
-          {
-            "position": 6,
-            "domain": "facebook.com",
-            "title": "Visit us! Fax Parcel Print Uptown Mall BGC #faxparcelprint # ...",
-            "url": "https://www.facebook.com/FaxParcelPrint/posts/visit-us-fax-parcel-print-uptown-mall-bgc-faxparcelprint-printing-digitalprintin/648901843937560/"
-          }
-        ]
+        "delta": -5,
+        "latestUrl": "https://marga.biz/"
       },
       {
         "keyword": "Copier Rental",
-        "latestPosition": 2,
-        "previousPosition": null,
-        "delta": null,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "printersforrent.com",
-            "title": "Copiers | Printers for Rent | Metro Manila, Philippines",
-            "url": "https://www.printersforrent.com/product-category/term/copiers"
-          },
-          {
-            "position": 3,
-            "domain": "ubix.com.ph",
-            "title": "Printer Rental | U-BIX Corporation",
-            "url": "https://ubix.com.ph/printer-rental/"
-          },
-          {
-            "position": 4,
-            "domain": "fujifilm.com",
-            "title": "Short Term Printer Rental Services in the Philippines - Fujifilm",
-            "url": "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental"
-          },
-          {
-            "position": 5,
-            "domain": "copieronlineph.com",
-            "title": "copieronlineph",
-            "url": "https://copieronlineph.com/"
-          },
-          {
-            "position": 6,
-            "domain": "asdi.ph",
-            "title": "Printer Rentals - ASDI.ph",
-            "url": "https://asdi.ph/pages/printer-rental"
-          }
-        ]
+        "latestPosition": 1,
+        "previousPosition": 2,
+        "delta": 1,
+        "latestUrl": "https://marga.biz/"
       },
       {
         "keyword": "Copier For Rent",
-        "latestPosition": 4,
-        "previousPosition": null,
-        "delta": null,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "printersforrent.com",
-            "title": "Copiers | Printers for Rent | Metro Manila, Philippines - Printers for Rent",
-            "url": "https://www.printersforrent.com/product-category/term/copiers"
-          },
-          {
-            "position": 2,
-            "domain": "copieronlineph.com",
-            "title": "copieronlineph",
-            "url": "https://copieronlineph.com/"
-          },
-          {
-            "position": 3,
-            "domain": "facebook.com",
-            "title": "Armix Copier Rentals, Services and Sales",
-            "url": "https://www.facebook.com/p/Armix-Copier-Rentals-Services-and-Sales-100064185813103/"
-          },
-          {
-            "position": 5,
-            "domain": "ubix.com.ph",
-            "title": "Printer Rental",
-            "url": "https://ubix.com.ph/printer-rental/"
-          },
-          {
-            "position": 6,
-            "domain": "mclinkphil.com",
-            "title": "McLink Copy Services Phil Inc | Photocopier Machine Sales and ...",
-            "url": "https://www.mclinkphil.com/"
-          }
-        ]
+        "latestPosition": 6,
+        "previousPosition": 4,
+        "delta": -2,
+        "latestUrl": "https://marga.biz/"
       },
       {
         "keyword": "Copier Rental BGC",
         "latestPosition": null,
         "previousPosition": null,
         "delta": null,
-        "latestUrl": null,
-        "latestTitle": null,
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "Visit us! Fax Parcel Print Uptown Mall BGC ... - Facebook",
-            "url": "https://www.facebook.com/FaxParcelPrint/posts/visit-us-fax-parcel-print-uptown-mall-bgc-faxparcelprint-printing-digitalprintin/648901843937560/"
-          },
-          {
-            "position": 2,
-            "domain": "facebook.com",
-            "title": "Printing needs? pm us! 24 hours service. - Facebook",
-            "url": "https://www.facebook.com/groups/1098907517962483/posts/1679288916591004/"
-          },
-          {
-            "position": 3,
-            "domain": "youtube.com",
-            "title": "Copier Rental for Just ₱2,500/Month? Hassle-Free Printing Starts ...",
-            "url": "https://www.youtube.com/shorts/RANE2RFmZoA"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Rent copier with one month free rental - Facebook",
-            "url": "https://www.facebook.com/groups/1235755923927432/posts/1964436621059355/"
-          },
-          {
-            "position": 5,
-            "domain": "facebook.com",
-            "title": "Need a printer, but don't want to buy one? Rent one from ... - Facebook",
-            "url": "https://www.facebook.com/TetraTechnologiesInc/videos/need-a-printer-but-dont-want-to-buy-one-rent-one-from-us-%EF%B8%8Fcheck-out-our-availabl/1560832388196962/"
-          }
-        ]
+        "latestUrl": null
       },
       {
         "keyword": "Copier Rental Makati",
-        "latestPosition": null,
+        "latestPosition": 6,
         "previousPosition": null,
         "delta": null,
-        "latestUrl": null,
-        "latestTitle": null,
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "COPIER FOR RENTAL ONLY | Used - like new | Makati, Metro Manila",
-            "url": "https://www.facebook.com/groups/989140461491236/posts/2281776598894276/"
-          },
-          {
-            "position": 2,
-            "domain": "facebook.com",
-            "title": "PRINTER/COPIER RENTAL - Makati | Facebook Marketplace",
-            "url": "https://www.facebook.com/marketplace/item/631383652819161/"
-          },
-          {
-            "position": 3,
-            "domain": "youtube.com",
-            "title": "Copier Rental for Just ₱2,500/Month? Hassle-Free Printing Starts ...",
-            "url": "https://www.youtube.com/shorts/RANE2RFmZoA"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Need a printer, but don't want to buy one? Rent one from ... - Facebook",
-            "url": "https://www.facebook.com/TetraTechnologiesInc/videos/need-a-printer-but-dont-want-to-buy-one-rent-one-from-us-%EF%B8%8Fcheck-out-our-availabl/1560832388196962/"
-          },
-          {
-            "position": 5,
-            "domain": "facebook.com",
-            "title": "Printer Rental | Makati - Facebook",
-            "url": "https://www.facebook.com/p/Printer-Rental-100064067982129/"
-          }
-        ]
+        "latestUrl": "https://marga.biz/printer-rental/"
       },
       {
         "keyword": "Copier Rental Manila",
         "latestPosition": 2,
-        "previousPosition": null,
-        "delta": null,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "printersforrent.com",
-            "title": "Copiers | Printers for Rent | Metro Manila, Philippines - Printers for Rent",
-            "url": "https://www.printersforrent.com/product-category/term/copiers"
-          },
-          {
-            "position": 3,
-            "domain": "ubix.com.ph",
-            "title": "Printer Rental",
-            "url": "https://ubix.com.ph/printer-rental/"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Eazy Rental Express Corp | Quezon City",
-            "url": "https://www.facebook.com/ezrentalexpress/"
-          },
-          {
-            "position": 5,
-            "domain": "copieronlineph.com",
-            "title": "copieronlineph",
-            "url": "https://copieronlineph.com/"
-          },
-          {
-            "position": 6,
-            "domain": "asdi.ph",
-            "title": "Printer Rentals",
-            "url": "https://asdi.ph/pages/printer-rental"
-          }
-        ]
+        "previousPosition": 2,
+        "delta": 0,
+        "latestUrl": "https://marga.biz/"
       },
       {
         "keyword": "Copier Rental Taguig",
-        "latestPosition": 6,
-        "previousPosition": null,
+        "latestPosition": null,
+        "previousPosition": 6,
         "delta": null,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "Inkhouse- Printer for Rent | Taguig - Facebook",
-            "url": "https://www.facebook.com/inkhouseprinterforrent/"
-          },
-          {
-            "position": 2,
-            "domain": "printersforrent.com",
-            "title": "Copiers | Printers for Rent | Metro Manila, Philippines",
-            "url": "https://www.printersforrent.com/product-category/term/copiers"
-          },
-          {
-            "position": 3,
-            "domain": "facebook.com",
-            "title": "Printer Rental RMS Avisha Enterprises Printer Repair Pasig City",
-            "url": "https://www.facebook.com/PasigprinterRepairshop/posts/printer-rentalrms-avisha-enterprises-printer-repair-pasig-city/539667891989881/"
-          },
-          {
-            "position": 4,
-            "domain": "printersforrent.com",
-            "title": "Contact | Printers for Rent | Metro Manila, Philippines",
-            "url": "https://www.printersforrent.com/contact"
-          },
-          {
-            "position": 5,
-            "domain": "facebook.com",
-            "title": "JSG Printer Trading (@jsgprintertrading) - Facebook",
-            "url": "https://www.facebook.com/jsgprintertrading/"
-          }
-        ]
+        "latestUrl": null
       },
       {
         "keyword": "Copier Rental Quezon City",
-        "latestPosition": null,
+        "latestPosition": 9,
         "previousPosition": null,
         "delta": null,
-        "latestUrl": null,
-        "latestTitle": null,
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "Rental Xerox Machine | Quezon City - Facebook",
-            "url": "https://www.facebook.com/p/Rental-Xerox-Machine-61555278532144/"
-          },
-          {
-            "position": 2,
-            "domain": "facebook.com",
-            "title": "Eazy Rental Express Corp | Quezon City - Facebook",
-            "url": "https://www.facebook.com/ezrentalexpress/"
-          },
-          {
-            "position": 3,
-            "domain": "facebook.com",
-            "title": "COPIER RENTAL MADE EASY! Rent a copier for as low ... - Facebook",
-            "url": "https://www.facebook.com/copieronline/videos/%EF%B8%8F-copier-rental-made-easyrent-a-copier-for-as-low-as-3000-per-month-and-start-yo/1404591564617388/"
-          },
-          {
-            "position": 4,
-            "domain": "copieronlineph.com",
-            "title": "copieronlineph",
-            "url": "https://copieronlineph.com/"
-          },
-          {
-            "position": 5,
-            "domain": "asdi.ph",
-            "title": "Printer Rentals - ASDI.ph",
-            "url": "https://asdi.ph/pages/printer-rental"
-          }
-        ]
+        "latestUrl": "https://marga.biz/contact/"
       },
       {
         "keyword": "Copier Rental Pasig",
         "latestPosition": null,
         "previousPosition": null,
         "delta": null,
-        "latestUrl": null,
-        "latestTitle": null,
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "Printer Rental RMS Avisha Enterprises Printer Repair Pasig City",
-            "url": "https://www.facebook.com/PasigprinterRepairshop/posts/printer-rentalrms-avisha-enterprises-printer-repair-pasig-city/539667891989881/"
-          },
-          {
-            "position": 2,
-            "domain": "facebook.com",
-            "title": "Printers For Rent | Pasig - Facebook",
-            "url": "https://www.facebook.com/affordaink/?locale=ga_IE"
-          },
-          {
-            "position": 3,
-            "domain": "facebook.com",
-            "title": "Printer Repair Pasig City Printer Rental Epson Brother - Facebook",
-            "url": "https://www.facebook.com/PasigprinterRepairshop/videos/printer-repair-pasig-city-printer-rental-epson-brother/760181796198993/"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Printers For Rent | Pasig - Facebook",
-            "url": "https://www.facebook.com/affordaink/albums/638825478266863/"
-          },
-          {
-            "position": 5,
-            "domain": "ph.polomap.com",
-            "title": "Printer Rental and Copier Rental, Pasig - polomap",
-            "url": "https://ph.polomap.com/ca/pasig/4470"
-          }
-        ]
+        "latestUrl": null
       },
       {
         "keyword": "Copier Rental Ortigas",
-        "latestPosition": 2,
-        "previousPosition": null,
-        "delta": null,
-        "latestUrl": "https://marga.biz/",
-        "latestTitle": "Copier Rental | Printer Rental | Manila, Philippines",
-        "competitors": [
-          {
-            "position": 1,
-            "domain": "facebook.com",
-            "title": "I want to rent a printer in Ortigas - Facebook",
-            "url": "https://www.facebook.com/groups/743706419676663/posts/1856452768402017/"
-          },
-          {
-            "position": 3,
-            "domain": "printersforrent.com",
-            "title": "Copiers | Printers for Rent | Metro Manila, Philippines",
-            "url": "https://printersforrent.com/product-category/term/copiers"
-          },
-          {
-            "position": 4,
-            "domain": "facebook.com",
-            "title": "Printers For Rent | Pasig - Facebook",
-            "url": "https://www.facebook.com/affordaink/"
-          },
-          {
-            "position": 5,
-            "domain": "mclinkphil.com",
-            "title": "McLink Copy Services Phil Inc | Photocopier Machine Sales and ...",
-            "url": "https://www.mclinkphil.com/"
-          },
-          {
-            "position": 6,
-            "domain": "ubix.com.ph",
-            "title": "U-BIX Corporation | Office Equipment, Copier, Rental, and Print ...",
-            "url": "https://ubix.com.ph/"
-          }
-        ]
+        "latestPosition": 1,
+        "previousPosition": 2,
+        "delta": 1,
+        "latestUrl": "https://marga.biz/"
       }
     ],
-    "dailyTasks": [
+    "competitorResearch": {
+      "printerCompetitors": [
+        "https://www.printerrentalsph.com/",
+        "https://ubix.com.ph/printer-rental/",
+        "https://asdi.ph/pages/printer-rental",
+        "https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental"
+      ],
+      "localCompetitor": "https://www.mclinkphil.com/office-printer-lease-bgc-2025-trends-costs-best-providers/",
+      "strengthsObserved": [
+        "Explicit price/support framing",
+        "Maintenance, toner, and training messaging",
+        "Hidden-fee and lease-plan decision guidance"
+      ],
+      "gapsClosed": [
+        "BGC hidden-fee checklist",
+        "Makati procurement checklist",
+        "Pasig service checklist",
+        "QC volume planning",
+        "Print All You Can vs standard rental comparison"
+      ]
+    },
+    "completedTasks": [
       {
-        "taskKey": "run_live_rankings",
         "task": "Re-check printer and protected copier rankings live",
-        "implementation": "Pulled a fresh Serper snapshot for printer priority terms, protected copier winners, and copier-location terms before and after implementation, then used the gaps to prioritize BGC, Makati, and Taguig work.",
-        "targetPageKeyword": "Printer Rental, Printer For Rent, Print All You Can, Copier Rental, Copier For Rent",
         "status": "Done",
         "link": "https://marga.biz/printer-rental/"
       },
       {
-        "taskKey": "publish_two_pages",
         "task": "Publish exactly 2 new copier-local service pages",
-        "implementation": "Published Copier Rental BGC and Copier Rental Makati service pages with local FAQ schema, buyer-focused quote guidance, and links back to printer pages and support articles without touching the home page or copier core pages.",
-        "targetPageKeyword": "Copier Rental BGC, Copier Rental Makati",
+        "status": "Done",
+        "link": "https://marga.biz/copier-rental/pasig/"
+      },
+      {
+        "task": "Publish exactly 5 supporting blogs",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/printer-rental-bgc-hidden-fees-checklist/"
+      },
+      {
+        "task": "Improve scheduled printer-rental pages and generated hub",
+        "status": "Done",
+        "link": "https://marga.biz/printer-rental/"
+      },
+      {
+        "task": "Improve copier location growth pages and internal links",
         "status": "Done",
         "link": "https://marga.biz/copier-rental/bgc/"
       },
       {
-        "taskKey": "publish_five_blogs",
-        "task": "Publish exactly 5 supporting articles/blogs",
-        "implementation": "Published 5 support articles: BGC copier checklist, Makati copier cost checklist, BGC Print All You Can planning, Taguig printer volume planning, and Makati vs BGC printer setup comparison.",
-        "targetPageKeyword": "Print All You Can, Printer Rental Taguig, Printer Rental Makati, Copier Rental BGC, Copier Rental Makati",
-        "status": "Done",
-        "link": "https://marga.biz/printer-rental/printer-rental-taguig-volume-planning/"
-      },
-      {
-        "taskKey": "improve_scheduled_printer_pages",
-        "task": "Improve scheduled printer-rental pages",
-        "implementation": "Updated Printer Rental BGC, Makati, and Taguig pages plus the generated Printer Rental hub with new internal links, refreshed buyer guidance, stronger Taguig metadata, and new support paths.",
-        "targetPageKeyword": "Printer Rental BGC, Printer Rental Makati, Printer Rental Taguig",
-        "status": "Done",
-        "link": "https://marga.biz/printer-rental/taguig/"
-      },
-      {
-        "taskKey": "add_internal_links",
-        "task": "Add internal links across printer and copier-location clusters",
-        "implementation": "Added hub-to-city, city-to-article, article-to-city, printer-to-copier, and copier-to-printer links across BGC, Makati, and Taguig pages so support articles reinforce commercial pages.",
-        "targetPageKeyword": "Printer Rental BGC, Printer Rental Makati, Printer Rental Taguig, Copier Rental BGC, Copier Rental Makati",
+        "task": "Refresh FAQ and schema blocks",
         "status": "Done",
         "link": "https://marga.biz/printer-rental/bgc/"
       },
       {
-        "taskKey": "refresh_schema_faq_conversion",
-        "task": "Refresh FAQ/schema blocks and conversion sections",
-        "implementation": "Added FAQ/Breadcrumb/Article schema to new support articles, refreshed Taguig FAQ content and JSON-LD, and expanded quote sections to ask for location, users, monthly volume, scan/copy needs, and support expectations.",
-        "targetPageKeyword": "Printer Rental Taguig, Copier Rental BGC, Copier Rental Makati",
+        "task": "Improve conversion sections and quote-prep guidance",
         "status": "Done",
-        "link": "https://marga.biz/copier-rental/makati/"
-      },
-      {
-        "taskKey": "close_competitor_gaps",
-        "task": "Close competitor content and trust gaps",
-        "implementation": "Borrowed the useful buyer angles competitors lead with—fee transparency, volume planning, support scope, and local deployment fit—then turned them into Marga-owned support pages and quote guidance without copying competitor claims.",
-        "targetPageKeyword": "Printer Rental Philippines, Copier Rental BGC, Copier Rental Makati",
-        "status": "Done",
-        "link": "https://marga.biz/copier-rental/makati/copier-rental-makati-service-cost-checklist/"
+        "link": "https://marga.biz/copier-rental/pasig/copier-rental-pasig-service-checklist/"
       }
     ],
-    "batchNotes": [
-      "Published 2 copier-local service pages: /copier-rental/bgc/ and /copier-rental/makati/.",
-      "Published 5 support articles across copier-local and printer clusters.",
-      "Updated Printer Rental BGC, Makati, Taguig, and the generated Printer Rental hub with new internal links and stronger buyer guidance.",
-      "Verified all 11 changed/new production URLs after deploy before marking tasks Done.",
-      "Protected copier winner URLs and the home page were not edited; Copier Rental and Copier For Rent were monitored only."
+    "notes": [
+      "Published 2 new copier-location service pages: /copier-rental/pasig/ and /copier-rental/quezon-city/.",
+      "Published 5 support articles across printer and copier-location clusters.",
+      "Updated BGC, Makati, Taguig, and the generated Printer Rental hub with stronger internal links and quote-prep copy.",
+      "Updated Copier Rental BGC and Copier Rental Makati with cross-links into the new Pasig and Quezon City location pages.",
+      "Protected copier winner pages and the home page were not edited; Copier Rental and Copier For Rent were monitored only.",
+      "Verified all 13 changed/new production URLs before marking tasks Done."
     ]
   }
 }
