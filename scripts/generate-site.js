@@ -34,8 +34,8 @@ const stats = {
 
 const PRINTER_PAGE_SEO_OVERRIDES = {
     'https://marga.biz/printer-rental/': {
-        title: 'Printer Rental Philippines | Office Printer Rentals',
-        metaDescription: 'Printer rental in the Philippines for offices, clinics, schools, and growing teams. Delivery, setup, maintenance, flexible plans, and quote-first support.'
+        title: 'Printer Rental Philippines | Printer For Rent & Print All You Can',
+        metaDescription: 'Printer rental, printer for rent, and Print All You Can in the Philippines for offices that need delivery, setup, maintenance, and quote-first support.'
     },
     'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': {
         title: 'Printer Rental Cost Guide | Budgeting for Office Teams',
@@ -76,6 +76,10 @@ const PRINTER_PAGE_FAQS = {
         {
             question: 'When should a team compare Print All You Can instead of a standard rental?',
             answer: 'Compare Print All You Can when your office has steady or high-volume recurring print demand and wants to test whether a higher-usage package is more practical than a lighter standard setup.'
+        },
+        {
+            question: 'Can teams use one page to compare Printer Rental, Printer For Rent, and Print All You Can?',
+            answer: 'Yes. Use the main Printer Rental hub to compare standard printer rental, printer-for-rent equipment options, and Print All You Can packages, then move into the local Makati, BGC, Taguig, Manila, Pasig, Quezon City, or Ortigas pages.'
         }
     ],
     'https://marga.biz/printer-rental/how-much-does-printer-rental-cost/': [
@@ -814,6 +818,7 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
         <h2>Printer Rental Service Areas in Metro Manila</h2>
         <p>Need a printer rental provider that understands your office location, delivery requirements, support expectations, and print volume? Use the city pages below to send stronger local relevance into the right service page and compare what the quote should include before you contact us.</p>
         <p>If you are specifically searching for <a href="/printer-rental/makati/">printer rental in Makati</a>, <a href="/printer-rental/ortigas/">printer rental in Ortigas</a>, <a href="/printer-rental/pasig/">printer rental in Pasig</a>, <a href="/printer-rental/quezon-city/">printer rental in Quezon City</a>, <a href="/printer-rental/manila/">printer rental in Manila</a>, <a href="/printer-rental/bgc/">printer rental in BGC</a>, or <a href="/printer-rental/taguig/">printer rental in Taguig</a>, use these pages to compare local office fit, service coverage, and printer types before requesting a quote. For setup-level guidance, pair those pages with the <a href="/printer-rental/how-to-choose-printer-rental-makati/">Makati</a>, <a href="/printer-rental/how-to-choose-printer-rental-pasig/">Pasig</a>, <a href="/printer-rental/how-to-choose-printer-rental-quezon-city/">Quezon City</a>, <a href="/printer-rental/how-to-choose-printer-rental-taguig/">Taguig</a>, <a href="/printer-rental/printer-rental-taguig-volume-planning/">Taguig volume planning</a>, <a href="/printer-rental/how-to-plan-print-all-you-can-for-bgc-teams/">BGC Print All You Can planning</a>, and <a href="/printer-rental/printer-rental-makati-vs-bgc-office-setup/">Makati vs BGC setup</a> guides.</p>
+        <p>For quote-comparison support, use the <a href="/printer-rental/printer-for-rent-makati-procurement-checklist/">Makati Printer For Rent procurement checklist</a>, <a href="/printer-rental/printer-rental-bgc-hidden-fees-checklist/">BGC hidden-fees checklist</a>, and <a href="/printer-rental/print-all-you-can-vs-standard-printer-rental/">Print All You Can vs standard rental guide</a>.</p>
     <div class="service-area-grid">
         <a class="service-area-card" href="/printer-rental/makati/">
             <span class="service-area-label">Makati</span>
@@ -854,7 +859,7 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
 </section>
 <section class="service-areas-section">
     <h2>Related Copier Location Pages</h2>
-    <p>If shared copying and scanning are more important than printer-only planning, compare the new <a href="/copier-rental/bgc/">Copier Rental BGC</a> and <a href="/copier-rental/makati/">Copier Rental Makati</a> local pages for city-specific quote guidance and office-fit details.</p>
+    <p>If shared copying and scanning are more important than printer-only planning, compare <a href="/copier-rental/bgc/">Copier Rental BGC</a>, <a href="/copier-rental/makati/">Copier Rental Makati</a>, <a href="/copier-rental/pasig/">Copier Rental Pasig</a>, and <a href="/copier-rental/quezon-city/">Copier Rental Quezon City</a> for city-specific quote guidance and office-fit details.</p>
 </section>
 <section class="quote-panel">
     <h2>What serious office buyers compare before approving a printer rental</h2>
