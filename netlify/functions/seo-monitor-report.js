@@ -76,7 +76,10 @@ const EXISTING_BLOG_SUPPORT_PAGES = [
     '/printer-rental/how-is-printer-maintenance-handled-in-rentals/',
     '/printer-rental/how-do-i-choose-the-right-printer-rental-company/',
     '/printer-rental/comparing-printer-rentals/',
-    '/printer-rental/cost-savings-printer-rental/'
+    '/printer-rental/cost-savings-printer-rental/',
+    '/printer-rental/printer-rental-manila-office-setup-checklist/',
+    '/printer-rental/printer-rental-philippines-service-coverage-checklist/',
+    '/printer-rental/print-all-you-can-volume-planning-guide/'
 ];
 const COPIER_LOCATION_GROWTH_PAGES = [
     '/copier-rental/bgc/',
@@ -90,6 +93,8 @@ const COPIER_LOCATION_GROWTH_PAGES = [
 const COPIER_LOCATION_SUPPORT_PAGES = [
     '/copier-rental/how-to-choose-copier-rental-bgc/',
     '/copier-rental/how-to-choose-copier-rental-makati/',
+    '/copier-rental/manila/copier-rental-manila-setup-checklist/',
+    '/copier-rental/taguig/copier-rental-taguig-office-readiness-checklist/',
     '/copier-rental/how-to-choose-copier-rental-manila/',
     '/copier-rental/how-to-choose-copier-rental-taguig/',
     '/copier-rental/how-to-choose-copier-rental-quezon-city/'
@@ -99,7 +104,9 @@ const COPIER_LOCATION_BLOG_PAGES = [
     '/copier-rental/copier-rental-vs-buying/',
     '/copier-rental/copier-rental-maintenance-guide/',
     '/copier-rental/copier-rental-for-offices/',
-    '/copier-rental/copier-rental-checklist/'
+    '/copier-rental/copier-rental-checklist/',
+    '/copier-rental/manila/copier-rental-manila-setup-checklist/',
+    '/copier-rental/taguig/copier-rental-taguig-office-readiness-checklist/'
 ];
 const TASK_STATUS_DONE = 'Done';
 const DEFAULT_TASK_STATUS = 'Active';
