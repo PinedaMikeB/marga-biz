@@ -119,6 +119,23 @@ function checkEnvVisibility() {
     return env;
 }
 
+function checkInstalledDependencies() {
+    const modules = ['firebase-admin', 'googleapis', 'nodemailer'];
+    const resolved = {};
+
+    for (const moduleName of modules) {
+        try {
+            resolved[moduleName] = require.resolve(moduleName, {
+                paths: [REPO_ROOT]
+            });
+        } catch {
+            throw new Error(`Missing installed dependency for automation runtime: ${moduleName}`);
+        }
+    }
+
+    return resolved;
+}
+
 function ensureOriginReachable() {
     const head = git(['ls-remote', '--exit-code', 'origin', 'HEAD'], { timeout: 45000 });
     return { head };
@@ -192,6 +209,7 @@ async function run() {
     await addCheck('gitCommonDirWritable', async () => ensureGitCommonDirWritable(gitContext.gitCommonDir));
     await addCheck('worktreeStatus', async () => ensureCleanWorktree());
     await addCheck('envVisibility', async () => checkEnvVisibility());
+    await addCheck('installedDependencies', async () => checkInstalledDependencies());
     await addCheck('dnsGithub', async () => checkDns('github.com'));
     await addCheck('dnsSite', async () => checkDns('marga.biz'));
     await addCheck('dnsTelegram', async () => checkDns('api.telegram.org'));
