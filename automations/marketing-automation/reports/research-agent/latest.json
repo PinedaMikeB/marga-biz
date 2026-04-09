@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-04-02T05:07:23.791Z",
+  "worker": "research-agent",
+  "brief": {
+    "campaignName": "Pasig Printer Rental Push",
+    "objective": "Generate qualified printer rental inquiries from office teams in Pasig and nearby business districts.",
+    "primaryKeyword": "printer rental pasig",
+    "targetAreas": [
+      "Pasig",
+      "Ortigas"
+    ]
+  },
+  "keywordOpportunities": [
+    {
+      "keyword": "printer rental pasig",
+      "area": "Pasig",
+      "currentRank": null,
+      "opportunity": "No current ranking. This is a gap worth addressing first."
+    },
+    {
+      "keyword": "printer rental ortigas",
+      "area": "Ortigas",
+      "currentRank": 4,
+      "opportunity": "Improve from #4 with location-matched content and support posts."
+    }
+  ],
+  "relevantPages": [
+    {
+      "file": "static-pages/printer-rental/best-printer-rental-setup-ortigas/index.html",
+      "url": "/printer-rental/best-printer-rental-setup-ortigas/",
+      "score": 1
+    },
+    {
+      "file": "static-pages/printer-rental/how-to-choose-printer-rental-pasig/index.html",
+      "url": "/printer-rental/how-to-choose-printer-rental-pasig/",
+      "score": 1
+    },
+    {
+      "file": "static-pages/printer-rental/ortigas/index.html",
+      "url": "/printer-rental/ortigas/",
+      "score": 1
+    },
+    {
+      "file": "static-pages/printer-rental/pasig/index.html",
+      "url": "/printer-rental/pasig/",
+      "score": 1
+    },
+    {
+      "file": "static-pages/printer-rental/index.html",
+      "url": "/printer-rental/",
+      "score": 0
+    }
+  ],
+  "contentAngles": [
+    {
+      "title": "Pasig office uptime angle",
+      "hook": "Help Pasig office teams avoid downtime with a rental setup that includes support and predictable response expectations.",
+      "targetKeyword": "printer rental pasig",
+      "whyItMatters": "printer rental pasig is currently not ranking, so a location-specific angle can close the visibility gap."
+    },
+    {
+      "title": "Budget clarity angle",
+      "hook": "Show buyers how monthly printer rental can reduce surprise maintenance and procurement friction.",
+      "targetKeyword": "printer rental cost comparison",
+      "whyItMatters": "This supports decision-stage buyers who need a simple justification before contacting sales."
+    },
+    {
+      "title": "Local trust angle",
+      "hook": "Use local context for Pasig teams, such as common office use cases and service expectations, instead of generic rental copy.",
+      "targetKeyword": "printer rental pasig office teams",
+      "whyItMatters": "Local specificity makes both SEO content and social creative feel more credible."
+    }
+  ],
+  "summary": "Research points to printer rental pasig as the lead opportunity, with Pasig, Ortigas as the strongest geography focus. Existing printer-rental pages give us supporting material, but the biggest lift will come from location-specific messaging tied to office uptime and simple buyer justification."
+}

@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-04-02T13:00:00+08:00",
+  "platforms": {
+    "facebook": {
+      "posts": [
+        {
+          "id": "fb-ortigas-001",
+          "publishedAt": "2026-03-28T10:00:00+08:00",
+          "campaign": "Ortigas Office Teams",
+          "asset": "best-printer-rental-setup-ortigas",
+          "impressions": 1200,
+          "engagements": 78,
+          "clicks": 41,
+          "leads": 3,
+          "spend": 0
+        }
+      ]
+    },
+    "instagram": {
+      "posts": [
+        {
+          "id": "ig-ortigas-001",
+          "publishedAt": "2026-03-28T11:00:00+08:00",
+          "campaign": "Ortigas Office Teams",
+          "asset": "best-printer-rental-setup-ortigas",
+          "impressions": 950,
+          "engagements": 65,
+          "clicks": 19,
+          "leads": 1,
+          "spend": 0
+        }
+      ]
+    },
+    "threads": {
+      "posts": [
+        {
+          "id": "threads-ortigas-001",
+          "publishedAt": "2026-03-28T11:30:00+08:00",
+          "campaign": "Ortigas Office Teams",
+          "asset": "best-printer-rental-setup-ortigas",
+          "impressions": 400,
+          "engagements": 18,
+          "clicks": 6,
+          "leads": 0,
+          "spend": 0
+        }
+      ]
+    }
+  }
+}

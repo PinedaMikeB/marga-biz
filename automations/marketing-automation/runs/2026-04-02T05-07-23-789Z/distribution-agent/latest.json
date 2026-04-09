@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-04-02T05:07:23.899Z",
+  "worker": "distribution-agent",
+  "manifest": {
+    "campaignName": "Pasig Printer Rental Push",
+    "landingPage": "/printer-rental/",
+    "channels": [
+      {
+        "channel": "facebook",
+        "status": "supported-in-repo",
+        "action": "Use the existing Facebook publisher after approving copy and destination.",
+        "copyPreview": "Looking for printer rental in Pasig?\n\nPrinter rental that keeps Pasig offices moving. We are focusing this campaign on office teams that need a cleaner monthly setup and a clearer support story.\n\nSee the offer here: /printer-rental/\n\n#MargaEnterprises #PrinterRental #Pasig",
+        "asset": "Printer rental that keeps Pasig offices moving."
+      },
+      {
+        "channel": "instagram",
+        "status": "planning-only",
+        "action": "Prepare caption and asset package; live publishing is not wired in this repo yet.",
+        "copyPreview": "Printer rental that keeps Pasig offices moving.\n\nA more practical rental option for office admins and procurement teams who want predictable monthly setup and faster decision-making.\n\nRequest a quick rental recommendation\n\n#PrinterRental #OfficeTeams #Pasig",
+        "asset": "Printer rental that keeps Pasig offices moving."
+      },
+      {
+        "channel": "threads",
+        "status": "planning-only",
+        "action": "Prepare the short post and hold for future API wiring or manual posting.",
+        "copyPreview": "Printer rental is not just a hardware decision. For Pasig office teams, it is an uptime and response-time decision. Request a quick rental recommendation: /printer-rental/",
+        "asset": "Printer rental that keeps Pasig offices moving."
+      },
+      {
+        "channel": "youtube",
+        "status": "planning-only",
+        "action": "Prepare the title, description, and storyboard; hold until upload automation is added.",
+        "copyPreview": "Pasig Printer Rental: A Better Setup For Office Teams",
+        "asset": "Video storyboard"
+      }
+    ],
+    "repoCommands": [
+      "node scripts/facebook-page-publisher.js preview --page=static-pages/printer-rental/index.html",
+      "node scripts/facebook-page-publisher.js publish --page=static-pages/printer-rental/index.html"
+    ],
+    "approvalsRequired": [
+      "Confirm the landing page is the right destination for this campaign.",
+      "Review all platform copy for accuracy and tone.",
+      "Keep Instagram, Threads, and YouTube in plan-only mode until their APIs are added in this repo."
+    ]
+  },
+  "summary": "The distribution agent converts campaign outputs into a publish manifest that matches current repo reality. Facebook can move through the existing publisher flow, while Instagram, Threads, and YouTube stay in planning mode so we do not pretend unsupported live automation already exists."
+}

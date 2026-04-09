@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-04-02T05:07:23.903Z",
+  "worker": "performance-analyst",
+  "inputs": {
+    "serpReport": "/Volumes/Wotg Drive Mike/GitHub/marga-biz/reports/serp-monitor/latest.json",
+    "facebookReport": "/Volumes/Wotg Drive Mike/GitHub/marga-biz/reports/facebook/latest.json",
+    "manualMetrics": "/Volumes/Wotg Drive Mike/GitHub/marga-biz/automations/marketing-automation/data/manual-metrics.sample.json"
+  },
+  "serp": {
+    "generatedAt": "2026-03-28T01:50:04.072Z",
+    "trackedKeywordCount": 6,
+    "rankingKeywordCount": 5,
+    "missingKeywordCount": 1,
+    "averageRank": 5,
+    "bestRank": {
+      "keyword": "printer rental bgc",
+      "area": "BGC",
+      "rank": 3,
+      "url": "https://marga.biz/printer-rental/"
+    },
+    "weakestRank": {
+      "keyword": "printer rental quezon city",
+      "area": "Quezon City",
+      "rank": 8,
+      "url": "https://marga.biz/contact/"
+    },
+    "nearWins": [
+      {
+        "keyword": "printer rental ortigas",
+        "area": "Ortigas",
+        "rank": 4,
+        "url": "https://marga.biz/contact/",
+        "topCompetitors": [
+          "facebook.com",
+          "titinda.com",
+          "asdi.ph"
+        ]
+      },
+      {
+        "keyword": "printer rental makati",
+        "area": "Makati",
+        "rank": 5,
+        "url": "https://marga.biz/printer-rental/",
+        "topCompetitors": [
+          "facebook.com",
+          "asdi.ph",
+          "printerrentalsph.com"
+        ]
+      },
+      {
+        "keyword": "printer rental manila",
+        "area": "Manila",
+        "rank": 5,
+        "url": "https://marga.biz/",
+        "topCompetitors": [
+          "asdi.ph",
+          "printerrentalsph.com",
+          "printersforrent.com"
+        ]
+      },
+      {
+        "keyword": "printer rental quezon city",
+        "area": "Quezon City",
+        "rank": 8,
+        "url": "https://marga.biz/contact/",
+        "topCompetitors": [
+          "facebook.com",
+          "asdi.ph",
+          "copylink.ph"
+        ]
+      }
+    ],
+    "missingCoverage": [
+      {
+        "keyword": "printer rental pasig",
+        "area": "Pasig",
+        "topCompetitors": [
+          "facebook.com",
+          "printersforrent.com",
+          "rms-avisha.vercel.app"
+        ]
+      }
+    ]
+  },
+  "facebook": {
+    "available": true,
+    "mode": "preview",
+    "generatedAt": "2026-03-28T02:13:24.165Z",
+    "title": "Best Printer Rental Setup for Ortigas Office Teams",
+    "url": "https://marga.biz/printer-rental/best-printer-rental-setup-ortigas/",
+    "file": "static-pages/printer-rental/best-printer-rental-setup-ortigas/index.html",
+    "hashtags": [
+      "#MargaEnterprises",
+      "#PrinterRental",
+      "#OfficePrinterRental",
+      "#Ortigas"
+    ],
+    "hashtagCount": 4,
+    "messageLength": 304
+  },
+  "manualMetrics": {
+    "available": true,
+    "generatedAt": "2026-04-02T13:00:00+08:00",
+    "platforms": [
+      {
+        "platform": "facebook",
+        "posts": 1,
+        "impressions": 1200,
+        "engagements": 78,
+        "clicks": 41,
+        "leads": 3,
+        "spend": 0,
+        "engagementRate": 6.5,
+        "ctr": 3.4166666666666665,
+        "leadRate": 7.317073170731707,
+        "costPerLead": 0
+      },
+      {
+        "platform": "instagram",
+        "posts": 1,
+        "impressions": 950,
+        "engagements": 65,
+        "clicks": 19,
+        "leads": 1,
+        "spend": 0,
+        "engagementRate": 6.842105263157896,
+        "ctr": 2,
+        "leadRate": 5.263157894736842,
+        "costPerLead": 0
+      },
+      {
+        "platform": "threads",
+        "posts": 1,
+        "impressions": 400,
+        "engagements": 18,
+        "clicks": 6,
+        "leads": 0,
+        "spend": 0,
+        "engagementRate": 4.5,
+        "ctr": 1.5,
+        "leadRate": 0,
+        "costPerLead": null
+      }
+    ],
+    "topPlatform": {
+      "platform": "facebook",
+      "posts": 1,
+      "impressions": 1200,
+      "engagements": 78,
+      "clicks": 41,
+      "leads": 3,
+      "spend": 0,
+      "engagementRate": 6.5,
+      "ctr": 3.4166666666666665,
+      "leadRate": 7.317073170731707,
+      "costPerLead": 0
+    }
+  },
+  "summary": {
+    "executiveSummary": "Performance snapshot: best tracked rank is #3 for printer rental bgc; 1 tracked keywords have no current ranking; Facebook is the strongest sampled channel.",
+    "recommendations": {
+      "priorities": [
+        "Push printer rental ortigas from #4 with a sharper location-specific page, stronger internal links, and a matching social campaign.",
+        "Create or strengthen dedicated coverage for printer rental pasig; Marga is currently not ranking while facebook.com, printersforrent.com, rms-avisha.vercel.app are visible.",
+        "Reuse the \"Best Printer Rental Setup for Ortigas Office Teams\" angle across additional channels only after tailoring the hook and CTA per platform.",
+        "Double down on Facebook first; it currently leads this sample with 3 leads and 41 clicks."
+      ],
+      "nextExperiments": [
+        "Test location-specific content for missing cities before increasing creative volume.",
+        "Rewrite hooks and CTA format for Threads; it is currently the weakest of the sampled channels."
+      ],
+      "risks": []
+    }
+  }
+}

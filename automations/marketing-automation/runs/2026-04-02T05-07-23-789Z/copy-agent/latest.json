@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-04-02T05:07:23.897Z",
+  "worker": "copy-agent",
+  "copy": {
+    "facebook": {
+      "caption": "Looking for printer rental in Pasig?\n\nPrinter rental that keeps Pasig offices moving. We are focusing this campaign on office teams that need a cleaner monthly setup and a clearer support story.\n\nSee the offer here: /printer-rental/\n\n#MargaEnterprises #PrinterRental #Pasig"
+    },
+    "instagram": {
+      "caption": "Printer rental that keeps Pasig offices moving.\n\nA more practical rental option for office admins and procurement teams who want predictable monthly setup and faster decision-making.\n\nRequest a quick rental recommendation\n\n#PrinterRental #OfficeTeams #Pasig"
+    },
+    "threads": {
+      "post": "Printer rental is not just a hardware decision. For Pasig office teams, it is an uptime and response-time decision. Request a quick rental recommendation: /printer-rental/"
+    },
+    "youtube": {
+      "title": "Pasig Printer Rental: A Better Setup For Office Teams",
+      "description": "This short campaign video explains why printer rental can be a practical fit for Pasig office teams that want predictable monthly setup and clearer support expectations.\n\nLearn more: /printer-rental/\n\nCTA: Request a quick rental recommendation"
+    },
+    "ctaVariants": [
+      "Request a quick rental recommendation",
+      "Get a quick rental recommendation",
+      "Talk to Marga about your office setup"
+    ]
+  },
+  "summary": "The copy agent turns the campaign plan into channel-specific language while keeping one consistent offer. The copy varies by platform length and tone, but the message remains anchored to Pasig office teams and the same landing-page CTA."
+}

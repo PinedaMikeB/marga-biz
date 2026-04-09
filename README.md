@@ -110,6 +110,9 @@ npm run generate    # Generate HTML pages from WordPress data
 npm run serve       # Start local server (port 8080)
 npm run build       # Build for production
 npm run deploy      # Deploy to Netlify
+npm run facebook:list     # Show the curated Facebook post queue
+npm run facebook:preview  # Build the next Facebook post without publishing
+npm run facebook:publish  # Publish the next Facebook post to the Page API
 ```
 
 ---

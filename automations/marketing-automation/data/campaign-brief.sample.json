@@ -1,0 +1,36 @@
+{
+  "campaignName": "Pasig Printer Rental Push",
+  "brand": "Marga Enterprises",
+  "generatedAt": "2026-04-02T13:10:00+08:00",
+  "objective": "Generate qualified printer rental inquiries from office teams in Pasig and nearby business districts.",
+  "primaryKeyword": "printer rental pasig",
+  "targetAreas": [
+    "Pasig",
+    "Ortigas"
+  ],
+  "audience": {
+    "primary": "Office admins and operations leads in SMEs and mid-market teams",
+    "secondary": "Procurement staff looking for flexible printer rental arrangements"
+  },
+  "offer": {
+    "headline": "Reliable printer rental for office teams that need fast support and predictable monthly costs.",
+    "cta": "Request a quick rental recommendation",
+    "landingPagePreference": "/printer-rental/"
+  },
+  "channels": [
+    "facebook",
+    "instagram",
+    "threads",
+    "youtube"
+  ],
+  "constraints": [
+    "Keep claims supportable for business buyers in the Philippines.",
+    "Do not change the home page or copier-rental protected pages in this workflow.",
+    "Prefer existing printer-rental pages when a new page is not yet available."
+  ],
+  "contentPackage": {
+    "heroAsset": "1 short location-specific campaign concept",
+    "supportPosts": 3,
+    "videoNeeded": true
+  }
+}

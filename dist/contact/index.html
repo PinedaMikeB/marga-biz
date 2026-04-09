@@ -175,6 +175,29 @@
             height: 250px;
             border: 0;
         }
+
+        .quick-action-panel {
+            margin: 30px 0;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(0, 102, 204, 0.06), rgba(255, 107, 0, 0.07));
+            box-shadow: 0 10px 30px rgba(0, 61, 122, 0.08);
+        }
+
+        .quick-action-panel h2 {
+            margin: 0 0 12px;
+            color: #003d7a;
+            font-size: 1.8rem;
+        }
+
+        .quick-action-panel p {
+            margin-bottom: 18px;
+        }
+
+        .quick-action-panel .cta-buttons {
+            justify-content: flex-start;
+        }
     </style>
 </head>
 <body class="page contact-page">
@@ -236,6 +259,10 @@
                 </p>
 
                 <div class="link-card-grid" style="margin: 30px 0 10px;">
+                    <a href="/printer-rental/" class="link-card">
+                        <strong>Printer Rental Philippines</strong>
+                        <span>Start with the main service page if you are comparing options across Metro Manila.</span>
+                    </a>
                     <a href="/printer-rental/makati/" class="link-card">
                         <strong>Printer Rental Makati</strong>
                         <span>For Ayala, Salcedo, Legazpi, Rockwell, and nearby Makati offices.</span>
@@ -261,6 +288,16 @@
                         <span>For Bonifacio Global City, Taguig offices, startup teams, and commercial spaces.</span>
                     </a>
                 </div>
+
+                <section class="quick-action-panel">
+                    <h2>Need a printer rental quote or available-unit check?</h2>
+                    <p>If your requirement is mainly for <a href="/printer-rental/">printer rental</a>, use the actions below to reach sales faster or continue with the form for a more detailed request.</p>
+                    <div class="cta-buttons">
+                        <a href="tel:09171642540" class="btn btn-primary">Talk to Sales</a>
+                        <a href="mailto:solutions@marga.biz?subject=Printer%20Rental%20Inquiry" class="btn btn-outline">Email Sales</a>
+                        <a href="/printer-rental/" class="btn btn-outline">View Printer Rental Page</a>
+                    </div>
+                </section>
                 
                 <div class="contact-grid">
                     <!-- Contact Form -->
@@ -419,6 +456,28 @@
     
     <script src="/js/main.js" defer></script>
     <script>
+        const queryParams = new URLSearchParams(window.location.search);
+        const service = queryParams.get('service');
+        const intent = queryParams.get('intent');
+        const page = queryParams.get('page');
+
+        if (service) {
+            const serviceField = document.getElementById('service');
+            if (serviceField) {
+                serviceField.value = service;
+            }
+        }
+
+        if (intent || page) {
+            const messageField = document.getElementById('message');
+            if (messageField && !messageField.value.trim()) {
+                const parts = [];
+                if (intent) parts.push(`Intent: ${intent}`);
+                if (page) parts.push(`Page: ${page}`);
+                messageField.value = parts.join('\n') + (parts.length ? '\n\nPlease help me choose the right setup for our office.' : '');
+            }
+        }
+
         // Handle form submission with success message
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             // Let Netlify handle the actual submission

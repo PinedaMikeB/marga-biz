@@ -7,9 +7,9 @@ const elements = {
     daysSelect: document.getElementById('daysSelect'),
     refreshButton: document.getElementById('refreshButton'),
     runTodayButton: document.getElementById('runTodayButton'),
-    manualKeywordForm: document.getElementById('manualKeywordForm'),
-    manualKeywordInput: document.getElementById('manualKeywordInput'),
-    manualKeywordButton: document.getElementById('manualKeywordButton'),
+    manualKeywordForm: document.getElementById('goalManualKeywordForm'),
+    manualKeywordInput: document.getElementById('goalManualKeywordInput'),
+    manualKeywordButton: document.getElementById('goalManualKeywordButton'),
     manualKeywordResult: document.getElementById('manualKeywordResult'),
     completionForm: document.getElementById('completionForm'),
     completionTaskSelect: document.getElementById('completionTaskSelect'),
@@ -24,21 +24,37 @@ const elements = {
     openTasks: document.getElementById('openTasks'),
     generatedAt: document.getElementById('generatedAt'),
     automationState: document.getElementById('automationState'),
+    goalScore: document.getElementById('goalScore'),
+    copierGoalScore: document.getElementById('copierGoalScore'),
+    goalSummaryPill: document.getElementById('goalSummaryPill'),
+    goalOverallScore: document.getElementById('goalOverallScore'),
+    goalSummaryText: document.getElementById('goalSummaryText'),
+    goalMetricGuidance: document.getElementById('goalMetricGuidance'),
+    goalProgressLabel: document.getElementById('goalProgressLabel'),
+    goalProgressBar: document.getElementById('goalProgressBar'),
+    goalMetrics: document.getElementById('goalMetrics'),
+    goalKeywordGrid: document.getElementById('goalKeywordGrid'),
+    copierSummaryPill: document.getElementById('copierSummaryPill'),
+    copierOverallScore: document.getElementById('copierOverallScore'),
+    copierSummaryText: document.getElementById('copierSummaryText'),
+    copierMetricGuidance: document.getElementById('copierMetricGuidance'),
+    copierProgressLabel: document.getElementById('copierProgressLabel'),
+    copierProgressBar: document.getElementById('copierProgressBar'),
+    copierMetrics: document.getElementById('copierMetrics'),
+    copierProtectedGrid: document.getElementById('copierProtectedGrid'),
+    copierKeywordGrid: document.getElementById('copierKeywordGrid'),
     automationStatusPill: document.getElementById('automationStatusPill'),
     automationStep: document.getElementById('automationStep'),
     automationUpdatedAt: document.getElementById('automationUpdatedAt'),
     automationNextRun: document.getElementById('automationNextRun'),
     automationLastSuccess: document.getElementById('automationLastSuccess'),
-    automationProgressLabel: document.getElementById('automationProgressLabel'),
-    automationProgressBar: document.getElementById('automationProgressBar'),
-    taskProgressLabel: document.getElementById('taskProgressLabel'),
-    taskProgressBar: document.getElementById('taskProgressBar'),
     automationMessage: document.getElementById('automationMessage'),
-    heartbeatHint: document.getElementById('heartbeatHint'),
     automationLogExcerpt: document.getElementById('automationLogExcerpt'),
     automationEventsTable: document.getElementById('automationEventsTable'),
     sourceCollections: document.getElementById('sourceCollections'),
     rankingsTable: document.getElementById('rankingsTable'),
+    gapsTable: document.getElementById('gapsTable'),
+    copierGapsTable: document.getElementById('copierGapsTable'),
     logsTable: document.getElementById('logsTable'),
     tasksTable: document.getElementById('tasksTable'),
     statusText: document.getElementById('statusText')
@@ -80,84 +96,23 @@ function getStatusClass(value) {
     return String(value || 'scheduled').trim().toLowerCase().replace(/\s+/g, '-');
 }
 
-function getRelativeTime(value) {
-    if (!value) return '';
-    const date = new Date(value);
-    const diffMs = Date.now() - date.getTime();
-    if (Number.isNaN(diffMs)) return '';
-    const diffMinutes = Math.round(diffMs / 60000);
-    if (diffMinutes <= 0) return 'just now';
-    if (diffMinutes === 1) return '1 minute ago';
-    if (diffMinutes < 60) return `${diffMinutes} minutes ago`;
-    const diffHours = Math.round(diffMinutes / 60);
-    if (diffHours === 1) return '1 hour ago';
-    return `${diffHours} hours ago`;
-}
-
-function clampPercent(value) {
-    return Math.max(0, Math.min(100, Math.round(value)));
-}
-
-function estimateAutomationProgress(status, step) {
-    const label = String(status || 'Scheduled').toLowerCase();
-    const stepText = String(step || '').toLowerCase();
-
-    if (label === 'done') {
-        return { percent: 100, label: 'Completed' };
-    }
-
-    if (label === 'failed' || label === 'blocked') {
-        return { percent: 100, label: 'Stopped before completion' };
-    }
-
-    if (label === 'scheduled') {
-        return { percent: 0, label: 'Waiting for run window' };
-    }
-
-    if (label !== 'running') {
-        return { percent: 12, label: 'Preparing automation' };
-    }
-
-    const stages = [
-        { match: /(launch|spawn|starting)/, percent: 8, label: 'Launching runner' },
-        { match: /(preflight|sync|fetch|origin)/, percent: 18, label: 'Preflight and sync' },
-        { match: /(rank|scan|audit|check|snapshot)/, percent: 34, label: 'Gathering SEO signals' },
-        { match: /(improve|edit|refresh|create|publish|internal link|schema|faq|conversion|competitor)/, percent: 58, label: 'Implementing SEO work' },
-        { match: /(build|generate)/, percent: 76, label: 'Building site output' },
-        { match: /(commit|push|github)/, percent: 84, label: 'Pushing code' },
-        { match: /(deploy|netlify)/, percent: 91, label: 'Deploying production' },
-        { match: /(verify|live|url)/, percent: 96, label: 'Verifying live URLs' },
-        { match: /(email|telegram|report|handoff)/, percent: 98, label: 'Sending turnover' }
-    ];
-
-    return stages.find((item) => item.match.test(stepText)) || { percent: 42, label: 'Automation running' };
-}
-
-function summarizeTaskProgress(tasks) {
-    const total = tasks.length;
-    const done = tasks.filter((item) => String(item.status || '').toLowerCase() === 'done').length;
-    const blocked = tasks.filter((item) => String(item.status || '').toLowerCase() === 'blocked').length;
-    return {
-        total,
-        done,
-        blocked,
-        percent: total ? clampPercent((done / total) * 100) : 0
-    };
-}
-
 function renderSummary(data) {
     elements.trackedKeywords.textContent = data.meta?.keywordsTracked ?? '--';
     elements.latestSnapshot.textContent = data.meta?.latestSnapshotDate || 'No snapshot yet';
     elements.openTasks.textContent = data.meta?.openTaskCount ?? '--';
     elements.generatedAt.textContent = formatDateTime(data.generatedAt);
     elements.automationState.textContent = data.meta?.automationState || '--';
+    elements.goalScore.textContent = `${data.meta?.goalScore ?? 0}%`;
+    elements.copierGoalScore.textContent = `${data.meta?.copierGoalScore ?? 0}%`;
 
     elements.sourceCollections.innerHTML = (data.meta?.sourceCollections || [])
         .map((item) => `<span class="chip">${escapeHtml(item)}</span>`)
         .join('');
 
     renderTodayRun(data.todayRun || null);
-    renderAutomationStatus(data.automationStatus || null, data.automationEvents || [], data.dailyTasks || []);
+    renderGoalProgress(data.goalProgress || null);
+    renderCopierSection(data.copierProgress || null, data.copierProtected || [], data.meta?.metricGuidance || {});
+    renderAutomationStatus(data.automationStatus || null, data.automationEvents || []);
 }
 
 function getDeltaClass(delta) {
@@ -240,6 +195,238 @@ function renderLogs(data) {
     renderSimpleTable(elements.logsTable, ['Date', 'Task', 'Link', 'Status'], rows);
 }
 
+function renderGoalProgress(goalProgress) {
+    const safe = goalProgress || {};
+    const overallScore = Number(safe.overallScore || 0);
+    const focusKeywords = Array.isArray(safe.focusKeywords) ? safe.focusKeywords : [];
+    const weakest = Array.isArray(safe.weakestKeywords) ? safe.weakestKeywords : [];
+
+    elements.goalOverallScore.textContent = `${overallScore}%`;
+    elements.goalProgressLabel.textContent = `${overallScore}%`;
+    elements.goalProgressBar.style.width = `${Math.max(0, Math.min(overallScore, 100))}%`;
+    elements.goalSummaryText.textContent = safe.summary || 'Waiting for goal progress data.';
+    elements.goalScore.textContent = `${overallScore}%`;
+    if (state.data?.meta?.metricGuidance?.keywordCards) {
+        elements.goalMetricGuidance.textContent = state.data.meta.metricGuidance.keywordCards;
+    }
+
+    let pillLabel = 'Needs lift';
+    if (overallScore >= 85) pillLabel = 'Close to target';
+    else if (overallScore >= 60) pillLabel = 'Good momentum';
+    else if (overallScore >= 35) pillLabel = 'Building';
+
+    elements.goalSummaryPill.className = `status-pill ${getStatusClass(pillLabel)}`;
+    elements.goalSummaryPill.textContent = pillLabel;
+
+    elements.goalMetrics.innerHTML = `
+        <span class="chip">Top 1: ${escapeHtml(String(safe.topOneCount ?? '--'))}</span>
+        <span class="chip">Top 3: ${escapeHtml(String(safe.topThreeCount ?? '--'))}</span>
+        <span class="chip">Top 5: ${escapeHtml(String(safe.topFiveCount ?? '--'))}</span>
+        <span class="chip">Missing: ${escapeHtml(String(safe.missingCount ?? '--'))}</span>
+    `;
+
+    if (!focusKeywords.length) {
+        elements.goalKeywordGrid.innerHTML = `
+            <article class="goal-keyword-card">
+                <span class="summary-label">No data yet</span>
+                <strong>Waiting for keyword goal progress...</strong>
+            </article>
+        `;
+        return;
+    }
+
+    elements.goalKeywordGrid.innerHTML = focusKeywords.map((item) => {
+        const positionLabel = item.position == null ? 'Not in top 20' : `#${item.position}`;
+        const deltaLabel = getDeltaLabel(item.delta);
+        const gapLabel = item.position == null ? `Need top ${item.target}` : (item.gap === 0 ? 'Goal reached' : `${item.gap} spots to go`);
+        const toneClass = item.position != null && item.position <= item.target ? 'done' : (weakest.some((entry) => entry.keyword === item.keyword) ? 'blocked' : 'active');
+        const safeWidth = Math.max(0, Math.min(Number(item.score || 0), 100));
+
+        return `
+            <article class="goal-keyword-card">
+                <div class="goal-keyword-head">
+                    <div>
+                        <span class="summary-label">Target ${escapeHtml(String(item.target))}</span>
+                        <strong>${escapeHtml(item.keyword)}</strong>
+                    </div>
+                    <span class="status-pill ${toneClass}">${escapeHtml(item.status || '--')}</span>
+                </div>
+                <div class="goal-keyword-meta">
+                    <span class="chip">Current: ${escapeHtml(positionLabel)}</span>
+                    <span class="chip">${escapeHtml(deltaLabel)}</span>
+                    <span class="chip">${escapeHtml(gapLabel)}</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: ${safeWidth}%;"></div>
+                </div>
+                <div class="trend-group">
+                    <div class="trend-heading">
+                        <span>7d Search Clicks</span>
+                        <strong>${escapeHtml(String(item.weeklyClicks ?? 0))}</strong>
+                    </div>
+                    <div class="mini-bars">
+                        ${(item.weeklyClickSeries || []).map((point) => {
+                            const maxValue = Math.max(1, ...(item.weeklyClickSeries || []).map((entry) => Number(entry.value || 0)));
+                            const height = Math.max(12, Math.round((Number(point.value || 0) / maxValue) * 46));
+                            return `<span class="mini-bar" title="${escapeHtml(`${point.date}: ${point.value} clicks`)}"><span style="height:${height}px"></span></span>`;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="trend-group">
+                    <div class="trend-heading">
+                        <span>7d Avg CTR</span>
+                        <strong>${escapeHtml(`${Math.round(Number(item.weeklyCtr || 0) * 10) / 10}%`)}</strong>
+                    </div>
+                    <div class="mini-bars mini-bars-ctr">
+                        ${(item.weeklyCtrSeries || []).map((point) => {
+                            const maxValue = Math.max(1, ...(item.weeklyCtrSeries || []).map((entry) => Number(entry.value || 0)));
+                            const height = Math.max(12, Math.round((Number(point.value || 0) / maxValue) * 46));
+                            return `<span class="mini-bar" title="${escapeHtml(`${point.date}: ${point.value}% CTR`)}"><span style="height:${height}px"></span></span>`;
+                        }).join('')}
+                    </div>
+                </div>
+                <a class="goal-link" href="${escapeHtml(toAbsoluteUrl(item.targetPath || '/printer-rental/'))}" target="_blank" rel="noopener">
+                    ${escapeHtml(toAbsoluteUrl(item.targetPath || '/printer-rental/'))}
+                </a>
+            </article>
+        `;
+    }).join('');
+}
+
+function renderMetricBars(series = [], suffix = '', toneClass = '') {
+    return `
+        <div class="mini-bars ${toneClass}">
+            ${series.map((point) => {
+                const maxValue = Math.max(1, ...series.map((entry) => Number(entry.value || 0)));
+                const height = Math.max(12, Math.round((Number(point.value || 0) / maxValue) * 46));
+                return `<span class="mini-bar" title="${escapeHtml(`${point.date}: ${point.value}${suffix}`)}"><span style="height:${height}px"></span></span>`;
+            }).join('')}
+        </div>
+    `;
+}
+
+function renderGoalCard(item, options = {}) {
+    const positionLabel = item.position == null ? 'Not in top 20' : `#${item.position}`;
+    const deltaLabel = getDeltaLabel(item.delta);
+    const safeWidth = Math.max(0, Math.min(Number(item.score || 0), 100));
+    const toneClass = options.protected
+        ? 'info'
+        : (item.position != null && item.position <= item.target ? 'done' : ((options.weakest || []).some((entry) => entry.keyword === item.keyword) ? 'blocked' : 'active'));
+    const gapLabel = options.protected
+        ? (item.latestUrl ? 'Winner monitored' : 'Waiting for winner')
+        : (item.position == null ? `Need top ${item.target}` : (item.gap === 0 ? 'Goal reached' : `${item.gap} spots to go`));
+    const linkValue = item.latestUrl || item.targetPath || '/';
+
+    return `
+        <article class="goal-keyword-card">
+            <div class="goal-keyword-head">
+                <div>
+                    <span class="summary-label">${options.protected ? escapeHtml(item.mode || 'Monitor only') : `Target ${escapeHtml(String(item.target))}`}</span>
+                    <strong>${escapeHtml(item.keyword)}</strong>
+                </div>
+                <span class="status-pill ${toneClass}">${escapeHtml(item.status || item.mode || '--')}</span>
+            </div>
+            <div class="goal-keyword-meta">
+                <span class="chip">Current: ${escapeHtml(positionLabel)}</span>
+                <span class="chip">${escapeHtml(deltaLabel)}</span>
+                <span class="chip">${escapeHtml(gapLabel)}</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: ${safeWidth}%;"></div>
+            </div>
+            <div class="trend-group">
+                <div class="trend-heading">
+                    <span>7d Search Clicks</span>
+                    <strong>${escapeHtml(String(item.weeklyClicks ?? 0))}</strong>
+                </div>
+                ${renderMetricBars(item.weeklyClickSeries || [], ' clicks')}
+            </div>
+            <div class="trend-group">
+                <div class="trend-heading">
+                    <span>7d Avg CTR</span>
+                    <strong>${escapeHtml(`${Math.round(Number(item.weeklyCtr || 0) * 10) / 10}%`)}</strong>
+                </div>
+                ${renderMetricBars(item.weeklyCtrSeries || [], '% CTR', 'mini-bars-ctr')}
+            </div>
+            ${item.note ? `<p class="card-copy card-copy-tight">${escapeHtml(item.note)}</p>` : ''}
+            <a class="goal-link" href="${escapeHtml(toAbsoluteUrl(linkValue))}" target="_blank" rel="noopener">
+                ${escapeHtml(toAbsoluteUrl(linkValue))}
+            </a>
+        </article>
+    `;
+}
+
+function renderCopierSection(progress, protectedItems, metricGuidance) {
+    const safe = progress || {};
+    const overallScore = Number(safe.overallScore || 0);
+    const focusKeywords = Array.isArray(safe.focusKeywords) ? safe.focusKeywords : [];
+    const weakest = Array.isArray(safe.weakestKeywords) ? safe.weakestKeywords : [];
+    elements.copierOverallScore.textContent = `${overallScore}%`;
+    elements.copierProgressLabel.textContent = `${overallScore}%`;
+    elements.copierProgressBar.style.width = `${Math.max(0, Math.min(overallScore, 100))}%`;
+    elements.copierSummaryText.textContent = safe.summary || 'Waiting for copier local progress data.';
+    if (metricGuidance?.copierGuidance) {
+        elements.copierMetricGuidance.textContent = metricGuidance.copierGuidance;
+    }
+
+    let pillLabel = 'Monitor protected winners';
+    if (overallScore >= 75) pillLabel = 'Copier local momentum';
+    else if (overallScore >= 40) pillLabel = 'Copier growth building';
+    elements.copierSummaryPill.className = `status-pill ${getStatusClass(pillLabel)}`;
+    elements.copierSummaryPill.textContent = pillLabel;
+
+    elements.copierMetrics.innerHTML = `
+        <span class="chip">Top 1: ${escapeHtml(String(safe.topOneCount ?? '--'))}</span>
+        <span class="chip">Top 3: ${escapeHtml(String(safe.topThreeCount ?? '--'))}</span>
+        <span class="chip">Top 5: ${escapeHtml(String(safe.topFiveCount ?? '--'))}</span>
+        <span class="chip">Missing: ${escapeHtml(String(safe.missingCount ?? '--'))}</span>
+    `;
+
+    elements.copierProtectedGrid.innerHTML = (protectedItems || []).length
+        ? protectedItems.map((item) => renderGoalCard(item, { protected: true })).join('')
+        : `
+            <article class="goal-keyword-card">
+                <span class="summary-label">No data yet</span>
+                <strong>Waiting for copier protected winners...</strong>
+            </article>
+        `;
+
+    elements.copierKeywordGrid.innerHTML = focusKeywords.length
+        ? focusKeywords.map((item) => renderGoalCard(item, { weakest })).join('')
+        : `
+            <article class="goal-keyword-card">
+                <span class="summary-label">No data yet</span>
+                <strong>Waiting for copier local targets...</strong>
+            </article>
+        `;
+}
+
+function renderGaps(data) {
+    const rows = (data.gaps || []).map((item) => `
+        <tr>
+            <td>${escapeHtml(item.type || '--')}</td>
+            <td>${escapeHtml(item.title || '--')}</td>
+            <td>${escapeHtml(item.detail || '--')}</td>
+            <td>${item.link ? `<a href="${escapeHtml(toAbsoluteUrl(item.link))}" target="_blank" rel="noopener">${escapeHtml(toAbsoluteUrl(item.link))}</a>` : '&ndash;'}</td>
+        </tr>
+    `);
+
+    renderSimpleTable(elements.gapsTable, ['Gap Type', 'Gap To Fix', 'Action Signal', 'Link'], rows, 'No gap signals yet.');
+}
+
+function renderCopierGaps(data) {
+    const rows = (data.copierGaps || []).map((item) => `
+        <tr>
+            <td>${escapeHtml(item.type || '--')}</td>
+            <td>${escapeHtml(item.title || '--')}</td>
+            <td>${escapeHtml(item.detail || '--')}</td>
+            <td>${item.link ? `<a href="${escapeHtml(toAbsoluteUrl(item.link))}" target="_blank" rel="noopener">${escapeHtml(toAbsoluteUrl(item.link))}</a>` : '&ndash;'}</td>
+        </tr>
+    `);
+
+    renderSimpleTable(elements.copierGapsTable, ['Gap Type', 'Gap To Fix', 'Action Signal', 'Link'], rows, 'No copier gap signals yet.');
+}
+
 function renderTasks(data) {
     const rows = (data.dailyTasks || []).map((item) => `
         <tr>
@@ -287,47 +474,18 @@ function renderTodayRun(todayRun) {
     `;
 }
 
-function renderAutomationStatus(status, events, tasks) {
+function renderAutomationStatus(status, events) {
     const safeStatus = status || {};
     const label = safeStatus.status || 'Scheduled';
-    const progress = estimateAutomationProgress(label, safeStatus.currentStep);
-    const taskProgress = summarizeTaskProgress(tasks || []);
-    const updatedAt = safeStatus.updatedAtIso || safeStatus.updatedAt;
-    const relative = getRelativeTime(updatedAt);
 
     elements.automationStatusPill.className = `status-pill ${getStatusClass(label)}`;
     elements.automationStatusPill.textContent = label;
     elements.automationStep.textContent = safeStatus.currentStep || 'Waiting for a live automation status update.';
-    elements.automationUpdatedAt.textContent = formatDateTime(updatedAt);
+    elements.automationUpdatedAt.textContent = formatDateTime(safeStatus.updatedAtIso || safeStatus.updatedAt);
     elements.automationNextRun.textContent = formatDateTime(safeStatus.nextRunAt);
     elements.automationLastSuccess.textContent = formatDateTime(safeStatus.lastSuccessAt);
     elements.automationMessage.textContent = safeStatus.message || 'The local launcher will post its progress here while the SEO batch runs.';
-    elements.automationLogExcerpt.textContent = safeStatus.liveLogExcerpt || safeStatus.lastMessageExcerpt || (label === 'Scheduled'
-        ? 'No live output yet because the runner is waiting for the next scheduled attempt.'
-        : 'Waiting for automation output...');
-    elements.automationProgressLabel.textContent = `${progress.label} · ${progress.percent}%`;
-    elements.automationProgressBar.style.width = `${progress.percent}%`;
-    elements.automationProgressBar.className = `progress-fill ${getStatusClass(label)} ${label.toLowerCase() === 'running' ? 'is-running' : ''}`;
-    elements.taskProgressLabel.textContent = `${taskProgress.done} of ${taskProgress.total} done${taskProgress.blocked ? ` · ${taskProgress.blocked} blocked` : ''}`;
-    elements.taskProgressBar.style.width = `${taskProgress.percent}%`;
-
-    if (label.toLowerCase() === 'running') {
-        elements.heartbeatHint.textContent = relative
-            ? `Heartbeat live. Last movement ${relative}.`
-            : 'Heartbeat live now.';
-    } else if (label.toLowerCase() === 'scheduled') {
-        elements.heartbeatHint.textContent = safeStatus.nextRunAt
-            ? `Not running right now. Next attempt is scheduled for ${formatDateTime(safeStatus.nextRunAt)}.`
-            : 'Not running right now. Waiting for the next scheduled attempt.';
-    } else if (label.toLowerCase() === 'done') {
-        elements.heartbeatHint.textContent = safeStatus.lastSuccessAt
-            ? `Last successful run finished ${getRelativeTime(safeStatus.lastSuccessAt)}.`
-            : 'Daily automation completed.';
-    } else {
-        elements.heartbeatHint.textContent = relative
-            ? `Last automation update was ${relative}.`
-            : 'Waiting for the next automation update.';
-    }
+    elements.automationLogExcerpt.textContent = safeStatus.liveLogExcerpt || safeStatus.lastMessageExcerpt || 'Waiting for automation output...';
 
     const rows = (events || []).map((item) => `
         <tr>
@@ -387,6 +545,8 @@ async function loadReport() {
 
         renderSummary(data);
         renderRankings(data);
+        renderGaps(data);
+        renderCopierGaps(data);
         renderLogs(data);
         renderTasks(data);
         renderCompletionOptions(data);
@@ -395,6 +555,8 @@ async function loadReport() {
         console.error(error);
         elements.statusText.textContent = `Unable to load report: ${error.message}`;
         elements.rankingsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load ranking report.</td></tr>';
+        elements.gapsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load gap report.</td></tr>';
+        elements.copierGapsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load copier gaps.</td></tr>';
         elements.logsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load logs.</td></tr>';
         elements.tasksTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load tasks.</td></tr>';
         elements.automationEventsTable.querySelector('tbody').innerHTML = '<tr><td colspan="99" class="empty-row">Unable to load automation activity.</td></tr>';

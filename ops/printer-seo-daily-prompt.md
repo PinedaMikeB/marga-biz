@@ -46,11 +46,18 @@ Before editing any content:
 1. self-heal the runtime from inside the current automation root
 2. fast-forward to the latest `origin/main` when the repo is clean
 3. run `npm run automation:preflight -- --sync-main --strict`
+4. if you encounter a stale task, stale lock, stale in-progress run, or stale queue item, determine whether it is genuinely active or stale, repair it if safe, and continue the same run
 
 If preflight fails:
 - diagnose and repair the git/runtime/env/network problem first
 - rerun preflight
 - do not touch SEO pages until preflight passes
+
+If a stale task or stale run state is discovered:
+- inspect the lock, pid, timestamps, heartbeat, and latest report state before assuming another run is truly active
+- if it is stale, clear or repair it in the most durable safe way and continue the same run
+- if it is still active, avoid duplicate work and move to the next safe step or the next scheduled run
+- if it cannot be repaired safely, email a short stale-task blocker summary, write the same blocker into `reports/seo-monitor/latest.md` and `reports/seo-monitor/latest.json`, and then continue with any remaining safe work instead of stopping at the first stale failure
 
 Turnover requirements:
 1. local verification

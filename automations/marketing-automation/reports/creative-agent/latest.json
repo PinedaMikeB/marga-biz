@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-04-02T05:07:23.896Z",
+  "worker": "creative-agent",
+  "brand": "Marga Enterprises",
+  "creative": {
+    "visualDirection": "Pasig business district confidence",
+    "colorStory": "Warm paper neutrals with dark teal type and a burnt orange CTA",
+    "typographyMood": "Editorial serif headlines with clean supporting copy",
+    "instagramAd": {
+      "eyebrow": "Pasig office teams",
+      "headline": "Printer rental that keeps Pasig offices moving.",
+      "body": "Predictable monthly setup, clear support messaging, and a more credible local offer for decision-makers.",
+      "cta": "Request a quick rental recommendation"
+    },
+    "videoStoryboard": [
+      {
+        "scene": 1,
+        "copy": "Open with the common office issue: printing problems slow down Pasig teams."
+      },
+      {
+        "scene": 2,
+        "copy": "Show the rental model as a simpler operations decision, not just a hardware purchase."
+      },
+      {
+        "scene": 3,
+        "copy": "Highlight dependable support, uptime, and easy monthly planning."
+      },
+      {
+        "scene": 4,
+        "copy": "Ground the message in Pasig office use cases and buyer reality."
+      },
+      {
+        "scene": 5,
+        "copy": "End with the CTA: Request a quick rental recommendation."
+      }
+    ]
+  },
+  "summary": "The creative agent packages the campaign into one coherent visual direction, a ready-to-review Instagram ad concept, and a five-scene video outline. This keeps later copy and distribution work aligned to the same offer."
+}

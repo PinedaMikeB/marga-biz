@@ -56,6 +56,126 @@
                 <span class="summary-label">Automation</span>
                 <strong id="automationState">--</strong>
             </article>
+            <article class="summary-card">
+                <span class="summary-label">Goal Score</span>
+                <strong id="goalScore">--</strong>
+            </article>
+            <article class="summary-card">
+                <span class="summary-label">Copier Score</span>
+                <strong id="copierGoalScore">--</strong>
+            </article>
+        </section>
+
+        <section class="panel goal-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker">Printer SEO Goal</p>
+                    <h2>Path To #1</h2>
+                </div>
+                <div class="panel-meta">
+                    <form id="goalManualKeywordForm" class="goal-keyword-form">
+                        <label class="field goal-field">
+                            <span>Add Keyword To SEO</span>
+                            <input id="goalManualKeywordInput" name="keyword" type="text" placeholder="Example: printer rental pasig">
+                        </label>
+                        <button id="goalManualKeywordButton" class="button button-secondary" type="submit">Add Keyword</button>
+                    </form>
+                    <span id="goalSummaryPill" class="status-pill info">Tracking goal</span>
+                </div>
+            </div>
+
+            <div class="goal-overview">
+                <div class="goal-score-block">
+                    <span class="summary-label">Overall progress</span>
+                    <strong id="goalOverallScore">--</strong>
+                    <p id="goalSummaryText" class="card-copy">Loading printer keyword progress...</p>
+                    <div id="goalMetricGuidance" class="result-card result-muted">Keyword cards will use weekly Search Console clicks and CTR.</div>
+                </div>
+                <div class="goal-progress-block">
+                    <div class="progress-header">
+                        <span>Cluster progress</span>
+                        <strong id="goalProgressLabel">0%</strong>
+                    </div>
+                    <div class="progress-track progress-track-large">
+                        <div id="goalProgressBar" class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="goal-metrics" id="goalMetrics">
+                        <span class="chip">Top 1: --</span>
+                        <span class="chip">Top 3: --</span>
+                        <span class="chip">Top 5: --</span>
+                        <span class="chip">Missing: --</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="goalKeywordGrid" class="goal-keyword-grid">
+                <article class="goal-keyword-card">
+                    <span class="summary-label">Loading</span>
+                    <strong>Loading keyword targets...</strong>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel goal-panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker">Copier Local Expansion</p>
+                    <h2>Protected Winners And Location Growth</h2>
+                </div>
+                <div class="panel-meta">
+                    <span id="copierSummaryPill" class="status-pill info">Monitor protected winners</span>
+                </div>
+            </div>
+
+            <div class="goal-overview">
+                <div class="goal-score-block">
+                    <span class="summary-label">Local expansion score</span>
+                    <strong id="copierOverallScore">--</strong>
+                    <p id="copierSummaryText" class="card-copy">Loading copier local keyword progress...</p>
+                    <div id="copierMetricGuidance" class="result-card result-muted">Protected copier winners stay monitor-only. Automation is for copier location growth pages and support content.</div>
+                </div>
+                <div class="goal-progress-block">
+                    <div class="progress-header">
+                        <span>Copier local progress</span>
+                        <strong id="copierProgressLabel">0%</strong>
+                    </div>
+                    <div class="progress-track progress-track-large">
+                        <div id="copierProgressBar" class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="goal-metrics" id="copierMetrics">
+                        <span class="chip">Top 1: --</span>
+                        <span class="chip">Top 3: --</span>
+                        <span class="chip">Top 5: --</span>
+                        <span class="chip">Missing: --</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-heading panel-heading-tight">
+                <div>
+                    <p class="panel-kicker">Protected winners</p>
+                    <h2>Monitor Only</h2>
+                </div>
+            </div>
+            <div id="copierProtectedGrid" class="goal-keyword-grid">
+                <article class="goal-keyword-card">
+                    <span class="summary-label">Loading</span>
+                    <strong>Loading protected copier winners...</strong>
+                </article>
+            </div>
+
+            <div class="panel-heading panel-heading-tight monitor-gap-heading">
+                <div>
+                    <p class="panel-kicker">Copier local targets</p>
+                    <h2>Location Expansion</h2>
+                </div>
+            </div>
+            <div id="copierKeywordGrid" class="goal-keyword-grid">
+                <article class="goal-keyword-card">
+                    <span class="summary-label">Loading</span>
+                    <strong>Loading copier location targets...</strong>
+                </article>
+            </div>
         </section>
 
         <section class="panel automation-panel">
@@ -90,30 +210,7 @@
                         </div>
                     </div>
 
-                    <div class="progress-cluster">
-                        <div class="progress-row">
-                            <div class="progress-meta">
-                                <span class="summary-label">Automation Progress</span>
-                                <strong id="automationProgressLabel">Waiting to start</strong>
-                            </div>
-                            <div class="progress-track">
-                                <div id="automationProgressBar" class="progress-fill scheduled" style="width: 0%;"></div>
-                            </div>
-                        </div>
-
-                        <div class="progress-row">
-                            <div class="progress-meta">
-                                <span class="summary-label">Today’s Task Completion</span>
-                                <strong id="taskProgressLabel">0 of 0 done</strong>
-                            </div>
-                            <div class="progress-track progress-track-soft">
-                                <div id="taskProgressBar" class="progress-fill progress-fill-secondary" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div id="automationMessage" class="result-card result-muted">The local launcher will post its progress here while the SEO batch runs.</div>
-                    <p id="heartbeatHint" class="heartbeat-hint">Waiting for automation heartbeat...</p>
 
                     <div class="log-excerpt-wrap">
                         <span class="summary-label">Live Log Excerpt</span>
@@ -156,23 +253,6 @@
             <article class="action-card">
                 <div class="card-heading">
                     <div>
-                        <p class="panel-kicker">Manual tracking</p>
-                        <h2>Check A Keyword</h2>
-                    </div>
-                </div>
-                <form id="manualKeywordForm" class="stack-form">
-                    <label class="field">
-                        <span>Manual Keyword</span>
-                        <input id="manualKeywordInput" name="keyword" type="text" placeholder="Example: printer rental taguig">
-                    </label>
-                    <button id="manualKeywordButton" class="button button-primary" type="submit">Check And Save</button>
-                </form>
-                <div id="manualKeywordResult" class="result-card result-muted">Manual keywords get checked live and added to your tracked keyword list.</div>
-            </article>
-
-            <article class="action-card">
-                <div class="card-heading">
-                    <div>
                         <p class="panel-kicker">Completed work</p>
                         <h2>Record Published Work</h2>
                     </div>
@@ -200,6 +280,17 @@
                 </form>
                 <div id="completionResult" class="result-card result-muted">After a page or blog is deployed, record it here and the task queue will show Done plus the live URL.</div>
             </article>
+
+            <article class="action-card">
+                <div class="card-heading">
+                    <div>
+                        <p class="panel-kicker">Keyword guidance</p>
+                        <h2>Why These Metrics</h2>
+                    </div>
+                </div>
+                <p class="card-copy">Use keyword-level clicks and CTR to judge search demand and snippet performance. Track page visits and conversions separately on the landing page those keywords are meant to rank.</p>
+                <div id="manualKeywordResult" class="result-card result-muted">New manual keywords added in the goal section will appear in your tracked keyword set after a live check.</div>
+            </article>
         </section>
 
         <section class="panel">
@@ -215,6 +306,40 @@
                     <thead></thead>
                     <tbody>
                         <tr><td class="loading-row">Loading keyword positions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker">Daily gap loop</p>
+                    <h2>Goals And Gaps To Fix</h2>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="report-table compact-table" id="gapsTable">
+                    <thead></thead>
+                    <tbody>
+                        <tr><td class="loading-row">Loading gap signals...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <p class="panel-kicker">Copier gap loop</p>
+                    <h2>Protected Winners And Copier Gaps</h2>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="report-table compact-table" id="copierGapsTable">
+                    <thead></thead>
+                    <tbody>
+                        <tr><td class="loading-row">Loading copier gap signals...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -243,7 +368,6 @@
                     <div>
                         <p class="panel-kicker">Regular daily tasks</p>
                         <h2>Task Queue</h2>
-                        <p class="panel-note">`Active` means the task is still outstanding for today. `Done` means it was implemented, pushed, deployed, and linked live.</p>
                     </div>
                 </div>
                 <div class="table-wrap">

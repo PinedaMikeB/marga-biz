@@ -51,6 +51,8 @@ Do not rely on chat history alone when current repo files can answer the questio
 - The durable automation root for scheduled runs is the internal clone at `~/.codex/repos/marga-biz-automation`, not the external-drive repo path.
 - Scheduled automation runs should sync to the latest `origin/main` and pass `npm run automation:preflight -- --sync-main --strict` before making content edits.
 - If Codex app-scheduled automations keep failing on sandboxed git/network access, prefer the local Codex CLI runner plus `launchd` from the internal automation clone instead of retrying the same restricted runtime.
+- If a scheduled automation finds a stale task, stale lock, stale in-progress run, or stale queue item, it must first analyze whether that state is real or stale, attempt a durable repair, and continue the same run when repair succeeds.
+- If the stale state cannot be repaired safely, the automation should email a short summary of the stale-task blocker, record it in the current report, mark only that item `Blocked`, and then continue with the rest of the run or yield to the next scheduled run instead of stopping the entire automation loop.
 
 ## Git Rules
 
@@ -69,6 +71,7 @@ Do not rely on chat history alone when current repo files can answer the questio
 
 - Treat the home page (`/`) and the Copier Rental page/cluster as protected when doing SEO work unless the user explicitly asks to change them.
 - For SEO tasks in this repo, the current priority keyword/theme is `printer rental`.
+- When the user explicitly reintroduces printer SEO automation, treat the goal of winning the core printer-rental terms as the strategy, not just completing a static checklist. Fixed output targets like new pages or blogs can stay explicit, but the rest of the daily work should expand or contract based on ranking gaps and competitor findings.
 - Focus improvements on the printer-rental cluster, supporting internal links, conversion paths, and crawlable service pages.
 - Do not create doorway pages, spun location pages, keyword stuffing, or low-value filler content.
 - Follow Google people-first content principles and preserve the existing brand/design language unless a UX or SEO improvement is clearly justified.
