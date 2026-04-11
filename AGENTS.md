@@ -40,7 +40,7 @@ Do not rely on chat history alone when current repo files can answer the questio
 
 - Use repo helpers before inventing ad hoc email steps.
 - The current report email helper is `scripts/send-email-report.js`.
-- Prefer SMTP when configured in local env, and fall back to Apple Mail on this Mac when SMTP is unavailable.
+- Use SMTP-only delivery from local automation env. Do not fall back to Apple Mail for automation email sends on this Mac.
 - Do not commit local mail credentials, SMTP credentials, or Apple Mail state.
 
 ## Local Env / Deploy

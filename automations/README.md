@@ -46,7 +46,7 @@ This folder is the repo-local index for automation work in `marga-biz`.
 - Copier model: monitor the protected copier winners and the home-page-carried copier terms without editing them; use automation only for copier location growth pages and supporting copier content
 - Daily production rule: keep `2` new pages and `5` supporting blogs as fixed output targets; let the other SEO tasks expand or contract based on ranking distance and competitor-gap findings
 - Daily research loop: competitor research and gap-finding is a non-stop daily cycle, not a one-time setup step
-- Email helper for automation summaries: `scripts/send-email-report.js`
+- Email helper for automation summaries: `scripts/send-email-report.js` using SMTP-only local env delivery
 - Shared local env fallback for worktrees: `~/.codex/env/marga-biz.env`
 - Production deploy helper: `scripts/deploy-site.js`
 - Automation preflight: `npm run automation:preflight -- --sync-main --strict`

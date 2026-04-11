@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
-const { execFileSync, execSync, spawnSync } = require('child_process');
+const { execSync } = require('child_process');
 const { createRequire } = require('module');
 const { loadLocalEnv } = require('./lib/telegram-gateway');
 
@@ -154,64 +153,6 @@ async function sendViaSmtp({ to, subject, body }) {
     };
 }
 
-function listMailAccounts() {
-    const result = spawnSync('osascript', ['-e', 'tell application "Mail" to get name of every account'], {
-        encoding: 'utf8'
-    });
-
-    if (result.status !== 0) {
-        throw new Error((result.stderr || result.stdout || 'Mail account lookup failed').trim());
-    }
-
-    const output = (result.stdout || '').trim();
-    return output ? output.split(/,\s*/).filter(Boolean) : [];
-}
-
-function escapeAppleScript(value) {
-    return String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-}
-
-function sendViaMailApp({ to, subject, body }) {
-    if (process.platform !== 'darwin') {
-        throw new Error('Mail app fallback is only available on macOS');
-    }
-
-    const accounts = listMailAccounts();
-    if (!accounts.length) {
-        throw new Error('No Apple Mail accounts are configured');
-    }
-
-    const tempFile = path.join(os.tmpdir(), `codex-email-${Date.now()}.txt`);
-    fs.writeFileSync(tempFile, body, 'utf8');
-
-    try {
-        const script = `
-set bodyFile to POSIX file "${escapeAppleScript(tempFile)}"
-set bodyText to read bodyFile
-tell application "Mail"
-    set newMessage to make new outgoing message with properties {visible:false, subject:"${escapeAppleScript(subject)}", content:bodyText & return & return}
-    tell newMessage
-        make new to recipient at end of to recipients with properties {address:"${escapeAppleScript(to)}"}
-        send
-    end tell
-end tell
-`;
-
-        execFileSync('osascript', ['-e', script], {
-            encoding: 'utf8',
-            stdio: ['ignore', 'pipe', 'pipe']
-        });
-
-        return {
-            method: 'mail-app',
-            messageId: null,
-            account: accounts[0]
-        };
-    } finally {
-        fs.rmSync(tempFile, { force: true });
-    }
-}
-
 async function main() {
     loadLocalEnv();
 
@@ -226,13 +167,6 @@ async function main() {
 
     if (options['dry-run']) {
         const smtpReady = Boolean(maybeCreateSmtpTransport());
-        let mailAccounts = [];
-
-        try {
-            mailAccounts = listMailAccounts();
-        } catch {
-            mailAccounts = [];
-        }
 
         process.stdout.write(JSON.stringify({
             ok: true,
@@ -240,7 +174,7 @@ async function main() {
             to,
             subject,
             smtpReady,
-            mailAccounts
+            delivery: 'smtp-only'
         }, null, 2));
         process.stdout.write('\n');
         return;
@@ -257,16 +191,7 @@ async function main() {
         errors.push(`smtp: ${error.message}`);
     }
 
-    try {
-        const result = sendViaMailApp({ to, subject, body });
-        process.stdout.write(JSON.stringify({ ok: true, to, subject, ...result }, null, 2));
-        process.stdout.write('\n');
-        return;
-    } catch (error) {
-        errors.push(`mail-app: ${error.message}`);
-    }
-
-    throw new Error(`Email send failed. ${errors.join(' | ')}`);
+    throw new Error(`Email send failed. ${errors.join(' | ')}. Apple Mail fallback is disabled; configure SMTP in local automation env.`);
 }
 
 main().catch(error => {
