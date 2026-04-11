@@ -157,11 +157,11 @@ function ensureWorktreeSynced() {
 }
 
 function checkDeployDryRun() {
-    return parseJsonOutput('node', ['scripts/deploy-site.js', '--dry-run']);
+    return parseJsonOutput(process.execPath, ['scripts/deploy-site.js', '--dry-run']);
 }
 
 function checkEmailDryRun() {
-    return parseJsonOutput('node', [
+    return parseJsonOutput(process.execPath, [
         'scripts/send-email-report.js',
         '--dry-run',
         '--subject=Codex automation preflight',
