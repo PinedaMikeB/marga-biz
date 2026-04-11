@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { execSync } = require('child_process');
 const { createRequire } = require('module');
@@ -82,10 +83,20 @@ function loadNodemailer() {
         return require('nodemailer');
     } catch {}
 
+    const candidateRoots = new Set();
+    candidateRoots.add(REPO_ROOT);
+
     const commonDir = getGitCommonDir();
     if (commonDir) {
-        const repoRootFromCommonDir = path.dirname(commonDir);
-        const packageJson = path.join(repoRootFromCommonDir, 'package.json');
+        candidateRoots.add(path.dirname(commonDir));
+    }
+
+    const automationRepoRoot = process.env.PRINTER_SEO_REPO_ROOT
+        || path.join(os.homedir(), '.codex', 'repos', 'marga-biz-automation');
+    candidateRoots.add(automationRepoRoot);
+
+    for (const candidateRoot of candidateRoots) {
+        const packageJson = path.join(candidateRoot, 'package.json');
         if (fs.existsSync(packageJson)) {
             try {
                 const repoRequire = createRequire(packageJson);
