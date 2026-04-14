@@ -1,51 +1,51 @@
 {
-  "generatedAt": "2026-04-13T02:19:29.983Z",
+  "generatedAt": "2026-04-14T04:28:33.650Z",
   "productionUrl": "https://marga.biz",
-  "deployUrl": "https://69dc516256b52d9ced7cbac1--marga-biz.netlify.app",
-  "commit": "8f261e5",
+  "deployUrl": "https://69ddc15b413d9cd32a14eea7--marga-biz.netlify.app",
+  "commit": "aaf0d34",
   "verifiedUrls": [
     "https://marga.biz/printer-rental/",
     "https://marga.biz/printer-rental/philippines/",
+    "https://marga.biz/printer-rental/bgc/",
     "https://marga.biz/printer-rental/taguig/",
-    "https://marga.biz/copier-rental/quezon-city/",
+    "https://marga.biz/copier-rental/bgc/",
+    "https://marga.biz/copier-rental/makati/",
     "https://marga.biz/copier-rental/pasig/",
-    "https://marga.biz/printer-rental/print-all-you-can-philippines-volume-audit/",
-    "https://marga.biz/copier-rental/pasig/copier-rental-pasig-building-access-checklist/",
-    "https://marga.biz/blogs/print-all-you-can-philippines-volume-audit/",
-    "https://marga.biz/blogs/printer-rental-philippines-page-match-plan/",
-    "https://marga.biz/blogs/printer-rental-taguig-bgc-access-planning/",
-    "https://marga.biz/blogs/copier-rental-quezon-city-pasig-local-proof/",
-    "https://marga.biz/blogs/copier-rental-pasig-ortigas-building-access/"
+    "https://marga.biz/printer-rental/print-all-you-can-philippines-service-inclusion-checklist/",
+    "https://marga.biz/copier-rental/bgc/copier-rental-bgc-service-route-checklist/",
+    "https://marga.biz/blogs/print-all-you-can-maintenance-toner-replacement-plan/",
+    "https://marga.biz/blogs/printer-rental-philippines-competitor-gap-checklist/",
+    "https://marga.biz/blogs/printer-for-rent-homepage-to-hub-routing/",
+    "https://marga.biz/blogs/copier-rental-bgc-service-route-planning/",
+    "https://marga.biz/blogs/copier-rental-makati-pasig-bgc-page-match/"
   ],
   "openTaskCount": 0,
   "localValidation": {
     "preflight": "passed: npm run automation:preflight -- --sync-main --strict before content edits",
-    "monitor": "passed: production seo-monitor-actions run_today completed on 2026-04-13",
+    "monitor": "passed: production seo-monitor-actions run_today completed on 2026-04-14",
     "build": "passed: npm run build",
     "diffCheck": "passed: git diff --check and git diff --cached --check",
     "protectedCheck": "passed: no home page or copier core money-page files changed",
+    "localSmokeTests": "passed: generated dist URLs returned title, canonical, schema, and contact checks",
     "deploy": "passed: npm run deploy",
-    "liveSmokeTests": "passed: 12 production URLs returned 200 with title, canonical, schema, and contact checks",
+    "liveSmokeTests": "passed: 14 production URLs returned 200 with title, canonical, schema, and contact checks",
     "taskCompletions": "passed: 10 SEO monitor tasks recorded Done after live URL verification"
   },
   "report": {
-    "generatedAt": "2026-04-13T02:19:32.071Z",
+    "generatedAt": "2026-04-14T04:28:33.650Z",
     "timezone": "Asia/Manila",
     "queueStatus": "Done",
     "focus": "printer-rental cluster plus copier-location growth pages only",
-    "guardrails": [
-      "home page untouched",
-      "copier-rental core money pages untouched",
-      "copier core winners monitored only"
-    ],
+    "guardrails": "no home page edits, no copier-rental core money page edits",
     "rankings": [
       {
         "keyword": "Printer Rental",
         "latestPosition": 7,
-        "latestUrl": "https://marga.biz/",
+        "latestUrl": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
         "previousPosition": 7,
         "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 7,
           "2026-04-13": 7,
           "2026-04-11": 7,
           "2026-04-10": 7,
@@ -59,9 +59,10 @@
         "keyword": "Printer For Rent",
         "latestPosition": 6,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 9,
-        "delta": 3,
+        "previousPosition": 6,
+        "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 6,
           "2026-04-13": 6,
           "2026-04-11": 9,
           "2026-04-10": 8,
@@ -77,6 +78,7 @@
         "previousPosition": null,
         "delta": null,
         "positionsByDate": {
+          "2026-04-14": null,
           "2026-04-13": null,
           "2026-04-11": null,
           "2026-04-10": 3,
@@ -92,6 +94,7 @@
         "previousPosition": 2,
         "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 2,
           "2026-04-13": 2,
           "2026-04-11": 2,
           "2026-04-10": 3,
@@ -102,11 +105,12 @@
       },
       {
         "keyword": "Printer Rental Makati",
-        "latestPosition": 7,
+        "latestPosition": 6,
         "latestUrl": "https://marga.biz/printer-rental/",
-        "previousPosition": 6,
-        "delta": -1,
+        "previousPosition": 7,
+        "delta": 1,
         "positionsByDate": {
+          "2026-04-14": 6,
           "2026-04-13": 7,
           "2026-04-11": 6,
           "2026-04-10": 5,
@@ -119,9 +123,10 @@
         "keyword": "Printer Rental Manila",
         "latestPosition": 5,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 4,
-        "delta": -1,
+        "previousPosition": 5,
+        "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 5,
           "2026-04-13": 5,
           "2026-04-11": 4,
           "2026-04-10": 4,
@@ -134,9 +139,10 @@
         "keyword": "Printer Rental Philippines",
         "latestPosition": 7,
         "latestUrl": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
-        "previousPosition": 6,
-        "delta": -1,
+        "previousPosition": 7,
+        "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 7,
           "2026-04-13": 7,
           "2026-04-11": 6,
           "2026-04-10": 6,
@@ -147,11 +153,12 @@
       },
       {
         "keyword": "Printer Rental Taguig",
-        "latestPosition": 9,
+        "latestPosition": 8,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 8,
-        "delta": -1,
+        "previousPosition": 9,
+        "delta": 1,
         "positionsByDate": {
+          "2026-04-14": 8,
           "2026-04-13": 9,
           "2026-04-11": 8,
           "2026-04-10": null,
@@ -162,11 +169,12 @@
       },
       {
         "keyword": "Copier Rental",
-        "latestPosition": 1,
+        "latestPosition": 2,
         "latestUrl": "https://marga.biz/",
         "previousPosition": 1,
-        "delta": 0,
+        "delta": -1,
         "positionsByDate": {
+          "2026-04-14": 2,
           "2026-04-13": 1,
           "2026-04-11": 1,
           "2026-04-10": 1,
@@ -179,9 +187,10 @@
         "keyword": "Copier For Rent",
         "latestPosition": 4,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 2,
-        "delta": -2,
+        "previousPosition": 4,
+        "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 4,
           "2026-04-13": 4,
           "2026-04-11": 2,
           "2026-04-10": 2,
@@ -197,6 +206,7 @@
         "previousPosition": 10,
         "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 10,
           "2026-04-13": 10,
           "2026-04-11": 10,
           "2026-04-10": 9,
@@ -212,6 +222,7 @@
         "previousPosition": 7,
         "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 7,
           "2026-04-13": 7,
           "2026-04-11": 7,
           "2026-04-10": 8,
@@ -227,6 +238,7 @@
         "previousPosition": 2,
         "delta": 0,
         "positionsByDate": {
+          "2026-04-14": 2,
           "2026-04-13": 2,
           "2026-04-11": 2,
           "2026-04-10": 2,
@@ -237,11 +249,12 @@
       },
       {
         "keyword": "Copier Rental Taguig",
-        "latestPosition": 6,
+        "latestPosition": 7,
         "latestUrl": "https://marga.biz/contact/",
-        "previousPosition": 8,
-        "delta": 2,
+        "previousPosition": 6,
+        "delta": -1,
         "positionsByDate": {
+          "2026-04-14": 7,
           "2026-04-13": 6,
           "2026-04-11": 8,
           "2026-04-10": 8,
@@ -252,11 +265,12 @@
       },
       {
         "keyword": "Copier Rental Quezon City",
-        "latestPosition": null,
-        "latestUrl": null,
+        "latestPosition": 7,
+        "latestUrl": "https://marga.biz/contact/",
         "previousPosition": null,
         "delta": null,
         "positionsByDate": {
+          "2026-04-14": 7,
           "2026-04-13": null,
           "2026-04-11": null,
           "2026-04-10": null,
@@ -266,11 +280,12 @@
       },
       {
         "keyword": "Copier Rental Pasig",
-        "latestPosition": null,
-        "latestUrl": null,
+        "latestPosition": 10,
+        "latestUrl": "https://marga.biz/",
         "previousPosition": null,
         "delta": null,
         "positionsByDate": {
+          "2026-04-14": 10,
           "2026-04-13": null,
           "2026-04-11": null,
           "2026-04-10": null,
@@ -280,11 +295,12 @@
       },
       {
         "keyword": "Copier Rental Ortigas",
-        "latestPosition": 3,
+        "latestPosition": 2,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 2,
-        "delta": -1,
+        "previousPosition": 3,
+        "delta": 1,
         "positionsByDate": {
+          "2026-04-14": 2,
           "2026-04-13": 3,
           "2026-04-11": 2,
           "2026-04-10": 3,
@@ -294,11 +310,12 @@
       },
       {
         "keyword": "Copier Rental Philippines",
-        "latestPosition": 1,
+        "latestPosition": 2,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 2,
-        "delta": 1,
+        "previousPosition": 1,
+        "delta": -1,
         "positionsByDate": {
+          "2026-04-14": 2,
           "2026-04-13": 1,
           "2026-04-11": 2,
           "2026-04-10": 2,
@@ -308,138 +325,133 @@
       }
     ],
     "competitorResearch": {
-      "printer": [
+      "printerCompetitorsReviewed": [
         "printerrentalsph.com (https://www.printerrentalsph.com/)",
         "ubix.com.ph (https://ubix.com.ph/printer-rental/)",
         "facebook.com (https://www.facebook.com/ezrentalexpress/)",
         "fujifilm.com (https://www.fujifilm.com/fbph/en/solutions/categories/outsourcing-services/short-term-rental)",
-        "globalinksolution.ph (https://www.globalinksolution.ph/)"
+        "printersforrent.com (https://www.printersforrent.com/)"
       ],
-      "copier": [
+      "copierCompetitorsReviewed": [
         "printersforrent.com (https://www.printersforrent.com/product-category/term/copiers)",
+        "ubix.com.ph (https://ubix.com.ph/printer-rental/)",
+        "facebook.com (https://www.facebook.com/copieronline/videos/%EF%B8%8F-copier-rental-made-easyrent-a-copier-for-as-low-as-3000-per-month-and-start-yo/1404591564617388/)",
         "printerrentalsph.com (https://www.printerrentalsph.com/)",
-        "facebook.com copier groups/videos",
-        "ubix.com.ph (https://ubix.com.ph/printer-rental/)"
+        "copieronlineph.com (https://copieronlineph.com/)"
       ],
-      "prioritizedGaps": [
-        "Print All You Can is not in the top 20.",
-        "Printer Rental and Printer For Rent are visible but ranking through the home page instead of the intended printer hub.",
-        "Printer Rental Philippines ranks through an old deep Print All You Can URL instead of the Philippines page.",
-        "Copier For Rent dropped to position 4 and is monitor-only because the protected winner pages cannot be edited automatically.",
-        "Copier Rental Quezon City and Copier Rental Pasig are not in the top 20.",
-        "Copier Rental BGC, Makati, and Taguig still need stronger local growth support."
-      ]
+      "gapsPrioritized": "Print All You Can is still not in the top 20. Printer Rental and Printer Rental Philippines are ranking through an old deep Print All You Can URL; Printer For Rent, Printer Rental Manila, and Printer Rental Taguig still rank through the home page. Copier Rental dropped to position 2 and Copier For Rent remains position 4, so both stayed monitor-only. Copier Rental BGC and Pasig are at position 10, Copier Rental Makati is at position 7, and local copier terms still need dedicated page-match support."
     },
     "newSupportPages": [
-      "https://marga.biz/printer-rental/print-all-you-can-philippines-volume-audit/",
-      "https://marga.biz/copier-rental/pasig/copier-rental-pasig-building-access-checklist/"
+      "https://marga.biz/printer-rental/print-all-you-can-philippines-service-inclusion-checklist/",
+      "https://marga.biz/copier-rental/bgc/copier-rental-bgc-service-route-checklist/"
     ],
     "newSupportingBlogs": [
-      "https://marga.biz/blogs/print-all-you-can-philippines-volume-audit/",
-      "https://marga.biz/blogs/printer-rental-philippines-page-match-plan/",
-      "https://marga.biz/blogs/printer-rental-taguig-bgc-access-planning/",
-      "https://marga.biz/blogs/copier-rental-quezon-city-pasig-local-proof/",
-      "https://marga.biz/blogs/copier-rental-pasig-ortigas-building-access/"
+      "https://marga.biz/blogs/print-all-you-can-maintenance-toner-replacement-plan/",
+      "https://marga.biz/blogs/printer-rental-philippines-competitor-gap-checklist/",
+      "https://marga.biz/blogs/printer-for-rent-homepage-to-hub-routing/",
+      "https://marga.biz/blogs/copier-rental-bgc-service-route-planning/",
+      "https://marga.biz/blogs/copier-rental-makati-pasig-bgc-page-match/"
     ],
     "completedTasks": [
       {
         "taskKey": "improve_money_pages",
         "task": "Improve the highest-opportunity money pages today",
-        "implementation": "Updated printer hub internal routing for Print All You Can, printer-for-rent, broad printer rental, Taguig/BGC local support, and new page-match support content.",
-        "targetPageKeyword": "Printer Rental, Printer For Rent, Print All You Can",
+        "implementation": "Updated Printer Rental hub, Printer Rental Philippines, Printer Rental BGC, and Printer Rental Taguig with stronger Print All You Can, Printer For Rent page-match, service-inclusion, and internal-link routing after live ranking checks.",
+        "targetPageKeyword": "Print All You Can, Printer Rental, Printer For Rent",
         "status": "Done",
         "link": "https://marga.biz/printer-rental/",
-        "completedAt": "2026-04-13T02:16:58.847Z"
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "strengthen_city_service_pages",
         "task": "Strengthen the weakest city or service pages today",
-        "implementation": "Done after live verification: strengthened Copier Rental Pasig, Copier Rental Quezon City, and Printer Rental Taguig internal paths with new local support assets, quote-first links, and local-proof content.",
-        "targetPageKeyword": "Printer Rental Taguig, Copier Rental Quezon City, Copier Rental Pasig",
+        "implementation": "Improved Copier Rental BGC, Makati, and Pasig local pages with BGC service-route, Makati/Pasig/BGC page-match, and local support links while keeping protected copier core pages untouched.",
+        "targetPageKeyword": "Copier Rental BGC, Copier Rental Makati, Copier Rental Pasig",
         "status": "Done",
-        "link": "https://marga.biz/copier-rental/pasig/",
-        "completedAt": "2026-04-13T02:17:34.304Z"
+        "link": "https://marga.biz/copier-rental/bgc/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "refresh_support_pages",
         "task": "Refresh the support pages that can lift rankings today",
-        "implementation": "Published a Print All You Can Philippines volume audit and a Pasig copier building access checklist to answer high-value support intent.",
-        "targetPageKeyword": "Print All You Can Philippines, Copier Rental Pasig",
+        "implementation": "Published the Print All You Can service inclusion checklist and Copier Rental BGC service route checklist, then linked them from hub and local pages.",
+        "targetPageKeyword": "Print All You Can, Copier Rental BGC",
         "status": "Done",
-        "link": "https://marga.biz/printer-rental/print-all-you-can-philippines-volume-audit/",
-        "completedAt": "2026-04-13T02:16:59.856Z"
+        "link": "https://marga.biz/printer-rental/print-all-you-can-philippines-service-inclusion-checklist/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "create_new_support_pages",
         "task": "Create up to 2 new support pages today",
-        "implementation": "Done after live verification: created exactly two support pages today, the Print All You Can Philippines Volume Audit and the Copier Rental Pasig Building Access Checklist.",
-        "targetPageKeyword": "Print All You Can Philippines, Copier Rental Pasig",
+        "implementation": "Published exactly 2 new support pages: Print All You Can Philippines Service Inclusion Checklist and Copier Rental BGC Service Route Checklist.",
+        "targetPageKeyword": "Print All You Can, Copier Rental BGC",
         "status": "Done",
-        "link": "https://marga.biz/printer-rental/print-all-you-can-philippines-volume-audit/",
-        "completedAt": "2026-04-13T02:17:34.794Z"
+        "link": "https://marga.biz/copier-rental/bgc/copier-rental-bgc-service-route-checklist/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "publish_supporting_blogs",
         "task": "Publish 5 supporting blogs today",
-        "implementation": "Done after live verification: published exactly five supporting blogs for Print All You Can volume, printer page-match routing, Taguig/BGC access, QC/Pasig local proof, and Pasig/Ortigas building access.",
-        "targetPageKeyword": "Print All You Can, Printer Rental Philippines, Printer Rental Taguig, Copier Rental QC/Pasig/Ortigas",
+        "implementation": "Published exactly 5 supporting blogs for Print All You Can maintenance/toner planning, printer competitor gaps, Printer For Rent page-match routing, Copier Rental BGC service routing, and Makati/Pasig/BGC copier page matching.",
+        "targetPageKeyword": "Printer Rental, Printer For Rent, Print All You Can, Copier Rental BGC",
         "status": "Done",
-        "link": "https://marga.biz/blogs/printer-rental-philippines-page-match-plan/",
-        "completedAt": "2026-04-13T02:17:35.241Z"
+        "link": "https://marga.biz/blogs/print-all-you-can-maintenance-toner-replacement-plan/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "add_internal_links",
         "task": "Add the internal links needed to move target pages today",
-        "implementation": "Added internal links from the printer hub, Printer Rental Philippines, Taguig, Copier Rental Pasig, and Copier Rental Quezon City pages to the new support assets.",
-        "targetPageKeyword": "Printer Rental, Copier Rental Pasig, Copier Rental Quezon City",
+        "implementation": "Added contextual links from the printer hub, Printer Rental Philippines, Printer Rental BGC, Printer Rental Taguig, Copier Rental BGC, Copier Rental Makati, and Copier Rental Pasig into the new support assets and five blogs.",
+        "targetPageKeyword": "Printer and copier local clusters",
         "status": "Done",
-        "link": "https://marga.biz/printer-rental/philippines/",
-        "completedAt": "2026-04-13T02:17:01.616Z"
+        "link": "https://marga.biz/blogs/copier-rental-makati-pasig-bgc-page-match/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "fix_on_page_issues",
         "task": "Fix the highest-impact on-page issues today",
-        "implementation": "Added page-match support content and stronger canonical live pages to reduce broad printer intent being answered by the wrong URL.",
-        "targetPageKeyword": "Printer Rental Philippines page match",
+        "implementation": "Addressed page-match and weak-support issues by adding clearer canonical support assets, topical links, and live-verifiable schema/contact-ready support pages.",
+        "targetPageKeyword": "Print All You Can, Printer For Rent, Copier Rental BGC",
         "status": "Done",
-        "link": "https://marga.biz/blogs/printer-rental-philippines-page-match-plan/",
-        "completedAt": "2026-04-13T02:17:02.040Z"
+        "link": "https://marga.biz/blogs/printer-for-rent-homepage-to-hub-routing/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "refresh_faq_schema",
         "task": "Add or refresh FAQ and schema where the gap calls for it today",
-        "implementation": "Added FAQPage and WebPage schema to both new support pages and BlogPosting schema to all five new supporting blogs.",
-        "targetPageKeyword": "Print All You Can Philippines, Copier Rental Pasig",
+        "implementation": "Added FAQPage and Service schema on both new support pages and BlogPosting schema on all five support blogs.",
+        "targetPageKeyword": "Print All You Can, Copier Rental BGC",
         "status": "Done",
-        "link": "https://marga.biz/printer-rental/print-all-you-can-philippines-volume-audit/",
-        "completedAt": "2026-04-13T02:17:02.452Z"
+        "link": "https://marga.biz/copier-rental/bgc/copier-rental-bgc-service-route-checklist/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "improve_conversion_sections",
         "task": "Improve conversion sections on the pages closest to revenue today",
-        "implementation": "Added quote-first CTAs and contact routes to new support pages and blogs using service/intent/page parameters for printer and copier rental inquiries.",
-        "targetPageKeyword": "Printer Rental, Copier Rental Pasig",
+        "implementation": "Added quote-first CTAs and contact paths on the new support pages and blogs, then linked them from commercial landing pages closest to revenue.",
+        "targetPageKeyword": "Printer Rental, Print All You Can, Copier Rental BGC",
         "status": "Done",
         "link": "https://marga.biz/contact/",
-        "completedAt": "2026-04-13T02:17:02.885Z"
+        "completedAt": "2026-04-14T04:28:33.650Z"
       },
       {
         "taskKey": "close_competitor_gaps",
         "task": "Close the competitor gaps exposed today",
-        "implementation": "Closed competitor gaps around local specificity, volume planning, service scope, building access, and trust-oriented quote preparation without touching protected copier core pages.",
-        "targetPageKeyword": "Printer Rental Philippines, Copier Rental Philippines local competitors",
+        "implementation": "Closed competitor gaps found in the live SERP review: maintenance, toner/consumables, replacement support, training/support clarity, local service route details, and page-match links.",
+        "targetPageKeyword": "Printer Rental Philippines, Copier Rental Philippines competitors",
         "status": "Done",
-        "link": "https://marga.biz/blogs/copier-rental-quezon-city-pasig-local-proof/",
-        "completedAt": "2026-04-13T02:17:03.336Z"
+        "link": "https://marga.biz/blogs/printer-rental-philippines-competitor-gap-checklist/",
+        "completedAt": "2026-04-14T04:28:33.650Z"
       }
     ],
     "activeTasks": [],
     "notes": [
-      "Live rankings were rechecked on 2026-04-13 before prioritization.",
-      "Copier Rental is #1 and Copier For Rent is #4; protected copier winners were monitored only.",
-      "Published exactly 2 support pages and exactly 5 supporting blogs.",
-      "No home page or copier core money-page files were edited.",
-      "Live smoke tests passed for 12 production URLs."
+      "Live rankings were rechecked on 2026-04-14 before prioritization.",
+      "Copier Rental is now position 2 and Copier For Rent is position 4 on the live check; both stayed monitor-only under the protected-winner policy.",
+      "Published exactly 2 new support pages and exactly 5 supporting blogs after real ranking and competitor gaps justified them.",
+      "Added internal links from printer and copier-location pages into the new support pages and blogs.",
+      "Patched the launchd runner/prompt so future child Codex runs do not mistake their own wrapper lock for a competing active run.",
+      "The live smoke test passed for all new and updated URLs with title, canonical, schema, and contact checks."
     ]
   }
 }
