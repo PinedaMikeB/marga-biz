@@ -55,6 +55,7 @@ If preflight fails:
 
 If a stale task or stale run state is discovered:
 - inspect the lock, pid, timestamps, heartbeat, and latest report state before assuming another run is truly active
+- when this prompt is running under `scripts/run-printer-seo-daily.js`, the lock owner is expected to be the Codex process parent. If `PRINTER_SEO_CHILD_RUN=1`, `PRINTER_SEO_LOCK_OWNER_PID` matches the first line of `PRINTER_SEO_LOCK_PATH`, and that PID is the parent or ancestor of the current Codex process, treat the lock as this run's own wrapper lock and continue instead of self-blocking.
 - if it is stale, clear or repair it in the most durable safe way and continue the same run
 - if it is still active, avoid duplicate work and move to the next safe step or the next scheduled run
 - if it cannot be repaired safely, email a short stale-task blocker summary, write the same blocker into `reports/seo-monitor/latest.md` and `reports/seo-monitor/latest.json`, and then continue with any remaining safe work instead of stopping at the first stale failure

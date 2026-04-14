@@ -161,7 +161,12 @@ async function main() {
         throw new Error(`Printer SEO run already active: ${lockPath}`);
     }
 
-    fs.writeFileSync(lockPath, `${process.pid}\n${new Date().toISOString()}\n`, 'utf8');
+    fs.writeFileSync(lockPath, [
+        `${process.pid}`,
+        `${new Date().toISOString()}`,
+        `runId=${runId}`,
+        'owner=run-printer-seo-daily'
+    ].join('\n') + '\n', 'utf8');
 
     const prompt = fs.readFileSync(promptFile, 'utf8');
     const output = fs.createWriteStream(runLog, { flags: 'a' });
@@ -183,7 +188,13 @@ async function main() {
 
     const child = spawn(command, args, {
         cwd: repoRoot,
-        env: process.env,
+        env: {
+            ...process.env,
+            PRINTER_SEO_CHILD_RUN: '1',
+            PRINTER_SEO_LOCK_OWNER_PID: String(process.pid),
+            PRINTER_SEO_RUN_ID: runId,
+            PRINTER_SEO_LOCK_PATH: lockPath
+        },
         stdio: ['pipe', 'pipe', 'pipe']
     });
 
