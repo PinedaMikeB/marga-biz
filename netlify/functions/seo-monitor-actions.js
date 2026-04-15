@@ -380,30 +380,26 @@ async function runInsightsSnapshot() {
 }
 
 async function scanPrinterPages() {
-    const scans = [];
-
-    for (const pagePath of DAILY_PRINTER_PAGES) {
+    return Promise.all(DAILY_PRINTER_PAGES.map(async (pagePath) => {
         try {
             const payload = await callSiteFunction(`/.netlify/functions/page-scanner?action=scan&path=${encodeURIComponent(pagePath)}`);
             const pageData = payload.data?.data || {};
 
-            scans.push({
+            return {
                 path: pagePath,
                 success: true,
                 seoScore: pageData.seoScore ?? null,
                 grade: pageData.seoGrade || null,
                 issueCount: pageData.issues?.length || 0
-            });
+            };
         } catch (error) {
-            scans.push({
+            return {
                 path: pagePath,
                 success: false,
                 error: error.message
-            });
+            };
         }
-    }
-
-    return scans;
+    }));
 }
 
 function buildCompetitorSummary(result) {
@@ -420,31 +416,38 @@ function buildCompetitorSummary(result) {
 }
 
 async function runToday(db) {
-    const rankings = [];
-
-    for (const keyword of [...DAILY_PRINTER_KEYWORDS, ...DAILY_COPIER_KEYWORDS]) {
+    const rankingKeywords = [...DAILY_PRINTER_KEYWORDS, ...DAILY_COPIER_KEYWORDS];
+    const rankings = await Promise.all(rankingKeywords.map(async (keyword) => {
         const result = await checkRanking(keyword);
         await storeRankingHistory(db, keyword, result);
-        rankings.push({
-            keyword,
-            position: result.ranking?.position || null,
-            url: result.ranking?.url || null,
-            notFound: result.notFound
-        });
 
         await logActivity(db, 'seo_monitor_keyword_check', {
             keyword,
             position: result.ranking?.position || null,
             url: result.ranking?.url || null
         });
-    }
 
-    const competitorSource = await checkRanking('Printer Rental Philippines');
+        return {
+            keyword,
+            position: result.ranking?.position || null,
+            url: result.ranking?.url || null,
+            notFound: result.notFound
+        };
+    }));
+
+    const [
+        competitorSource,
+        copierCompetitorSource,
+        snapshot,
+        pageScans
+    ] = await Promise.all([
+        checkRanking('Printer Rental Philippines'),
+        checkRanking('Copier Rental Philippines'),
+        runInsightsSnapshot(),
+        scanPrinterPages()
+    ]);
     const competitors = buildCompetitorSummary(competitorSource);
-    const copierCompetitorSource = await checkRanking('Copier Rental Philippines');
     const copierCompetitors = buildCompetitorSummary(copierCompetitorSource);
-    const snapshot = await runInsightsSnapshot();
-    const pageScans = await scanPrinterPages();
 
     const result = {
         ranAt: new Date().toISOString(),
