@@ -1,42 +1,60 @@
 {
-  "generatedAt": "2026-04-15T02:23:53.740Z",
+  "generatedAt": "2026-04-16T02:22:56.793Z",
   "productionUrl": "https://marga.biz",
-  "deployUrl": "https://69def5c891510eed115d86a2--marga-biz.netlify.app",
-  "commit": "3d99f3e",
+  "deployUrl": "https://69e046ad2496e527455df122--marga-biz.netlify.app",
+  "commit": "2a22058",
   "verifiedUrls": [
     "https://marga.biz/printer-rental/",
-    "https://marga.biz/printer-rental/philippines/",
-    "https://marga.biz/printer-rental/printer-rental-philippines-page-match-checklist/",
-    "https://marga.biz/printer-rental/printer-for-rent/",
-    "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
+    "https://marga.biz/printer-rental/taguig/",
+    "https://marga.biz/printer-rental/taguig/printer-rental-taguig-office-tower-checklist/",
+    "https://marga.biz/printer-rental/print-all-you-can/",
+    "https://marga.biz/printer-rental/print-all-you-can-volume-planning-guide/",
     "https://marga.biz/copier-rental/bgc/",
-    "https://marga.biz/copier-rental/taguig/",
+    "https://marga.biz/copier-rental/makati/",
+    "https://marga.biz/copier-rental/pasig/",
+    "https://marga.biz/copier-rental/pasig/copier-rental-pasig-page-match-checklist/",
     "https://marga.biz/copier-rental/quezon-city/",
-    "https://marga.biz/copier-rental/quezon-city/copier-rental-quezon-city-local-intent-checklist/",
-    "https://marga.biz/blogs/printer-rental-homepage-page-match-fix/",
-    "https://marga.biz/blogs/print-all-you-can-top-20-gap-plan/",
-    "https://marga.biz/blogs/printer-for-rent-old-url-cleanup/",
-    "https://marga.biz/blogs/copier-rental-quezon-city-local-intent-plan/",
-    "https://marga.biz/blogs/copier-rental-bgc-taguig-page-match-fix/"
+    "https://marga.biz/blogs/print-all-you-can-commercial-intent-cleanup/",
+    "https://marga.biz/blogs/printer-rental-taguig-page-match-gap/",
+    "https://marga.biz/blogs/copier-rental-pasig-top-20-gap/",
+    "https://marga.biz/blogs/copier-rental-quezon-city-facebook-listing-gap/",
+    "https://marga.biz/blogs/copier-rental-bgc-makati-wrong-page-routing/"
   ],
   "openTaskCount": 0,
   "localValidation": {
     "preflight": "passed: npm run automation:preflight -- --sync-main --strict before content edits",
     "wrapperLock": "passed: current wrapper lock matched PRINTER_SEO_CHILD_RUN owner PID and did not self-block",
-    "monitorInitial": "initial production run_today timed out at Netlify 30s; repaired by parallelizing monitor ranking and scan calls",
-    "monitor": "passed: production seo-monitor-actions run_today completed on 2026-04-15 after deploy",
+    "monitorInitial": "passed: production seo-monitor-actions run_today completed before prioritization on 2026-04-16",
+    "competitorResearch": "passed: live track_keyword checks reviewed Print All You Can, Printer Rental Taguig/BGC/Makati, Copier Rental Quezon City/Pasig/BGC/Makati",
     "build": "passed: npm run build",
-    "diffCheck": "passed: git diff --check and git diff --cached --check",
-    "protectedCheck": "passed: no home page or copier core money-page files changed",
-    "localSmokeTests": "passed: generated dist URLs returned title, canonical, schema, and contact checks",
-    "deploy": "passed: npm run deploy",
-    "liveSmokeTests": "passed: 14 production URLs returned 200 with title, canonical, schema, and contact checks",
+    "diffCheck": "passed: git diff --check and git diff --cached --check before commit",
+    "protectedCheck": "passed: no home page or copier core money-page files changed; copier core winners stayed monitor-only",
+    "localSmokeTests": "passed: 15 generated dist URLs returned title, canonical, schema, and contact checks",
+    "push": "passed: git push origin main",
+    "deploy": "passed: npm run deploy -> https://69e046ad2496e527455df122--marga-biz.netlify.app",
+    "monitorPostDeploy": "passed: production seo-monitor-actions run_today completed after deploy on 2026-04-16",
+    "liveSmokeTests": "passed: 15 production URLs returned 200 with title, canonical, schema, and contact checks",
     "taskCompletions": "passed: 10 SEO monitor tasks recorded Done after live URL verification"
   },
+  "newSupportPages": [
+    "https://marga.biz/printer-rental/taguig/printer-rental-taguig-office-tower-checklist/",
+    "https://marga.biz/copier-rental/pasig/copier-rental-pasig-page-match-checklist/"
+  ],
+  "supportingBlogs": [
+    "https://marga.biz/blogs/print-all-you-can-commercial-intent-cleanup/",
+    "https://marga.biz/blogs/printer-rental-taguig-page-match-gap/",
+    "https://marga.biz/blogs/copier-rental-pasig-top-20-gap/",
+    "https://marga.biz/blogs/copier-rental-quezon-city-facebook-listing-gap/",
+    "https://marga.biz/blogs/copier-rental-bgc-makati-wrong-page-routing/"
+  ],
   "report": {
-    "generatedAt": "2026-04-15T02:24:00.785Z",
+    "generatedAt": "2026-04-16T02:22:56.554Z",
     "timezone": "Asia/Manila",
     "reportDates": [
+      {
+        "key": "2026-04-16",
+        "label": "4/16/26"
+      },
       {
         "key": "2026-04-15",
         "label": "4/15/26"
@@ -52,28 +70,22 @@
       {
         "key": "2026-04-11",
         "label": "4/11/26"
-      },
-      {
-        "key": "2026-04-10",
-        "label": "4/10/26"
       }
     ],
     "rankings": [
       {
         "keyword": "Printer Rental",
         "latestPosition": 6,
-        "latestUrl": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
-        "previousPosition": 7,
-        "delta": 1,
+        "latestUrl": "https://marga.biz/",
+        "previousPosition": 6,
+        "delta": 0,
         "positionsByDate": {
+          "2026-04-16": 6,
           "2026-04-15": 6,
           "2026-04-14": 7,
           "2026-04-13": 7,
           "2026-04-11": 7,
-          "2026-04-10": 7,
-          "2026-04-07": 7,
-          "2026-04-03": 7,
-          "2026-04-02": 8
+          "2026-04-10": 7
         }
       },
       {
@@ -83,13 +95,12 @@
         "previousPosition": 6,
         "delta": 0,
         "positionsByDate": {
+          "2026-04-16": 6,
           "2026-04-15": 6,
           "2026-04-14": 6,
           "2026-04-13": 6,
           "2026-04-11": 9,
-          "2026-04-10": 8,
-          "2026-04-07": 8,
-          "2026-04-02": 7
+          "2026-04-10": 8
         }
       },
       {
@@ -99,93 +110,83 @@
         "previousPosition": null,
         "delta": null,
         "positionsByDate": {
+          "2026-04-16": null,
           "2026-04-15": null,
           "2026-04-14": null,
           "2026-04-13": null,
-          "2026-04-11": null,
-          "2026-04-10": 3,
-          "2026-04-07": 3,
-          "2026-04-02": 2
+          "2026-04-11": null
         }
       },
       {
         "keyword": "Printer Rental BGC",
-        "latestPosition": 2,
+        "latestPosition": 4,
         "latestUrl": "https://marga.biz/printer-rental/",
         "previousPosition": 2,
-        "delta": 0,
+        "delta": -2,
         "positionsByDate": {
+          "2026-04-16": 4,
           "2026-04-15": 2,
           "2026-04-14": 2,
           "2026-04-13": 2,
-          "2026-04-11": 2,
-          "2026-04-10": 3,
-          "2026-04-07": 2,
-          "2026-04-02": 10
+          "2026-04-11": 2
         }
       },
       {
         "keyword": "Printer Rental Makati",
-        "latestPosition": 6,
+        "latestPosition": 7,
         "latestUrl": "https://marga.biz/printer-rental/",
-        "previousPosition": 6,
+        "previousPosition": 7,
         "delta": 0,
         "positionsByDate": {
-          "2026-04-15": 6,
+          "2026-04-16": 7,
+          "2026-04-15": 7,
           "2026-04-14": 6,
           "2026-04-13": 7,
-          "2026-04-11": 6,
-          "2026-04-10": 5,
-          "2026-04-07": 7,
-          "2026-04-02": 5
+          "2026-04-11": 6
         }
       },
       {
         "keyword": "Printer Rental Manila",
-        "latestPosition": 5,
+        "latestPosition": 4,
         "latestUrl": "https://marga.biz/",
         "previousPosition": 5,
-        "delta": 0,
+        "delta": 1,
         "positionsByDate": {
+          "2026-04-16": 4,
           "2026-04-15": 5,
           "2026-04-14": 5,
           "2026-04-13": 5,
           "2026-04-11": 4,
-          "2026-04-10": 4,
-          "2026-04-07": 4,
-          "2026-04-02": 5
+          "2026-04-10": 4
         }
       },
       {
         "keyword": "Printer Rental Philippines",
         "latestPosition": 7,
-        "latestUrl": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
+        "latestUrl": "https://marga.biz/",
         "previousPosition": 7,
         "delta": 0,
         "positionsByDate": {
+          "2026-04-16": 7,
           "2026-04-15": 7,
           "2026-04-14": 7,
           "2026-04-13": 7,
           "2026-04-11": 6,
-          "2026-04-10": 6,
-          "2026-04-07": 7,
-          "2026-04-02": 6
+          "2026-04-10": 6
         }
       },
       {
         "keyword": "Printer Rental Taguig",
-        "latestPosition": 7,
+        "latestPosition": 8,
         "latestUrl": "https://marga.biz/",
         "previousPosition": 8,
-        "delta": 1,
+        "delta": 0,
         "positionsByDate": {
-          "2026-04-15": 7,
+          "2026-04-16": 8,
+          "2026-04-15": 8,
           "2026-04-14": 8,
           "2026-04-13": 9,
-          "2026-04-11": 8,
-          "2026-04-10": null,
-          "2026-04-07": 10,
-          "2026-04-02": 5
+          "2026-04-11": 8
         }
       },
       {
@@ -195,163 +196,143 @@
         "previousPosition": 2,
         "delta": 1,
         "positionsByDate": {
-          "2026-04-15": 1,
+          "2026-04-16": 1,
+          "2026-04-15": 2,
           "2026-04-14": 2,
           "2026-04-13": 1,
           "2026-04-11": 1,
-          "2026-04-10": 1,
-          "2026-04-07": 2,
-          "2026-04-03": 2,
-          "2026-04-02": 1
+          "2026-04-10": 1
         }
       },
       {
         "keyword": "Copier For Rent",
         "latestPosition": 2,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 4,
-        "delta": 2,
+        "previousPosition": 2,
+        "delta": 0,
         "positionsByDate": {
+          "2026-04-16": 2,
           "2026-04-15": 2,
           "2026-04-14": 4,
           "2026-04-13": 4,
           "2026-04-11": 2,
-          "2026-04-10": 2,
-          "2026-04-07": 2,
-          "2026-04-03": 2,
-          "2026-04-02": 2
+          "2026-04-10": 2
         }
       },
       {
         "keyword": "Copier Rental BGC",
-        "latestPosition": 1,
+        "latestPosition": 9,
         "latestUrl": "https://marga.biz/printer-rental/",
-        "previousPosition": 10,
-        "delta": 9,
+        "previousPosition": 2,
+        "delta": -7,
         "positionsByDate": {
-          "2026-04-15": 1,
+          "2026-04-16": 9,
+          "2026-04-15": 2,
           "2026-04-14": 10,
           "2026-04-13": 10,
-          "2026-04-11": 10,
-          "2026-04-10": 9,
-          "2026-04-07": 6,
-          "2026-04-03": null,
-          "2026-04-02": 2
+          "2026-04-11": 10
         }
       },
       {
         "keyword": "Copier Rental Makati",
-        "latestPosition": 6,
+        "latestPosition": 8,
         "latestUrl": "https://marga.biz/printer-rental/",
-        "previousPosition": 7,
-        "delta": 1,
+        "previousPosition": null,
+        "delta": null,
         "positionsByDate": {
-          "2026-04-15": 6,
+          "2026-04-16": 8,
+          "2026-04-15": null,
           "2026-04-14": 7,
           "2026-04-13": 7,
-          "2026-04-11": 7,
-          "2026-04-10": 8,
-          "2026-04-07": 9,
-          "2026-04-03": null,
-          "2026-04-02": null
+          "2026-04-11": 7
         }
       },
       {
         "keyword": "Copier Rental Manila",
-        "latestPosition": 2,
+        "latestPosition": 1,
         "latestUrl": "https://marga.biz/",
         "previousPosition": 2,
-        "delta": 0,
+        "delta": 1,
         "positionsByDate": {
+          "2026-04-16": 1,
           "2026-04-15": 2,
           "2026-04-14": 2,
           "2026-04-13": 2,
           "2026-04-11": 2,
-          "2026-04-10": 2,
-          "2026-04-07": 2,
-          "2026-04-03": 2,
-          "2026-04-02": 2
+          "2026-04-10": 2
         }
       },
       {
         "keyword": "Copier Rental Taguig",
-        "latestPosition": 7,
-        "latestUrl": "https://marga.biz/contact/",
+        "latestPosition": 3,
+        "latestUrl": "https://marga.biz/printer-rental/",
         "previousPosition": 7,
-        "delta": 0,
+        "delta": 4,
         "positionsByDate": {
+          "2026-04-16": 3,
           "2026-04-15": 7,
           "2026-04-14": 7,
           "2026-04-13": 6,
           "2026-04-11": 8,
-          "2026-04-10": 8,
-          "2026-04-07": 2,
-          "2026-04-03": 4,
-          "2026-04-02": 6
+          "2026-04-10": 8
         }
       },
       {
         "keyword": "Copier Rental Quezon City",
         "latestPosition": null,
         "latestUrl": null,
-        "previousPosition": 7,
+        "previousPosition": null,
         "delta": null,
         "positionsByDate": {
+          "2026-04-16": null,
           "2026-04-15": null,
           "2026-04-14": 7,
           "2026-04-13": null,
-          "2026-04-11": null,
-          "2026-04-10": null,
-          "2026-04-07": 8,
-          "2026-04-02": null
+          "2026-04-11": null
         }
       },
       {
         "keyword": "Copier Rental Pasig",
-        "latestPosition": 5,
-        "latestUrl": "https://marga.biz/contact/",
-        "previousPosition": 10,
-        "delta": 5,
+        "latestPosition": null,
+        "latestUrl": null,
+        "previousPosition": 6,
+        "delta": null,
         "positionsByDate": {
-          "2026-04-15": 5,
+          "2026-04-16": null,
+          "2026-04-15": 6,
           "2026-04-14": 10,
           "2026-04-13": null,
-          "2026-04-11": null,
-          "2026-04-10": null,
-          "2026-04-07": null,
-          "2026-04-02": null
+          "2026-04-11": null
         }
       },
       {
         "keyword": "Copier Rental Ortigas",
-        "latestPosition": 3,
+        "latestPosition": 1,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 2,
-        "delta": -1,
+        "previousPosition": 7,
+        "delta": 6,
         "positionsByDate": {
-          "2026-04-15": 3,
+          "2026-04-16": 1,
+          "2026-04-15": 7,
           "2026-04-14": 2,
           "2026-04-13": 3,
           "2026-04-11": 2,
-          "2026-04-10": 3,
-          "2026-04-07": 1,
-          "2026-04-02": 3
+          "2026-04-10": 3
         }
       },
       {
         "keyword": "Copier Rental Philippines",
-        "latestPosition": 2,
+        "latestPosition": 1,
         "latestUrl": "https://marga.biz/",
-        "previousPosition": 2,
-        "delta": 0,
+        "previousPosition": null,
+        "delta": null,
         "positionsByDate": {
-          "2026-04-15": 2,
+          "2026-04-16": 1,
+          "2026-04-15": null,
           "2026-04-14": 2,
           "2026-04-13": 1,
           "2026-04-11": 2,
-          "2026-04-10": 2,
-          "2026-04-07": 2,
-          "2026-04-02": 2
+          "2026-04-10": 2
         }
       }
     ],
@@ -409,92 +390,92 @@
       {
         "taskKey": "improve_money_pages",
         "task": "Improve the highest-opportunity money pages today",
-        "implementation": "Updated the printer hub, Philippines page, and old generated printer pages with page-match routing for Printer Rental, Printer For Rent, and Print All You Can.",
-        "targetPageKeyword": "Printer Rental, Printer For Rent, Print All You Can",
+        "implementation": "Updated the printer hub, Printer Rental Taguig, and Print All You Can routing so broad and local searches point into the right support paths.",
+        "targetPageKeyword": "Print All You Can, Printer Rental Taguig, Printer Rental, Printer For Rent",
         "status": "Done",
         "link": "https://marga.biz/printer-rental/",
-        "completedAt": "2026-04-15T02:22:54.777Z"
+        "completedAt": "2026-04-16T02:21:33.074Z"
       },
       {
         "taskKey": "strengthen_city_service_pages",
         "task": "Strengthen the weakest city or service pages today",
-        "implementation": "Strengthened Copier Rental Quezon City, BGC, and Taguig location growth pages with new local-intent and page-match links.",
-        "targetPageKeyword": "Copier Rental Quezon City, Copier Rental BGC, Copier Rental Taguig",
+        "implementation": "Updated copier Pasig, Quezon City, BGC, and Makati local growth pages with local proof and wrong-page routing links while leaving protected copier core pages untouched.",
+        "targetPageKeyword": "Copier Rental Pasig, Copier Rental Quezon City, Copier Rental BGC, Copier Rental Makati",
         "status": "Done",
-        "link": "https://marga.biz/copier-rental/quezon-city/",
-        "completedAt": "2026-04-15T02:22:55.204Z"
+        "link": "https://marga.biz/copier-rental/pasig/",
+        "completedAt": "2026-04-16T02:21:33.524Z"
       },
       {
         "taskKey": "refresh_support_pages",
         "task": "Refresh the support pages that can lift rankings today",
-        "implementation": "Added support routing from printer and copier-location pages into the new page-match and local-intent assets.",
-        "targetPageKeyword": "Printer Rental Philippines, Copier Rental Quezon City",
+        "implementation": "Refreshed printer and copier support paths with new Taguig, Pasig, QC, BGC, Makati, and Print All You Can links that pass relevance into the priority pages.",
+        "targetPageKeyword": "Printer Rental Taguig, Print All You Can, Copier Rental Pasig, Copier Rental Quezon City",
         "status": "Done",
-        "link": "https://marga.biz/printer-rental/printer-rental-philippines-page-match-checklist/",
-        "completedAt": "2026-04-15T02:22:55.625Z"
+        "link": "https://marga.biz/printer-rental/print-all-you-can-volume-planning-guide/",
+        "completedAt": "2026-04-16T02:21:33.957Z"
       },
       {
         "taskKey": "create_new_support_pages",
         "task": "Create up to 2 new support pages today",
-        "implementation": "Published exactly two support pages: Printer Rental Philippines Page-Match Checklist and Copier Rental Quezon City Local Intent Checklist.",
-        "targetPageKeyword": "Printer Rental Philippines, Copier Rental Quezon City",
+        "implementation": "Published exactly 2 new support pages: Printer Rental Taguig office tower checklist and Copier Rental Pasig page-match checklist.",
+        "targetPageKeyword": "Printer Rental Taguig, Copier Rental Pasig",
         "status": "Done",
-        "link": "https://marga.biz/copier-rental/quezon-city/copier-rental-quezon-city-local-intent-checklist/",
-        "completedAt": "2026-04-15T02:22:56.054Z"
+        "link": "https://marga.biz/printer-rental/taguig/printer-rental-taguig-office-tower-checklist/",
+        "completedAt": "2026-04-16T02:21:34.404Z"
       },
       {
         "taskKey": "publish_supporting_blogs",
         "task": "Publish 5 supporting blogs today",
-        "implementation": "Published five supporting blogs for printer page-match, Print All You Can visibility, Printer For Rent old URL cleanup, QC copier intent, and BGC/Taguig copier page-match.",
-        "targetPageKeyword": "Printer Rental, Printer For Rent, Print All You Can, Copier Rental Quezon City, Copier Rental BGC, Copier Rental Taguig",
+        "implementation": "Published exactly 5 support blogs for Print All You Can commercial intent, Printer Rental Taguig page-match, Copier Rental Pasig gap, Copier Rental QC listing gap, and BGC/Makati copier wrong-page routing.",
+        "targetPageKeyword": "Print All You Can, Printer Rental Taguig, Copier Rental Pasig, Copier Rental Quezon City, Copier Rental BGC, Copier Rental Makati",
         "status": "Done",
-        "link": "https://marga.biz/blogs/print-all-you-can-top-20-gap-plan/",
-        "completedAt": "2026-04-15T02:22:56.845Z"
+        "link": "https://marga.biz/blogs/print-all-you-can-commercial-intent-cleanup/",
+        "completedAt": "2026-04-16T02:21:35.230Z"
       },
       {
         "taskKey": "add_internal_links",
         "task": "Add the internal links needed to move target pages today",
-        "implementation": "Added internal links from updated printer and copier-location pages into all seven new assets and the relevant quote paths.",
-        "targetPageKeyword": "Printer Rental hub and copier-location growth pages",
+        "implementation": "Added contextual internal links from the printer hub, Taguig page, Print All You Can support, and copier BGC/Makati/Pasig/QC location pages into the new pages and blogs.",
+        "targetPageKeyword": "Printer Rental, Printer Rental Taguig, Copier Rental Pasig",
         "status": "Done",
-        "link": "https://marga.biz/blogs/copier-rental-bgc-taguig-page-match-fix/",
-        "completedAt": "2026-04-15T02:22:57.459Z"
+        "link": "https://marga.biz/printer-rental/",
+        "completedAt": "2026-04-16T02:21:35.659Z"
       },
       {
         "taskKey": "fix_on_page_issues",
         "task": "Fix the highest-impact on-page issues today",
-        "implementation": "Repaired production monitor timeout through concurrent checks and fixed page-match issues by routing broad keywords away from generic or old URLs.",
-        "targetPageKeyword": "Printer Rental, Printer For Rent, Copier Rental Quezon City",
+        "implementation": "Fixed page-match gaps by adding specific local support paths, sitemap entries, canonical production URLs, and stronger buyer-intent routing for wrong-page matches.",
+        "targetPageKeyword": "Printer Rental Taguig, Copier Rental Pasig, Copier Rental BGC, Copier Rental Makati",
         "status": "Done",
-        "link": "https://marga.biz/printer-rental/philippines/",
-        "completedAt": "2026-04-15T02:22:57.937Z"
+        "link": "https://marga.biz/copier-rental/pasig/copier-rental-pasig-page-match-checklist/",
+        "completedAt": "2026-04-16T02:21:36.079Z"
       },
       {
         "taskKey": "refresh_faq_schema",
         "task": "Add or refresh FAQ and schema where the gap calls for it today",
-        "implementation": "Refreshed FAQ copy and JSON-LD FAQ schema on the printer hub, Philippines page, Copier Rental Quezon City, BGC, and Taguig pages.",
-        "targetPageKeyword": "Printer Rental, Printer Rental Philippines, Copier Rental Quezon City, Copier Rental BGC, Copier Rental Taguig",
+        "implementation": "Refreshed FAQ body copy and FAQPage schema on Printer Rental Taguig and Copier Rental Pasig to include the new checklist routing.",
+        "targetPageKeyword": "Printer Rental Taguig, Copier Rental Pasig",
         "status": "Done",
-        "link": "https://marga.biz/copier-rental/bgc/",
-        "completedAt": "2026-04-15T02:22:58.358Z"
+        "link": "https://marga.biz/printer-rental/taguig/",
+        "completedAt": "2026-04-16T02:21:36.489Z"
       },
       {
         "taskKey": "improve_conversion_sections",
         "task": "Improve conversion sections on the pages closest to revenue today",
-        "implementation": "Added quote-first sections and contact routes on new support assets plus stronger conversion routing from existing updated pages.",
-        "targetPageKeyword": "Printer Rental and copier-location quote paths",
+        "implementation": "Added quote-ready checklist CTAs and contact paths on the new Taguig and Pasig support pages plus related local cluster pages.",
+        "targetPageKeyword": "Printer Rental Taguig, Copier Rental Pasig",
         "status": "Done",
-        "link": "https://marga.biz/contact/",
-        "completedAt": "2026-04-15T02:22:58.775Z"
+        "link": "https://marga.biz/copier-rental/pasig/copier-rental-pasig-page-match-checklist/",
+        "completedAt": "2026-04-16T02:21:36.895Z"
       },
       {
         "taskKey": "close_competitor_gaps",
         "task": "Close the competitor gaps exposed today",
-        "implementation": "Used live competitor/ranking gaps from printerrentalsph.com, printersforrent.com, ubix.com.ph, Facebook local listings, copylink.ph, and ASDI to prioritize page-match, Print All You Can coverage, and QC copier local proof.",
-        "targetPageKeyword": "Printer Rental Philippines, Print All You Can, Copier Rental Quezon City",
+        "implementation": "Closed competitor gaps from Facebook, listing, and generic provider results with local proof, district details, scan workflows, access planning, and service-scope support content.",
+        "targetPageKeyword": "Printer Rental Philippines, Print All You Can, Copier Rental Quezon City, Copier Rental Pasig",
         "status": "Done",
-        "link": "https://marga.biz/blogs/printer-rental-homepage-page-match-fix/",
-        "completedAt": "2026-04-15T02:22:59.190Z"
+        "link": "https://marga.biz/blogs/copier-rental-quezon-city-facebook-listing-gap/",
+        "completedAt": "2026-04-16T02:21:37.308Z"
       }
     ],
     "todayRun": {
@@ -543,117 +524,7 @@
           "issueCount": 2
         }
       ],
-      "date": "2026-04-15",
-      "rankings": [
-        {
-          "keyword": "Printer Rental",
-          "position": 6,
-          "url": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
-          "notFound": false
-        },
-        {
-          "keyword": "Printer For Rent",
-          "position": 6,
-          "url": "https://marga.biz/",
-          "notFound": false
-        },
-        {
-          "keyword": "Print All You Can",
-          "position": null,
-          "url": null,
-          "notFound": true
-        },
-        {
-          "keyword": "Printer Rental BGC",
-          "position": 2,
-          "url": "https://marga.biz/printer-rental/",
-          "notFound": false
-        },
-        {
-          "keyword": "Printer Rental Makati",
-          "position": 6,
-          "url": "https://marga.biz/printer-rental/",
-          "notFound": false
-        },
-        {
-          "keyword": "Printer Rental Manila",
-          "position": 5,
-          "url": "https://marga.biz/",
-          "notFound": false
-        },
-        {
-          "keyword": "Printer Rental Philippines",
-          "position": 7,
-          "url": "https://marga.biz/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/",
-          "notFound": false
-        },
-        {
-          "keyword": "Printer Rental Taguig",
-          "position": 7,
-          "url": "https://marga.biz/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental",
-          "position": 1,
-          "url": "https://marga.biz/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier For Rent",
-          "position": 2,
-          "url": "https://marga.biz/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental BGC",
-          "position": 1,
-          "url": "https://marga.biz/printer-rental/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental Makati",
-          "position": 6,
-          "url": "https://marga.biz/printer-rental/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental Manila",
-          "position": 2,
-          "url": "https://marga.biz/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental Taguig",
-          "position": 7,
-          "url": "https://marga.biz/contact/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental Quezon City",
-          "position": null,
-          "url": null,
-          "notFound": true
-        },
-        {
-          "keyword": "Copier Rental Pasig",
-          "position": 5,
-          "url": "https://marga.biz/contact/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental Ortigas",
-          "position": 3,
-          "url": "https://marga.biz/",
-          "notFound": false
-        },
-        {
-          "keyword": "Copier Rental Philippines",
-          "position": 2,
-          "url": "https://marga.biz/",
-          "notFound": false
-        }
-      ],
+      "date": "2026-04-16",
       "competitors": {
         "peopleAlsoAsk": [],
         "relatedSearches": [],
@@ -686,7 +557,122 @@
           }
         ]
       },
-      "ranAt": "2026-04-15T02:22:22.545Z",
+      "snapshot": {
+        "success": true,
+        "date": "2026-04-16",
+        "clicks": 1
+      },
+      "rankings": [
+        {
+          "keyword": "Printer Rental",
+          "position": 6,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer For Rent",
+          "position": 6,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Print All You Can",
+          "position": null,
+          "url": null,
+          "notFound": true
+        },
+        {
+          "keyword": "Printer Rental BGC",
+          "position": 4,
+          "url": "https://marga.biz/printer-rental/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Makati",
+          "position": 7,
+          "url": "https://marga.biz/printer-rental/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Manila",
+          "position": 4,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Philippines",
+          "position": 7,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Printer Rental Taguig",
+          "position": 8,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier Rental",
+          "position": 1,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier For Rent",
+          "position": 2,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier Rental BGC",
+          "position": 9,
+          "url": "https://marga.biz/printer-rental/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier Rental Makati",
+          "position": 8,
+          "url": "https://marga.biz/printer-rental/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier Rental Manila",
+          "position": 1,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier Rental Taguig",
+          "position": 3,
+          "url": "https://marga.biz/printer-rental/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier Rental Quezon City",
+          "position": null,
+          "url": null,
+          "notFound": true
+        },
+        {
+          "keyword": "Copier Rental Pasig",
+          "position": null,
+          "url": null,
+          "notFound": true
+        },
+        {
+          "keyword": "Copier Rental Ortigas",
+          "position": 1,
+          "url": "https://marga.biz/",
+          "notFound": false
+        },
+        {
+          "keyword": "Copier Rental Philippines",
+          "position": 1,
+          "url": "https://marga.biz/",
+          "notFound": false
+        }
+      ],
+      "ranAt": "2026-04-16T02:19:44.995Z",
       "copierCompetitors": {
         "peopleAlsoAsk": [],
         "relatedSearches": [],
@@ -694,45 +680,40 @@
         "topDomains": [
           {
             "domain": "printersforrent.com",
-            "position": 1,
+            "position": 2,
             "url": "https://www.printersforrent.com/product-category/term/copiers"
           },
           {
-            "domain": "facebook.com",
+            "domain": "printerrentalsph.com",
             "position": 3,
-            "url": "https://www.facebook.com/copieronline/videos/%EF%B8%8F-copier-rental-made-easyrent-a-copier-for-as-low-as-3000-per-month-and-start-yo/1404591564617388/"
+            "url": "https://www.printerrentalsph.com/"
+          },
+          {
+            "domain": "facebook.com",
+            "position": 4,
+            "url": "https://www.facebook.com/groups/789858312002440/"
           },
           {
             "domain": "ubix.com.ph",
-            "position": 4,
+            "position": 5,
             "url": "https://ubix.com.ph/printer-rental/"
           },
           {
             "domain": "facebook.com",
-            "position": 5,
-            "url": "https://www.facebook.com/groups/789858312002440/"
-          },
-          {
-            "domain": "copieronlineph.com",
             "position": 6,
-            "url": "https://copieronlineph.com/"
+            "url": "https://www.facebook.com/copieronline/videos/%F0%9D%97%AA%F0%9D%97%B5%F0%9D%98%86-%F0%9D%97%95%F0%9D%98%82%F0%9D%98%86-%F0%9D%97%AE-%F0%9D%97%96%F0%9D%97%BC%F0%9D%97%BD%F0%9D%97%B6%F0%9D%97%B2%F0%9D%97%BF%F0%9D%97%A3%F0%9D%97%BF%F0%9D%97%B6%F0%9D%97%BB%F0%9D%98%81%F0%9D%97%B2%F0%9D%97%BF-%F0%9D%97%AA%F0%9D%97%B5%F0%9D%97%B2%F0%9D%97%BB-%F0%9D%97%AC%F0%9D%97%BC%F0%9D%98%82-%F0%9D%97%96%F0%9D%97%AE%F0%9D%97%BB-%F0%9D%97%A5%F0%9D%97%B2%F0%9D%97%BB%F0%9D%98%81-%F0%9D%97%A2%F0%9D%97%BB%F0%9D%97%B2-%F0%9D%97%A5%F0%9D%97%B6%F0%9D%97%B4%F0%9D%97%B5%F0%9D%98%81-%F0%9D%97%A1%F0%9D%97%BC%F0%9D%98%84at-%F0%9D%97%96%F0%9D%97%A2%F0%9D%97%A3%F0%9D%97%9C%F0%9D%97%98%F0%9D%97%A5%F0%9D%97%A2%F0%9D%97%A1%F0%9D%97%9F%F0%9D%97%9C%F0%9D%97%A1%F0%9D%97%98-%F0%9D%97%A3%F0%9D%97%9B%F0%9D%97%9C%F0%9D%97%9F%F0%9D%97%9C%F0%9D%97%A3%F0%9D%97%A3%F0%9D%97%9C%F0%9D%97%A1/868902405312475/"
           }
         ]
       },
-      "snapshot": {
-        "success": true,
-        "date": "2026-04-15",
-        "clicks": 0
-      },
       "updatedAt": {
-        "_seconds": 1776219742,
-        "_nanoseconds": 562000000
+        "_seconds": 1776305985,
+        "_nanoseconds": 12000000
       }
     },
     "goalProgress": {
-      "overallScore": 72,
+      "overallScore": 71,
       "topOneCount": 0,
-      "topThreeCount": 1,
+      "topThreeCount": 0,
       "topFiveCount": 2,
       "missingCount": 1,
       "focusKeywords": [
@@ -742,17 +723,13 @@
           "position": 6,
           "score": 74,
           "gap": 5,
-          "delta": 1,
+          "delta": 0,
           "targetPath": "/printer-rental/",
           "status": "Needs lift",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -774,15 +751,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -804,6 +781,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -821,10 +802,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -846,15 +823,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -876,6 +853,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -893,10 +874,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -918,15 +895,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -948,6 +925,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -955,19 +936,15 @@
         {
           "keyword": "Printer Rental BGC",
           "target": 3,
-          "position": 2,
-          "score": 100,
-          "gap": 0,
-          "delta": 0,
+          "position": 4,
+          "score": 95,
+          "gap": 1,
+          "delta": -2,
           "targetPath": "/printer-rental/bgc/",
-          "status": "On target",
+          "status": "Needs lift",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
             {
               "date": "2026-04-07",
               "value": 0
@@ -990,15 +967,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1020,6 +997,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1027,9 +1008,9 @@
         {
           "keyword": "Printer Rental Makati",
           "target": 3,
-          "position": 6,
-          "score": 84,
-          "gap": 3,
+          "position": 7,
+          "score": 79,
+          "gap": 4,
           "delta": 0,
           "targetPath": "/printer-rental/makati/",
           "status": "Needs lift",
@@ -1037,10 +1018,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1062,15 +1039,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1092,6 +1069,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1099,20 +1080,16 @@
         {
           "keyword": "Printer Rental Manila",
           "target": 3,
-          "position": 5,
-          "score": 89,
-          "gap": 2,
-          "delta": 0,
+          "position": 4,
+          "score": 95,
+          "gap": 1,
+          "delta": 1,
           "targetPath": "/printer-rental/manila/",
           "status": "Needs lift",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1134,15 +1111,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1164,6 +1141,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1181,10 +1162,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1206,15 +1183,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1236,6 +1213,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1243,20 +1224,16 @@
         {
           "keyword": "Printer Rental Taguig",
           "target": 3,
-          "position": 7,
-          "score": 79,
-          "gap": 4,
-          "delta": 1,
+          "position": 8,
+          "score": 74,
+          "gap": 5,
+          "delta": 0,
           "targetPath": "/printer-rental/taguig/",
           "status": "Needs lift",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1278,15 +1255,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1308,6 +1285,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1327,10 +1308,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1352,14 +1329,56 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
+              "date": "2026-04-07",
               "value": 0
             },
+            {
+              "date": "2026-04-08",
+              "value": 0
+            },
+            {
+              "date": "2026-04-09",
+              "value": 0
+            },
+            {
+              "date": "2026-04-10",
+              "value": 0
+            },
+            {
+              "date": "2026-04-11",
+              "value": 0
+            },
+            {
+              "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "keyword": "Printer Rental Taguig",
+          "target": 3,
+          "position": 8,
+          "score": 74,
+          "gap": 5,
+          "delta": 0,
+          "targetPath": "/printer-rental/taguig/",
+          "status": "Needs lift",
+          "weeklyClicks": 0,
+          "weeklyCtr": 0,
+          "weeklyClickSeries": [
             {
               "date": "2026-04-07",
               "value": 0
@@ -1382,6 +1401,40 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
+              "value": 0
+            }
+          ],
+          "weeklyCtrSeries": [
+            {
+              "date": "2026-04-07",
+              "value": 0
+            },
+            {
+              "date": "2026-04-08",
+              "value": 0
+            },
+            {
+              "date": "2026-04-09",
+              "value": 0
+            },
+            {
+              "date": "2026-04-10",
+              "value": 0
+            },
+            {
+              "date": "2026-04-11",
+              "value": 0
+            },
+            {
+              "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1392,17 +1445,13 @@
           "position": 6,
           "score": 74,
           "gap": 5,
-          "delta": 1,
+          "delta": 0,
           "targetPath": "/printer-rental/",
           "status": "Needs lift",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1424,15 +1473,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1454,6 +1503,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1471,10 +1524,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1496,15 +1545,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1527,107 +1576,35 @@
             {
               "date": "2026-04-12",
               "value": 0
-            }
-          ]
-        },
-        {
-          "keyword": "Printer Rental Philippines",
-          "target": 3,
-          "position": 7,
-          "score": 79,
-          "gap": 4,
-          "delta": 0,
-          "targetPath": "/printer-rental/",
-          "status": "Needs lift",
-          "weeklyClicks": 0,
-          "weeklyCtr": 0,
-          "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
             },
             {
-              "date": "2026-04-07",
-              "value": 0
-            },
-            {
-              "date": "2026-04-08",
-              "value": 0
-            },
-            {
-              "date": "2026-04-09",
-              "value": 0
-            },
-            {
-              "date": "2026-04-10",
-              "value": 0
-            },
-            {
-              "date": "2026-04-11",
-              "value": 0
-            },
-            {
-              "date": "2026-04-12",
-              "value": 0
-            }
-          ],
-          "weeklyCtrSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
-              "date": "2026-04-07",
-              "value": 0
-            },
-            {
-              "date": "2026-04-08",
-              "value": 0
-            },
-            {
-              "date": "2026-04-09",
-              "value": 0
-            },
-            {
-              "date": "2026-04-10",
-              "value": 0
-            },
-            {
-              "date": "2026-04-11",
-              "value": 0
-            },
-            {
-              "date": "2026-04-12",
+              "date": "2026-04-13",
               "value": 0
             }
           ]
         }
       ],
-      "summary": "1/8 target keywords are in the top 3. 1 still need stronger local or commercial coverage."
+      "summary": "0/8 target keywords are in the top 3. 1 still need stronger local or commercial coverage."
     },
     "copierProgress": {
-      "overallScore": 82,
-      "topOneCount": 1,
+      "overallScore": 68,
+      "topOneCount": 3,
       "topThreeCount": 4,
-      "topFiveCount": 5,
-      "missingCount": 1,
+      "topFiveCount": 4,
+      "missingCount": 2,
       "focusKeywords": [
         {
           "keyword": "Copier Rental BGC",
           "target": 3,
-          "position": 1,
-          "score": 100,
-          "gap": 0,
-          "delta": 9,
+          "position": 9,
+          "score": 68,
+          "gap": 6,
+          "delta": -7,
           "targetPath": "/copier-rental/bgc/",
-          "status": "On target",
+          "status": "Needs lift",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
             {
               "date": "2026-04-07",
               "value": 0
@@ -1650,15 +1627,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1680,6 +1657,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1687,20 +1668,16 @@
         {
           "keyword": "Copier Rental Makati",
           "target": 3,
-          "position": 6,
-          "score": 84,
-          "gap": 3,
-          "delta": 1,
+          "position": 8,
+          "score": 74,
+          "gap": 5,
+          "delta": null,
           "targetPath": "/copier-rental/makati/",
           "status": "Needs lift",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1722,15 +1699,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1752,6 +1729,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1759,20 +1740,16 @@
         {
           "keyword": "Copier Rental Manila",
           "target": 3,
-          "position": 2,
+          "position": 1,
           "score": 100,
           "gap": 0,
-          "delta": 0,
+          "delta": 1,
           "targetPath": "/copier-rental/manila/",
           "status": "On target",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1794,15 +1771,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1824,6 +1801,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1831,19 +1812,15 @@
         {
           "keyword": "Copier Rental Taguig",
           "target": 3,
-          "position": 7,
-          "score": 79,
-          "gap": 4,
-          "delta": 0,
+          "position": 3,
+          "score": 100,
+          "gap": 0,
+          "delta": 4,
           "targetPath": "/copier-rental/taguig/",
-          "status": "Needs lift",
+          "status": "On target",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
             {
               "date": "2026-04-07",
               "value": 0
@@ -1866,15 +1843,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1896,6 +1873,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1913,10 +1894,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1938,15 +1915,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -1968,6 +1945,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -1975,19 +1956,15 @@
         {
           "keyword": "Copier Rental Pasig",
           "target": 3,
-          "position": 5,
-          "score": 89,
-          "gap": 2,
-          "delta": 5,
+          "position": null,
+          "score": 0,
+          "gap": null,
+          "delta": null,
           "targetPath": "/copier-rental/pasig/",
-          "status": "Needs lift",
+          "status": "Needs coverage",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
             {
               "date": "2026-04-07",
               "value": 0
@@ -2010,15 +1987,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -2040,6 +2017,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -2047,20 +2028,16 @@
         {
           "keyword": "Copier Rental Ortigas",
           "target": 3,
-          "position": 3,
+          "position": 1,
           "score": 100,
           "gap": 0,
-          "delta": -1,
+          "delta": 6,
           "targetPath": "/copier-rental/ortigas/",
           "status": "On target",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -2082,15 +2059,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -2112,6 +2089,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -2119,20 +2100,16 @@
         {
           "keyword": "Copier Rental Philippines",
           "target": 3,
-          "position": 2,
+          "position": 1,
           "score": 100,
           "gap": 0,
-          "delta": 0,
+          "delta": null,
           "targetPath": "/copier-rental/",
           "status": "On target",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -2154,15 +2131,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -2184,6 +2161,10 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -2203,10 +2184,6 @@
           "weeklyCtr": 0,
           "weeklyClickSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -2228,15 +2205,15 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
               "date": "2026-04-07",
               "value": 0
             },
@@ -2259,149 +2236,9 @@
             {
               "date": "2026-04-12",
               "value": 0
-            }
-          ]
-        },
-        {
-          "keyword": "Copier Rental Taguig",
-          "target": 3,
-          "position": 7,
-          "score": 79,
-          "gap": 4,
-          "delta": 0,
-          "targetPath": "/copier-rental/taguig/",
-          "status": "Needs lift",
-          "weeklyClicks": 0,
-          "weeklyCtr": 0,
-          "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
             },
             {
-              "date": "2026-04-07",
-              "value": 0
-            },
-            {
-              "date": "2026-04-08",
-              "value": 0
-            },
-            {
-              "date": "2026-04-09",
-              "value": 0
-            },
-            {
-              "date": "2026-04-10",
-              "value": 0
-            },
-            {
-              "date": "2026-04-11",
-              "value": 0
-            },
-            {
-              "date": "2026-04-12",
-              "value": 0
-            }
-          ],
-          "weeklyCtrSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
-              "date": "2026-04-07",
-              "value": 0
-            },
-            {
-              "date": "2026-04-08",
-              "value": 0
-            },
-            {
-              "date": "2026-04-09",
-              "value": 0
-            },
-            {
-              "date": "2026-04-10",
-              "value": 0
-            },
-            {
-              "date": "2026-04-11",
-              "value": 0
-            },
-            {
-              "date": "2026-04-12",
-              "value": 0
-            }
-          ]
-        },
-        {
-          "keyword": "Copier Rental Makati",
-          "target": 3,
-          "position": 6,
-          "score": 84,
-          "gap": 3,
-          "delta": 1,
-          "targetPath": "/copier-rental/makati/",
-          "status": "Needs lift",
-          "weeklyClicks": 0,
-          "weeklyCtr": 0,
-          "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
-              "date": "2026-04-07",
-              "value": 0
-            },
-            {
-              "date": "2026-04-08",
-              "value": 0
-            },
-            {
-              "date": "2026-04-09",
-              "value": 0
-            },
-            {
-              "date": "2026-04-10",
-              "value": 0
-            },
-            {
-              "date": "2026-04-11",
-              "value": 0
-            },
-            {
-              "date": "2026-04-12",
-              "value": 0
-            }
-          ],
-          "weeklyCtrSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
-            {
-              "date": "2026-04-07",
-              "value": 0
-            },
-            {
-              "date": "2026-04-08",
-              "value": 0
-            },
-            {
-              "date": "2026-04-09",
-              "value": 0
-            },
-            {
-              "date": "2026-04-10",
-              "value": 0
-            },
-            {
-              "date": "2026-04-11",
-              "value": 0
-            },
-            {
-              "date": "2026-04-12",
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -2409,19 +2246,15 @@
         {
           "keyword": "Copier Rental Pasig",
           "target": 3,
-          "position": 5,
-          "score": 89,
-          "gap": 2,
-          "delta": 5,
+          "position": null,
+          "score": 0,
+          "gap": null,
+          "delta": null,
           "targetPath": "/copier-rental/pasig/",
-          "status": "Needs lift",
+          "status": "Needs coverage",
           "weeklyClicks": 0,
           "weeklyCtr": 0,
           "weeklyClickSeries": [
-            {
-              "date": "2026-04-06",
-              "value": 0
-            },
             {
               "date": "2026-04-07",
               "value": 0
@@ -2444,14 +2277,56 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ],
           "weeklyCtrSeries": [
             {
-              "date": "2026-04-06",
+              "date": "2026-04-07",
               "value": 0
             },
+            {
+              "date": "2026-04-08",
+              "value": 0
+            },
+            {
+              "date": "2026-04-09",
+              "value": 0
+            },
+            {
+              "date": "2026-04-10",
+              "value": 0
+            },
+            {
+              "date": "2026-04-11",
+              "value": 0
+            },
+            {
+              "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "keyword": "Copier Rental BGC",
+          "target": 3,
+          "position": 9,
+          "score": 68,
+          "gap": 6,
+          "delta": -7,
+          "targetPath": "/copier-rental/bgc/",
+          "status": "Needs lift",
+          "weeklyClicks": 0,
+          "weeklyCtr": 0,
+          "weeklyClickSeries": [
             {
               "date": "2026-04-07",
               "value": 0
@@ -2474,6 +2349,112 @@
             },
             {
               "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
+              "value": 0
+            }
+          ],
+          "weeklyCtrSeries": [
+            {
+              "date": "2026-04-07",
+              "value": 0
+            },
+            {
+              "date": "2026-04-08",
+              "value": 0
+            },
+            {
+              "date": "2026-04-09",
+              "value": 0
+            },
+            {
+              "date": "2026-04-10",
+              "value": 0
+            },
+            {
+              "date": "2026-04-11",
+              "value": 0
+            },
+            {
+              "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "keyword": "Copier Rental Makati",
+          "target": 3,
+          "position": 8,
+          "score": 74,
+          "gap": 5,
+          "delta": null,
+          "targetPath": "/copier-rental/makati/",
+          "status": "Needs lift",
+          "weeklyClicks": 0,
+          "weeklyCtr": 0,
+          "weeklyClickSeries": [
+            {
+              "date": "2026-04-07",
+              "value": 0
+            },
+            {
+              "date": "2026-04-08",
+              "value": 0
+            },
+            {
+              "date": "2026-04-09",
+              "value": 0
+            },
+            {
+              "date": "2026-04-10",
+              "value": 0
+            },
+            {
+              "date": "2026-04-11",
+              "value": 0
+            },
+            {
+              "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
+              "value": 0
+            }
+          ],
+          "weeklyCtrSeries": [
+            {
+              "date": "2026-04-07",
+              "value": 0
+            },
+            {
+              "date": "2026-04-08",
+              "value": 0
+            },
+            {
+              "date": "2026-04-09",
+              "value": 0
+            },
+            {
+              "date": "2026-04-10",
+              "value": 0
+            },
+            {
+              "date": "2026-04-11",
+              "value": 0
+            },
+            {
+              "date": "2026-04-12",
+              "value": 0
+            },
+            {
+              "date": "2026-04-13",
               "value": 0
             }
           ]
@@ -2494,10 +2475,6 @@
         "weeklyCtr": 0,
         "weeklyClickSeries": [
           {
-            "date": "2026-04-06",
-            "value": 0
-          },
-          {
             "date": "2026-04-07",
             "value": 0
           },
@@ -2519,15 +2496,15 @@
           },
           {
             "date": "2026-04-12",
+            "value": 0
+          },
+          {
+            "date": "2026-04-13",
             "value": 0
           }
         ],
         "weeklyCtrSeries": [
           {
-            "date": "2026-04-06",
-            "value": 0
-          },
-          {
             "date": "2026-04-07",
             "value": 0
           },
@@ -2549,6 +2526,10 @@
           },
           {
             "date": "2026-04-12",
+            "value": 0
+          },
+          {
+            "date": "2026-04-13",
             "value": 0
           }
         ],
@@ -2563,14 +2544,10 @@
         "score": 100,
         "gap": 0,
         "latestUrl": "https://marga.biz/",
-        "delta": 2,
+        "delta": 0,
         "weeklyClicks": 0,
         "weeklyCtr": 0,
         "weeklyClickSeries": [
-          {
-            "date": "2026-04-06",
-            "value": 0
-          },
           {
             "date": "2026-04-07",
             "value": 0
@@ -2593,15 +2570,15 @@
           },
           {
             "date": "2026-04-12",
+            "value": 0
+          },
+          {
+            "date": "2026-04-13",
             "value": 0
           }
         ],
         "weeklyCtrSeries": [
           {
-            "date": "2026-04-06",
-            "value": 0
-          },
-          {
             "date": "2026-04-07",
             "value": 0
           },
@@ -2623,6 +2600,10 @@
           },
           {
             "date": "2026-04-12",
+            "value": 0
+          },
+          {
+            "date": "2026-04-13",
             "value": 0
           }
         ],
@@ -2640,19 +2621,19 @@
       },
       {
         "type": "Ranking gap",
+        "title": "Printer Rental Taguig is at #8",
+        "detail": "Target is top 3. Improve the mapped landing page and supporting internal links until this keyword moves into the goal range.",
+        "link": "/printer-rental/taguig/"
+      },
+      {
+        "type": "Ranking gap",
         "title": "Printer Rental is at #6",
         "detail": "Target is #1. Improve the mapped landing page and supporting internal links until this keyword moves into the goal range.",
         "link": "/printer-rental/"
       },
       {
-        "type": "Ranking gap",
-        "title": "Printer For Rent is at #6",
-        "detail": "Target is #1. Improve the mapped landing page and supporting internal links until this keyword moves into the goal range.",
-        "link": "/printer-rental/"
-      },
-      {
         "type": "Page-match gap",
-        "title": "Printer For Rent is ranking with the wrong page",
+        "title": "Printer Rental is ranking with the wrong page",
         "detail": "The domain is visible, but not with the intended landing page. Strengthen page targeting, canonicals, and internal links so the right printer page wins.",
         "link": "/printer-rental/"
       },
@@ -2678,20 +2659,20 @@
       },
       {
         "type": "Copier ranking gap",
-        "title": "Copier Rental Taguig is at #7",
+        "title": "Copier Rental Pasig is at Not in top 20",
         "detail": "Create or strengthen copier location pages, child support pages, and supporting internal links for this local copier term, while leaving the copier root pages untouched.",
-        "link": "/copier-rental/taguig/"
+        "link": "/copier-rental/pasig/"
       },
       {
         "type": "Copier ranking gap",
-        "title": "Copier Rental Makati is at #6",
+        "title": "Copier Rental BGC is at #9",
         "detail": "Create or strengthen copier location pages, child support pages, and supporting internal links for this local copier term, while leaving the copier root pages untouched.",
-        "link": "/copier-rental/makati/"
+        "link": "/copier-rental/bgc/"
       },
       {
         "type": "Copier competitor gap",
         "title": "Copier location competitors still communicate stronger local relevance",
-        "detail": "Review printersforrent.com, facebook.com, ubix.com.ph daily and mirror the useful trust signals, service details, local proof, and support-content angles they use without touching the protected copier root pages.",
+        "detail": "Review printersforrent.com, printerrentalsph.com, facebook.com daily and mirror the useful trust signals, service details, local proof, and support-content angles they use without touching the protected copier root pages.",
         "link": "/copier-rental/quezon-city/"
       }
     ],
@@ -2706,71 +2687,71 @@
       "runner": "codex-cli",
       "mode": "local-launchd",
       "source": "launchd",
-      "lastMessageExcerpt": "Completed the full daily printer SEO batch for `marga.biz`.\n\nLive ranking check before edits:\n- `Printer Rental`: #7\n- `Printer For Rent`: #6\n- `Print All You Can`: not in top 20\n- `Printer Rental BGC`: #2\n- `Printer Rental Makati`: #6\n- `Printer Rental Manila`: #5\n- `Printer Rental Philippines`: #7\n- `Printer Rental Taguig`: #8\n- `Copier Rental`: #2, monitor-only\n- `Copier For Rent`: #4, monitor-only\n- Copier local priorities: BGC #10, Makati #7, Pasig #10\n\nProduction work completed:\n- Published exactly 2 new support pages:\n  - `https://marga.biz/printer-rental/print-all-you-can-philippines-service-inclusion-checklist/`\n  - `https://marga.biz/copier-rental/bgc/copier-rental-bgc-service-route-checklist/`\n- Published exactly 5 supporting blogs:\n  - `https://marga.biz/blogs/print-all-you-can-maintenance-toner-replacement-plan/`\n  - `https://marga.biz/blogs/printer-rental-philippines-competitor-gap-checklist/`\n  - `https://marga.biz/blogs/printer-for-rent-homepage-to-hub-routing/`\n  - `https://marga.biz/blogs/copier-rental-bgc-service-route-planning/`\n  - `https://marga.biz/blogs/copier-rental-makati-pasig-bgc-page-match/`\n- Updated internal links and conversion paths on the printer hub, Printer Rental Philippines, Printer Rental BGC, Printer Rental Taguig, Copier Rental BGC, Copier Rental Makati, and Copier Rental Pasig.\n- Did not edit the home page or copier core money pages.\n\n…",
-      "nextRunAt": "2026-04-15T10:00:00+08:00",
-      "lastSuccessAt": "2026-04-14T23:59:00+08:00",
       "completedTasks": [],
-      "runLog": "/Users/mike/Library/Logs/printer-seo-daily-2026-04-15T02-04-57-048Z.log",
       "queueStatus": null,
+      "lastMessageExcerpt": "Completed the full daily printer SEO batch.\n\nPreflight passed before content edits, including GitHub, Netlify, SMTP, Telegram, env, DNS, and strict `--sync-main`. The existing printer SEO lock was this run’s own wrapper lock, so I continued under the repo policy instead of self-blocking.\n\nLive rankings were rechecked today, April 15, 2026. Key snapshot after the fixed production monitor run:\n\n- `Printer Rental`: #6\n- `Printer For Rent`: #6\n- `Print All You Can`: not top 20\n- `Printer Rental BGC`: #2\n- `Printer Rental Makati`: #6\n- `Printer Rental Manila`: #5\n- `Printer Rental Philippines`: #7\n- `Printer Rental Taguig`: #7\n- `Copier Rental`: #1, protected monitor-only\n- `Copier For Rent`: #2, protected monitor-only\n- `Copier Rental Quezon City`: not top 20\n\nPublished exactly 2 new support pages:\n\n- https://marga.biz/printer-rental/printer-rental-philippines-page-match-checklist/\n- https://marga.biz/copier-rental/quezon-city/copier-rental-quezon-city-local-intent-checklist/\n\nPublished exactly 5 supporting blogs:\n\n- https://marga.biz/blogs/printer-rental-homepage-page-match-fix/\n- https://marga.biz/blogs/print-all-you-can-top-20-gap-plan/\n- https://marga.biz/blogs/printer-for-rent-old-url-cleanup/\n- https://marga.biz/blogs/copier-rental-quezon-city-local-intent-plan/\n- https://marga.biz/blogs/copier-rental-bgc-taguig-page-match-fix/\n\nAlso updated internal links, conversion routin…",
+      "nextRunAt": "2026-04-16T10:00:00+08:00",
+      "lastSuccessAt": "2026-04-15T23:59:00+08:00",
+      "runLog": "/Users/mike/Library/Logs/printer-seo-daily-2026-04-16T02-04-45-979Z.log",
       "latestReportGeneratedAt": null,
-      "startedAt": "2026-04-15T02:04:57.068Z",
-      "runId": "printer-seo-daily-2026-04-15T02-04-57-048Z",
+      "startedAt": "2026-04-16T02:04:46.001Z",
+      "runId": "printer-seo-daily-2026-04-16T02-04-45-979Z",
       "finishedAt": null,
       "status": "Running",
       "currentStep": "Codex execution in progress",
-      "message": "+</html>",
-      "liveLogExcerpt": "+            </div>\n+        </section>\n+    </main>\n+    <footer class=\"site-footer\"><div class=\"container\"><div class=\"footer-bottom\"><p>&copy; 2026 Marga Enterprises. All rights reserved.</p></div></div></footer>\n+    <script src=\"/js/main.js\"></script>\n+    <script src=\"/js/ga4-events.js\" defer></script>\n+</body>\n+</html>",
-      "updatedAtIso": "2026-04-15T02:23:55.460Z",
+      "message": "NODE' in /Users/mike/.codex/repos/marga-biz-automation",
+      "liveLogExcerpt": "supportingBlogs: blogs,\n    report\n  };\n  fs.writeFileSync('\"'reports/seo-monitor/latest.md', md, 'utf8');\n  fs.writeFileSync('reports/seo-monitor/latest.json', \"'`${JSON.stringify(payload, null, 2)}'\"\\\\n\"'`, '\"'utf8');\n  console.log(\"'`Updated reports for commit ${commit}`);\n})();\nNODE' in /Users/mike/.codex/repos/marga-biz-automation",
+      "updatedAtIso": "2026-04-16T02:22:54.589Z",
       "updatedAt": {
-        "_seconds": 1776219838,
-        "_nanoseconds": 597000000
+        "_seconds": 1776306175,
+        "_nanoseconds": 284000000
       }
     },
     "automationEvents": [
       {
-        "timestamp": "4/15/26, 10:05 AM",
+        "timestamp": "4/16/26, 10:04 AM",
         "status": "Running",
         "step": "Launching Codex CLI",
         "message": "Launchd triggered the local Codex automation runner."
       },
       {
-        "timestamp": "4/15/26, 9:59 AM",
+        "timestamp": "4/16/26, 9:59 AM",
         "status": "Scheduled",
         "step": "Waiting for daily window",
         "message": "Waiting for 10:00 Asia/Manila."
       },
       {
-        "timestamp": "4/15/26, 9:54 AM",
+        "timestamp": "4/16/26, 9:54 AM",
         "status": "Scheduled",
         "step": "Waiting for daily window",
         "message": "Waiting for 10:00 Asia/Manila."
       },
       {
-        "timestamp": "4/15/26, 9:49 AM",
+        "timestamp": "4/16/26, 9:49 AM",
         "status": "Scheduled",
         "step": "Waiting for daily window",
         "message": "Waiting for 10:00 Asia/Manila."
       },
       {
-        "timestamp": "4/15/26, 9:44 AM",
+        "timestamp": "4/16/26, 9:44 AM",
         "status": "Scheduled",
         "step": "Waiting for daily window",
         "message": "Waiting for 10:00 Asia/Manila."
       },
       {
-        "timestamp": "4/15/26, 9:39 AM",
+        "timestamp": "4/16/26, 9:39 AM",
         "status": "Scheduled",
         "step": "Waiting for daily window",
         "message": "Waiting for 10:00 Asia/Manila."
       },
       {
-        "timestamp": "4/15/26, 9:34 AM",
+        "timestamp": "4/16/26, 9:34 AM",
         "status": "Scheduled",
         "step": "Waiting for daily window",
         "message": "Waiting for 10:00 Asia/Manila."
       },
       {
-        "timestamp": "4/15/26, 9:29 AM",
+        "timestamp": "4/16/26, 9:29 AM",
         "status": "Scheduled",
         "step": "Waiting for daily window",
         "message": "Waiting for 10:00 Asia/Manila."
@@ -2778,11 +2759,11 @@
     ],
     "meta": {
       "keywordsTracked": 18,
-      "latestSnapshotDate": "2026-04-15",
+      "latestSnapshotDate": "2026-04-16",
       "openTaskCount": 0,
       "automationState": "Running",
-      "goalScore": 72,
-      "copierGoalScore": 82,
+      "goalScore": 71,
+      "copierGoalScore": 68,
       "metricGuidance": {
         "keywordCards": "Use weekly Search Console clicks and CTR for keyword cards. Track page visits separately at the landing-page level.",
         "recommendedCadence": "Daily for rankings and gap detection, weekly for clicks and CTR, monthly for page traffic and conversions.",
