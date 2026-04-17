@@ -91,7 +91,9 @@
     "deploy": "passed: npm run deploy -> https://69e198e05a5fa5ab553f8636--marga-biz.netlify.app",
     "monitorPostDeploy": "passed: production seo-monitor-actions run_today completed after deploy on 2026-04-17",
     "liveSmokeTests": "passed: 14 production URLs returned 200 with title, canonical, schema, and contact checks",
-    "taskCompletions": "passed: 10 SEO monitor tasks recorded Done after live URL verification"
+    "taskCompletions": "passed: 10 SEO monitor tasks recorded Done after live URL verification",
+    "emailReport": "passed: node scripts/send-email-report.js sent via SMTP to michael.marga@gmail.com",
+    "telegramReport": "passed: node scripts/telegram-approval.js send-message sent the report to Telegram chat 8540670791"
   },
   "completedTasks": [
     { "task": "Improve the highest-opportunity money pages today", "status": "Done", "link": "https://marga.biz/printer-rental/" },
