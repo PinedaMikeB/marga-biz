@@ -38,7 +38,8 @@ const PRINTER_GOAL_KEYWORDS = [
 ];
 const COPIER_PROTECTED_KEYWORDS = [
     'Copier Rental',
-    'Copier For Rent'
+    'Copier For Rent',
+    'Copier Rental Philippines'
 ];
 const COPIER_LOCAL_GOAL_KEYWORDS = [
     'Copier Rental BGC',
@@ -47,11 +48,13 @@ const COPIER_LOCAL_GOAL_KEYWORDS = [
     'Copier Rental Taguig',
     'Copier Rental Quezon City',
     'Copier Rental Pasig',
-    'Copier Rental Ortigas',
-    'Copier Rental Philippines'
+    'Copier Rental Ortigas'
 ];
 const EXISTING_MONEY_PAGES = [
     '/printer-rental/',
+    '/printer-rental/printer-for-rent/',
+    '/printer-rental/print-all-you-can/',
+    '/printer-rental/philippines/',
     '/printer-rental/bgc/',
     '/printer-rental/makati/',
     '/printer-rental/manila/',
@@ -265,6 +268,14 @@ function pickLowestScorePage(todayRun = {}, fallback = '/printer-rental/') {
 
 function getKeywordTargetPath(keyword = '') {
     const normalized = normalizeKeyword(keyword);
+    const exactPrinterTargets = {
+        'printer rental': '/printer-rental/',
+        'printer for rent': '/printer-rental/printer-for-rent/',
+        'print all you can': '/printer-rental/print-all-you-can/',
+        'printer rental philippines': '/printer-rental/philippines/'
+    };
+
+    if (exactPrinterTargets[normalized]) return exactPrinterTargets[normalized];
 
     if (normalized.includes('copier')) {
         if (normalized.includes('bgc')) return '/copier-rental/bgc/';
