@@ -13,6 +13,7 @@ Repo-specific instructions for Codex and automation working inside `marga-biz`.
 - Telegram chat tooling remains active in this repo.
 - SEO automation and email automation were intentionally removed from this repo on 2026-03-31.
 - A printer SEO monitor and email report helper may be reintroduced selectively when the user explicitly asks for them.
+- If the printer SEO monitor is active, include the owned-printer maintenance / managed print services cluster added on 2026-04-20 in monitoring, alongside the printer-rental cluster.
 - Do not assume older SEO daemons, SERP monitors, or email-monitor daemons still exist unless current repo files show they were reintroduced.
 
 ## Source Of Truth
@@ -71,6 +72,8 @@ Do not rely on chat history alone when current repo files can answer the questio
 
 - Treat the home page (`/`) and the Copier Rental page/cluster as protected when doing SEO work unless the user explicitly asks to change them.
 - For SEO tasks in this repo, the current priority keyword/theme is `printer rental`.
+- Secondary SEO monitoring cluster added on 2026-04-20: owned-printer maintenance and managed print services for companies that ended rental, bought their own printer, and now need lower-cost support. Monitor `/printer-maintenance/`, `/printer-maintenance/owned-printer-maintenance/`, `/printer-maintenance/printer-rental-vs-maintenance/`, `/printer-maintenance/page-monitoring/`, `/managed-print-services/`, and `/print-management-system/`.
+- Keep the maintenance / managed-print cluster clearly B2B and cost-control focused. Do not let it cannibalize core `printer rental` intent; use it for owned-machine maintenance, printer repair, page monitoring, toner planning, managed print services, and print management system queries.
 - When the user explicitly reintroduces printer SEO automation, treat the goal of winning the core printer-rental terms as the strategy, not just completing a static checklist. Fixed output targets like new pages or blogs can stay explicit, but the rest of the daily work should expand or contract based on ranking gaps and competitor findings.
 - Focus improvements on the printer-rental cluster, supporting internal links, conversion paths, and crawlable service pages.
 - Do not create doorway pages, spun location pages, keyword stuffing, or low-value filler content.

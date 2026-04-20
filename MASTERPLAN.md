@@ -2,7 +2,7 @@
 
 **Project:** Marga Enterprises Website & Business Platform  
 **Owner:** Mike Pineda  
-**Last Updated:** January 10, 2026  
+**Last Updated:** April 20, 2026
 
 ---
 
@@ -170,6 +170,20 @@ marga.biz/
 - [ ] Backlink monitor
 - [ ] Social media auto-post on publish
 
+#### Phase 5.1: Active SEO Monitoring Clusters
+- [x] Monitor core printer rental cluster: `/printer-rental/`, `/printer-rental/printer-for-rent/`, `/printer-rental/print-all-you-can/`, `/printer-rental/philippines/`, and supported printer city pages.
+- [x] Add owned-printer maintenance / managed print services cluster as a monitored SEO area.
+- [x] Publish maintenance cluster pages:
+  - `/printer-maintenance/`
+  - `/printer-maintenance/owned-printer-maintenance/`
+  - `/printer-maintenance/printer-rental-vs-maintenance/`
+  - `/printer-maintenance/page-monitoring/`
+  - `/managed-print-services/`
+  - `/print-management-system/`
+- [ ] Track Search Console impressions, clicks, CTR, average position, ranking URL correctness, and cannibalization for the maintenance cluster.
+- [ ] Track target queries: printer maintenance, printer repair, office printer maintenance, owned printer maintenance, managed print services, print management system, print manager, manage print system, monthly page monitoring, and print volume tracking.
+- [ ] Keep the cluster focused on B2B owned-printer cost control for companies that ended rental and bought their own machine.
+
 ### Phase 6: Sales Module
 - [ ] Lead capture form integration
 - [ ] Lead list & management
@@ -183,6 +197,7 @@ marga.biz/
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-04-20 | Add owned-printer maintenance / managed print services as a monitored SEO cluster | Capture companies cutting cost after ending printer rental while keeping printer-rental pages focused on machine-included packages |
 | 2026-01-10 | Create INSIGHTS MODULE combining Analytics + SEO | Single dashboard for all data, avoid switching between GA4 and Search Console |
 | 2026-01-10 | Expand to 5-module architecture | Better separation of concerns: Insights (view data) vs SEO (automation) vs Sales (leads) |
 | 2026-01-08 | Migrate from WordPress to static | Faster load times, lower cost, maintain SEO |

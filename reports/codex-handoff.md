@@ -1,6 +1,6 @@
 # Codex Handoff
 
-Updated: 2026-03-31
+Updated: 2026-04-20
 
 ## What Transfers Cleanly
 
@@ -47,9 +47,24 @@ Use these first on the other Mac:
 - A printer SEO monitor and a local email report helper can be reintroduced selectively when explicitly configured on the Mac that runs Codex.
 - Do not expect older morning SEO review or email-monitor artifacts to keep updating unless those systems are reintroduced.
 
+## SEO Monitoring Scope
+
+- Core monitored SEO cluster: printer rental, printer for rent, Print All You Can, Printer Rental Philippines, and supported printer city pages.
+- New monitored SEO cluster added on 2026-04-20: owned-printer maintenance / managed print services for companies that terminated rental, bought their own printer, and now need lower-cost service support.
+- Monitor these new pages when the SEO monitor is active:
+  - `/printer-maintenance/`
+  - `/printer-maintenance/owned-printer-maintenance/`
+  - `/printer-maintenance/printer-rental-vs-maintenance/`
+  - `/printer-maintenance/page-monitoring/`
+  - `/managed-print-services/`
+  - `/print-management-system/`
+- Target intent for the new cluster: `printer maintenance`, `printer repair`, `office printer maintenance`, `owned printer maintenance`, `managed print services`, `print management system`, `print manager`, `manage print system`, `monthly page monitoring`, and `print volume tracking`.
+- Guardrail: keep this cluster B2B and owned-machine focused. It should support companies cutting cost after printer rental, not replace or weaken the main printer-rental pages.
+
 ## Current Next Focus
 
 - keep Telegram chat tooling stable while other automation is reintroduced selectively
+- when SEO monitoring is active, track both the printer-rental cluster and the new printer maintenance / managed print services cluster
 
 ## Notes
 
