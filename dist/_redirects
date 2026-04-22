@@ -4,3 +4,13 @@
 /wp-content/uploads/* https://firebasestorage.googleapis.com/v0/b/sah-spiritual-journal.firebasestorage.app/o/public%2Fwebsite%2F:splat?alt=media 301
 /feed/ / 301!
 /comments/feed/ / 301!
+
+# Consolidate legacy Print All You Can deep URLs into the current office package page
+/printer-rental/print-all-you-can/print-all-you-can-philippines/ /printer-rental/print-all-you-can/ 301!
+/printer-rental/print-all-you-can/print-all-you-can-philippines/print-all-you-can-rental-philippines/ /printer-rental/print-all-you-can/ 301!
+/printer-rental/print-all-you-can/print-all-you-can-philippines/print-unlimited/ /printer-rental/print-all-you-can/ 301!
+/printer-rental/print-all-you-can/print-all-you-can-philippines/print-unlimited/print-unlimited-rental/ /printer-rental/print-all-you-can/ 301!
+/printer-rental/print-all-you-can/print-all-you-can-philippines/print-unlimited-philippines/ /printer-rental/print-all-you-can/ 301!
+/printer-rental/print-all-you-can/print-all-you-can-philippines/print-unlimited-philippines/print-all-you-can-rental/ /printer-rental/print-all-you-can/ 301!
+/printer-rental/print-all-you-can/print-all-you-can-philippines/print-unlimited-philippines/unlimited-printer-rental/ /printer-rental/print-all-you-can/ 301!
+/printer-rental/print-all-you-can/print-all-you-can-philippines/print-unlimited-philippines/unlimited-printing-philippines/ /printer-rental/print-all-you-can/ 301!
