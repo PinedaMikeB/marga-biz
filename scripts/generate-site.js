@@ -1106,11 +1106,17 @@ function generateBlogPost(post, templates, components, allPosts, postIndex, urlM
 // SITEMAP GENERATOR
 // ============================================
 
+function shouldExcludeFromSitemap(loc) {
+    const redirectedPrintAllYouCanPath = `${CONFIG.baseUrl}/printer-rental/print-all-you-can/print-all-you-can-philippines/`;
+    return loc.startsWith(redirectedPrintAllYouCanPath);
+}
+
 function generateSitemap(pages, posts) {
     console.log('\n📍 Generating sitemap.xml...');
     
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+    let sitemapUrlCount = 1;
     
     // Add homepage
     xml += `  <url>
@@ -1124,37 +1130,43 @@ function generateSitemap(pages, posts) {
         if (page.link === 'https://marga.biz/') continue; // Skip homepage (already added)
         
         const loc = page.link || `${CONFIG.baseUrl}/${page.slug}/`;
+        if (shouldExcludeFromSitemap(loc)) continue;
         xml += `  <url>
     <loc>${loc}</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>\n`;
+        sitemapUrlCount += 1;
     }
     
     // Add all posts
     for (const post of posts) {
         const loc = post.link || `${CONFIG.baseUrl}/blogs/${post.slug}/`;
+        if (shouldExcludeFromSitemap(loc)) continue;
         xml += `  <url>
     <loc>${loc}</loc>
     <lastmod>${formatDateISO(post.publishedDate)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>\n`;
+        sitemapUrlCount += 1;
     }
 
     // Add static pages
     for (const loc of getStaticPageUrls()) {
+        if (shouldExcludeFromSitemap(loc)) continue;
         xml += `  <url>
     <loc>${loc}</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>\n`;
+        sitemapUrlCount += 1;
     }
     
     xml += '</urlset>';
     
     fs.writeFileSync(path.join(CONFIG.distDir, 'sitemap.xml'), xml);
-    console.log(`   ✅ Generated sitemap with ${pages.length + posts.length + 1 + getStaticPageUrls().length} URLs`);
+    console.log(`   ✅ Generated sitemap with ${sitemapUrlCount} URLs`);
 }
 
 // ============================================
