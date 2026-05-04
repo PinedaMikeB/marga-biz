@@ -481,6 +481,26 @@
         let currentPeer = null;
         let currentStream = null;
         let currentLeadId = '';
+        let currentDataChannel = null;
+        let callStartedAt = null;
+        let transcriptEntries = [];
+        let usageSnapshot = createEmptyUsage();
+        let saveTranscriptTimer = null;
+
+        const COST_RATES = {
+            realtime: {
+                textInputPerMillion: 4,
+                textOutputPerMillion: 16,
+                audioInputPerMillion: 32,
+                audioOutputPerMillion: 64
+            },
+            transcription: {
+                inputPerMillion: 1.25,
+                outputPerMillion: 5,
+                fallbackPerMinute: 0.003
+            },
+            usdToPhp: 57
+        };
 
         function setStatus(message, type = '') {
             statusBox.textContent = message;
@@ -490,6 +510,141 @@
         function setBusy(isBusy) {
             startVoiceBtn.disabled = isBusy;
             scheduleBtn.disabled = isBusy;
+        }
+
+        function createEmptyUsage() {
+            return {
+                realtimeModel: 'gpt-realtime',
+                transcriptionModel: 'gpt-4o-mini-transcribe',
+                responseCount: 0,
+                realtime: {
+                    totalTokens: 0,
+                    inputTokens: 0,
+                    outputTokens: 0,
+                    inputTextTokens: 0,
+                    inputAudioTokens: 0,
+                    outputTextTokens: 0,
+                    outputAudioTokens: 0
+                },
+                transcription: {
+                    totalTokens: 0,
+                    inputTokens: 0,
+                    outputTokens: 0,
+                    seconds: 0
+                },
+                estimatedCostUsd: 0,
+                estimatedCostPhp: 0
+            };
+        }
+
+        function roundMoney(value) {
+            return Math.round((Number(value) || 0) * 10000) / 10000;
+        }
+
+        function estimateCost() {
+            const realtime = usageSnapshot.realtime;
+            const transcription = usageSnapshot.transcription;
+            const realtimeCost =
+                (realtime.inputTextTokens / 1000000) * COST_RATES.realtime.textInputPerMillion +
+                (realtime.outputTextTokens / 1000000) * COST_RATES.realtime.textOutputPerMillion +
+                (realtime.inputAudioTokens / 1000000) * COST_RATES.realtime.audioInputPerMillion +
+                (realtime.outputAudioTokens / 1000000) * COST_RATES.realtime.audioOutputPerMillion;
+            const transcriptionTokenCost =
+                (transcription.inputTokens / 1000000) * COST_RATES.transcription.inputPerMillion +
+                (transcription.outputTokens / 1000000) * COST_RATES.transcription.outputPerMillion;
+            const transcriptionDurationCost = transcription.seconds
+                ? (transcription.seconds / 60) * COST_RATES.transcription.fallbackPerMinute
+                : 0;
+            const total = realtimeCost + Math.max(transcriptionTokenCost, transcriptionDurationCost);
+            usageSnapshot.estimatedCostUsd = roundMoney(total);
+            usageSnapshot.estimatedCostPhp = roundMoney(total * COST_RATES.usdToPhp);
+        }
+
+        function addTranscriptEntry(entry) {
+            const text = String(entry.text || '').trim();
+            if (!text) return;
+            const key = entry.itemId || entry.responseId || `${entry.role}-${Date.now()}-${transcriptEntries.length}`;
+            const next = {
+                id: key,
+                role: entry.role,
+                label: entry.role === 'assistant' ? 'AI Product Consultant' : 'Customer',
+                text,
+                at: entry.at || new Date().toISOString()
+            };
+            const existingIndex = transcriptEntries.findIndex((item) => item.id === key && item.role === entry.role);
+            if (existingIndex >= 0) {
+                transcriptEntries[existingIndex] = next;
+            } else {
+                transcriptEntries.push(next);
+            }
+            transcriptEntries = transcriptEntries.slice(-80);
+        }
+
+        function addRealtimeUsage(usage) {
+            if (!usage) return;
+            usageSnapshot.responseCount += 1;
+            usageSnapshot.realtime.totalTokens += Number(usage.total_tokens || 0);
+            usageSnapshot.realtime.inputTokens += Number(usage.input_tokens || 0);
+            usageSnapshot.realtime.outputTokens += Number(usage.output_tokens || 0);
+            usageSnapshot.realtime.inputTextTokens += Number(usage.input_token_details?.text_tokens || 0);
+            usageSnapshot.realtime.inputAudioTokens += Number(usage.input_token_details?.audio_tokens || 0);
+            usageSnapshot.realtime.outputTextTokens += Number(usage.output_token_details?.text_tokens || 0);
+            usageSnapshot.realtime.outputAudioTokens += Number(usage.output_token_details?.audio_tokens || 0);
+            estimateCost();
+        }
+
+        function addTranscriptionUsage(usage) {
+            if (!usage) return;
+            if (usage.type === 'duration') {
+                usageSnapshot.transcription.seconds += Number(usage.seconds || 0);
+            } else {
+                usageSnapshot.transcription.totalTokens += Number(usage.total_tokens || 0);
+                usageSnapshot.transcription.inputTokens += Number(usage.input_tokens || 0);
+                usageSnapshot.transcription.outputTokens += Number(usage.output_tokens || 0);
+            }
+            estimateCost();
+        }
+
+        async function patchLead(updates, { keepalive = false } = {}) {
+            if (!currentLeadId) return;
+            await fetch('/.netlify/functions/website-inquiries', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                keepalive,
+                body: JSON.stringify({ leadId: currentLeadId, updates })
+            });
+        }
+
+        function queueTranscriptSave({ final = false } = {}) {
+            if (!currentLeadId) return;
+            clearTimeout(saveTranscriptTimer);
+            const save = () => {
+                const updates = {
+                    transcript: transcriptEntries,
+                    usage: usageSnapshot,
+                    estimatedCostUsd: usageSnapshot.estimatedCostUsd,
+                    estimatedCostPhp: usageSnapshot.estimatedCostPhp,
+                    transcriptUpdatedAt: new Date().toISOString(),
+                    realtimeModel: usageSnapshot.realtimeModel,
+                    transcriptionModel: usageSnapshot.transcriptionModel
+                };
+                if (callStartedAt) {
+                    updates.conversationDurationSeconds = Math.max(1, Math.round((Date.now() - callStartedAt.getTime()) / 1000));
+                }
+                if (final) {
+                    updates.conversationEndedAt = new Date().toISOString();
+                    updates.aiConsultantStatus = 'consultation_completed';
+                    updates.aiCallStatus = 'browser_voice_completed';
+                    updates.leadStatus = 'consulted';
+                    updates.nextAction = 'Review transcript and decide if sales should call this prospect';
+                }
+                patchLead(updates, { keepalive: final }).catch((error) => console.debug('Transcript save failed', error));
+            };
+            if (final) {
+                save();
+                return;
+            }
+            saveTranscriptTimer = setTimeout(save, 900);
         }
 
         function getPayload(mode) {
@@ -527,6 +682,9 @@
                 throw new Error(result.error || 'Unable to save consultation request');
             }
             currentLeadId = result.inquiryId;
+            transcriptEntries = [];
+            usageSnapshot = createEmptyUsage();
+            callStartedAt = null;
             return { leadId: result.inquiryId, lead: payload };
         }
 
@@ -556,7 +714,9 @@
                 pc.addTrack(currentStream.getTracks()[0]);
 
                 const dc = pc.createDataChannel('oai-events');
+                currentDataChannel = dc;
                 dc.addEventListener('open', () => {
+                    callStartedAt = new Date();
                     voiceStatusLabel.textContent = 'Connected';
                     callBar.classList.add('active');
                     callBarText.textContent = 'AI Product Consultant is starting';
@@ -578,8 +738,29 @@
                         if (data.type === 'response.audio.delta') {
                             callBarText.textContent = 'AI Product Consultant is speaking';
                         }
+                        if (data.type === 'conversation.item.input_audio_transcription.completed') {
+                            addTranscriptEntry({
+                                role: 'customer',
+                                itemId: data.item_id,
+                                text: data.transcript
+                            });
+                            addTranscriptionUsage(data.usage);
+                            queueTranscriptSave();
+                        }
+                        if (data.type === 'response.output_audio_transcript.done') {
+                            addTranscriptEntry({
+                                role: 'assistant',
+                                itemId: data.item_id,
+                                responseId: data.response_id,
+                                text: data.transcript
+                            });
+                            queueTranscriptSave();
+                        }
                         if (data.type === 'response.done') {
                             callBarText.textContent = 'AI Product Consultant is listening';
+                            addRealtimeUsage(data.response?.usage);
+                            if (data.response?.model) usageSnapshot.realtimeModel = data.response.model;
+                            queueTranscriptSave();
                         }
                         if (data.type === 'error') {
                             setStatus(data.error?.message || 'Realtime voice returned an error.', 'bad');
@@ -610,7 +791,7 @@
 
                 await pc.setRemoteDescription({ type: 'answer', sdp: answerSdp });
             } catch (error) {
-                endCall();
+                endCall({ finalize: false });
                 const notConfigured = error.message.includes('OPENAI_API_KEY');
                 setStatus(notConfigured
                     ? 'Your request was saved. Browser voice needs OPENAI_API_KEY in Netlify before live voice can start.'
@@ -635,7 +816,7 @@
             }
         }
 
-        function endCall() {
+        function endCall({ finalize = true } = {}) {
             if (currentPeer) {
                 currentPeer.getSenders().forEach((sender) => sender.track?.stop());
                 currentPeer.close();
@@ -643,15 +824,24 @@
             if (currentStream) currentStream.getTracks().forEach((track) => track.stop());
             currentPeer = null;
             currentStream = null;
+            currentDataChannel = null;
             callBar.classList.remove('active');
             voiceStatusLabel.textContent = 'Ready';
+            if (finalize && (callStartedAt || transcriptEntries.length || usageSnapshot.responseCount)) {
+                queueTranscriptSave({ final: true });
+            }
         }
 
         startVoiceBtn.addEventListener('click', startBrowserVoice);
         scheduleBtn.addEventListener('click', scheduleLater);
         endCallBtn.addEventListener('click', () => {
-            endCall();
+            endCall({ finalize: true });
             setStatus(currentLeadId ? 'Consultation ended. Marga has the inquiry in the AI Product Consultant inbox.' : 'Consultation ended.', 'good');
+        });
+        window.addEventListener('beforeunload', () => {
+            if (currentLeadId && (transcriptEntries.length || usageSnapshot.responseCount)) {
+                queueTranscriptSave({ final: true });
+            }
         });
 
         prefillFromQuery();

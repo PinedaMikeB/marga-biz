@@ -123,6 +123,14 @@ exports.handler = async (event) => {
                 message: clean(lead.message)
             }),
             audio: {
+                input: {
+                    transcription: {
+                        model: process.env.OPENAI_TRANSCRIPTION_MODEL || 'gpt-4o-mini-transcribe',
+                        prompt: languageMode === 'english'
+                            ? 'Marga Enterprises printer rental, copier rental, office equipment inquiry.'
+                            : 'Marga Enterprises printer rental, copier rental, Taglish office equipment inquiry. Preserve Taglish wording when spoken.'
+                    }
+                },
                 output: {
                     voice: process.env.OPENAI_REALTIME_VOICE || 'marin'
                 }
@@ -155,6 +163,9 @@ exports.handler = async (event) => {
             aiConsultantStatus: 'consultation_started',
             aiCallStatus: 'browser_voice_connected',
             leadStatus: 'consulting',
+            realtimeModel: session.model,
+            transcriptionModel: session.audio.input.transcription.model,
+            conversationStartedAt: new Date().toISOString(),
             nextAction: 'Browser voice consultation is in progress'
         });
 

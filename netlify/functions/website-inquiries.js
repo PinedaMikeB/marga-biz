@@ -37,7 +37,17 @@ function safeUpdates(input) {
         'nextAction',
         'priority',
         'salesCallRequested',
-        'salesCallRequestedAt'
+        'salesCallRequestedAt',
+        'conversationStartedAt',
+        'conversationEndedAt',
+        'conversationDurationSeconds',
+        'transcript',
+        'transcriptUpdatedAt',
+        'usage',
+        'estimatedCostUsd',
+        'estimatedCostPhp',
+        'realtimeModel',
+        'transcriptionModel'
     ]);
 
     const updates = {};
