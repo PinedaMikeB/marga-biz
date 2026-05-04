@@ -36,6 +36,14 @@ function buildInstructions({ leadId, fullName, company, service, languageMode, m
     ].join('\n');
 }
 
+async function getLead(leadId) {
+    if (!leadId) return null;
+    const app = getFirebaseApp();
+    const db = admin.firestore(app);
+    const doc = await db.collection('website_inquiries').doc(leadId).get();
+    return doc.exists ? doc.data() : null;
+}
+
 async function updateLead(leadId, updates) {
     if (!leadId) return;
     const app = getFirebaseApp();
@@ -79,8 +87,10 @@ exports.handler = async (event) => {
             };
         }
 
-        const payload = JSON.parse(event.body || '{}');
-        const sdp = clean(payload.sdp);
+        const contentType = event.headers?.['content-type'] || event.headers?.['Content-Type'] || '';
+        const isRawSdp = contentType.includes('application/sdp') || contentType.includes('text/plain');
+        const payload = isRawSdp ? {} : JSON.parse(event.body || '{}');
+        const sdp = isRawSdp ? String(event.body || '') : clean(payload.sdp);
         if (!sdp) {
             return {
                 statusCode: 400,
@@ -89,8 +99,9 @@ exports.handler = async (event) => {
             };
         }
 
-        const lead = payload.lead || {};
-        const leadId = clean(payload.leadId);
+        const leadId = clean(payload.leadId || event.queryStringParameters?.leadId);
+        const storedLead = await getLead(leadId);
+        const lead = storedLead || payload.lead || {};
         const languageMode = clean(lead.languageMode || 'taglish').toLowerCase() === 'english' ? 'english' : 'taglish';
 
         const session = {
@@ -142,8 +153,11 @@ exports.handler = async (event) => {
 
         return {
             statusCode: 200,
-            headers,
-            body: JSON.stringify({ success: true, sdp: answerSdp })
+            headers: {
+                ...headers,
+                'Content-Type': 'application/sdp'
+            },
+            body: answerSdp
         };
     } catch (error) {
         console.error('AI consultant session failed:', error);

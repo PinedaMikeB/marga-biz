@@ -572,21 +572,23 @@
                 const offer = await pc.createOffer();
                 await pc.setLocalDescription(offer);
 
-                const response = await fetch('/.netlify/functions/ai-consultant-session', {
+                const response = await fetch(`/.netlify/functions/ai-consultant-session?leadId=${encodeURIComponent(saved.leadId)}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        sdp: offer.sdp,
-                        leadId: saved.leadId,
-                        lead: saved.lead
-                    })
+                    headers: { 'Content-Type': 'application/sdp' },
+                    body: offer.sdp
                 });
-                const result = await response.json().catch(() => ({}));
-                if (!response.ok || !result.success) {
-                    throw new Error(result.error || 'Voice session is not available yet');
+                const answerSdp = await response.text();
+                let parsedError = null;
+                if (!response.ok) {
+                    try {
+                        parsedError = JSON.parse(answerSdp);
+                    } catch (error) {
+                        parsedError = null;
+                    }
+                    throw new Error(parsedError?.error || answerSdp || 'Voice session is not available yet');
                 }
 
-                await pc.setRemoteDescription({ type: 'answer', sdp: result.sdp });
+                await pc.setRemoteDescription({ type: 'answer', sdp: answerSdp });
             } catch (error) {
                 endCall();
                 const notConfigured = error.message.includes('OPENAI_API_KEY');
