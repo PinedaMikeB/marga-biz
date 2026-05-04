@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talk to AI Product Consultant - Marga Enterprises</title>
+    <meta name="description" content="Talk to Marga Enterprises AI Product Consultant for printer rental, copier rental, and print-all-you-can inquiries.">
+    <link rel="canonical" href="https://marga.biz/ai-consultant/">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        :root {
+            --consultant-ink: #101827;
+            --consultant-muted: #617088;
+            --consultant-blue: #0057c2;
+            --consultant-orange: #ff6b00;
+            --consultant-green: #0f8f63;
+            --consultant-line: #d9e2ee;
+            --consultant-paper: #ffffff;
+            --consultant-soft: #f4f7fb;
+        }
+
+        .ai-shell {
+            background:
+                linear-gradient(145deg, rgba(0, 87, 194, 0.08), rgba(255, 107, 0, 0.07)),
+                #f6f8fb;
+        }
+
+        .ai-hero {
+            padding: 52px 0 28px;
+        }
+
+        .ai-hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+            gap: 34px;
+            align-items: start;
+        }
+
+        .ai-kicker {
+            display: inline-flex;
+            margin-bottom: 14px;
+            color: var(--consultant-blue);
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .ai-hero h1 {
+            max-width: 680px;
+            margin: 0 0 18px;
+            color: var(--consultant-ink);
+            font-size: clamp(2.1rem, 5vw, 4.4rem);
+            line-height: 0.98;
+            letter-spacing: 0;
+        }
+
+        .ai-hero-copy {
+            max-width: 650px;
+            margin: 0 0 22px;
+            color: #3d4b5f;
+            font-size: 1.08rem;
+            line-height: 1.7;
+        }
+
+        .ai-signal-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .ai-signal {
+            min-height: 110px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid var(--consultant-line);
+            border-radius: 8px;
+        }
+
+        .ai-signal strong {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--consultant-ink);
+            font-size: 1.04rem;
+        }
+
+        .ai-signal span {
+            display: block;
+            color: var(--consultant-muted);
+            font-size: 0.93rem;
+            line-height: 1.45;
+        }
+
+        .ai-console {
+            background: var(--consultant-paper);
+            border: 1px solid var(--consultant-line);
+            border-radius: 8px;
+            box-shadow: 0 22px 55px rgba(16, 24, 39, 0.13);
+            overflow: hidden;
+        }
+
+        .console-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .console-head strong {
+            font-size: 1.1rem;
+        }
+
+        .status-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
+        .status-dot::before {
+            content: "";
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--consultant-green);
+        }
+
+        .ai-form {
+            padding: 20px;
+        }
+
+        .ai-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .ai-field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .ai-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .ai-field label {
+            color: #2c3b4e;
+            font-size: 0.84rem;
+            font-weight: 800;
+        }
+
+        .ai-field input,
+        .ai-field select,
+        .ai-field textarea {
+            width: 100%;
+            border: 1px solid var(--consultant-line);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--consultant-ink);
+            font: inherit;
+            background: #fff;
+        }
+
+        .ai-field textarea {
+            min-height: 104px;
+            resize: vertical;
+        }
+
+        .ai-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .ai-primary,
+        .ai-secondary {
+            min-height: 48px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 0.98rem;
+        }
+
+        .ai-primary {
+            background: var(--consultant-orange);
+            color: #fff;
+        }
+
+        .ai-secondary {
+            background: #fff;
+            color: var(--consultant-blue);
+            border-color: var(--consultant-blue);
+        }
+
+        .ai-primary:disabled,
+        .ai-secondary:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .ai-status {
+            min-height: 46px;
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 6px;
+            background: var(--consultant-soft);
+            color: var(--consultant-muted);
+            font-size: 0.93rem;
+            line-height: 1.5;
+        }
+
+        .ai-status.good {
+            background: #eaf8f2;
+            color: #08704e;
+        }
+
+        .ai-status.warn {
+            background: #fff7e8;
+            color: #8a5108;
+        }
+
+        .ai-status.bad {
+            background: #fff0f0;
+            color: #a51d2d;
+        }
+
+        .ai-call-bar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 14px;
+            padding: 14px;
+            border-radius: 8px;
+            background: #101827;
+            color: #fff;
+        }
+
+        .ai-call-bar.active {
+            display: flex;
+        }
+
+        .ai-call-bar button {
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            background: transparent;
+            color: #fff;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-weight: 800;
+        }
+
+        .ai-process {
+            padding: 10px 0 60px;
+        }
+
+        .process-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .process-step {
+            padding: 18px;
+            background: #fff;
+            border: 1px solid var(--consultant-line);
+            border-radius: 8px;
+        }
+
+        .process-step span {
+            display: block;
+            margin-bottom: 9px;
+            color: var(--consultant-orange);
+            font-weight: 900;
+        }
+
+        .process-step strong {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--consultant-ink);
+        }
+
+        .process-step p {
+            margin: 0;
+            color: var(--consultant-muted);
+            line-height: 1.55;
+        }
+
+        @media (max-width: 920px) {
+            .ai-hero-grid,
+            .ai-signal-row,
+            .process-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .ai-form-grid,
+            .ai-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-hero {
+                padding-top: 34px;
+            }
+        }
+    </style>
+</head>
+<body class="page ai-shell">
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="/marga-logo.png" alt="Marga Enterprises" height="50" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;color:#0066cc;font-weight:700;font-size:1.1rem;">Marga Enterprises</span>
+                </a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="main-nav" id="main-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="/printer-rental/" class="nav-link">Printer Rental</a></li>
+                    <li class="nav-item"><a href="/blogs/" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="/contact/" class="nav-link cta-link">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="ai-hero">
+            <div class="container">
+                <div class="ai-hero-grid">
+                    <div>
+                        <span class="ai-kicker">Browser voice consultation</span>
+                        <h1>Talk to Marga's AI Product Consultant.</h1>
+                        <p class="ai-hero-copy">Use your browser microphone to discuss printer rental, copier rental, print-all-you-can, or short-term rental needs. Choose Taglish or pure English before starting.</p>
+
+                        <div class="ai-signal-row">
+                            <div class="ai-signal">
+                                <strong>No mobile call charge</strong>
+                                <span>The conversation runs through internet audio instead of dialing your phone number.</span>
+                            </div>
+                            <div class="ai-signal">
+                                <strong>Quote-ready intake</strong>
+                                <span>The consultant asks for location, users, volume, timeline, and service needs.</span>
+                            </div>
+                            <div class="ai-signal">
+                                <strong>Human handoff</strong>
+                                <span>When requirements are ready, Marga sales can prepare the official quote.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="ai-console" aria-label="AI Product Consultant form">
+                        <div class="console-head">
+                            <strong>Start consultation</strong>
+                            <span class="status-dot" id="voiceStatusLabel">Ready</span>
+                        </div>
+
+                        <form class="ai-form" id="aiConsultantForm">
+                            <div class="ai-form-grid">
+                                <div class="ai-field">
+                                    <label for="fullName">Full name</label>
+                                    <input id="fullName" name="fullName" autocomplete="name" required>
+                                </div>
+                                <div class="ai-field">
+                                    <label for="phone">Mobile number</label>
+                                    <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="09XX XXX XXXX" required>
+                                </div>
+                                <div class="ai-field">
+                                    <label for="email">Email</label>
+                                    <input id="email" name="email" type="email" autocomplete="email" required>
+                                </div>
+                                <div class="ai-field">
+                                    <label for="company">Company</label>
+                                    <input id="company" name="company" autocomplete="organization" required>
+                                </div>
+                                <div class="ai-field">
+                                    <label for="service">Service</label>
+                                    <select id="service" name="service" required>
+                                        <option value="Printer Rental">Printer Rental</option>
+                                        <option value="Copier Rental">Copier Rental</option>
+                                        <option value="Print All You Can">Print All You Can</option>
+                                        <option value="Short-term Rental">Short-term Rental</option>
+                                        <option value="Color Copier Rental">Color Copier Rental</option>
+                                    </select>
+                                </div>
+                                <div class="ai-field">
+                                    <label for="languageMode">Language</label>
+                                    <select id="languageMode" name="languageMode">
+                                        <option value="taglish">Taglish</option>
+                                        <option value="english">Pure English</option>
+                                    </select>
+                                </div>
+                                <div class="ai-field full">
+                                    <label for="message">What do you need?</label>
+                                    <textarea id="message" name="message" required placeholder="Example: Need a printer rental for 10 users in Makati, mostly black-and-white, with scanning."></textarea>
+                                </div>
+                                <div class="ai-field full">
+                                    <label for="requestedWindow">Schedule window if you prefer later</label>
+                                    <select id="requestedWindow" name="requestedWindow">
+                                        <option value="">Talk now</option>
+                                        <option value="today_morning">Today morning</option>
+                                        <option value="today_afternoon">Today afternoon</option>
+                                        <option value="tomorrow_morning">Tomorrow morning</option>
+                                        <option value="tomorrow_afternoon">Tomorrow afternoon</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="ai-controls">
+                                <button class="ai-primary" type="button" id="startVoiceBtn">Talk Now</button>
+                                <button class="ai-secondary" type="button" id="scheduleBtn">Schedule Later</button>
+                            </div>
+
+                            <div class="ai-status" id="aiStatus">Microphone permission is required only when you tap Talk Now.</div>
+
+                            <div class="ai-call-bar" id="callBar">
+                                <span id="callBarText">Consultation in progress</span>
+                                <button type="button" id="endCallBtn">End</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <section class="ai-process">
+            <div class="container">
+                <div class="process-strip">
+                    <div class="process-step">
+                        <span>01</span>
+                        <strong>Share requirements</strong>
+                        <p>Tell the consultant your location, team size, volume, and timeline.</p>
+                    </div>
+                    <div class="process-step">
+                        <span>02</span>
+                        <strong>Get guided questions</strong>
+                        <p>The AI asks only the details needed to prepare a useful rental recommendation.</p>
+                    </div>
+                    <div class="process-step">
+                        <span>03</span>
+                        <strong>Marga receives the lead</strong>
+                        <p>The inquiry is saved in the Marga-App AI Product Consultant inbox.</p>
+                    </div>
+                    <div class="process-step">
+                        <span>04</span>
+                        <strong>Sales prepares quote</strong>
+                        <p>A person from Marga confirms availability, pricing, and final terms.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/main.js" defer></script>
+    <script>
+        const form = document.getElementById('aiConsultantForm');
+        const statusBox = document.getElementById('aiStatus');
+        const startVoiceBtn = document.getElementById('startVoiceBtn');
+        const scheduleBtn = document.getElementById('scheduleBtn');
+        const callBar = document.getElementById('callBar');
+        const callBarText = document.getElementById('callBarText');
+        const endCallBtn = document.getElementById('endCallBtn');
+        const voiceStatusLabel = document.getElementById('voiceStatusLabel');
+
+        let currentPeer = null;
+        let currentStream = null;
+        let currentLeadId = '';
+
+        function setStatus(message, type = '') {
+            statusBox.textContent = message;
+            statusBox.className = `ai-status ${type}`.trim();
+        }
+
+        function setBusy(isBusy) {
+            startVoiceBtn.disabled = isBusy;
+            scheduleBtn.disabled = isBusy;
+        }
+
+        function getPayload(mode) {
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            payload.source = 'marga.biz/ai-consultant';
+            payload.sourcePage = window.location.href;
+            payload.consultationMode = mode;
+            payload.callConsent = false;
+            return payload;
+        }
+
+        function prefillFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            ['service', 'message', 'fullName', 'phone', 'email', 'company'].forEach((key) => {
+                const value = params.get(key);
+                const input = document.getElementById(key);
+                if (value && input) input.value = value;
+            });
+            const language = params.get('languageMode') || params.get('language');
+            if (language) {
+                document.getElementById('languageMode').value = language === 'english' ? 'english' : 'taglish';
+            }
+        }
+
+        async function saveLead(mode) {
+            const payload = getPayload(mode);
+            const response = await fetch('/.netlify/functions/create-inquiry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || 'Unable to save consultation request');
+            }
+            currentLeadId = result.inquiryId;
+            return { leadId: result.inquiryId, lead: payload };
+        }
+
+        async function startBrowserVoice() {
+            if (!form.reportValidity()) return;
+            setBusy(true);
+            setStatus('Saving your consultation request...', 'warn');
+
+            try {
+                const saved = await saveLead('talk_now');
+                setStatus('Requesting microphone access...', 'warn');
+
+                const pc = new RTCPeerConnection();
+                currentPeer = pc;
+
+                const audio = document.createElement('audio');
+                audio.autoplay = true;
+                pc.ontrack = (event) => {
+                    audio.srcObject = event.streams[0];
+                };
+
+                currentStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                pc.addTrack(currentStream.getTracks()[0]);
+
+                const dc = pc.createDataChannel('oai-events');
+                dc.addEventListener('open', () => {
+                    voiceStatusLabel.textContent = 'Connected';
+                    callBar.classList.add('active');
+                    callBarText.textContent = 'AI Product Consultant is listening';
+                    setStatus('Connected. You can start speaking now.', 'good');
+                });
+                dc.addEventListener('message', (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'response.done') {
+                            callBarText.textContent = 'Conversation active';
+                        }
+                    } catch (error) {
+                        console.debug('Realtime event', event.data);
+                    }
+                });
+
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+
+                const response = await fetch('/.netlify/functions/ai-consultant-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sdp: offer.sdp,
+                        leadId: saved.leadId,
+                        lead: saved.lead
+                    })
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || 'Voice session is not available yet');
+                }
+
+                await pc.setRemoteDescription({ type: 'answer', sdp: result.sdp });
+            } catch (error) {
+                endCall();
+                const notConfigured = error.message.includes('OPENAI_API_KEY');
+                setStatus(notConfigured
+                    ? 'Your request was saved. Browser voice needs OPENAI_API_KEY in Netlify before live voice can start.'
+                    : `Your request was saved, but voice could not start yet: ${error.message}`,
+                    notConfigured ? 'warn' : 'bad');
+            } finally {
+                setBusy(false);
+            }
+        }
+
+        async function scheduleLater() {
+            if (!form.reportValidity()) return;
+            setBusy(true);
+            setStatus('Saving your preferred consultation window...', 'warn');
+            try {
+                const saved = await saveLead('schedule');
+                setStatus(`Saved. Marga received your AI consultation request (${saved.leadId}).`, 'good');
+            } catch (error) {
+                setStatus(`Unable to schedule yet: ${error.message}`, 'bad');
+            } finally {
+                setBusy(false);
+            }
+        }
+
+        function endCall() {
+            if (currentPeer) {
+                currentPeer.getSenders().forEach((sender) => sender.track?.stop());
+                currentPeer.close();
+            }
+            if (currentStream) currentStream.getTracks().forEach((track) => track.stop());
+            currentPeer = null;
+            currentStream = null;
+            callBar.classList.remove('active');
+            voiceStatusLabel.textContent = 'Ready';
+        }
+
+        startVoiceBtn.addEventListener('click', startBrowserVoice);
+        scheduleBtn.addEventListener('click', scheduleLater);
+        endCallBtn.addEventListener('click', () => {
+            endCall();
+            setStatus(currentLeadId ? 'Consultation ended. Marga has the inquiry in the AI Product Consultant inbox.' : 'Consultation ended.', 'good');
+        });
+
+        prefillFromQuery();
+    </script>
+</body>
+</html>

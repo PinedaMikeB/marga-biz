@@ -104,6 +104,10 @@ exports.handler = async (event) => {
         const languageMode = clean(data.languageMode || data['language-mode'] || 'taglish').toLowerCase() === 'english'
             ? 'english'
             : 'taglish';
+        const source = clean(data.source || 'marga.biz/contact');
+        const consultationMode = clean(data.consultationMode || 'contact_form');
+        const requestedWindow = clean(data.requestedWindow);
+        const isBrowserConsultation = source.includes('ai-consultant') || consultationMode === 'talk_now' || consultationMode === 'schedule';
 
         if (!fullName || !phone || !email || !company || !service || !message) {
             return {
@@ -114,8 +118,20 @@ exports.handler = async (event) => {
         }
 
         const now = new Date().toISOString();
+        const aiConsultantStatus = isBrowserConsultation
+            ? (consultationMode === 'schedule' ? 'consultation_scheduled' : 'browser_voice_requested')
+            : 'new_inquiry';
+        const aiCallStatus = isBrowserConsultation
+            ? 'browser_voice_requested'
+            : (callConsent ? 'pending_call' : 'waiting_for_call_consent');
+        const nextAction = isBrowserConsultation
+            ? (consultationMode === 'schedule'
+                ? `Customer requested AI consultation window: ${requestedWindow || 'not specified'}`
+                : 'Customer opened Talk to AI Consultant and requested browser voice')
+            : (callConsent ? 'AI Product Consultant call queued' : 'Manual follow-up needed before calling');
+
         const lead = {
-            source: 'marga.biz/contact',
+            source,
             sourcePage: clean(data.sourcePage || data.page || ''),
             firstName,
             lastName,
@@ -128,12 +144,14 @@ exports.handler = async (event) => {
             message,
             languageMode,
             callConsent,
+            consultationMode,
+            requestedWindow,
             leadStatus: 'new',
-            aiConsultantStatus: 'new_inquiry',
-            aiCallStatus: callConsent ? 'pending_call' : 'waiting_for_call_consent',
-            priority: callConsent ? 'high' : 'normal',
+            aiConsultantStatus,
+            aiCallStatus,
+            priority: callConsent || isBrowserConsultation ? 'high' : 'normal',
             assignedTo: '',
-            nextAction: callConsent ? 'AI Product Consultant call queued' : 'Manual follow-up needed before calling',
+            nextAction,
             createdAt: now,
             updatedAt: now
         };
