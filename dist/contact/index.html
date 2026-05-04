@@ -198,6 +198,26 @@
         .quick-action-panel .cta-buttons {
             justify-content: flex-start;
         }
+
+        .consent-box {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            align-items: start;
+            padding: 14px;
+            background: #fff;
+            border: 1px solid #d8e2ef;
+            border-radius: 8px;
+            color: #425466;
+            font-size: 0.94rem;
+            line-height: 1.5;
+        }
+
+        .consent-box input {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body class="page contact-page">
@@ -360,6 +380,21 @@
                                     <label for="message">Message <span class="required">*</span></label>
                                     <textarea id="message" name="message" required placeholder="Tell us about your printing needs..."></textarea>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="language-mode">Preferred Language</label>
+                                    <select id="language-mode" name="language-mode">
+                                        <option value="taglish">Taglish</option>
+                                        <option value="english">Pure English</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="consent-box" for="call-consent">
+                                        <input type="checkbox" id="call-consent" name="call-consent">
+                                        <span>I agree that Marga Enterprises may contact me by phone about this inquiry. If checked, the AI Product Consultant or sales team may call my mobile number to help qualify the best printer or copier rental setup.</span>
+                                    </label>
+                                </div>
                                 
                                 <button type="submit" class="submit-btn">Send Message</button>
                             </form>
@@ -478,14 +513,61 @@
             }
         }
 
-        // Handle form submission with success message
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            // Let Netlify handle the actual submission
-            // Show success message after a brief delay
-            setTimeout(function() {
-                document.getElementById('contact-form').style.display = 'none';
+        async function postNetlifyForm(form) {
+            const encoded = new URLSearchParams(new FormData(form)).toString();
+            return fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: encoded
+            });
+        }
+
+        async function postInquiryLead(form) {
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            payload.callConsent = document.getElementById('call-consent')?.checked || false;
+            payload.sourcePage = window.location.href;
+
+            return fetch('/.netlify/functions/create-inquiry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        }
+
+        // Save the website inquiry into the shared Marga lead inbox, then keep
+        // Netlify Forms as the email-notification fallback.
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+
+            try {
+                const [leadResponse, netlifyResponse] = await Promise.all([
+                    postInquiryLead(form),
+                    postNetlifyForm(form)
+                ]);
+
+                if (!leadResponse.ok) {
+                    const result = await leadResponse.json().catch(() => ({}));
+                    throw new Error(result.error || 'Unable to save inquiry lead');
+                }
+
+                if (!netlifyResponse.ok) {
+                    console.warn('Netlify Forms notification fallback failed:', netlifyResponse.status);
+                }
+
+                form.style.display = 'none';
                 document.getElementById('success-message').style.display = 'block';
-            }, 100);
+            } catch (error) {
+                alert(`We could not send your inquiry yet. Please call 0917 164 2540 or email solutions@marga.biz. (${error.message})`);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
         });
     </script>
 </body>
