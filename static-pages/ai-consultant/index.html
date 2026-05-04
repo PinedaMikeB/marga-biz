@@ -544,8 +544,12 @@
 
                 const audio = document.createElement('audio');
                 audio.autoplay = true;
+                audio.playsInline = true;
+                audio.style.display = 'none';
+                document.body.appendChild(audio);
                 pc.ontrack = (event) => {
                     audio.srcObject = event.streams[0];
+                    audio.play().catch((error) => console.debug('Audio playback is waiting for browser permission.', error));
                 };
 
                 currentStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -555,14 +559,30 @@
                 dc.addEventListener('open', () => {
                     voiceStatusLabel.textContent = 'Connected';
                     callBar.classList.add('active');
-                    callBarText.textContent = 'AI Product Consultant is listening';
-                    setStatus('Connected. You can start speaking now.', 'good');
+                    callBarText.textContent = 'AI Product Consultant is starting';
+                    setStatus('Connected. The consultant should greet you now.', 'good');
+                    dc.send(JSON.stringify({
+                        type: 'response.create',
+                        response: {
+                            modalities: ['audio', 'text'],
+                            instructions: 'Greet the customer now in the selected language. Introduce yourself as Marga Enterprises AI Product Consultant, mention their service interest, then ask the first qualifying question.'
+                        }
+                    }));
                 });
                 dc.addEventListener('message', (event) => {
                     try {
                         const data = JSON.parse(event.data);
+                        if (data.type === 'input_audio_buffer.speech_started') {
+                            callBarText.textContent = 'Listening to you';
+                        }
+                        if (data.type === 'response.audio.delta') {
+                            callBarText.textContent = 'AI Product Consultant is speaking';
+                        }
                         if (data.type === 'response.done') {
-                            callBarText.textContent = 'Conversation active';
+                            callBarText.textContent = 'AI Product Consultant is listening';
+                        }
+                        if (data.type === 'error') {
+                            setStatus(data.error?.message || 'Realtime voice returned an error.', 'bad');
                         }
                     } catch (error) {
                         console.debug('Realtime event', event.data);
