@@ -54,6 +54,12 @@ async function updateLead(leadId, updates) {
     }, { merge: true });
 }
 
+function getBodyText(event) {
+    const raw = String(event.body || '');
+    if (!event.isBase64Encoded) return raw;
+    return Buffer.from(raw, 'base64').toString('utf8');
+}
+
 exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
@@ -89,8 +95,9 @@ exports.handler = async (event) => {
 
         const contentType = event.headers?.['content-type'] || event.headers?.['Content-Type'] || '';
         const isRawSdp = contentType.includes('application/sdp') || contentType.includes('text/plain');
-        const payload = isRawSdp ? {} : JSON.parse(event.body || '{}');
-        const sdp = isRawSdp ? String(event.body || '') : clean(payload.sdp);
+        const bodyText = getBodyText(event);
+        const payload = isRawSdp ? {} : JSON.parse(bodyText || '{}');
+        const sdp = isRawSdp ? bodyText : clean(payload.sdp);
         if (!sdp) {
             return {
                 statusCode: 400,
