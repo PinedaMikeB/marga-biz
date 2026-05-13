@@ -32,11 +32,11 @@ Each entry includes rollback instructions.
 - `dist/contact/index.html`
 - `dist/css/main.css`
 
-**Git Commit:** `af040a3`
+**Git Commit:** `2d27c17`
 
 **Rollback Instructions:**
 ```bash
-git revert af040a3
+git revert 2d27c17
 ```
 
 **Verification:**
