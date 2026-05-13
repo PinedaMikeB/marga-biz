@@ -32,10 +32,8 @@
         }
 
         .ai-hero-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-            gap: 34px;
-            align-items: start;
+            max-width: 760px;
+            margin: 0 auto;
         }
 
         .ai-kicker {
@@ -95,6 +93,7 @@
         }
 
         .ai-console {
+            position: relative;
             background: var(--consultant-paper);
             border: 1px solid var(--consultant-line);
             border-radius: 8px;
@@ -114,6 +113,31 @@
 
         .console-head strong {
             font-size: 1.1rem;
+        }
+
+        .console-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .console-exit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.32);
+            border-radius: 999px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .console-exit:hover {
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .status-dot {
@@ -177,7 +201,7 @@
 
         .ai-controls {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 10px;
             margin-top: 16px;
         }
@@ -261,53 +285,14 @@
             font-weight: 800;
         }
 
-        .ai-process {
-            padding: 10px 0 60px;
-        }
-
-        .process-strip {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .process-step {
-            padding: 18px;
-            background: #fff;
-            border: 1px solid var(--consultant-line);
-            border-radius: 8px;
-        }
-
-        .process-step span {
-            display: block;
-            margin-bottom: 9px;
-            color: var(--consultant-orange);
-            font-weight: 900;
-        }
-
-        .process-step strong {
-            display: block;
-            margin-bottom: 7px;
-            color: var(--consultant-ink);
-        }
-
-        .process-step p {
-            margin: 0;
-            color: var(--consultant-muted);
-            line-height: 1.55;
-        }
-
         @media (max-width: 920px) {
-            .ai-hero-grid,
-            .ai-signal-row,
-            .process-strip {
+            .ai-signal-row {
                 grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 560px) {
-            .ai-form-grid,
-            .ai-controls {
+            .ai-form-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -344,31 +329,13 @@
         <section class="ai-hero">
             <div class="container">
                 <div class="ai-hero-grid">
-                    <div>
-                        <span class="ai-kicker">Browser voice consultation</span>
-                        <h1>Talk to Marga's AI Product Consultant.</h1>
-                        <p class="ai-hero-copy">Use your browser microphone to discuss printer rental, copier rental, print-all-you-can, or short-term rental needs. Choose Taglish or pure English before starting.</p>
-
-                        <div class="ai-signal-row">
-                            <div class="ai-signal">
-                                <strong>No mobile call charge</strong>
-                                <span>The conversation runs through internet audio instead of dialing your phone number.</span>
-                            </div>
-                            <div class="ai-signal">
-                                <strong>Quote-ready intake</strong>
-                                <span>The consultant asks for location, users, volume, timeline, and service needs.</span>
-                            </div>
-                            <div class="ai-signal">
-                                <strong>Human handoff</strong>
-                                <span>When requirements are ready, Marga sales can prepare the official quote.</span>
-                            </div>
-                        </div>
-                    </div>
-
                     <section class="ai-console" aria-label="AI Product Consultant form">
                         <div class="console-head">
                             <strong>Start consultation</strong>
-                            <span class="status-dot" id="voiceStatusLabel">Ready</span>
+                            <span class="console-meta">
+                                <span class="status-dot" id="voiceStatusLabel">Ready</span>
+                                <a class="console-exit" href="/contact/#email-quote" aria-label="Close and get quote by email">&times;</a>
+                            </span>
                         </div>
 
                         <form class="ai-form" id="aiConsultantForm">
@@ -410,21 +377,10 @@
                                     <label for="message">What do you need?</label>
                                     <textarea id="message" name="message" required placeholder="Example: Need a printer rental for 10 users in Makati, mostly black-and-white, with scanning."></textarea>
                                 </div>
-                                <div class="ai-field full">
-                                    <label for="requestedWindow">Schedule window if you prefer later</label>
-                                    <select id="requestedWindow" name="requestedWindow">
-                                        <option value="">Talk now</option>
-                                        <option value="today_morning">Today morning</option>
-                                        <option value="today_afternoon">Today afternoon</option>
-                                        <option value="tomorrow_morning">Tomorrow morning</option>
-                                        <option value="tomorrow_afternoon">Tomorrow afternoon</option>
-                                    </select>
-                                </div>
                             </div>
 
                             <div class="ai-controls">
                                 <button class="ai-primary" type="button" id="startVoiceBtn">Talk Now</button>
-                                <button class="ai-secondary" type="button" id="scheduleBtn">Schedule Later</button>
                             </div>
 
                             <div class="ai-status" id="aiStatus">Microphone permission is required only when you tap Talk Now.</div>
@@ -439,32 +395,6 @@
             </div>
         </section>
 
-        <section class="ai-process">
-            <div class="container">
-                <div class="process-strip">
-                    <div class="process-step">
-                        <span>01</span>
-                        <strong>Share requirements</strong>
-                        <p>Tell the consultant your location, team size, volume, and timeline.</p>
-                    </div>
-                    <div class="process-step">
-                        <span>02</span>
-                        <strong>Get guided questions</strong>
-                        <p>The AI asks only the details needed to prepare a useful rental recommendation.</p>
-                    </div>
-                    <div class="process-step">
-                        <span>03</span>
-                        <strong>Marga receives the lead</strong>
-                        <p>The inquiry is saved in the Marga-App AI Product Consultant inbox.</p>
-                    </div>
-                    <div class="process-step">
-                        <span>04</span>
-                        <strong>Sales prepares quote</strong>
-                        <p>A person from Marga confirms availability, pricing, and final terms.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <script src="/js/main.js" defer></script>
@@ -472,7 +402,6 @@
         const form = document.getElementById('aiConsultantForm');
         const statusBox = document.getElementById('aiStatus');
         const startVoiceBtn = document.getElementById('startVoiceBtn');
-        const scheduleBtn = document.getElementById('scheduleBtn');
         const callBar = document.getElementById('callBar');
         const callBarText = document.getElementById('callBarText');
         const endCallBtn = document.getElementById('endCallBtn');
@@ -509,7 +438,6 @@
 
         function setBusy(isBusy) {
             startVoiceBtn.disabled = isBusy;
-            scheduleBtn.disabled = isBusy;
         }
 
         function createEmptyUsage() {
@@ -802,20 +730,6 @@
             }
         }
 
-        async function scheduleLater() {
-            if (!form.reportValidity()) return;
-            setBusy(true);
-            setStatus('Saving your preferred consultation window...', 'warn');
-            try {
-                const saved = await saveLead('schedule');
-                setStatus(`Saved. Marga received your AI consultation request (${saved.leadId}).`, 'good');
-            } catch (error) {
-                setStatus(`Unable to schedule yet: ${error.message}`, 'bad');
-            } finally {
-                setBusy(false);
-            }
-        }
-
         function endCall({ finalize = true } = {}) {
             if (currentPeer) {
                 currentPeer.getSenders().forEach((sender) => sender.track?.stop());
@@ -833,7 +747,6 @@
         }
 
         startVoiceBtn.addEventListener('click', startBrowserVoice);
-        scheduleBtn.addEventListener('click', scheduleLater);
         endCallBtn.addEventListener('click', () => {
             endCall({ finalize: true });
             setStatus(currentLeadId ? 'Consultation ended. Marga has the inquiry in the AI Product Consultant inbox.' : 'Consultation ended.', 'good');

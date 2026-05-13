@@ -10,6 +10,36 @@ Each entry includes rollback instructions.
 
 ---
 
+## [v2.5.1] - 2026-05-14
+
+### AI Consultant Page Simplification
+
+**Summary:** Simplified the Talk to Sales destination so visitors focus on the start consultation form.
+
+**Changes:**
+- Removed the left-side explanatory hero copy and three feature blocks.
+- Removed the lower process-step cards.
+- Removed `Schedule Later` and the schedule-window selector.
+- Added an `X` exit link back to `/contact/#email-quote`.
+
+**Modified Files:**
+- `static-pages/ai-consultant/index.html`
+- `dist/ai-consultant/index.html`
+
+**Git Commit:** `TBD`
+
+**Rollback Instructions:**
+```bash
+git revert TBD
+```
+
+**Verification:**
+- [x] `npm run build`
+- [x] Generated page no longer contains `Schedule Later`, process-step blocks, or the feature cards
+- [x] Exit link points to `/contact/#email-quote`
+
+---
+
 ## [v2.5.0] - 2026-05-14
 
 ### Sales CTA Routing Update
