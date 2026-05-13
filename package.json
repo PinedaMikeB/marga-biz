@@ -12,6 +12,7 @@
     "generate": "node scripts/generate-site.js",
     "generate:old": "node scripts/generate-pages.js",
     "ai:visibility": "node scripts/ai-visibility-monitor.js",
+    "ai:visibility:copier": "node scripts/copier-ai-visibility-monitor.js",
     "email:send-report": "node scripts/send-email-report.js",
     "telegram:bot": "node scripts/telegram-approval.js bot-info",
     "telegram:discover": "node scripts/telegram-approval.js discover-chat",

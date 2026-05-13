@@ -1,0 +1,278 @@
+{
+  "generatedAt": "2026-05-13T15:51:32.628Z",
+  "site": "https://marga.biz",
+  "robots": {
+    "file": "dist/robots.txt",
+    "allows": [
+      {
+        "crawler": "Googlebot",
+        "present": true
+      },
+      {
+        "crawler": "Bingbot",
+        "present": true
+      },
+      {
+        "crawler": "OAI-SearchBot",
+        "present": true
+      },
+      {
+        "crawler": "ChatGPT-User",
+        "present": true
+      },
+      {
+        "crawler": "PerplexityBot",
+        "present": true
+      },
+      {
+        "crawler": "Claude-SearchBot",
+        "present": true
+      },
+      {
+        "crawler": "Claude-User",
+        "present": true
+      }
+    ],
+    "blocks": [
+      {
+        "crawler": "GPTBot",
+        "present": true
+      },
+      {
+        "crawler": "Google-Extended",
+        "present": true
+      },
+      {
+        "crawler": "ClaudeBot",
+        "present": true
+      }
+    ],
+    "ok": true
+  },
+  "protectedPages": [
+    {
+      "path": "/",
+      "url": "https://marga.biz/",
+      "file": "dist/index.html",
+      "protected": true,
+      "protectedReason": "Protected broad copier winner/homepage; do not edit without explicit approval.",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": false,
+      "faqSignals": false,
+      "validJsonLd": true,
+      "failures": [
+        "Missing FAQ/question-answer signals"
+      ]
+    },
+    {
+      "path": "/copier-rental/copier-for-rent/",
+      "url": "https://marga.biz/copier-rental/copier-for-rent/",
+      "file": "dist/copier-rental/copier-for-rent/index.html",
+      "protected": true,
+      "protectedReason": "Protected broad copier-for-rent page; monitor but do not edit silently.",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": false,
+      "faqSignals": false,
+      "validJsonLd": true,
+      "failures": [
+        "Missing FAQ/question-answer signals"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "path": "/copier-rental/makati/",
+      "url": "https://marga.biz/copier-rental/makati/",
+      "file": "dist/copier-rental/makati/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/bgc/",
+      "url": "https://marga.biz/copier-rental/bgc/",
+      "file": "dist/copier-rental/bgc/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/pasig/",
+      "url": "https://marga.biz/copier-rental/pasig/",
+      "file": "dist/copier-rental/pasig/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/quezon-city/",
+      "url": "https://marga.biz/copier-rental/quezon-city/",
+      "file": "dist/copier-rental/quezon-city/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/manila/",
+      "url": "https://marga.biz/copier-rental/manila/",
+      "file": "dist/copier-rental/manila/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/taguig/",
+      "url": "https://marga.biz/copier-rental/taguig/",
+      "file": "dist/copier-rental/taguig/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/ortigas/",
+      "url": "https://marga.biz/copier-rental/ortigas/",
+      "file": "dist/copier-rental/ortigas/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/best-copier-rental-company-philippines/",
+      "url": "https://marga.biz/copier-rental/best-copier-rental-company-philippines/",
+      "file": "dist/copier-rental/best-copier-rental-company-philippines/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/copier-rental-vs-buying/",
+      "url": "https://marga.biz/copier-rental/copier-rental-vs-buying/",
+      "file": "dist/copier-rental/copier-rental-vs-buying/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/copier-rental/copier-rental-office-faq/",
+      "url": "https://marga.biz/copier-rental/copier-rental-office-faq/",
+      "file": "dist/copier-rental/copier-rental-office-faq/index.html",
+      "protected": false,
+      "protectedReason": "",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "validJsonLd": true,
+      "failures": []
+    }
+  ],
+  "promptMatrix": [
+    {
+      "prompt": "best copier rental company in the Philippines",
+      "preferredPage": "/copier-rental/best-copier-rental-company-philippines/"
+    },
+    {
+      "prompt": "copier rental Makati for offices",
+      "preferredPage": "/copier-rental/makati/"
+    },
+    {
+      "prompt": "copier rental BGC with maintenance",
+      "preferredPage": "/copier-rental/bgc/"
+    },
+    {
+      "prompt": "copier rental Pasig Ortigas office",
+      "preferredPage": "/copier-rental/pasig/"
+    },
+    {
+      "prompt": "copier rental Quezon City provider",
+      "preferredPage": "/copier-rental/quezon-city/"
+    },
+    {
+      "prompt": "copier rental Manila for business",
+      "preferredPage": "/copier-rental/manila/"
+    },
+    {
+      "prompt": "copier rental Taguig office setup",
+      "preferredPage": "/copier-rental/taguig/"
+    },
+    {
+      "prompt": "copier rental vs buying for office",
+      "preferredPage": "/copier-rental/copier-rental-vs-buying/"
+    },
+    {
+      "prompt": "what should be included in a copier rental quote",
+      "preferredPage": "/copier-rental/copier-rental-office-faq/"
+    }
+  ]
+}
