@@ -1177,6 +1177,38 @@ function generateRobotsTxt() {
     console.log('\n🤖 Generating robots.txt...');
     
     const robots = `# Marga Enterprises - Robots.txt
+# Explicitly allow search and answer-engine crawlers that fetch pages for live answers.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Keep training-only crawlers separate from search visibility.
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
 User-agent: *
 Allow: /
 

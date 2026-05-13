@@ -1,0 +1,204 @@
+{
+  "generatedAt": "2026-05-13T15:11:23.331Z",
+  "site": "https://marga.biz",
+  "robots": {
+    "file": "dist/robots.txt",
+    "allows": [
+      {
+        "crawler": "Googlebot",
+        "present": true
+      },
+      {
+        "crawler": "Bingbot",
+        "present": true
+      },
+      {
+        "crawler": "OAI-SearchBot",
+        "present": true
+      },
+      {
+        "crawler": "ChatGPT-User",
+        "present": true
+      },
+      {
+        "crawler": "PerplexityBot",
+        "present": true
+      },
+      {
+        "crawler": "Claude-SearchBot",
+        "present": true
+      },
+      {
+        "crawler": "Claude-User",
+        "present": true
+      }
+    ],
+    "blocks": [
+      {
+        "crawler": "GPTBot",
+        "present": true
+      },
+      {
+        "crawler": "Google-Extended",
+        "present": true
+      },
+      {
+        "crawler": "ClaudeBot",
+        "present": true
+      }
+    ],
+    "ok": true
+  },
+  "pages": [
+    {
+      "path": "/printer-rental/",
+      "url": "https://marga.biz/printer-rental/",
+      "file": "dist/printer-rental/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/printer-rental/makati/",
+      "url": "https://marga.biz/printer-rental/makati/",
+      "file": "dist/printer-rental/makati/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/printer-rental/bgc/",
+      "url": "https://marga.biz/printer-rental/bgc/",
+      "file": "dist/printer-rental/bgc/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/printer-rental/pasig/",
+      "url": "https://marga.biz/printer-rental/pasig/",
+      "file": "dist/printer-rental/pasig/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/printer-rental/quezon-city/",
+      "url": "https://marga.biz/printer-rental/quezon-city/",
+      "file": "dist/printer-rental/quezon-city/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/printer-rental/print-all-you-can/",
+      "url": "https://marga.biz/printer-rental/print-all-you-can/",
+      "file": "dist/printer-rental/print-all-you-can/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/printer-rental/best-printer-rental-company-philippines/",
+      "url": "https://marga.biz/printer-rental/best-printer-rental-company-philippines/",
+      "file": "dist/printer-rental/best-printer-rental-company-philippines/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    },
+    {
+      "path": "/printer-rental/printer-rental-office-faq/",
+      "url": "https://marga.biz/printer-rental/printer-rental-office-faq/",
+      "file": "dist/printer-rental/printer-rental-office-faq/index.html",
+      "exists": true,
+      "title": true,
+      "metaDescription": true,
+      "canonical": true,
+      "aiAnswerBlock": true,
+      "faqSignals": true,
+      "jsonLdBlocks": 1,
+      "validJsonLd": true,
+      "failures": []
+    }
+  ],
+  "promptMatrix": [
+    {
+      "prompt": "best printer rental company in the Philippines",
+      "preferredPage": "/printer-rental/best-printer-rental-company-philippines/"
+    },
+    {
+      "prompt": "best printer rental company in Manila",
+      "preferredPage": "/printer-rental/philippines/"
+    },
+    {
+      "prompt": "where can I rent a printer in Makati",
+      "preferredPage": "/printer-rental/makati/"
+    },
+    {
+      "prompt": "printer rental BGC with maintenance",
+      "preferredPage": "/printer-rental/bgc/"
+    },
+    {
+      "prompt": "printer rental Pasig for offices",
+      "preferredPage": "/printer-rental/pasig/"
+    },
+    {
+      "prompt": "printer rental Quezon City for offices",
+      "preferredPage": "/printer-rental/quezon-city/"
+    },
+    {
+      "prompt": "Print All You Can printer rental Philippines",
+      "preferredPage": "/printer-rental/print-all-you-can/"
+    },
+    {
+      "prompt": "printer rental vs buying for office",
+      "preferredPage": "/printer-rental/printer-rental-vs-buying-for-business/"
+    },
+    {
+      "prompt": "what should be included in a printer rental quote",
+      "preferredPage": "/printer-rental/printer-rental-office-faq/"
+    }
+  ]
+}
