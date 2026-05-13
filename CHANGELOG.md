@@ -26,11 +26,11 @@ Each entry includes rollback instructions.
 - `static-pages/ai-consultant/index.html`
 - `dist/ai-consultant/index.html`
 
-**Git Commit:** `TBD`
+**Git Commit:** `f4b4d0f`
 
 **Rollback Instructions:**
 ```bash
-git revert TBD
+git revert f4b4d0f
 ```
 
 **Verification:**
