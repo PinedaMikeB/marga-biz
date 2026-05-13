@@ -913,8 +913,8 @@ function generatePage(page, templates, components, isHomepage = false, urlMap = 
                 <h1>${escapeHtml(h1Title)}</h1>
                 <p class="lead">Top copier rental Philippines. Quality printers & copiers from ₱1,250/month. Full support included.</p>
                 <div class="cta-buttons">
-                    <a href="/contact/" class="btn btn-primary">Get Instant Quote</a>
-                    <a href="tel:09171642540" class="btn btn-secondary">Call 09171642540</a>
+                    <a href="/ai-consultant/?message=I%20need%20a%20copier%20or%20printer%20rental%20quote%20in%2015%20minutes." class="btn btn-primary"><span class="btn-main">Talk to Sales</span><span class="btn-subcopy">Get quotes in 15 minutes</span></a>
+                    <a href="/contact/#email-quote" class="btn btn-secondary">Get Quote by Email</a>
                 </div>
             </div>
         </section>

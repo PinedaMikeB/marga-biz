@@ -143,6 +143,19 @@ body {
     border: 2px solid transparent;
 }
 
+.btn .btn-main,
+.btn .btn-subcopy {
+    display: block;
+    line-height: 1.2;
+}
+
+.btn .btn-subcopy {
+    margin-top: 4px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
 .btn-primary {
     background: var(--accent-color);
     color: var(--white);

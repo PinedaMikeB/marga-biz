@@ -1,6 +1,6 @@
 # Codex Handoff
 
-Updated: 2026-04-20
+Updated: 2026-05-14
 
 ## What Transfers Cleanly
 
@@ -65,6 +65,7 @@ Use these first on the other Mac:
 
 - keep Telegram chat tooling stable while other automation is reintroduced selectively
 - when SEO monitoring is active, track both the printer-rental cluster and the new printer maintenance / managed print services cluster
+- sales CTA flow now routes the visible `Talk to Sales` buttons into the existing `/ai-consultant/` voice consultant while keeping `Get Quote by Email` anchored to `/contact/#email-quote`
 
 ## Notes
 

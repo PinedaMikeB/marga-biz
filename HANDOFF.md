@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
-**Last Updated:** April 20, 2026
-**Current Version:** v2.4.0 (Printer Maintenance SEO Cluster)
+**Last Updated:** May 14, 2026
+**Current Version:** v2.5.0 (Sales CTA routing update)
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -64,6 +64,16 @@
   - print manager / manage print system
   - monthly page monitoring / print volume tracking
 - Monitoring note: when the SEO monitor is active, track this cluster alongside the printer-rental cluster. Keep it B2B, owned-machine, and cost-control focused so it supports printer rental instead of cannibalizing it.
+
+## ✅ SALES CTA UPDATE (May 14, 2026)
+
+### Homepage and Contact CTAs ✅
+- Homepage hero primary CTA now says `Talk to Sales` with the sublabel `Get quotes in 15 minutes`.
+- Homepage secondary CTA now says `Get Quote by Email` and links to `/contact/#email-quote`.
+- Contact page intro now leads with `Get a rental quote in 15 minutes`.
+- Contact page `Talk to Sales` routes to `/ai-consultant/` with a quote-intent message so the existing AI Product Consultant flow handles the conversation while the button avoids saying AI upfront.
+- The old contact-page quick-action panel was removed, including `Talk to AI Consultant`, `Email Sales`, and `View Printer Rental Page`.
+- AI Product Consultant settings remain in `static-pages/ai-consultant/index.html` and `netlify/functions/ai-consultant-session.js`.
 
 ---
 

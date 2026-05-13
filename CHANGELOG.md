@@ -10,6 +10,43 @@ Each entry includes rollback instructions.
 
 ---
 
+## [v2.5.0] - 2026-05-14
+
+### Sales CTA Routing Update
+
+**Summary:** Reworked homepage and contact-page quote CTAs so urgent visitors are sent to the existing AI Product Consultant flow under the visible label `Talk to Sales`.
+
+**Changes:**
+- Homepage hero primary button changed to `Talk to Sales` with `Get quotes in 15 minutes`.
+- Homepage secondary button changed to `Get Quote by Email` and links to `/contact/#email-quote`.
+- Contact page intro changed to `Get a rental quote in 15 minutes`.
+- Contact page primary button routes to `/ai-consultant/` with a quote-intent message.
+- Removed the old `Need a printer rental quote or available-unit check?` quick-action panel.
+- Contact form section now has the `email-quote` anchor and heading `Get Quote by Email`.
+
+**Modified Files:**
+- `css/main.css`
+- `scripts/generate-site.js`
+- `static-pages/contact/index.html`
+- `dist/index.html`
+- `dist/contact/index.html`
+- `dist/css/main.css`
+
+**Git Commit:** `af040a3`
+
+**Rollback Instructions:**
+```bash
+git revert af040a3
+```
+
+**Verification:**
+- [x] `npm run build`
+- [x] Homepage local check shows `Talk to Sales`, `Get quotes in 15 minutes`, and `Get Quote by Email`
+- [x] `/contact/#email-quote` jumps to the email quote form
+- [x] Old quick-action panel is absent from generated contact page
+
+---
+
 ## [v2.3.0] - 2026-01-13
 
 ### 🔍 Competitor Scanning Tools

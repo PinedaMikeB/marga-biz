@@ -2,7 +2,7 @@
 
 **Project:** Marga Enterprises Website & Business Platform  
 **Owner:** Mike Pineda  
-**Last Updated:** April 20, 2026
+**Last Updated:** May 14, 2026
 
 ---
 
@@ -185,7 +185,8 @@ marga.biz/
 - [ ] Keep the cluster focused on B2B owned-printer cost control for companies that ended rental and bought their own machine.
 
 ### Phase 6: Sales Module
-- [ ] Lead capture form integration
+- [x] Lead capture form integration
+- [x] Route fast quote CTAs to the existing AI Product Consultant flow
 - [ ] Lead list & management
 - [ ] Quotation builder
 - [ ] Email/SMS follow-up automation
@@ -197,6 +198,7 @@ marga.biz/
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-05-14 | Use `Talk to Sales` as the public CTA while routing to the AI Product Consultant | Keeps the CTA human and conversion-focused while the consultant introduces herself after the click |
 | 2026-04-20 | Add owned-printer maintenance / managed print services as a monitored SEO cluster | Capture companies cutting cost after ending printer rental while keeping printer-rental pages focused on machine-included packages |
 | 2026-01-10 | Create INSIGHTS MODULE combining Analytics + SEO | Single dashboard for all data, avoid switching between GA4 and Search Console |
 | 2026-01-10 | Expand to 5-module architecture | Better separation of concerns: Insights (view data) vs SEO (automation) vs Sales (leads) |

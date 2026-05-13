@@ -176,27 +176,39 @@
             border: 0;
         }
 
-        .quick-action-panel {
-            margin: 30px 0;
-            padding: 24px;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            background: linear-gradient(180deg, rgba(0, 102, 204, 0.06), rgba(255, 107, 0, 0.07));
-            box-shadow: 0 10px 30px rgba(0, 61, 122, 0.08);
+        .fast-quote-intro {
+            max-width: 760px;
+            margin-bottom: 30px;
         }
 
-        .quick-action-panel h2 {
+        .fast-quote-intro h2 {
             margin: 0 0 12px;
             color: #003d7a;
-            font-size: 1.8rem;
+            font-size: 2.1rem;
         }
 
-        .quick-action-panel p {
-            margin-bottom: 18px;
+        .fast-quote-intro p {
+            margin: 0 0 20px;
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.7;
         }
 
-        .quick-action-panel .cta-buttons {
+        .fast-quote-intro .cta-buttons {
             justify-content: flex-start;
+        }
+
+        .btn .btn-main,
+        .btn .btn-subcopy {
+            display: block;
+            line-height: 1.2;
+        }
+
+        .btn .btn-subcopy {
+            margin-top: 4px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            opacity: 0.9;
         }
 
         .consent-box {
@@ -273,10 +285,16 @@
         
         <section class="page-content">
             <div class="container">
-                <p style="font-size: 1.1rem; color: #666; max-width: 700px;">
-                    Ready to get started with your copier or printer rental? Fill out the form below or contact us directly. 
-                    We typically respond within 24 hours.
-                </p>
+                <section class="fast-quote-intro" aria-labelledby="fast-quote-heading">
+                    <h2 id="fast-quote-heading">Get a rental quote in 15 minutes</h2>
+                    <p>Talk to Sales now and get a recommended copier or printer rental option in minutes.</p>
+                    <div class="cta-buttons">
+                        <a href="/ai-consultant/?message=I%20need%20a%20copier%20or%20printer%20rental%20quote%20in%2015%20minutes." class="btn btn-primary">
+                            <span class="btn-main">Talk to Sales</span>
+                            <span class="btn-subcopy">Get quotes in 15 minutes</span>
+                        </a>
+                    </div>
+                </section>
 
                 <div class="link-card-grid" style="margin: 30px 0 10px;">
                     <a href="/printer-rental/" class="link-card">
@@ -309,22 +327,11 @@
                     </a>
                 </div>
 
-                <section class="quick-action-panel">
-                    <h2>Need a printer rental quote or available-unit check?</h2>
-                    <p>If your requirement is mainly for <a href="/printer-rental/">printer rental</a>, use the actions below to reach sales faster or continue with the form for a more detailed request.</p>
-                    <div class="cta-buttons">
-                        <a href="tel:09171642540" class="btn btn-primary">Talk to Sales</a>
-                        <a href="/ai-consultant/?service=Printer%20Rental" class="btn btn-outline">Talk to AI Consultant</a>
-                        <a href="mailto:solutions@marga.biz?subject=Printer%20Rental%20Inquiry" class="btn btn-outline">Email Sales</a>
-                        <a href="/printer-rental/" class="btn btn-outline">View Printer Rental Page</a>
-                    </div>
-                </section>
-                
                 <div class="contact-grid">
                     <!-- Contact Form -->
-                    <div class="contact-form-wrapper">
+                    <div class="contact-form-wrapper" id="email-quote">
                         <div class="contact-form">
-                            <h3 style="margin-top: 0; margin-bottom: 25px; color: #003d7a;">Send Us a Message</h3>
+                            <h3 style="margin-top: 0; margin-bottom: 25px; color: #003d7a;">Get Quote by Email</h3>
                             
                             <div class="success-message" id="success-message">
                                 <h4>✓ Message Sent Successfully!</h4>
