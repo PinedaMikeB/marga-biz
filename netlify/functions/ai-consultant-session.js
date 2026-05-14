@@ -1,6 +1,19 @@
 const admin = require('firebase-admin');
 const { consultantKnowledgeText } = require('./lib/sales-knowledge');
 
+const VALID_REALTIME_VOICES = new Set([
+    'alloy',
+    'ash',
+    'ballad',
+    'cedar',
+    'coral',
+    'echo',
+    'marin',
+    'sage',
+    'shimmer',
+    'verse'
+]);
+
 function getFirebaseApp() {
     if (admin.apps.length === 0) {
         const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
@@ -48,12 +61,30 @@ function buildInstructions({ leadId, fullName, company, service, languageMode, m
     ].join('\n');
 }
 
+function safeVoice(value) {
+    const voice = clean(value).toLowerCase();
+    return VALID_REALTIME_VOICES.has(voice) ? voice : '';
+}
+
+function safeModel(value, fallback) {
+    const model = clean(value);
+    if (!model || model.length > 80 || /[^a-zA-Z0-9._-]/.test(model)) return fallback;
+    return model;
+}
+
 async function getLead(leadId) {
     if (!leadId) return null;
     const app = getFirebaseApp();
     const db = admin.firestore(app);
     const doc = await db.collection('website_inquiries').doc(leadId).get();
     return doc.exists ? doc.data() : null;
+}
+
+async function getConsultantSettings() {
+    const app = getFirebaseApp();
+    const db = admin.firestore(app);
+    const doc = await db.collection('ai_product_consultant_settings').doc('default').get();
+    return doc.exists ? doc.data() : {};
 }
 
 async function updateLead(leadId, updates) {
@@ -121,11 +152,18 @@ exports.handler = async (event) => {
         const leadId = clean(payload.leadId || event.queryStringParameters?.leadId);
         const storedLead = await getLead(leadId);
         const lead = storedLead || payload.lead || {};
+        const consultantSettings = await getConsultantSettings().catch((error) => {
+            console.warn('Unable to load AI consultant settings, using defaults.', error);
+            return {};
+        });
         const languageMode = clean(lead.languageMode || 'taglish').toLowerCase() === 'english' ? 'english' : 'taglish';
+        const selectedVoice = safeVoice(consultantSettings.voice) || safeVoice(process.env.OPENAI_REALTIME_VOICE) || 'marin';
+        const realtimeModel = safeModel(consultantSettings.realtimeModel, process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime');
+        const transcriptionModel = safeModel(consultantSettings.transcriptionModel, process.env.OPENAI_TRANSCRIPTION_MODEL || 'gpt-4o-mini-transcribe');
 
         const session = {
             type: 'realtime',
-            model: process.env.OPENAI_REALTIME_MODEL || 'gpt-realtime',
+            model: realtimeModel,
             instructions: buildInstructions({
                 leadId,
                 fullName: clean(lead.fullName),
@@ -137,14 +175,14 @@ exports.handler = async (event) => {
             audio: {
                 input: {
                     transcription: {
-                        model: process.env.OPENAI_TRANSCRIPTION_MODEL || 'gpt-4o-mini-transcribe',
+                        model: transcriptionModel,
                         prompt: languageMode === 'english'
                             ? 'Marga Enterprises printer rental, copier rental, office equipment inquiry.'
                             : 'Marga Enterprises printer rental, copier rental, Taglish office equipment inquiry. Preserve Taglish wording when spoken.'
                     }
                 },
                 output: {
-                    voice: process.env.OPENAI_REALTIME_VOICE || 'marin'
+                    voice: selectedVoice
                 }
             }
         };
@@ -177,6 +215,7 @@ exports.handler = async (event) => {
             leadStatus: 'consulting',
             realtimeModel: session.model,
             transcriptionModel: session.audio.input.transcription.model,
+            realtimeVoice: selectedVoice,
             conversationStartedAt: new Date().toISOString(),
             nextAction: 'Browser voice consultation is in progress'
         });
