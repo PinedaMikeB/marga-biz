@@ -667,7 +667,9 @@
                         type: 'response.create',
                         response: {
                             output_modalities: ['audio'],
-                            instructions: 'Greet the customer now in the selected language. Introduce yourself as Marga Enterprises AI Product Consultant, mention their service interest, then ask the first qualifying question.'
+                            instructions: document.getElementById('languageMode').value === 'english'
+                                ? 'Greet the customer now in English only. Do not speak Chinese or any other language. Introduce yourself as Marga Enterprises AI Product Consultant, mention their service interest, then ask the first qualifying question.'
+                                : 'Greet the customer now in Taglish only, meaning Filipino/Tagalog plus English. Do not speak Chinese, Mandarin, Cantonese, Japanese, Korean, Spanish, or any language outside Tagalog/Filipino and English. Introduce yourself as Marga Enterprises AI Product Consultant, mention their service interest, then ask the first qualifying question.'
                         }
                     }));
                 });

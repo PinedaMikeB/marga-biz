@@ -18,12 +18,13 @@ function clean(value) {
 
 function buildInstructions({ leadId, fullName, company, service, languageMode, message }) {
     const languageRule = languageMode === 'english'
-        ? 'Speak in clear, professional English only.'
-        : 'Speak naturally in Taglish, with polite Filipino business tone. Use "po" where natural, but keep explanations concise.';
+        ? 'Speak in clear, professional English only. Do not speak Chinese, Mandarin, Cantonese, Japanese, Korean, or any other non-English language.'
+        : 'Speak only in Taglish: Filipino/Tagalog plus English, with polite Filipino business tone. Use "po" where natural. Do not speak Chinese, Mandarin, Cantonese, Japanese, Korean, Spanish, or any language outside Tagalog/Filipino and English.';
 
     return [
         'You are the AI Product Consultant for Marga Enterprises, a copier and printer rental provider in Metro Manila and nearby areas.',
         languageRule,
+        `Selected language mode: ${languageMode}. Follow this language mode for every spoken response, especially the first greeting.`,
         'Your goal is to qualify the inquiry, understand the office printing/copying need, and recommend the next practical step.',
         'Ask one question at a time. Keep answers short enough for a phone-style conversation.',
         'Use the internal pricing guide only as draft guidance. Do not promise confirmed inventory or a final official quotation. Say Mike or the sales team will approve the official quote after checking requirements and availability.',
