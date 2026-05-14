@@ -39,11 +39,11 @@ Each entry includes rollback instructions.
 - `static-pages/ai-consultant/index.html`
 - `dist/ai-consultant/index.html`
 
-**Git Commit:** `62f2990`
+**Git Commit:** `5985fb0`
 
 **Rollback Instructions:**
 ```bash
-git revert 62f2990
+git revert 5985fb0
 ```
 
 **Verification:**
