@@ -575,6 +575,20 @@
             saveTranscriptTimer = setTimeout(save, 900);
         }
 
+        function requestQuoteDraft() {
+            if (!currentLeadId) return;
+            fetch('/.netlify/functions/quote-draft', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                keepalive: true,
+                body: JSON.stringify({
+                    leadId: currentLeadId,
+                    transcript: transcriptEntries,
+                    usage: usageSnapshot
+                })
+            }).catch((error) => console.debug('Quote draft request failed', error));
+        }
+
         function getPayload(mode) {
             const formData = new FormData(form);
             const payload = Object.fromEntries(formData.entries());
@@ -743,6 +757,7 @@
             voiceStatusLabel.textContent = 'Ready';
             if (finalize && (callStartedAt || transcriptEntries.length || usageSnapshot.responseCount)) {
                 queueTranscriptSave({ final: true });
+                requestQuoteDraft();
             }
         }
 
@@ -754,6 +769,7 @@
         window.addEventListener('beforeunload', () => {
             if (currentLeadId && (transcriptEntries.length || usageSnapshot.responseCount)) {
                 queueTranscriptSave({ final: true });
+                requestQuoteDraft();
             }
         });
 

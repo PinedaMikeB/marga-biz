@@ -1,7 +1,7 @@
 # HANDOFF - MARGA.BIZ
 
 **Last Updated:** May 14, 2026
-**Current Version:** v2.5.0 (Sales CTA routing update)
+**Current Version:** v2.6.0 (Sales knowledge and quote approval workflow)
 **Site Status:** ✅ LIVE & HEALTHY
 
 ---
@@ -74,6 +74,18 @@
 - Contact page `Talk to Sales` routes to `/ai-consultant/` with a quote-intent message so the existing AI Product Consultant flow handles the conversation while the button avoids saying AI upfront.
 - The old contact-page quick-action panel was removed, including `Talk to AI Consultant`, `Email Sales`, and `View Printer Rental Page`.
 - AI Product Consultant settings remain in `static-pages/ai-consultant/index.html` and `netlify/functions/ai-consultant-session.js`.
+
+## ✅ SALES KNOWLEDGE + QUOTE APPROVAL UPDATE (May 14, 2026)
+
+### Pricing Guide and Mike Sales Style ✅
+- Added `knowledge-base/sales/` with Mike's consultative sales style, restricted pricing-guide knowledge, contract terms, quotation format notes, and approval workflow.
+- Added `netlify/functions/lib/sales-knowledge.js` so the AI Product Consultant and quote-draft workflow use the same pricing and selling rules.
+- AI Product Consultant now qualifies pain, current setup, monthly volume, and fit before recommending a rental plan.
+- Low-volume and copy-center inquiries now require honest warnings before a quotation recommendation.
+- Added quote-draft and quote-approval Netlify functions:
+  - `quote-draft` saves a draft quotation to the inquiry and emails Mike for approval when SMTP is configured.
+  - `quote-approval` sends to the prospect only after approval and BCCs Mike.
+- Netlify SMTP env vars are required before approval emails can actually send.
 
 ---
 

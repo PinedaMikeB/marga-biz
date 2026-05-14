@@ -10,6 +10,50 @@ Each entry includes rollback instructions.
 
 ---
 
+## [v2.6.0] - 2026-05-14
+
+### Sales Knowledge and Quote Approval Workflow
+
+**Summary:** Added Mike's consultative sales style, restricted pricing-guide knowledge, and a gated quotation draft workflow for Talk to Sales leads.
+
+**Changes:**
+- Added internal sales knowledge files for pricing guide, contract terms, quotation format, and Mike's selling style.
+- Added shared Netlify sales knowledge used by the AI Product Consultant and quote draft generator.
+- Updated AI Product Consultant instructions to qualify pain, current setup, monthly volume, copy-center intent, and honest fit before recommending.
+- Added `quote-draft` function to save a quotation draft and email Mike for approval when SMTP is configured.
+- Added `quote-approval` function so approved quotes can be sent to prospects with Mike BCC'd.
+- Updated the AI consultant page to request a quote draft after the browser consultation ends.
+
+**Modified Files:**
+- `AGENTS.md`
+- `HANDOFF.md`
+- `knowledge-base/sales/mike-sales-style.md`
+- `knowledge-base/sales/pricing-guide-knowledge.md`
+- `knowledge-base/sales/quotation-approval-workflow.md`
+- `netlify/functions/lib/sales-knowledge.js`
+- `netlify/functions/lib/mailer.js`
+- `netlify/functions/ai-consultant-session.js`
+- `netlify/functions/quote-draft.js`
+- `netlify/functions/quote-approval.js`
+- `netlify/functions/package.json`
+- `static-pages/ai-consultant/index.html`
+- `dist/ai-consultant/index.html`
+
+**Git Commit:** `62f2990`
+
+**Rollback Instructions:**
+```bash
+git revert 62f2990
+```
+
+**Verification:**
+- [x] `node -c` on new/changed Netlify functions
+- [x] `npm run build`
+- [x] Draft recommendation smoke test selects the expected plan and low-volume warning
+- [ ] SMTP approval email live test after Netlify env vars are configured
+
+---
+
 ## [v2.5.1] - 2026-05-14
 
 ### AI Consultant Page Simplification

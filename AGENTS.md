@@ -44,6 +44,15 @@ Do not rely on chat history alone when current repo files can answer the questio
 - Use SMTP-only delivery from local automation env. Do not fall back to Apple Mail for automation email sends on this Mac.
 - Do not commit local mail credentials, SMTP credentials, or Apple Mail state.
 
+## Sales / AI Product Consultant
+
+- For Talk to Sales / AI Product Consultant work, use `knowledge-base/sales/` and `netlify/functions/lib/sales-knowledge.js` as the sales knowledge source.
+- The consultant must qualify before offering: ask why the prospect wants a quotation, whether they have an existing rental or purchased unit, current brand/model, monthly volume, office location, user count, color/A3/scan/copy needs, timeline, and pain with the current setup or provider.
+- Follow Mike's consultative style: validate real frustration, explain Marga's managed-care app only after understanding the pain, and recommend only when rental benefits the customer.
+- If usage is very low, warn that rental may be expensive and buying a small printer may be better.
+- For copy-center prospects, ask whether copying is side income for an existing store or the main reason for renting a space; warn them to study volume carefully before committing to rental.
+- Quotation emails to prospects require Mike approval first. Drafts may be generated from the pricing guide and transcript, but do not send an official quotation to the prospect until the approval workflow marks it approved.
+
 ## Local Env / Deploy
 
 - Automation worktrees may not have the repo-local `.env.local` file available directly.

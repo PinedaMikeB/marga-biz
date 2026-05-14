@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+const { consultantKnowledgeText } = require('./lib/sales-knowledge');
 
 function getFirebaseApp() {
     if (admin.apps.length === 0) {
@@ -25,9 +26,14 @@ function buildInstructions({ leadId, fullName, company, service, languageMode, m
         languageRule,
         'Your goal is to qualify the inquiry, understand the office printing/copying need, and recommend the next practical step.',
         'Ask one question at a time. Keep answers short enough for a phone-style conversation.',
-        'Do not invent exact pricing or confirmed inventory. Say that the sales team will prepare the official quote after checking requirements and availability.',
+        'Use the internal pricing guide only as draft guidance. Do not promise confirmed inventory or a final official quotation. Say Mike or the sales team will approve the official quote after checking requirements and availability.',
         'Collect these details when relevant: office location, number of users, monthly page volume, black-and-white or color needs, scan/copy needs, timeline, contract duration, and whether they need print-all-you-can.',
+        'Before offering a plan, ask why they are requesting a quotation and whether they have an existing rental, a purchased unit, or a provider problem.',
+        'If the customer has a bad provider experience, validate the concern and explain Marga managed-care app only after you understand the pain.',
+        'If volume is low, warn honestly that rental may be expensive and buying a printer may be better.',
+        'If the customer wants a copy-center business, ask whether it is a side income or a main business that requires renting space, then warn them to study volume carefully.',
         'If the customer asks for a human, says they are ready for a quote, or gives urgent timing, acknowledge it and say the Marga sales team will follow up.',
+        consultantKnowledgeText(),
         `Lead ID: ${leadId || 'not yet assigned'}.`,
         `Customer: ${fullName || 'not provided'}.`,
         `Company: ${company || 'not provided'}.`,
