@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Search Progress - Marga</title>
+    <link rel="stylesheet" href="css/ai-search-progress.css">
+</head>
+<body>
+    <div class="shell">
+        <header class="top-header">
+            <div>
+                <p class="eyebrow">AI SEO · AEO · GEO</p>
+                <h1>AI Search Master Plan</h1>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="btn btn-ghost" id="exportBtn" title="Export progress JSON">Export</button>
+                <button type="button" class="btn btn-ghost" id="resetBtn" title="Reset checkboxes only">Reset checks</button>
+                <div class="menu-wrap">
+                    <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-haspopup="true">
+                        ☰ Menu
+                    </button>
+                    <div class="menu-dropdown" id="menuDropdown" role="menu">
+                        <button type="button" data-view="progress" class="active" role="menuitem">✓ Progress checklist</button>
+                        <button type="button" data-view="analytics" role="menuitem">📈 Keyword analytics</button>
+                        <a href="../insights/index.html" role="menuitem">📊 Insights dashboard</a>
+                        <a href="../insights/seo.html" role="menuitem">🔍 Insights SEO tab</a>
+                        <a href="https://marga.biz/" target="_blank" rel="noopener" role="menuitem">🌐 Live site</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="progress-card" aria-label="Overall progress">
+            <div class="progress-meta">
+                <span>Overall completion</span>
+                <strong id="progressPercent">0%</strong>
+            </div>
+            <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBarWrap">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <p class="eyebrow" style="margin-top: 10px;" id="progressCounts">0 of 0 tasks done</p>
+            <div class="guardrails" id="guardrails"></div>
+        </section>
+
+        <!-- Progress view -->
+        <section id="viewProgress" class="view-panel active" aria-label="Task checklist">
+            <div class="filters">
+                <label>
+                    Phase
+                    <select id="phaseFilter">
+                        <option value="">All phases</option>
+                    </select>
+                </label>
+                <label>
+                    Status
+                    <select id="statusFilter">
+                        <option value="">All</option>
+                        <option value="open">Open</option>
+                        <option value="done">Done</option>
+                    </select>
+                </label>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table" id="tasksTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 40px;">Done</th>
+                            <th scope="col">Task</th>
+                            <th scope="col" style="width: 110px;">Phase</th>
+                            <th scope="col" style="width: 200px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasksBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Analytics view -->
+        <section id="viewAnalytics" class="view-panel" aria-label="Keyword rankings and notes">
+            <p class="analytics-hint">
+                Rankings load from Google Search Console via <code>insights-search</code> when deployed on Netlify.
+                Notes and manual rank overrides are saved in this browser. Copier keywords are <strong>monitor only</strong>—do not optimize those pages.
+            </p>
+            <p class="analytics-status" id="analyticsStatus">Loading keywords…</p>
+            <div class="filters">
+                <label>
+                    Cluster
+                    <select id="clusterFilter">
+                        <option value="">All clusters</option>
+                        <option value="printer">Printer rental</option>
+                        <option value="maintenance">Maintenance / MPS</option>
+                        <option value="copier">Copier (monitor only)</option>
+                    </select>
+                </label>
+                <label>
+                    Date range
+                    <select id="keywordDateRange">
+                        <option value="30d" selected>Last 30 days</option>
+                        <option value="7d">Last 7 days</option>
+                        <option value="90d">Last 90 days</option>
+                    </select>
+                </label>
+                <button type="button" class="btn btn-primary" id="refreshKeywordsBtn">Refresh rankings</button>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table" id="keywordsTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">Keyword</th>
+                            <th scope="col" style="width: 90px;">Position</th>
+                            <th scope="col" style="width: 80px;">Clicks</th>
+                            <th scope="col" style="width: 100px;">Impressions</th>
+                            <th scope="col" style="width: 100px;">Cluster</th>
+                            <th scope="col" style="width: 140px;">Target page</th>
+                            <th scope="col">What to improve (notes)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="keywordsBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Implement modal -->
+    <div class="modal-backdrop" id="implementModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-labelledby="implementTitle">
+            <div class="modal-header">
+                <h2 id="implementTitle">Implement</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body" id="implementBody"></div>
+        </div>
+    </div>
+
+    <!-- Details modal -->
+    <div class="modal-backdrop" id="detailsModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-labelledby="detailsTitle">
+            <div class="modal-header">
+                <h2 id="detailsTitle">Details & links</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body" id="detailsBody"></div>
+        </div>
+    </div>
+
+    <script src="/js/admin/ai-search-progress/ai-search-progress.js"></script>
+</body>
+</html>

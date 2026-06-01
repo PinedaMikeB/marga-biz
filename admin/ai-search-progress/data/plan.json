@@ -1,0 +1,430 @@
+{
+  "version": 1,
+  "title": "Marga AI Search & GEO Master Plan",
+  "updated": "2026-06-01",
+  "guardrails": [
+    "Do not edit copier rental #1 pages (/, protected copier winners). Monitor only.",
+    "Grow printer rental + owned-printer maintenance clusters for AI visibility."
+  ],
+  "tasks": [
+    {
+      "id": "attrib-form",
+      "phase": "Measure",
+      "title": "Add \"Where did you hear about us?\" on inquiry & contact forms",
+      "done": false,
+      "implement": {
+        "summary": "Capture dark-funnel AI sources (ChatGPT, Perplexity, AI Overview) on lead forms.",
+        "steps": [
+          "Add select field to contact and inquiry forms",
+          "Include options: ChatGPT, Perplexity, Google AI Overview, Google Search, Referral, Other",
+          "Log responses in inquiry backend / Firebase"
+        ],
+        "paths": ["static-pages/contact/index.html", "netlify/functions/create-inquiry.js"]
+      },
+      "details": {
+        "links": [
+          { "label": "Contact page", "url": "https://marga.biz/contact/" },
+          { "label": "AI visibility report", "url": "/reports/ai-visibility/latest.md" }
+        ]
+      }
+    },
+    {
+      "id": "baseline-audit",
+      "phase": "Measure",
+      "title": "Run baseline AI visibility audit (50+ prompts)",
+      "done": false,
+      "implement": {
+        "summary": "Log visibility %, sentiment, and citation URL accuracy across ChatGPT, Gemini, Claude, Perplexity.",
+        "steps": [
+          "Run npm run ai:visibility",
+          "Use prompt matrix in reports/ai-visibility/latest.md",
+          "Record results in Analytics notes or export CSV"
+        ],
+        "paths": ["scripts/ai-visibility-monitor.js", "reports/ai-visibility/"]
+      },
+      "details": {
+        "links": [
+          { "label": "Prompt matrix (local)", "url": "/reports/ai-visibility/latest.md" },
+          { "label": "Exposure Ninja pyramid video", "url": "https://youtu.be/qa47-quPcS0" }
+        ]
+      }
+    },
+    {
+      "id": "citation-domains",
+      "phase": "Measure",
+      "title": "Build citation domain list per topic (sites AI already cites)",
+      "done": false,
+      "implement": {
+        "summary": "For each core prompt, list domains ChatGPT/Perplexity cite—target those for PR, not random directories.",
+        "steps": [
+          "Run 10 core prompts in ChatGPT and Perplexity",
+          "Export cited domains",
+          "Prioritize PH listicles, Reddit, YouTube, review sites"
+        ],
+        "paths": []
+      },
+      "details": {
+        "links": [
+          { "label": "Dominate AI Search (5-step)", "url": "https://youtu.be/l1Tht0a4RqI" }
+        ]
+      }
+    },
+    {
+      "id": "concepts-defined",
+      "phase": "Reputation",
+      "title": "Lock 5 core concepts for all channels (printer-focused)",
+      "done": false,
+      "implement": {
+        "summary": "Repeat the same positioning everywhere: office printer rental PH, Print All You Can, managed care, fast quote, post-rental maintenance.",
+        "steps": [
+          "Document concepts in team one-pager",
+          "Align Facebook, GBP, sales calls, and new content to same phrases",
+          "Avoid diluting with generic 'printing solutions'"
+        ],
+        "paths": ["knowledge-base/sales/"]
+      },
+      "details": {
+        "links": [
+          { "label": "Sales knowledge base", "url": "/knowledge-base/sales/" }
+        ]
+      }
+    },
+    {
+      "id": "gbp-reviews",
+      "phase": "Reputation",
+      "title": "GBP & Google reviews using concept language",
+      "done": false,
+      "implement": {
+        "summary": "Improve Layer 1–2 sentiment: product + brand reputation in AI answers.",
+        "steps": [
+          "Request reviews mentioning office printer rental, response time, maintenance",
+          "Reply to reviews with consistent brand concepts"
+        ],
+        "paths": []
+      },
+      "details": {
+        "links": []
+      }
+    },
+    {
+      "id": "sentiment-fix",
+      "phase": "Reputation",
+      "title": "Fix negative or inaccurate AI sentiment from audit",
+      "done": false,
+      "implement": {
+        "summary": "Priority: wrong facts → negative sentiment → missing citations (Exposure Ninja order).",
+        "steps": [
+          "Document what AI says wrong about Marga",
+          "Update FAQ, ai-answer blocks, consultant script",
+          "Address real service issues if reviews confirm problems"
+        ],
+        "paths": ["static-pages/printer-rental/", "netlify/functions/lib/sales-knowledge.js"]
+      },
+      "details": {
+        "links": [
+          { "label": "Printer rental hub", "url": "https://marga.biz/printer-rental/" }
+        ]
+      }
+    },
+    {
+      "id": "digital-pr",
+      "phase": "Ubiquity",
+      "title": "Digital PR: best printer rental Philippines listicles",
+      "done": false,
+      "implement": {
+        "summary": "~82% of AI citations are third-party; only ~12% of ChatGPT URLs are Google top 10.",
+        "steps": [
+          "Identify listicles AI cites for printer rental PH",
+          "Pitch journalist updates with Marga differentiators",
+          "Track citations within 48–72h after placement"
+        ],
+        "paths": []
+      },
+      "details": {
+        "links": [
+          { "label": "Best printer rental PH page", "url": "https://marga.biz/printer-rental/best-printer-rental-company-philippines/" }
+        ]
+      }
+    },
+    {
+      "id": "youtube-series",
+      "phase": "Ubiquity",
+      "title": "YouTube series: Marga + printer rental concepts in title/transcript",
+      "done": false,
+      "implement": {
+        "summary": "YouTube mentions correlate strongly with AI visibility; repurpose to blog posts.",
+        "steps": [
+          "Plan 4 videos: PH office rental, Print All You Can, vs buying, quote FAQ",
+          "Put Marga Enterprises in title, description, transcript",
+          "Optional: Remotion render → upload → blog from URL"
+        ],
+        "paths": []
+      },
+      "details": {
+        "links": [
+          { "label": "Tyler Moore outcomes video", "url": "https://youtu.be/DGF6KahHii0" },
+          { "label": "Remotion (add project link)", "url": "", "placeholder": true }
+        ]
+      }
+    },
+    {
+      "id": "reddit-forums",
+      "phase": "Ubiquity",
+      "title": "Reddit / forum helpful answers with correct landing URLs",
+      "done": false,
+      "implement": {
+        "summary": "Peer recommendations on Reddit/Quora often feed AI retrieval.",
+        "steps": [
+          "Monitor PH business admin groups for printer rental questions",
+          "Answer helpfully; link city/FAQ page from prompt matrix",
+          "No spam or doorway links"
+        ],
+        "paths": []
+      },
+      "details": {
+        "links": [
+          { "label": "Makati page", "url": "https://marga.biz/printer-rental/makati/" },
+          { "label": "Office FAQ", "url": "https://marga.biz/printer-rental/printer-rental-office-faq/" }
+        ]
+      }
+    },
+    {
+      "id": "facebook-concepts",
+      "phase": "Ubiquity",
+      "title": "Align Facebook posts to one concept per week",
+      "done": false,
+      "implement": {
+        "summary": "Use existing facebook-page-publisher with concept-led copy.",
+        "steps": [
+          "npm run facebook:preview",
+          "Schedule posts matching weekly concept",
+          "npm run facebook:publish when approved"
+        ],
+        "paths": ["scripts/facebook-page-publisher.js", "reports/facebook/"]
+      },
+      "details": {
+        "links": [
+          { "label": "Facebook latest report", "url": "/reports/facebook/latest.md" }
+        ]
+      }
+    },
+    {
+      "id": "llms-txt",
+      "phase": "On-site",
+      "title": "Publish /llms.txt at site root",
+      "done": false,
+      "implement": {
+        "summary": "Curated AI map: printer + maintenance + consultant; copier secondary only.",
+        "steps": [
+          "Create dist/llms.txt and source copy in repo root or static-pages",
+          "List pillar URLs with one-line descriptions",
+          "Deploy via npm run deploy"
+        ],
+        "paths": ["dist/llms.txt", "robots.txt"]
+      },
+      "details": {
+        "links": [
+          { "label": "llms.txt spec", "url": "https://llmstxt.org/" },
+          { "label": "Live (after deploy)", "url": "https://marga.biz/llms.txt" }
+        ]
+      }
+    },
+    {
+      "id": "llms-full",
+      "phase": "On-site",
+      "title": "Optional: /llms-full.txt with approved facts from sales guide",
+      "done": false,
+      "implement": {
+        "summary": "Deep reference so AI does not guess pricing or service terms.",
+        "steps": [
+          "Pull supportable facts from knowledge-base/sales/",
+          "No unsupported pricing claims",
+          "Keep copier section minimal"
+        ],
+        "paths": ["knowledge-base/sales/", "netlify/functions/lib/sales-knowledge.js"]
+      },
+      "details": {
+        "links": []
+      }
+    },
+    {
+      "id": "fan-out-content",
+      "phase": "On-site",
+      "title": "Query fan-out: fill printer content gaps from audit",
+      "done": false,
+      "implement": {
+        "summary": "One pillar + supporting pages per background search cluster.",
+        "steps": [
+          "Map gaps from Search Console + AI audit",
+          "Add blogs/pages only on printer/maintenance (not copier winners)",
+          "2 pages + 5 blogs/week when SEO automation runs"
+        ],
+        "paths": ["static-pages/printer-rental/", "static-pages/blogs/"]
+      },
+      "details": {
+        "links": [
+          { "label": "Print All You Can", "url": "https://marga.biz/printer-rental/print-all-you-can/" },
+          { "label": "Vs buying", "url": "https://marga.biz/printer-rental/printer-rental-vs-buying-for-business/" }
+        ]
+      }
+    },
+    {
+      "id": "maintenance-cluster",
+      "phase": "On-site",
+      "title": "AI audit for owned-printer maintenance / MPS cluster",
+      "done": false,
+      "implement": {
+        "summary": "Post-rental intent only; must not cannibalize printer rental pages.",
+        "steps": [
+          "Run maintenance-specific prompts in AI tools",
+          "Verify citations land on /printer-maintenance/ not /printer-rental/",
+          "Add ai-answer blocks if gaps found"
+        ],
+        "paths": [
+          "static-pages/printer-maintenance/",
+          "static-pages/managed-print-services/",
+          "static-pages/print-management-system/"
+        ]
+      },
+      "details": {
+        "links": [
+          { "label": "Printer maintenance hub", "url": "https://marga.biz/printer-maintenance/" },
+          { "label": "Managed print services", "url": "https://marga.biz/managed-print-services/" }
+        ]
+      }
+    },
+    {
+      "id": "printer-ai-blocks",
+      "phase": "On-site",
+      "title": "Printer money pages: ai-answer + FAQ + JSON-LD",
+      "done": true,
+      "implement": {
+        "summary": "Already passing ai-visibility monitor as of 2026-05-19.",
+        "steps": ["Re-run npm run ai:visibility after any content change"],
+        "paths": ["scripts/ai-visibility-monitor.js"]
+      },
+      "details": {
+        "links": [
+          { "label": "Printer rental hub", "url": "https://marga.biz/printer-rental/" },
+          { "label": "Latest monitor report", "url": "/reports/ai-visibility/latest.md" }
+        ]
+      }
+    },
+    {
+      "id": "robots-ai-crawlers",
+      "phase": "On-site",
+      "title": "robots.txt: allow search AI bots, block training scrapers",
+      "done": true,
+      "implement": {
+        "summary": "OAI-SearchBot, PerplexityBot, Claude-SearchBot allowed; GPTBot blocked.",
+        "steps": ["Verify dist/robots.txt after deploy"],
+        "paths": ["dist/robots.txt", "robots.txt"]
+      },
+      "details": {
+        "links": [
+          { "label": "robots.txt live", "url": "https://marga.biz/robots.txt" }
+        ]
+      }
+    },
+    {
+      "id": "consultant-audit",
+      "phase": "Outcomes",
+      "title": "Weekly AI Product Consultant + quote path audit",
+      "done": false,
+      "implement": {
+        "summary": "Sell outcomes (quote in ~15 min), not 'website'—Tyler Moore playbook.",
+        "steps": [
+          "Test Talk to Sales → /ai-consultant/ flows",
+          "Verify qualification before plan recommendation",
+          "Confirm quote-draft → Mike approval → quote-approval SMTP"
+        ],
+        "paths": [
+          "static-pages/ai-consultant/index.html",
+          "netlify/functions/ai-consultant-session.js",
+          "netlify/functions/quote-draft.js",
+          "netlify/functions/quote-approval.js"
+        ]
+      },
+      "details": {
+        "links": [
+          { "label": "AI consultant", "url": "https://marga.biz/ai-consultant/" },
+          { "label": "Contact / email quote", "url": "https://marga.biz/contact/#email-quote" }
+        ]
+      }
+    },
+    {
+      "id": "copier-monitor-only",
+      "phase": "Guardrail",
+      "title": "Copier #1 cluster: monitor only, no edits",
+      "done": true,
+      "implement": {
+        "summary": "Run npm run ai:visibility:copier for checks; never change protected copier winners without explicit approval.",
+        "steps": [
+          "Use reports/ai-visibility/copier-latest.md",
+          "Log AI mentions of copier separately from printer growth work"
+        ],
+        "paths": ["scripts/copier-ai-visibility-monitor.js"]
+      },
+      "details": {
+        "links": [
+          { "label": "Copier rental (do not edit)", "url": "https://marga.biz/copier-rental/" },
+          { "label": "Copier AI report", "url": "/reports/ai-visibility/copier-latest.md" }
+        ]
+      }
+    },
+    {
+      "id": "weekly-rhythm",
+      "phase": "Rollout",
+      "title": "Weekly AI search standup (hidden friction layer)",
+      "done": false,
+      "implement": {
+        "summary": "Small team advantage: ship weekly—audit, 1 PR target, 1 content/YouTube item.",
+        "steps": [
+          "Monday: review this dashboard progress %",
+          "Update keyword notes from Analytics tab",
+          "Assign one implement task for the week"
+        ],
+        "paths": ["admin/ai-search-progress/"]
+      },
+      "details": {
+        "links": [
+          { "label": "This dashboard", "url": "https://marga.biz/admin/ai-search-progress/" }
+        ]
+      }
+    },
+    {
+      "id": "ai-overview-gaps",
+      "phase": "Paid prep",
+      "title": "Google AI Overview gap list (page-1 keywords first)",
+      "done": false,
+      "implement": {
+        "summary": "83% of AI Overview searches get zero clicks—win the answer text; optimize keywords where you are already top 10.",
+        "steps": [
+          "Use Search Console / Semrush AI Overview filters",
+          "Protect overviews you own",
+          "Update content on near-win printer pages"
+        ],
+        "paths": []
+      },
+      "details": {
+        "links": [
+          { "label": "Insights SEO tab", "url": "https://marga.biz/admin/insights/seo.html" }
+        ]
+      }
+    }
+  ],
+  "keywords": [
+    { "keyword": "printer rental philippines", "cluster": "printer", "targetUrl": "/printer-rental/philippines/", "monitorOnly": false },
+    { "keyword": "printer rental manila", "cluster": "printer", "targetUrl": "/printer-rental/philippines/", "monitorOnly": false },
+    { "keyword": "printer rental makati", "cluster": "printer", "targetUrl": "/printer-rental/makati/", "monitorOnly": false },
+    { "keyword": "printer rental bgc", "cluster": "printer", "targetUrl": "/printer-rental/bgc/", "monitorOnly": false },
+    { "keyword": "printer rental pasig", "cluster": "printer", "targetUrl": "/printer-rental/pasig/", "monitorOnly": false },
+    { "keyword": "printer rental quezon city", "cluster": "printer", "targetUrl": "/printer-rental/quezon-city/", "monitorOnly": false },
+    { "keyword": "print all you can printer rental", "cluster": "printer", "targetUrl": "/printer-rental/print-all-you-can/", "monitorOnly": false },
+    { "keyword": "best printer rental company philippines", "cluster": "printer", "targetUrl": "/printer-rental/best-printer-rental-company-philippines/", "monitorOnly": false },
+    { "keyword": "printer for rent philippines", "cluster": "printer", "targetUrl": "/printer-rental/printer-for-rent/", "monitorOnly": false },
+    { "keyword": "copier rental philippines", "cluster": "copier", "targetUrl": "/copier-rental/", "monitorOnly": true },
+    { "keyword": "office printer maintenance philippines", "cluster": "maintenance", "targetUrl": "/printer-maintenance/", "monitorOnly": false },
+    { "keyword": "managed print services philippines", "cluster": "maintenance", "targetUrl": "/managed-print-services/", "monitorOnly": false }
+  ]
+}
