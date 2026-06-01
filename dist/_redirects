@@ -1,3 +1,7 @@
+# Admin dashboards (explicit 200 so directory URLs always resolve)
+/admin/ai-search-progress /admin/ai-search-progress/index.html 200!
+/admin/ai-search-progress/ /admin/ai-search-progress/index.html 200!
+
 # Redirect old WordPress URLs only
 /wp-admin/* / 301!
 /wp-login.php / 301!
