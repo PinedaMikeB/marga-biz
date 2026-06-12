@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en-PH">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIStaff.click — AI Inbox Sales Assistant | Marga Enterprises</title>
+    <meta name="description" content="AIStaff.click qualifies Facebook Messenger leads, drafts quotations, and tracks ad spend to revenue. Operated by Marga Enterprises. Pay setup via Xendit.">
+    <link rel="canonical" href="https://marga.biz/services/aistaff/">
+    <meta property="og:title" content="AIStaff.click — Stop Losing Sales From Late Facebook Replies">
+    <meta property="og:description" content="AI inbox sales assistant for Filipino B2B owners. Messenger-first. Operated by Marga Enterprises.">
+    <meta property="og:url" content="https://marga.biz/services/aistaff/">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        :root {
+            --as-ink: #0c1222;
+            --as-muted: #5a6a82;
+            --as-line: #dce6f2;
+            --as-paper: #ffffff;
+            --as-soft: #f0f5fb;
+            --as-messenger: #0084ff;
+            --as-messenger-dark: #0064d1;
+            --as-teal: #0d9488;
+            --as-amber: #d97706;
+            --as-violet: #6366f1;
+            --as-radius: 14px;
+        }
+
+        body.page-aistaff {
+            background: var(--as-soft);
+            color: var(--as-ink);
+        }
+
+        .as-wrap { overflow-x: hidden; }
+
+        /* Hero */
+        .as-hero {
+            position: relative;
+            padding: 56px 0 72px;
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(0, 132, 255, 0.18), transparent),
+                radial-gradient(ellipse 50% 40% at 10% 80%, rgba(99, 102, 241, 0.12), transparent),
+                linear-gradient(165deg, #0c1222 0%, #152238 48%, #1e3a5f 100%);
+            color: #fff;
+        }
+
+        .as-hero-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .as-hero-grid { grid-template-columns: 1fr; }
+        }
+
+        .as-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 6px 14px;
+            background: rgba(0, 132, 255, 0.2);
+            border: 1px solid rgba(0, 132, 255, 0.35);
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .as-hero h1 {
+            margin: 0 0 18px;
+            font-size: clamp(2rem, 5vw, 3.35rem);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+        }
+
+        .as-hero-lead {
+            margin: 0 0 28px;
+            max-width: 520px;
+            font-size: 1.1rem;
+            line-height: 1.65;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .as-cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .as-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .as-btn:hover { transform: translateY(-1px); }
+
+        .as-btn-messenger {
+            background: var(--as-messenger);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(0, 132, 255, 0.35);
+        }
+
+        .as-btn-messenger:hover { background: var(--as-messenger-dark); color: #fff; }
+
+        .as-btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.45);
+        }
+
+        .as-btn-outline:hover { border-color: #fff; color: #fff; }
+
+        .as-btn-teal {
+            background: var(--as-teal);
+            color: #fff;
+        }
+
+        .as-trust {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .as-trust strong { color: rgba(255, 255, 255, 0.9); }
+
+        /* Messenger mock */
+        .as-mock-phone {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .as-mock-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: var(--as-messenger);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .as-mock-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fff;
+            color: var(--as-messenger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.75rem;
+        }
+
+        .as-mock-body {
+            padding: 16px;
+            background: #f0f2f5;
+            min-height: 280px;
+        }
+
+        .as-bubble {
+            max-width: 88%;
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .as-bubble.in {
+            background: #fff;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+            color: #1c1e21;
+        }
+
+        .as-bubble.out {
+            background: var(--as-messenger);
+            color: #fff;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .as-bubble .time {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.68rem;
+            opacity: 0.7;
+        }
+
+        /* Sections */
+        .as-section {
+            padding: 64px 0;
+        }
+
+        .as-section.alt { background: var(--as-paper); }
+
+        .as-section h2 {
+            margin: 0 0 12px;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            letter-spacing: -0.02em;
+        }
+
+        .as-section-intro {
+            max-width: 620px;
+            margin: 0 0 36px;
+            color: var(--as-muted);
+            line-height: 1.65;
+        }
+
+        .as-problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .as-problem-card {
+            padding: 22px;
+            background: var(--as-paper);
+            border: 1px solid var(--as-line);
+            border-radius: var(--as-radius);
+            border-left: 4px solid var(--as-amber);
+        }
+
+        .as-problem-card strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .as-problem-card span {
+            color: var(--as-muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        /* Steps */
+        .as-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            counter-reset: step;
+        }
+
+        .as-step {
+            position: relative;
+            padding: 24px 20px 20px 56px;
+            background: var(--as-paper);
+            border: 1px solid var(--as-line);
+            border-radius: var(--as-radius);
+        }
+
+        .as-step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 18px;
+            top: 20px;
+            width: 28px;
+            height: 28px;
+            background: var(--as-messenger);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .as-step h3 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+        }
+
+        .as-step p {
+            margin: 0;
+            color: var(--as-muted);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        /* Dashboard mock */
+        .as-dash {
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 24px;
+            color: #e2e8f0;
+            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.25);
+        }
+
+        .as-dash-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .as-dash-top h3 { margin: 0; font-size: 1.1rem; color: #fff; }
+
+        .as-dash-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .as-dash-kpis { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .as-kpi {
+            padding: 14px;
+            background: #1e293b;
+            border-radius: 10px;
+            border: 1px solid #334155;
+        }
+
+        .as-kpi label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .as-kpi strong {
+            font-size: 1.35rem;
+            color: #fff;
+        }
+
+        .as-kpi.hot strong { color: #fbbf24; }
+        .as-kpi.rev strong { color: #34d399; }
+
+        .as-roi-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            align-items: end;
+            height: 100px;
+            margin-top: 8px;
+        }
+
+        .as-roi-col {
+            text-align: center;
+            font-size: 0.72rem;
+            color: #94a3b8;
+        }
+
+        .as-roi-col .bar {
+            height: var(--h, 40%);
+            background: linear-gradient(180deg, var(--as-messenger), #6366f1);
+            border-radius: 6px 6px 0 0;
+            margin-bottom: 6px;
+            min-height: 12px;
+        }
+
+        .as-roi-title {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        /* Industries */
+        .as-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .as-tag {
+            padding: 10px 16px;
+            background: var(--as-paper);
+            border: 1px solid var(--as-line);
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--as-ink);
+        }
+
+        /* Pricing */
+        .as-pricing {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        @media (max-width: 900px) {
+            .as-pricing { grid-template-columns: 1fr; }
+        }
+
+        .as-plan {
+            display: flex;
+            flex-direction: column;
+            padding: 28px 24px;
+            background: var(--as-paper);
+            border: 1px solid var(--as-line);
+            border-radius: var(--as-radius);
+        }
+
+        .as-plan.featured {
+            border-color: var(--as-messenger);
+            box-shadow: 0 16px 40px rgba(0, 132, 255, 0.12);
+        }
+
+        .as-plan h3 { margin: 0 0 4px; font-size: 1.25rem; }
+
+        .as-plan .setup {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--as-ink);
+            margin: 12px 0 4px;
+        }
+
+        .as-plan .monthly {
+            color: var(--as-muted);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .as-plan ul {
+            margin: 0 0 20px;
+            padding-left: 1.1rem;
+            flex: 1;
+            font-size: 0.88rem;
+            color: var(--as-muted);
+            line-height: 1.55;
+        }
+
+        .as-plan .as-btn {
+            width: 100%;
+            font-size: 0.85rem;
+            padding: 12px 16px;
+        }
+
+        .as-btn-pay {
+            background: var(--as-ink);
+            color: #fff;
+        }
+
+        /* FAQ */
+        .as-faq details {
+            margin-bottom: 10px;
+            background: var(--as-paper);
+            border: 1px solid var(--as-line);
+            border-radius: 10px;
+            padding: 4px 16px;
+        }
+
+        .as-faq summary {
+            padding: 14px 0;
+            font-weight: 700;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .as-faq summary::-webkit-details-marker { display: none; }
+
+        .as-faq p {
+            margin: 0 0 14px;
+            color: var(--as-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        /* CTA band */
+        .as-cta-band {
+            padding: 48px 0;
+            background: linear-gradient(135deg, #0066cc, #0084ff);
+            color: #fff;
+            text-align: center;
+        }
+
+        .as-cta-band h2 { margin: 0 0 10px; color: #fff; }
+
+        .as-cta-band p {
+            margin: 0 0 24px;
+            opacity: 0.9;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .as-cta-band .as-cta-row {
+            justify-content: center;
+        }
+
+        .as-cta-band .as-btn-outline {
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        /* Form */
+        .as-form-panel {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 32px;
+            background: var(--as-paper);
+            border: 1px solid var(--as-line);
+            border-radius: var(--as-radius);
+            box-shadow: 0 16px 40px rgba(12, 18, 34, 0.06);
+        }
+
+        .as-field {
+            margin-bottom: 16px;
+        }
+
+        .as-field label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .as-field input,
+        .as-field select,
+        .as-field textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--as-line);
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        .as-field textarea { min-height: 100px; resize: vertical; }
+
+        .as-form-success {
+            display: none;
+            padding: 20px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 10px;
+            color: #065f46;
+        }
+
+        .as-legal {
+            padding: 32px 0 48px;
+            font-size: 0.88rem;
+            color: var(--as-muted);
+            line-height: 1.65;
+        }
+
+        .as-legal h3 { font-size: 1rem; color: var(--as-ink); margin: 24px 0 8px; }
+
+        .as-footer-note {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #334155;
+            font-size: 0.82rem;
+            color: #94a3b8;
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "AIStaff.click",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "AI Inbox Sales Assistant for Facebook Messenger lead qualification and quotation workflow.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Marga Enterprises",
+            "url": "https://marga.biz"
+        },
+        "offers": [
+            { "@type": "Offer", "name": "Starter", "price": "15000", "priceCurrency": "PHP" },
+            { "@type": "Offer", "name": "Growth", "price": "25000", "priceCurrency": "PHP" },
+            { "@type": "Offer", "name": "Pro", "price": "50000", "priceCurrency": "PHP" }
+        ]
+    }
+    </script>
+</head>
+<body class="page page-aistaff">
+    <div class="as-wrap">
+        <header class="site-header">
+            <div class="container">
+                <div class="logo">
+                    <a href="/">
+                        <img src="/marga-logo.png" alt="Marga Enterprises" height="50" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+                        <span style="display:none;color:#0066cc;font-weight:700;font-size:1.1rem;">Marga Enterprises</span>
+                    </a>
+                </div>
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu"><span></span><span></span><span></span></button>
+                <nav class="main-nav" id="main-nav">
+                    <ul class="nav-menu">
+                        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                        <li class="nav-item has-dropdown">
+                            <a href="/copier-rental/copier-for-rent/" class="nav-link">Copier Rental</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/copier-rental/copier-for-rent/">Copier for Rent</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-dropdown">
+                            <a href="/printer-rental/" class="nav-link">Printer Rental</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/printer-rental/">Printer Rental</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-dropdown">
+                            <a href="/services/" class="nav-link" aria-current="page">Services</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/services/aistaff/">AIStaff</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a href="/contact/" class="nav-link cta-link">Contact Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main-content">
+            <!-- 1 Hero -->
+            <section class="as-hero">
+                <div class="container as-hero-grid">
+                    <div>
+                        <p class="as-kicker">AIStaff.click · by Marga Enterprises</p>
+                        <h1>Stop Losing Sales From Late Facebook Replies</h1>
+                        <p class="as-hero-lead">AIStaff is your <strong>AI Inbox Sales Assistant</strong> for Facebook Messenger—reply instantly, qualify leads, draft quotations, and see if your ad spend is actually turning into revenue.</p>
+                        <div class="as-cta-row">
+                            <a href="https://m.me/1164341106754995" class="as-btn as-btn-messenger" target="_blank" rel="noopener" id="cta-messenger-hero">Try on Messenger</a>
+                            <a href="#inbox-audit" class="as-btn as-btn-outline">Book Free Inbox Audit</a>
+                        </div>
+                        <p class="as-trust">Operated by <strong>Marga Enterprises</strong> · Pay setup via <strong>Xendit</strong> (verified merchant) · <a href="mailto:sales@aistaff.click" style="color:#93c5fd;">sales@aistaff.click</a></p>
+                    </div>
+                    <div class="as-mock-phone" aria-hidden="true">
+                        <div class="as-mock-head">
+                            <span class="as-mock-avatar">ME</span>
+                            <span>Your Business Page · Active now</span>
+                        </div>
+                        <div class="as-mock-body">
+                            <div class="as-bubble in">Hi po, magkano copier rental for office? Need color and scan.<span class="time">9:14 PM</span></div>
+                            <div class="as-bubble out">Good evening po! AIStaff here for [Your Page]. Para ma-quote namin ng tama: ilang users, monthly volume, at location ng office?<span class="time">9:14 PM · Instant</span></div>
+                            <div class="as-bubble in">Makati, 8 users, mga 3,000 pages/month color<span class="time">9:15 PM</span></div>
+                            <div class="as-bubble out">Salamat po. Lead saved ✅ Score: Hot. Quotation draft ready for your approval sa dashboard.<span class="time">9:15 PM</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2 Problem -->
+            <section class="as-section alt" id="problem">
+                <div class="container">
+                    <h2>The inbox problems that kill ROI</h2>
+                    <p class="as-section-intro">You run Facebook ads—but if Messenger replies are slow or messy, you're paying for clicks that never become quotations or payments.</p>
+                    <div class="as-problem-grid">
+                        <div class="as-problem-card"><strong>Late replies</strong><span>Prospects message at night or weekend; competitor answers first.</span></div>
+                        <div class="as-problem-card"><strong>Incomplete details</strong><span>No mobile, email, or volume—sales keeps asking the same questions.</span></div>
+                        <div class="as-problem-card"><strong>Weak follow-up</strong><span>Leads go cold because nobody tracked the next touch.</span></div>
+                        <div class="as-problem-card"><strong>Quotations delayed</strong><span>Owner is busy; PDF quotes wait hours or days.</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3 How it works -->
+            <section class="as-section" id="how-it-works">
+                <div class="container">
+                    <h2>How AIStaff works</h2>
+                    <p class="as-section-intro">Messenger-first. No website required to start. Human approval before any official quotation goes out.</p>
+                    <div class="as-steps">
+                        <article class="as-step"><h3>Customer messages your Page</h3><p>Inquiry comes in on Facebook Messenger from ads or organic.</p></article>
+                        <article class="as-step"><h3>AI replies + qualifies</h3><p>Instant Taglish/English replies; collects name, company, mobile, email, and need.</p></article>
+                        <article class="as-step"><h3>Lead in dashboard</h3><p>Conversation history, lead score, and status—Hot, Warm, or Cold.</p></article>
+                        <article class="as-step"><h3>Quotation draft → approve</h3><p>AI prepares draft PDF; owner approves before customer receives it.</p></article>
+                        <article class="as-step"><h3>Follow-up until paid</h3><p>Messenger + email reminders until customer pays or opts out.</p></article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4 Dashboard -->
+            <section class="as-section alt" id="dashboard">
+                <div class="container">
+                    <h2>See ad spend → leads → paid → revenue</h2>
+                    <p class="as-section-intro">Built for the businessman asking: <em>"I spent ₱500 on ads—how many leads, how many paid, how much revenue?"</em></p>
+                    <div class="as-dash">
+                        <div class="as-dash-top">
+                            <h3>AIStaff Dashboard · Today</h3>
+                            <span style="font-size:0.8rem;color:#94a3b8;">Sample view</span>
+                        </div>
+                        <div class="as-dash-kpis">
+                            <div class="as-kpi"><label>Leads today</label><strong>12</strong></div>
+                            <div class="as-kpi hot"><label>Hot leads</label><strong>4</strong></div>
+                            <div class="as-kpi"><label>Quotation-ready</label><strong>3</strong></div>
+                            <div class="as-kpi rev"><label>Revenue (7d)</label><strong>₱48k</strong></div>
+                        </div>
+                        <p class="as-roi-title">Ad ROI funnel (this week)</p>
+                        <div class="as-roi-bar">
+                            <div class="as-roi-col"><div class="bar" style="--h: 35%;"></div>Ad spend<br><strong>₱2,400</strong></div>
+                            <div class="as-roi-col"><div class="bar" style="--h: 70%;"></div>Leads<br><strong>38</strong></div>
+                            <div class="as-roi-col"><div class="bar" style="--h: 50%;"></div>Quoted<br><strong>14</strong></div>
+                            <div class="as-roi-col"><div class="bar" style="--h: 90%;"></div>Paid<br><strong>₱48k</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6 Industries -->
+            <section class="as-section" id="industries">
+                <div class="container">
+                    <h2>Best fit industries</h2>
+                    <p class="as-section-intro">Any B2B that gets inquiries on Facebook Messenger and sends quotations.</p>
+                    <div class="as-tags">
+                        <span class="as-tag">Copier &amp; printer rental</span>
+                        <span class="as-tag">CCTV &amp; security</span>
+                        <span class="as-tag">Aircon &amp; HVAC</span>
+                        <span class="as-tag">Solar installers</span>
+                        <span class="as-tag">Construction suppliers</span>
+                        <span class="as-tag">IT equipment</span>
+                        <span class="as-tag">Office fit-out</span>
+                        <span class="as-tag">Industrial equipment</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7 Pricing -->
+            <section class="as-section alt" id="pricing">
+                <div class="container">
+                    <h2>Pricing</h2>
+                    <p class="as-section-intro">One-time setup + monthly service. AI usage limits may apply by message volume. Invoices from <strong>Marga Enterprises</strong> via Xendit.</p>
+                    <div class="as-pricing">
+                        <article class="as-plan">
+                            <h3>Starter</h3>
+                            <div class="setup">₱15,000</div>
+                            <div class="monthly">+ ₱3,000 / month</div>
+                            <ul>
+                                <li>1 Facebook Page</li>
+                                <li>AI FAQ replies</li>
+                                <li>Lead qualification</li>
+                                <li>CRM dashboard</li>
+                                <li>Quotation draft</li>
+                                <li>Admin approval</li>
+                                <li>Basic follow-up tracker</li>
+                            </ul>
+                            <a href="XENDIT_PAYMENT_LINK_STARTER_15000" class="as-btn as-btn-pay" data-product="aistaff-starter-setup">Pay ₱15,000 Setup — Starter</a>
+                        </article>
+                        <article class="as-plan featured">
+                            <h3>Growth</h3>
+                            <div class="setup">₱25,000</div>
+                            <div class="monthly">+ ₱6,000 / month</div>
+                            <ul>
+                                <li>Everything in Starter</li>
+                                <li>Better qualification</li>
+                                <li>Lead scoring</li>
+                                <li>Sales assignment</li>
+                                <li>Conversation summaries</li>
+                                <li>Weekly report</li>
+                                <li>KB optimization</li>
+                            </ul>
+                            <a href="XENDIT_PAYMENT_LINK_GROWTH_25000" class="as-btn as-btn-pay" data-product="aistaff-growth-setup">Pay ₱25,000 Setup — Growth</a>
+                        </article>
+                        <article class="as-plan">
+                            <h3>Pro</h3>
+                            <div class="setup">₱50,000</div>
+                            <div class="monthly">+ ₱12,000 / month</div>
+                            <ul>
+                                <li>Everything in Growth</li>
+                                <li>Advanced quotation workflow</li>
+                                <li>Multi-user sales team</li>
+                                <li>Custom lead fields</li>
+                                <li>Website chat ready</li>
+                                <li>Monthly optimization</li>
+                            </ul>
+                            <a href="XENDIT_PAYMENT_LINK_PRO_50000" class="as-btn as-btn-pay" data-product="aistaff-pro-setup">Pay ₱50,000 Setup — Pro</a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8 FAQ -->
+            <section class="as-section" id="faq">
+                <div class="container">
+                    <h2>FAQ</h2>
+                    <div class="as-faq" style="max-width:720px;">
+                        <details><summary>Is this just a chatbot?</summary><p>No. AIStaff qualifies leads using your sales rules, saves structured data to a dashboard, prepares quotation drafts, and tracks follow-up—not generic FAQ replies only.</p></details>
+                        <details><summary>Will AI send quotations automatically?</summary><p><strong>No.</strong> By default, AI prepares a draft and your admin approves before anything official is sent to the customer.</p></details>
+                        <details><summary>Can a human take over?</summary><p>Yes. Your team can jump into Messenger anytime; AIStaff keeps context and conversation history in the dashboard.</p></details>
+                        <details><summary>Do we need a website?</summary><p>No—Messenger-first. Many clients start with Facebook Page inquiries only. Website chat can be added on Pro.</p></details>
+                        <details><summary>What does the setup fee cover?</summary><p>Knowledge base setup, qualification flow, Facebook Page connection, dashboard access, and team training.</p></details>
+                        <details><summary>Who do I pay?</summary><p><strong>Marga Enterprises</strong> via Xendit (existing verified merchant). Product brand is AIStaff.click; legal seller on invoice is Marga Enterprises.</p></details>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9 CTA band -->
+            <section class="as-cta-band">
+                <div class="container">
+                    <h2>Ready to fix your Messenger inbox?</h2>
+                    <p>Try the demo, book a free audit, or pay setup to get started.</p>
+                    <div class="as-cta-row">
+                        <a href="https://m.me/1164341106754995" class="as-btn as-btn-messenger" target="_blank" rel="noopener">Try on Messenger</a>
+                        <a href="#inbox-audit" class="as-btn as-btn-outline">Book Free Inbox Audit</a>
+                        <a href="XENDIT_PAYMENT_LINK_STARTER_15000" class="as-btn as-btn-teal" data-product="aistaff-starter-setup">Pay Setup Fee (Starter ₱15,000)</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10 Audit form -->
+            <section class="as-section alt" id="inbox-audit">
+                <div class="container">
+                    <h2>Book a free inbox audit</h2>
+                    <p class="as-section-intro">We'll review your Messenger flow and show where leads are leaking.</p>
+                    <div class="as-form-panel">
+                        <div class="as-form-success" id="audit-success">
+                            <strong>Request received.</strong> We'll contact you within 1 business day. You can also email <a href="mailto:sales@aistaff.click">sales@aistaff.click</a>.
+                        </div>
+                        <form id="audit-form" novalidate>
+                            <div class="as-field">
+                                <label for="audit-company">Company <span style="color:#dc2626">*</span></label>
+                                <input type="text" id="audit-company" name="company" required>
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-contact">Contact person <span style="color:#dc2626">*</span></label>
+                                <input type="text" id="audit-contact" name="contact_person" required>
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-mobile">Mobile <span style="color:#dc2626">*</span></label>
+                                <input type="tel" id="audit-mobile" name="mobile" required placeholder="09XX XXX XXXX">
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-email">Email <span style="color:#dc2626">*</span></label>
+                                <input type="email" id="audit-email" name="email" required>
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-fb">Facebook Page URL <span style="color:#dc2626">*</span></label>
+                                <input type="url" id="audit-fb" name="facebook_page_url" required placeholder="https://facebook.com/yourpage">
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-type">Business type <span style="color:#dc2626">*</span></label>
+                                <input type="text" id="audit-type" name="business_type" required placeholder="e.g. copier rental, CCTV">
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-volume">Avg inquiries per week</label>
+                                <select id="audit-volume" name="inquiries_per_week">
+                                    <option value="">— Select —</option>
+                                    <option value="1-5">1–5</option>
+                                    <option value="6-20">6–20</option>
+                                    <option value="21-50">21–50</option>
+                                    <option value="50+">50+</option>
+                                </select>
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-quotes">Do you send quotations?</label>
+                                <select id="audit-quotes" name="sends_quotations">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                    <option value="sometimes">Sometimes</option>
+                                </select>
+                            </div>
+                            <div class="as-field">
+                                <label for="audit-message">Message</label>
+                                <textarea id="audit-message" name="message" placeholder="Tell us about your current inbox pain…"></textarea>
+                            </div>
+                            <button type="submit" class="as-btn as-btn-messenger" style="width:100%;">Submit audit request</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Legal -->
+            <section class="as-legal">
+                <div class="container">
+                    <h3>AIStaff policy &amp; billing</h3>
+                    <p>AIStaff.click is a digital service operated by <strong>Marga Enterprises</strong>, a Philippine B2B company. Setup and subscription fees are invoiced by Marga Enterprises and paid through our verified <strong>Xendit</strong> payment links. Product support: <a href="mailto:sales@aistaff.click">sales@aistaff.click</a> · Phone: <a href="tel:09171642540">0917 164 2540</a> · <a href="tel:027216415">02-721-69-415</a>.</p>
+                    <p>See also <a href="/privacy-policy/">Marga privacy policy</a> and <a href="/terms-of-service/">terms of service</a>. AIStaff processes Messenger and lead data only for your business account under your instructions.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <p class="footer-tagline"><strong>AIStaff.click</strong> — AI Inbox Sales Assistant</p>
+                        <p style="font-size:0.88rem;color:#888;">AIStaff.click is a digital service operated by Marga Enterprises.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="/services/">All services</a></li>
+                            <li><a href="https://m.me/1164341106754995" target="_blank" rel="noopener">Messenger demo</a></li>
+                            <li><a href="mailto:sales@aistaff.click">sales@aistaff.click</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Marga Enterprises. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/js/main.js" defer></script>
+    <script>
+        // TODO: Wire audit form to AIStaff API when endpoint is live, e.g.:
+        // POST /.netlify/functions/aistaff-audit  or  https://api.aistaff.click/v1/inbox-audit
+        const AISTAFF_AUDIT_API = '';
+
+        const MESSENGER_DEMO_URL = 'https://m.me/1164341106754995';
+
+        document.getElementById('audit-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const payload = Object.fromEntries(new FormData(form).entries());
+            payload.source = 'marga.biz/services/aistaff';
+            payload.product = 'aistaff-inbox-audit';
+
+            btn.disabled = true;
+            btn.textContent = 'Sending…';
+
+            let sent = false;
+
+            if (AISTAFF_AUDIT_API) {
+                try {
+                    const res = await fetch(AISTAFF_AUDIT_API, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) sent = true;
+                } catch (err) {
+                    console.warn('AIStaff API unavailable', err);
+                }
+            }
+
+            if (!sent) {
+                const subject = encodeURIComponent('AIStaff Free Inbox Audit — ' + (payload.company || 'Request'));
+                const body = encodeURIComponent(
+                    Object.entries(payload).map(([k, v]) => k + ': ' + v).join('\n')
+                );
+                window.location.href = 'mailto:sales@aistaff.click?subject=' + subject + '&body=' + body;
+                sent = true;
+            }
+
+            if (sent) {
+                form.style.display = 'none';
+                document.getElementById('audit-success').style.display = 'block';
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Submit audit request';
+        });
+
+        document.querySelectorAll('a[href^="XENDIT_PAYMENT_LINK"]').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                alert('Payment link placeholder. Mike: replace ' + link.getAttribute('href') + ' with your Marga Xendit payment URL for ' + (link.dataset.product || 'setup') + '.');
+            });
+        });
+    </script>
+</body>
+</html>

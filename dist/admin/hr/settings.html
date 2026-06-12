@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Settings - Marga</title>
+    <link rel="stylesheet" href="css/hr-settings.css">
+</head>
+<body>
+    <main class="hr-shell">
+        <header class="hr-header">
+            <div>
+                <p class="eyebrow">Human Resource</p>
+                <h1>Work Location Settings</h1>
+            </div>
+            <div class="policy-card" aria-label="GPS policy limits">
+                <span>Office / Production max <strong>30m</strong></span>
+                <span>Customer site max <strong>100m</strong></span>
+            </div>
+        </header>
+
+        <nav class="hr-tabs" aria-label="Human Resource sections">
+            <a href="settings.html" class="active">Settings</a>
+            <a href="#" aria-disabled="true">Employees</a>
+            <a href="#" aria-disabled="true">Attendance</a>
+            <a href="#" aria-disabled="true">Payroll</a>
+            <a href="#" aria-disabled="true">Performance</a>
+        </nav>
+
+        <section class="location-grid">
+            <section class="location-panel" aria-labelledby="locationFormTitle">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Pinned location</p>
+                        <h2 id="locationFormTitle">Add or edit work site</h2>
+                    </div>
+                    <button type="button" id="newLocationBtn" class="icon-btn" title="New location">+</button>
+                </div>
+
+                <form id="locationForm" class="location-form">
+                    <input type="hidden" id="locationId">
+
+                    <label>
+                        Location name
+                        <input id="locationName" type="text" placeholder="Havila Office" required>
+                    </label>
+
+                    <label>
+                        Location type
+                        <select id="locationType" required>
+                            <option value="office">Office</option>
+                            <option value="production">Production</option>
+                            <option value="customer_site">Customer Site</option>
+                            <option value="temporary_site">Temporary Site</option>
+                        </select>
+                    </label>
+
+                    <label class="wide">
+                        Pinned address
+                        <textarea id="locationAddress" rows="3" placeholder="Exact address shown to HR and employees"></textarea>
+                    </label>
+
+                    <div class="coordinate-row">
+                        <label>
+                            Latitude
+                            <input id="latitude" type="number" step="0.000001" placeholder="14.000000" required>
+                        </label>
+                        <label>
+                            Longitude
+                            <input id="longitude" type="number" step="0.000001" placeholder="121.000000" required>
+                        </label>
+                    </div>
+
+                    <label>
+                        Allowed GPS tolerance
+                        <div class="meter-control">
+                            <input id="allowedMeters" type="range" min="5" max="30" value="20">
+                            <output id="allowedMetersLabel" for="allowedMeters">20m</output>
+                        </div>
+                    </label>
+
+                    <div class="switch-row">
+                        <label class="switch-label">
+                            <input id="requiresPincode" type="checkbox" checked>
+                            Requires pincode
+                        </label>
+                        <label class="switch-label">
+                            <input id="isActive" type="checkbox" checked>
+                            Active
+                        </label>
+                    </div>
+
+                    <p id="formNotice" class="notice" role="status"></p>
+
+                    <div class="form-actions">
+                        <button type="button" id="useCurrentLocationBtn" class="secondary-btn">Use current GPS</button>
+                        <button type="submit" class="primary-btn">Save location</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="location-panel map-panel" aria-labelledby="locationListTitle">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Official pins</p>
+                        <h2 id="locationListTitle">Saved work locations</h2>
+                    </div>
+                </div>
+
+                <div id="locationList" class="location-list"></div>
+            </section>
+        </section>
+
+        <section class="validator-panel" aria-labelledby="validatorTitle">
+            <div>
+                <p class="eyebrow">Attendance gate</p>
+                <h2 id="validatorTitle">Time-in eligibility preview</h2>
+            </div>
+
+            <div class="validator-grid">
+                <label>
+                    Assigned location
+                    <select id="previewLocation"></select>
+                </label>
+                <label>
+                    Employee latitude
+                    <input id="employeeLatitude" type="number" step="0.000001" placeholder="Use phone GPS">
+                </label>
+                <label>
+                    Employee longitude
+                    <input id="employeeLongitude" type="number" step="0.000001" placeholder="Use phone GPS">
+                </label>
+                <div class="validator-actions">
+                    <button type="button" id="useEmployeeGpsBtn" class="secondary-btn">Use current GPS</button>
+                    <button type="button" id="checkEligibilityBtn" class="primary-btn">Check time-in</button>
+                </div>
+            </div>
+
+            <div id="eligibilityResult" class="eligibility-result neutral">
+                Select a pinned location and check an employee GPS point.
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/admin/hr/work-locations.js"></script>
+</body>
+</html>

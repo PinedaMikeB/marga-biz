@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en-PH">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Services - Marga Enterprises</title>
+    <meta name="description" content="Digital business services from Marga Enterprises — AI inbox sales tools and future B2B products for Philippine companies.">
+    <link rel="canonical" href="https://marga.biz/services/">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        :root {
+            --svc-ink: #0f1a2e;
+            --svc-muted: #5c6b82;
+            --svc-line: #d8e3f0;
+            --svc-blue: #0066cc;
+            --svc-violet: #4f46b5;
+            --svc-soft: #f3f7fc;
+        }
+        body.page-services { background: var(--svc-soft); }
+        .svc-hero {
+            padding: 48px 0 32px;
+            background: linear-gradient(135deg, #0f1a2e 0%, #1a365d 55%, #0066cc 100%);
+            color: #fff;
+        }
+        .svc-hero h1 { margin: 0 0 12px; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+        .svc-hero p { max-width: 640px; margin: 0; opacity: 0.92; line-height: 1.65; }
+        .svc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+            margin: 40px 0 60px;
+        }
+        .svc-card {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border: 1px solid var(--svc-line);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 12px 32px rgba(15, 26, 46, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .svc-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 40px rgba(15, 26, 46, 0.1);
+        }
+        .svc-card.live { border-color: #93c5fd; }
+        .svc-card.soon { opacity: 0.72; pointer-events: none; }
+        .svc-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+        .svc-badge.live { background: #dbeafe; color: #1d4ed8; }
+        .svc-badge.soon { background: #f1f5f9; color: #64748b; }
+        .svc-card h2 { margin: 0 0 10px; font-size: 1.25rem; color: var(--svc-ink); }
+        .svc-card p { margin: 0 0 16px; color: var(--svc-muted); font-size: 0.95rem; line-height: 1.55; flex: 1; }
+        .svc-card .arrow { color: var(--svc-blue); font-weight: 700; font-size: 0.9rem; }
+        .svc-note {
+            padding: 20px 24px;
+            background: #fff;
+            border: 1px dashed var(--svc-line);
+            border-radius: 10px;
+            color: var(--svc-muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="page page-services">
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="/marga-logo.png" alt="Marga Enterprises" height="50" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';">
+                    <span style="display:none;color:#0066cc;font-weight:700;font-size:1.1rem;">Marga Enterprises</span>
+                </a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle Menu"><span></span><span></span><span></span></button>
+            <nav class="main-nav" id="main-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                    <li class="nav-item has-dropdown">
+                        <a href="/copier-rental/copier-for-rent/" class="nav-link">Copier Rental</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/copier-rental/copier-for-rent/">Copier for Rent</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-dropdown">
+                        <a href="/printer-rental/" class="nav-link">Printer Rental</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/printer-rental/printer-for-rent/">Printer for Rent</a></li>
+                            <li><a href="/printer-rental/print-all-you-can/">Print All You Can</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-dropdown">
+                        <a href="/services/" class="nav-link" aria-current="page">Services</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/services/aistaff/">AIStaff</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="/blogs/" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="/about/" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="/contact/" class="nav-link cta-link">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="svc-hero">
+            <div class="container">
+                <nav class="breadcrumb" aria-label="Breadcrumb" style="margin-bottom:16px;">
+                    <ol style="color:rgba(255,255,255,0.85);">
+                        <li><a href="/" style="color:#fff;">Home</a></li>
+                        <li>Services</li>
+                    </ol>
+                </nav>
+                <h1>Digital services for growing PH businesses</h1>
+                <p>Marga Enterprises offers rental equipment for offices—and digital tools that help you convert Facebook inquiries into paid customers. Invoices are issued by Marga Enterprises; each product has its own brand.</p>
+            </div>
+        </section>
+
+        <section class="page-content">
+            <div class="container">
+                <div class="svc-grid">
+                    <a href="/services/aistaff/" class="svc-card live">
+                        <span class="svc-badge live">Available now</span>
+                        <h2>AIStaff.click</h2>
+                        <p>AI Inbox Sales Assistant for Facebook Messenger—qualify leads, capture details, draft quotations, and track ad spend to revenue in one dashboard.</p>
+                        <span class="arrow">View AIStaff →</span>
+                    </a>
+                    <div class="svc-card soon" aria-disabled="true">
+                        <span class="svc-badge soon">Coming soon</span>
+                        <h2>More digital services</h2>
+                        <p>Additional Marga-operated tools for B2B sales, operations, and customer follow-up will be listed here as they launch.</p>
+                    </div>
+                </div>
+                <p class="svc-note">Equipment rental (copier &amp; printer) remains at <a href="/printer-rental/">printer-rental</a> and <a href="/copier-rental/copier-for-rent/">copier-rental</a>. This hub is for separate digital products billed through Marga Enterprises.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Marga Enterprises. All rights reserved.</p>
+                <p style="font-size:0.88rem;color:#888;margin-top:8px;">Digital services on this hub are operated by Marga Enterprises.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/main.js" defer></script>
+</body>
+</html>

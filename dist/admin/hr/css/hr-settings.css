@@ -1,0 +1,404 @@
+:root {
+    --ink: #17233f;
+    --muted: #64708a;
+    --line: #d9e2ef;
+    --paper: #f7f9fc;
+    --panel: #ffffff;
+    --blue: #24528f;
+    --blue-dark: #183967;
+    --teal: #0f766e;
+    --amber: #b45309;
+    --red: #b42318;
+    --green: #087443;
+    --shadow: 0 18px 45px rgba(23, 35, 63, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background:
+        linear-gradient(135deg, rgba(36, 82, 143, 0.10), transparent 34%),
+        linear-gradient(180deg, #eef5fb 0%, var(--paper) 42%, #edf2f7 100%);
+    color: var(--ink);
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+.hr-shell {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 28px;
+}
+
+.hr-header,
+.location-panel,
+.validator-panel,
+.hr-tabs {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(217, 226, 239, 0.9);
+    box-shadow: var(--shadow);
+}
+
+.hr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px;
+    border-radius: 8px;
+}
+
+.eyebrow {
+    margin: 0 0 6px;
+    color: var(--teal);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+h1,
+h2 {
+    margin: 0;
+    letter-spacing: 0;
+}
+
+h1 {
+    font-size: clamp(1.8rem, 3vw, 2.75rem);
+    line-height: 1.05;
+}
+
+h2 {
+    font-size: 1.15rem;
+}
+
+.policy-card {
+    display: grid;
+    gap: 8px;
+    min-width: 260px;
+    padding: 14px 16px;
+    border: 1px solid #cbd8e8;
+    border-radius: 8px;
+    background: #f8fbff;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.policy-card strong {
+    color: var(--blue-dark);
+}
+
+.hr-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 18px 0;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.hr-tabs a {
+    color: var(--muted);
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.hr-tabs a.active {
+    background: var(--blue);
+    color: #fff;
+}
+
+.hr-tabs a[aria-disabled="true"] {
+    opacity: 0.55;
+}
+
+.location-grid {
+    display: grid;
+    grid-template-columns: minmax(340px, 0.9fr) minmax(420px, 1.1fr);
+    gap: 18px;
+}
+
+.location-panel,
+.validator-panel {
+    padding: 22px;
+    border-radius: 8px;
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.location-form,
+.validator-grid {
+    display: grid;
+    gap: 14px;
+}
+
+label {
+    display: grid;
+    gap: 7px;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #fff;
+    color: var(--ink);
+    padding: 11px 12px;
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(36, 82, 143, 0.12);
+}
+
+.wide {
+    grid-column: 1 / -1;
+}
+
+.coordinate-row,
+.switch-row,
+.form-actions,
+.validator-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.switch-row {
+    align-items: center;
+}
+
+.switch-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #fbfdff;
+}
+
+.switch-label input {
+    width: auto;
+}
+
+.meter-control {
+    display: grid;
+    grid-template-columns: 1fr 56px;
+    align-items: center;
+    gap: 10px;
+}
+
+.meter-control input {
+    padding: 0;
+}
+
+.meter-control output {
+    color: var(--blue-dark);
+    font-weight: 900;
+}
+
+.primary-btn,
+.secondary-btn {
+    min-height: 42px;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.primary-btn {
+    background: var(--blue);
+    color: #fff;
+}
+
+.primary-btn:hover {
+    background: var(--blue-dark);
+}
+
+.secondary-btn {
+    background: #edf3fa;
+    color: var(--blue-dark);
+}
+
+.location-list {
+    display: grid;
+    gap: 12px;
+}
+
+.location-card {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fbfdff;
+}
+
+.location-card header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.location-card h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.location-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #eef4fb;
+    color: var(--blue-dark);
+    font-size: 0.76rem;
+    font-weight: 800;
+}
+
+.pill.warning {
+    background: #fff7ed;
+    color: var(--amber);
+}
+
+.pill.inactive {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.location-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.text-btn {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--blue-dark);
+    cursor: pointer;
+    padding: 7px 10px;
+    font-weight: 800;
+}
+
+.notice {
+    min-height: 20px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+}
+
+.notice.error {
+    color: var(--red);
+}
+
+.notice.success {
+    color: var(--green);
+}
+
+.validator-panel {
+    margin-top: 18px;
+}
+
+.validator-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-content: end;
+}
+
+.eligibility-result {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+.eligibility-result.neutral {
+    background: #eef4fb;
+    color: var(--blue-dark);
+}
+
+.eligibility-result.allowed {
+    background: #ecfdf3;
+    color: var(--green);
+}
+
+.eligibility-result.blocked {
+    background: #fef3f2;
+    color: var(--red);
+}
+
+@media (max-width: 900px) {
+    .hr-shell {
+        padding: 16px;
+    }
+
+    .hr-header,
+    .location-grid,
+    .coordinate-row,
+    .switch-row,
+    .form-actions,
+    .validator-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hr-header {
+        display: grid;
+    }
+
+    .policy-card {
+        min-width: 0;
+    }
+}
