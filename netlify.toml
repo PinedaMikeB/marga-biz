@@ -55,6 +55,12 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+[[headers]]
+  for = "/services/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+
 
 # Scheduled function - Daily snapshot at 6 AM PHT (10 PM UTC previous day)
 [functions."insights-snapshot"]
