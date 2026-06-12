@@ -1,11 +1,12 @@
 # Codex Handoff
 
-Updated: 2026-05-14
+Updated: 2026-06-12
 
 ## What Transfers Cleanly
 
 - Git repo state from `main`
 - site code and generated `dist`
+- initial HR settings UI and GPS validation helpers
 - Telegram bridge scripts
 
 ## What Does Not Transfer Automatically
@@ -40,6 +41,14 @@ Use these first on the other Mac:
 4. If needed, copy Codex automations from:
    - `~/.codex/automations/`
 
+## Deploy / Live Testing (Mike preference)
+
+- After every **site-visible** change (HTML/CSS/JS in `static-pages/`, `dist/`, `components/`, `admin/`, `_redirects`, etc.), agents must **commit and push to `main`** so Mike can test on production immediately.
+- Netlify auto-deploys from `main`; publish root is `dist/`. If source lives under `static-pages/`, copy the matching built file into `dist/` before push.
+- Prefer `git push origin main` over manual `npm run deploy` unless functions or Netlify config need a CLI deploy.
+- Keep commits narrow: do not bundle unrelated Facebook, Telegram, HR, SEO report, or function zip changes into a site push.
+- Mike tests live at `https://marga.biz/` — hard refresh if the browser shows stale nav or hero content.
+
 ## Current Workflow
 
 - Telegram bridge and chat daemon remain active in this repo.
@@ -61,8 +70,15 @@ Use these first on the other Mac:
 - Target intent for the new cluster: `printer maintenance`, `printer repair`, `office printer maintenance`, `owned printer maintenance`, `managed print services`, `print management system`, `print manager`, `manage print system`, `monthly page monitoring`, and `print volume tracking`.
 - Guardrail: keep this cluster B2B and owned-machine focused. It should support companies cutting cost after printer rental, not replace or weaken the main printer-rental pages.
 
+## Recent Shipped (2026-06-12)
+
+- **AIStaff landing** (`/services/aistaff/`): animated hero phone reel (Inquiry → Quote → Paid → Dashboard → ROI), SecureView CCTV example, infinite loop, mobile-friendly step labels.
+- **Services nav**: dropdown after Printer Rental with AIStaff link (site-wide header).
+
 ## Current Next Focus
 
+- continue HR module buildout: employee master records, attendance time-in flow, payroll engine, and performance tab
+- wire HR location pins into the real Marga app repository/source once that source is confirmed
 - keep Telegram chat tooling stable while other automation is reintroduced selectively
 - when SEO monitoring is active, track both the printer-rental cluster and the new printer maintenance / managed print services cluster
 - sales CTA flow now routes the visible `Talk to Sales` buttons into the existing `/ai-consultant/` voice consultant while keeping `Get Quote by Email` anchored to `/contact/#email-quote`

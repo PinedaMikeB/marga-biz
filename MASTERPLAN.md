@@ -2,7 +2,7 @@
 
 **Project:** Marga Enterprises Website & Business Platform  
 **Owner:** Mike Pineda  
-**Last Updated:** May 14, 2026
+**Last Updated:** June 12, 2026
 
 ---
 
@@ -14,7 +14,7 @@ Transform marga.biz from a static marketing site into a full business platform w
 
 ## 🏗️ ARCHITECTURE
 
-### 5-Module System
+### 6-Module System
 
 ```
 marga.biz/
@@ -40,11 +40,17 @@ marga.biz/
 │   ├── Backlink monitoring
 │   └── Social media auto-posting
 │
-└── 5. SALES MODULE (Leads & CRM)          🔲 TODO
-    ├── Lead capture forms
-    ├── Quotation system
-    ├── Lead nurturing workflows
-    └── Email/SMS automation
+├── 5. SALES MODULE (Leads & CRM)          🔲 TODO
+│   ├── Lead capture forms
+│   ├── Quotation system
+│   ├── Lead nurturing workflows
+│   └── Email/SMS automation
+│
+└── 6. HR MODULE (Employees + Payroll)     🔲 TODO
+    ├── Employee master records
+    ├── Work location pins and GPS time-in
+    ├── Attendance and payroll computation
+    └── Performance analytics from app evaluations
 ```
 
 ### Tech Stack
@@ -192,12 +198,24 @@ marga.biz/
 - [ ] Email/SMS follow-up automation
 - [ ] Lead scoring system
 
+### Phase 7: HR Module
+- [x] Add first HR settings screen for official work location pins
+- [x] Enforce GPS tolerance caps: Office / Production max 30 meters; Customer Site max 100 meters
+- [ ] Add employee master records with editable salary, SSS, PHIC, HDMF, loans, cash advances, allowances, and payroll fields
+- [ ] Add mobile/web time-in flow with GPS, pincode, assigned work-location validation, and exception review
+- [ ] Add payroll engine based on the April 2026 payroll workbook formulas
+- [ ] Add performance tab using attendance and app evaluation analytics
+
 ---
 
 ## 📝 DECISION LOG
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-06-12 | Auto-push site changes to `main` after every agent edit | Mike validates on production immediately; Netlify deploys from `main` / `dist` |
+| 2026-06-12 | AIStaff product page under `/services/aistaff/` with animated hero demo | Shows full Messenger → quote → pay → dashboard → ROI story without touching protected homepage/copier SEO |
+| 2026-05-14 | Add HR as the sixth platform module with strict GPS-gated attendance | Payroll should be computed from approved employee records and verified app time records instead of manual spreadsheet-only inputs |
+| 2026-05-14 | Cap office and production time-in GPS tolerance at 30 meters; cap customer sites at 100 meters | Prevent broad location spoofing while allowing normal phone GPS drift at real work locations |
 | 2026-05-14 | Use `Talk to Sales` as the public CTA while routing to the AI Product Consultant | Keeps the CTA human and conversion-focused while the consultant introduces herself after the click |
 | 2026-04-20 | Add owned-printer maintenance / managed print services as a monitored SEO cluster | Capture companies cutting cost after ending printer rental while keeping printer-rental pages focused on machine-included packages |
 | 2026-01-10 | Create INSIGHTS MODULE combining Analytics + SEO | Single dashboard for all data, avoid switching between GA4 and Search Console |
@@ -228,11 +246,15 @@ marga.biz/
 > Say: "Read HANDOFF.md, MASTERPLAN.md, and CHANGELOG.md from `/Volumes/Wotg Drive Mike/GitHub/marga-biz/` using Desktop Commander"
 
 ### Deployment Workflow
+
+**Mike rule (2026-06-12): push every site change to `main` immediately** so live testing at `https://marga.biz/` is always current. Do not leave site work local-only waiting for a manual deploy.
+
 1. Make changes locally in `/Volumes/Wotg Drive Mike/GitHub/marga-biz/`
-2. Test locally if needed
-3. Commit and push to GitHub `main` branch
-4. Netlify auto-deploys within 1-2 minutes
-5. **Update CHANGELOG.md with new version entry**
+2. Sync `static-pages/` → `dist/` when the published path is static HTML
+3. Commit only files for that task (avoid unrelated zip/report bundles)
+4. **Push to GitHub `main` branch** — required after every site-visible change
+5. Netlify auto-deploys within 1–2 minutes (`publish = dist` in `netlify.toml`)
+6. **Update CHANGELOG.md** when the change is user-facing (optional for small copy tweaks)
 
 ### Two Folders (Don't Confuse)
 - `marga-biz/` = Production website (deployed)

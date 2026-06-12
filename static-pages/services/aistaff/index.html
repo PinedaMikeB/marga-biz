@@ -207,6 +207,420 @@
             opacity: 0.7;
         }
 
+        /* Hero animated stage */
+        .as-hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .as-hero-stage {
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .as-hero-phone {
+            position: relative;
+        }
+
+        .as-hero-viewport {
+            position: relative;
+            height: 320px;
+            background: #f0f2f5;
+        }
+
+        .as-hero-beat {
+            position: absolute;
+            inset: 0;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(10px);
+            transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
+            overflow-y: auto;
+            z-index: 1;
+        }
+
+        .as-hero-beat.is-active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .as-hero-beat[data-beat="dashboard"],
+        .as-hero-beat[data-beat="roi"] {
+            padding: 0;
+            background: #0f172a;
+        }
+
+        .as-hero-beat .as-bubble {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+
+        .as-hero-beat.is-active .as-bubble {
+            animation: asBubbleIn 0.4s ease forwards;
+        }
+
+        .as-hero-beat.is-active .as-bubble:nth-child(1) { animation-delay: 0.15s; }
+        .as-hero-beat.is-active .as-bubble:nth-child(2) { animation-delay: 0.55s; }
+        .as-hero-beat.is-active .as-bubble:nth-child(3) { animation-delay: 1s; }
+        .as-hero-beat.is-active .as-bubble:nth-child(4) { animation-delay: 1.45s; }
+        .as-hero-beat.is-active .as-bubble:nth-child(5) { animation-delay: 1.9s; }
+
+        @keyframes asBubbleIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .as-quote-card {
+            margin-top: 8px;
+            background: #fff;
+            border: 1px solid #dce6f2;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(12, 18, 34, 0.08);
+            animation: asQuoteShine 0.6s ease 0.3s both;
+        }
+
+        @keyframes asQuoteShine {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .as-quote-card-head {
+            padding: 10px 14px;
+            background: linear-gradient(135deg, #0c1222, #1e3a5f);
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .as-quote-card-body {
+            padding: 12px 14px;
+            font-size: 0.78rem;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        .as-quote-card-price {
+            margin-top: 8px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #0c1222;
+        }
+
+        .as-quote-badge {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 10px;
+            background: #d1fae5;
+            color: #047857;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+
+        .as-pay-card {
+            margin: 12px auto 0;
+            max-width: 92%;
+            padding: 16px;
+            background: #fff;
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid #34d399;
+            animation: asQuoteShine 0.5s ease 0.2s both;
+        }
+
+        .as-pay-icon {
+            width: 44px;
+            height: 44px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            background: #d1fae5;
+            color: #059669;
+            font-size: 1.4rem;
+            line-height: 44px;
+            font-weight: 800;
+        }
+
+        .as-pay-card strong {
+            display: block;
+            font-size: 0.95rem;
+            color: #0c1222;
+            margin-bottom: 4px;
+        }
+
+        .as-pay-card span {
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .as-pay-amount {
+            margin-top: 6px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #059669;
+        }
+
+        .as-phone-dash {
+            padding: 14px;
+            color: #e2e8f0;
+            min-height: 320px;
+        }
+
+        .as-phone-dash-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+            font-size: 0.78rem;
+        }
+
+        .as-phone-dash-top strong { color: #fff; font-size: 0.82rem; }
+
+        .as-phone-kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .as-phone-kpi {
+            padding: 10px 8px;
+            background: #1e293b;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+
+        .as-phone-kpi label {
+            display: block;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #94a3b8;
+            margin-bottom: 2px;
+        }
+
+        .as-phone-kpi strong {
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        .as-phone-kpi.hot strong { color: #fbbf24; }
+
+        .as-phone-lead {
+            padding: 10px 12px;
+            background: #1e293b;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+
+        .as-phone-lead strong { color: #fff; }
+
+        .as-phone-lead .tag {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 2px 8px;
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .as-auto-toast {
+            padding: 10px 12px;
+            background: rgba(0, 132, 255, 0.15);
+            border: 1px solid rgba(0, 132, 255, 0.35);
+            border-radius: 10px;
+            font-size: 0.72rem;
+            line-height: 1.45;
+            opacity: 0;
+        }
+
+        .as-hero-beat.is-active .as-auto-toast {
+            animation: asToastPulse 0.5s ease 2s forwards;
+        }
+
+        @keyframes asToastPulse {
+            to { opacity: 1; }
+        }
+
+        .as-phone-roi {
+            padding: 14px;
+            min-height: 320px;
+        }
+
+        .as-phone-roi-title {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            margin: 0 0 10px;
+        }
+
+        .as-phone-roi-bars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            align-items: end;
+            height: 90px;
+            margin-bottom: 8px;
+        }
+
+        .as-phone-roi-col {
+            text-align: center;
+            font-size: 0.62rem;
+            color: #94a3b8;
+        }
+
+        .as-phone-roi-col .bar {
+            height: 0;
+            background: linear-gradient(180deg, var(--as-messenger), #6366f1);
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 5px;
+            min-height: 8px;
+            transition: height 0.8s ease;
+        }
+
+        .as-hero-beat.is-active .as-phone-roi-col .bar {
+            height: var(--h, 40%);
+        }
+
+        .as-phone-roi-col strong {
+            display: block;
+            color: #fff;
+            font-size: 0.72rem;
+        }
+
+        .as-phone-roi-rev {
+            margin-top: 12px;
+            padding: 12px;
+            background: #1e293b;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .as-phone-roi-rev label {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .as-phone-roi-rev strong {
+            display: block;
+            font-size: 1.35rem;
+            color: #34d399;
+            margin-top: 4px;
+        }
+
+        .as-hero-steps {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 14px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 2px 4px;
+        }
+
+        .as-hero-steps::-webkit-scrollbar { display: none; }
+
+        .as-hero-step {
+            flex: 0 0 auto;
+            padding: 6px 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.65);
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            cursor: default;
+            transition: background 0.25s, color 0.25s;
+            white-space: nowrap;
+        }
+
+        .as-hero-step.is-active {
+            background: var(--as-messenger);
+            color: #fff;
+        }
+
+        .as-hero-progress {
+            height: 3px;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .as-hero-progress span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--as-messenger), #6366f1);
+            border-radius: 999px;
+        }
+
+        @media (max-width: 900px) {
+            .as-hero-grid {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .as-hero-left {
+                display: contents;
+            }
+
+            .as-hero-copy { order: 1; }
+            .as-hero-stage { order: 2; margin: 8px auto 20px; }
+            .as-hero-actions { order: 3; }
+
+            .as-hero-stage {
+                max-width: min(100%, 320px);
+            }
+
+            .as-hero-viewport {
+                height: 300px;
+            }
+
+            .as-bubble {
+                font-size: clamp(0.75rem, 3.2vw, 0.82rem);
+            }
+
+            .as-hero-step {
+                font-size: 0.62rem;
+                padding: 5px 8px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .as-hero-beat,
+            .as-hero-beat .as-bubble,
+            .as-quote-card,
+            .as-pay-card,
+            .as-auto-toast,
+            .as-phone-roi-col .bar {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            .as-hero-beat .as-bubble {
+                opacity: 1;
+                transform: none;
+            }
+
+            .as-hero-beat:not([data-beat="inquiry"]) {
+                display: none;
+            }
+        }
+
         /* Sections */
         .as-section {
             padding: 64px 0;
@@ -637,27 +1051,106 @@
             <!-- 1 Hero -->
             <section class="as-hero">
                 <div class="container as-hero-grid">
-                    <div>
-                        <p class="as-kicker">AIStaff.click · by Marga Enterprises</p>
-                        <h1>Stop Losing Sales From Late Facebook Replies</h1>
-                        <p class="as-hero-lead">AIStaff is your <strong>AI Inbox Sales Assistant</strong> for Facebook Messenger—reply instantly, qualify leads, draft quotations, and see if your ad spend is actually turning into revenue.</p>
-                        <div class="as-cta-row">
-                            <a href="https://m.me/1164341106754995" class="as-btn as-btn-messenger" target="_blank" rel="noopener" id="cta-messenger-hero">Try on Messenger</a>
-                            <a href="#inbox-audit" class="as-btn as-btn-outline">Book Free Inbox Audit</a>
+                    <div class="as-hero-left">
+                        <div class="as-hero-copy">
+                            <p class="as-kicker">AIStaff.click · by Marga Enterprises</p>
+                            <h1>Stop Losing Sales From Late Facebook Replies</h1>
+                            <p class="as-hero-lead">AIStaff is your <strong>AI Inbox Sales Assistant</strong> for Facebook Messenger—reply instantly, qualify leads, draft quotations, and see if your ad spend is actually turning into revenue.</p>
                         </div>
-                        <p class="as-trust">Operated by <strong>Marga Enterprises</strong> · Pay setup via <strong>Xendit</strong> (verified merchant) · <a href="mailto:sales@aistaff.click" style="color:#93c5fd;">sales@aistaff.click</a></p>
+                        <div class="as-hero-actions">
+                            <div class="as-cta-row">
+                                <a href="https://m.me/1164341106754995" class="as-btn as-btn-messenger" target="_blank" rel="noopener" id="cta-messenger-hero">Try on Messenger</a>
+                                <a href="#inbox-audit" class="as-btn as-btn-outline">Book Free Inbox Audit</a>
+                            </div>
+                            <p class="as-trust">Operated by <strong>Marga Enterprises</strong> · Pay setup via <strong>Xendit</strong> (verified merchant) · <a href="mailto:sales@aistaff.click" style="color:#93c5fd;">sales@aistaff.click</a></p>
+                        </div>
                     </div>
-                    <div class="as-mock-phone" aria-hidden="true">
-                        <div class="as-mock-head">
-                            <span class="as-mock-avatar">ME</span>
-                            <span>Your Business Page · Active now</span>
+                    <div class="as-hero-stage" id="hero-stage" aria-label="AIStaff demo: inquiry to revenue">
+                        <div class="as-mock-phone as-hero-phone">
+                            <div class="as-mock-head">
+                                <span class="as-mock-avatar" id="hero-avatar">SV</span>
+                                <span id="hero-head-title">SecureView CCTV · Active now</span>
+                            </div>
+                            <div class="as-hero-viewport">
+                                <div class="as-hero-beat is-active" data-beat="inquiry">
+                                    <div class="as-bubble in">Hi po, need CCTV for small office. 200sqm, 4 cameras enough?<span class="time">8:42 PM</span></div>
+                                    <div class="as-bubble out">Good evening po! SecureView here. Para ma-quote tama: indoor or outdoor, ilang days recording, at location ng office?<span class="time">8:42 PM · Instant</span></div>
+                                    <div class="as-bubble in">BGC po, indoor, 14 days storage. 09171234567 · jessa@bgcoffice.ph<span class="time">8:43 PM</span></div>
+                                    <div class="as-bubble out">Salamat po! Lead saved ✅ Score: <strong>Hot</strong>. Quotation draft ready for your approval.<span class="time">8:43 PM</span></div>
+                                </div>
+                                <div class="as-hero-beat" data-beat="quote">
+                                    <div class="as-bubble out">Hi Jessa po — here is your quotation for BGC office CCTV:<span class="time">8:44 PM</span></div>
+                                    <div class="as-quote-card">
+                                        <div class="as-quote-card-head">SecureView Office Package</div>
+                                        <div class="as-quote-card-body">
+                                            4× 4MP indoor cameras<br>
+                                            NVR · 14-day storage<br>
+                                            Installation &amp; setup
+                                            <div class="as-quote-card-price">₱42,500</div>
+                                            <span class="as-quote-badge">Approved &amp; sent</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="as-hero-beat" data-beat="paid">
+                                    <div class="as-pay-card">
+                                        <div class="as-pay-icon">✓</div>
+                                        <strong>Payment received</strong>
+                                        <span>Deposit via Xendit</span>
+                                        <div class="as-pay-amount">₱12,750</div>
+                                    </div>
+                                    <div class="as-bubble out">Install schedule sent po, Jessa. Team arrives Tuesday 9 AM. Salamat!<span class="time">9:02 PM</span></div>
+                                </div>
+                                <div class="as-hero-beat" data-beat="dashboard">
+                                    <div class="as-phone-dash">
+                                        <div class="as-phone-dash-top">
+                                            <strong>AIStaff · SecureView</strong>
+                                            <span style="color:#94a3b8;">Sample view</span>
+                                        </div>
+                                        <div class="as-phone-kpis">
+                                            <div class="as-phone-kpi"><label>Leads</label><strong>12</strong></div>
+                                            <div class="as-phone-kpi hot"><label>Hot</label><strong>4</strong></div>
+                                            <div class="as-phone-kpi"><label>Quoted</label><strong>3</strong></div>
+                                        </div>
+                                        <div class="as-phone-lead">
+                                            <strong>Jessa</strong> · BGC office
+                                            <span class="tag">Hot</span>
+                                            <div style="color:#94a3b8;margin-top:4px;">Quotation sent · Awaiting install</div>
+                                        </div>
+                                        <div class="as-auto-toast">
+                                            ✉️ Email Day 3 sent<br>
+                                            💬 Messenger reminder queued
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="as-hero-beat" data-beat="roi">
+                                    <div class="as-phone-dash as-phone-roi">
+                                        <div class="as-phone-dash-top">
+                                            <strong>Ad ROI · This week</strong>
+                                            <span style="color:#94a3b8;">Sample</span>
+                                        </div>
+                                        <p class="as-phone-roi-title">Spend → leads → quoted → revenue</p>
+                                        <div class="as-phone-roi-bars">
+                                            <div class="as-phone-roi-col"><div class="bar" style="--h:32%;"></div>Ad spend<br><strong>₱3.2k</strong></div>
+                                            <div class="as-phone-roi-col"><div class="bar" style="--h:68%;"></div>Leads<br><strong>24</strong></div>
+                                            <div class="as-phone-roi-col"><div class="bar" style="--h:48%;"></div>Quoted<br><strong>9</strong></div>
+                                            <div class="as-phone-roi-col"><div class="bar" style="--h:88%;"></div>Paid<br><strong>₱186k</strong></div>
+                                        </div>
+                                        <div class="as-phone-roi-rev">
+                                            <label>Revenue (7 days)</label>
+                                            <strong id="hero-rev-count">₱186k</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="as-mock-body">
-                            <div class="as-bubble in">Hi po, magkano copier rental for office? Need color and scan.<span class="time">9:14 PM</span></div>
-                            <div class="as-bubble out">Good evening po! AIStaff here for [Your Page]. Para ma-quote namin ng tama: ilang users, monthly volume, at location ng office?<span class="time">9:14 PM · Instant</span></div>
-                            <div class="as-bubble in">Makati, 8 users, mga 3,000 pages/month color<span class="time">9:15 PM</span></div>
-                            <div class="as-bubble out">Salamat po. Lead saved ✅ Score: Hot. Quotation draft ready for your approval sa dashboard.<span class="time">9:15 PM</span></div>
+                        <div class="as-hero-steps" role="tablist" aria-label="Demo steps">
+                            <span class="as-hero-step is-active" data-step="inquiry" role="tab" aria-selected="true">Inquiry</span>
+                            <span class="as-hero-step" data-step="quote" role="tab" aria-selected="false">Quote</span>
+                            <span class="as-hero-step" data-step="paid" role="tab" aria-selected="false">Paid</span>
+                            <span class="as-hero-step" data-step="dashboard" role="tab" aria-selected="false">Dashboard</span>
+                            <span class="as-hero-step" data-step="roi" role="tab" aria-selected="false">ROI</span>
                         </div>
+                        <div class="as-hero-progress" aria-hidden="true"><span id="hero-progress-bar"></span></div>
                     </div>
                 </div>
             </section>
@@ -971,6 +1464,93 @@
                 alert('Payment link placeholder. Mike: replace ' + link.getAttribute('href') + ' with your Marga Xendit payment URL for ' + (link.dataset.product || 'setup') + '.');
             });
         });
+
+        (function initHeroStage() {
+            var stage = document.getElementById('hero-stage');
+            if (!stage) return;
+
+            var beats = Array.prototype.slice.call(stage.querySelectorAll('.as-hero-beat'));
+            var steps = Array.prototype.slice.call(stage.querySelectorAll('.as-hero-step'));
+            var progressBar = document.getElementById('hero-progress-bar');
+            var headTitle = document.getElementById('hero-head-title');
+            var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var isMobile = window.matchMedia('(max-width: 900px)').matches;
+
+            var sequence = [
+                { id: 'inquiry', ms: isMobile ? 3500 : 4000, head: 'SecureView CCTV · Active now' },
+                { id: 'quote', ms: isMobile ? 3500 : 4000, head: 'SecureView CCTV · Active now' },
+                { id: 'paid', ms: isMobile ? 2500 : 3000, head: 'SecureView CCTV · Active now' },
+                { id: 'dashboard', ms: isMobile ? 4500 : 5000, head: 'AIStaff · SecureView' },
+                { id: 'roi', ms: isMobile ? 4500 : 5000, head: 'AIStaff · SecureView' }
+            ];
+
+            var index = 0;
+            var paused = false;
+            var timer = null;
+            var progressRaf = null;
+            var beatStart = 0;
+
+            function setBeat(i) {
+                index = i;
+                var current = sequence[index];
+                beats.forEach(function (beat) {
+                    beat.classList.remove('is-active');
+                });
+                var activeBeat = beats.find(function (beat) {
+                    return beat.dataset.beat === current.id;
+                });
+                if (activeBeat) {
+                    void activeBeat.offsetWidth;
+                    activeBeat.classList.add('is-active');
+                }
+                steps.forEach(function (step) {
+                    var active = step.dataset.step === current.id;
+                    step.classList.toggle('is-active', active);
+                    step.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+                if (headTitle) headTitle.textContent = current.head;
+            }
+
+            function runProgress(duration) {
+                if (!progressBar) return;
+                if (progressRaf) cancelAnimationFrame(progressRaf);
+                beatStart = performance.now();
+                progressBar.style.width = '0%';
+
+                function tick(now) {
+                    if (paused) {
+                        progressRaf = requestAnimationFrame(tick);
+                        return;
+                    }
+                    var pct = Math.min(100, ((now - beatStart) / duration) * 100);
+                    progressBar.style.width = pct + '%';
+                    if (pct < 100) progressRaf = requestAnimationFrame(tick);
+                }
+
+                progressRaf = requestAnimationFrame(tick);
+            }
+
+            function scheduleNext() {
+                if (reducedMotion) return;
+                clearTimeout(timer);
+                var duration = sequence[index].ms;
+                runProgress(duration);
+                timer = setTimeout(function () {
+                    setBeat((index + 1) % sequence.length);
+                    scheduleNext();
+                }, duration);
+            }
+
+            setBeat(0);
+            if (!reducedMotion) {
+                scheduleNext();
+                stage.addEventListener('mouseenter', function () { paused = true; });
+                stage.addEventListener('mouseleave', function () {
+                    paused = false;
+                    beatStart = performance.now() - (parseFloat(progressBar.style.width) / 100) * sequence[index].ms;
+                });
+            }
+        })();
     </script>
 </body>
 </html>
