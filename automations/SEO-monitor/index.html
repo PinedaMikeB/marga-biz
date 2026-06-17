@@ -4,387 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marga SEO Monitor</title>
-    <meta name="description" content="Printer-focused daily SEO monitor for Marga Biz with rankings, daily tasks, and a manual keyword checker.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Minimal SEO and AI search progress monitor for Marga Biz.">
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <div class="app-shell">
-        <header class="topbar">
-            <div class="topbar-copy">
-                <p class="eyebrow">Marga Biz</p>
-                <h1>SEO Monitor</h1>
-                <p class="lede">A simple daily board for printer ranking checks, task runs, and manual keyword tracking.</p>
-            </div>
-
-            <div class="toolbar">
-                <label class="field">
-                    <span>Days</span>
-                    <select id="daysSelect">
-                        <option value="3">3</option>
-                        <option value="5" selected>5</option>
-                        <option value="7">7</option>
-                        <option value="10">10</option>
-                    </select>
-                </label>
-                <button id="refreshButton" class="button button-primary" type="button">Refresh</button>
-                <button id="runTodayButton" class="button button-secondary" type="button">Run Today</button>
-                <a class="button button-tertiary" href="/admin/insights/seo.html">Open Insights</a>
-            </div>
+    <main class="home">
+        <header class="top">
+            <button id="menuButton" class="menu-button" type="button" aria-expanded="false" aria-controls="monitorDrawer" aria-label="Open monitor menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1>SEO Monitor</h1>
         </header>
+    </main>
 
-        <section class="summary-grid" id="summaryGrid">
-            <article class="summary-card">
-                <span class="summary-label">Tracked Keywords</span>
-                <strong id="trackedKeywords">--</strong>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Latest Snapshot</span>
-                <strong id="latestSnapshot">--</strong>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Open Tasks</span>
-                <strong id="openTasks">--</strong>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Generated</span>
-                <strong id="generatedAt">--</strong>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Automation</span>
-                <strong id="automationState">--</strong>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Goal Score</span>
-                <strong id="goalScore">--</strong>
-            </article>
-            <article class="summary-card">
-                <span class="summary-label">Copier Score</span>
-                <strong id="copierGoalScore">--</strong>
-            </article>
-        </section>
-
-        <section class="panel goal-panel">
-            <div class="panel-heading">
-                <div>
-                    <p class="panel-kicker">Printer SEO Goal</p>
-                    <h2>Path To #1</h2>
-                </div>
-                <div class="panel-meta">
-                    <form id="goalManualKeywordForm" class="goal-keyword-form">
-                        <label class="field goal-field">
-                            <span>Add Keyword To SEO</span>
-                            <input id="goalManualKeywordInput" name="keyword" type="text" placeholder="Example: printer rental pasig">
-                        </label>
-                        <button id="goalManualKeywordButton" class="button button-secondary" type="submit">Add Keyword</button>
-                    </form>
-                    <span id="goalSummaryPill" class="status-pill info">Tracking goal</span>
-                </div>
-            </div>
-
-            <div class="goal-overview">
-                <div class="goal-score-block">
-                    <span class="summary-label">Overall progress</span>
-                    <strong id="goalOverallScore">--</strong>
-                    <p id="goalSummaryText" class="card-copy">Loading printer keyword progress...</p>
-                    <div id="goalMetricGuidance" class="result-card result-muted">Keyword cards will use weekly Search Console clicks and CTR.</div>
-                </div>
-                <div class="goal-progress-block">
-                    <div class="progress-header">
-                        <span>Cluster progress</span>
-                        <strong id="goalProgressLabel">0%</strong>
-                    </div>
-                    <div class="progress-track progress-track-large">
-                        <div id="goalProgressBar" class="progress-fill" style="width: 0%;"></div>
-                    </div>
-                    <div class="goal-metrics" id="goalMetrics">
-                        <span class="chip">Top 1: --</span>
-                        <span class="chip">Top 3: --</span>
-                        <span class="chip">Top 5: --</span>
-                        <span class="chip">Missing: --</span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="goalKeywordGrid" class="goal-keyword-grid">
-                <article class="goal-keyword-card">
-                    <span class="summary-label">Loading</span>
-                    <strong>Loading keyword targets...</strong>
-                </article>
-            </div>
-        </section>
-
-        <section class="panel goal-panel">
-            <div class="panel-heading">
-                <div>
-                    <p class="panel-kicker">Copier Local Expansion</p>
-                    <h2>Protected Winners And Location Growth</h2>
-                </div>
-                <div class="panel-meta">
-                    <span id="copierSummaryPill" class="status-pill info">Monitor protected winners</span>
-                </div>
-            </div>
-
-            <div class="goal-overview">
-                <div class="goal-score-block">
-                    <span class="summary-label">Local expansion score</span>
-                    <strong id="copierOverallScore">--</strong>
-                    <p id="copierSummaryText" class="card-copy">Loading copier local keyword progress...</p>
-                    <div id="copierMetricGuidance" class="result-card result-muted">Protected copier winners stay monitor-only. Automation is for copier location growth pages and support content.</div>
-                </div>
-                <div class="goal-progress-block">
-                    <div class="progress-header">
-                        <span>Copier local progress</span>
-                        <strong id="copierProgressLabel">0%</strong>
-                    </div>
-                    <div class="progress-track progress-track-large">
-                        <div id="copierProgressBar" class="progress-fill" style="width: 0%;"></div>
-                    </div>
-                    <div class="goal-metrics" id="copierMetrics">
-                        <span class="chip">Top 1: --</span>
-                        <span class="chip">Top 3: --</span>
-                        <span class="chip">Top 5: --</span>
-                        <span class="chip">Missing: --</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel-heading panel-heading-tight">
-                <div>
-                    <p class="panel-kicker">Protected winners</p>
-                    <h2>Monitor Only</h2>
-                </div>
-            </div>
-            <div id="copierProtectedGrid" class="goal-keyword-grid">
-                <article class="goal-keyword-card">
-                    <span class="summary-label">Loading</span>
-                    <strong>Loading protected copier winners...</strong>
-                </article>
-            </div>
-
-            <div class="panel-heading panel-heading-tight monitor-gap-heading">
-                <div>
-                    <p class="panel-kicker">Copier local targets</p>
-                    <h2>Location Expansion</h2>
-                </div>
-            </div>
-            <div id="copierKeywordGrid" class="goal-keyword-grid">
-                <article class="goal-keyword-card">
-                    <span class="summary-label">Loading</span>
-                    <strong>Loading copier location targets...</strong>
-                </article>
-            </div>
-        </section>
-
-        <section class="panel automation-panel">
-            <div class="panel-heading">
-                <div>
-                    <p class="panel-kicker">Automation</p>
-                    <h2>Live Run Status</h2>
-                </div>
-                <div class="panel-meta">
-                    <span id="automationStatusPill" class="status-pill scheduled">Scheduled</span>
-                </div>
-            </div>
-
-            <div class="automation-grid">
-                <article class="automation-card">
-                    <div class="automation-info-grid">
-                        <div>
-                            <span class="summary-label">Current Step</span>
-                            <strong id="automationStep">Waiting for a live automation status update.</strong>
-                        </div>
-                        <div>
-                            <span class="summary-label">Last Update</span>
-                            <strong id="automationUpdatedAt">--</strong>
-                        </div>
-                        <div>
-                            <span class="summary-label">Next Run</span>
-                            <strong id="automationNextRun">--</strong>
-                        </div>
-                        <div>
-                            <span class="summary-label">Last Success</span>
-                            <strong id="automationLastSuccess">--</strong>
-                        </div>
-                    </div>
-
-                    <div id="automationMessage" class="result-card result-muted">The local launcher will post its progress here while the SEO batch runs.</div>
-
-                    <div class="log-excerpt-wrap">
-                        <span class="summary-label">Live Log Excerpt</span>
-                        <pre id="automationLogExcerpt" class="log-excerpt">Waiting for automation output...</pre>
-                    </div>
-                </article>
-
-                <article class="automation-card">
-                    <div class="panel-heading panel-heading-tight">
-                        <div>
-                            <p class="panel-kicker">Automation activity</p>
-                            <h2>Recent Steps</h2>
-                        </div>
-                    </div>
-                    <div class="table-wrap">
-                        <table class="report-table compact-table" id="automationEventsTable">
-                            <thead></thead>
-                            <tbody>
-                                <tr><td class="loading-row">Loading automation activity...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section class="action-grid">
-            <article class="action-card">
-                <div class="card-heading">
-                    <div>
-                        <p class="panel-kicker">Daily printer run</p>
-                        <h2>Run Today</h2>
-                    </div>
-                    <span class="chip">Printer only</span>
-                </div>
-                <p class="card-copy">Runs today’s printer SEO checks: rankings, competitor snapshot, analytics snapshot, and printer page scans.</p>
-                <div id="runTodayResult" class="result-card result-muted">Waiting to run today’s printer task pack.</div>
-            </article>
-
-            <article class="action-card">
-                <div class="card-heading">
-                    <div>
-                        <p class="panel-kicker">Completed work</p>
-                        <h2>Record Published Work</h2>
-                    </div>
-                </div>
-                <form id="completionForm" class="stack-form">
-                    <label class="field">
-                        <span>Task</span>
-                        <select id="completionTaskSelect" name="task_key">
-                            <option value="">Select a task</option>
-                        </select>
-                    </label>
-                    <label class="field">
-                        <span>Implementation Summary</span>
-                        <input id="completionImplementationInput" name="implementation" type="text" placeholder="Example: Improved printer-rental page FAQ, CTA, and schema then deployed live">
-                    </label>
-                    <label class="field">
-                        <span>Target Page Keyword</span>
-                        <input id="completionTargetInput" name="target" type="text" placeholder="Example: Printer Rental">
-                    </label>
-                    <label class="field">
-                        <span>Live Page URL</span>
-                        <input id="completionLinkInput" name="link" type="url" placeholder="https://marga.biz/printer-rental/">
-                    </label>
-                    <button id="completionButton" class="button button-primary" type="submit">Mark Done</button>
-                </form>
-                <div id="completionResult" class="result-card result-muted">After a page or blog is deployed, record it here and the task queue will show Done plus the live URL.</div>
-            </article>
-
-            <article class="action-card">
-                <div class="card-heading">
-                    <div>
-                        <p class="panel-kicker">Keyword guidance</p>
-                        <h2>Why These Metrics</h2>
-                    </div>
-                </div>
-                <p class="card-copy">Use keyword-level clicks and CTR to judge search demand and snippet performance. Track page visits and conversions separately on the landing page those keywords are meant to rank.</p>
-                <div id="manualKeywordResult" class="result-card result-muted">New manual keywords added in the goal section will appear in your tracked keyword set after a live check.</div>
-            </article>
-        </section>
-
-        <section class="panel">
-            <div class="panel-heading">
-                <div>
-                    <p class="panel-kicker">Daily rank sheet</p>
-                    <h2>Keyword Positions</h2>
-                </div>
-                <div class="panel-meta" id="sourceCollections"></div>
-            </div>
-            <div class="table-wrap">
-                <table class="report-table" id="rankingsTable">
-                    <thead></thead>
-                    <tbody>
-                        <tr><td class="loading-row">Loading keyword positions...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section class="panel">
-            <div class="panel-heading">
-                <div>
-                    <p class="panel-kicker">Daily gap loop</p>
-                    <h2>Goals And Gaps To Fix</h2>
-                </div>
-            </div>
-            <div class="table-wrap">
-                <table class="report-table compact-table" id="gapsTable">
-                    <thead></thead>
-                    <tbody>
-                        <tr><td class="loading-row">Loading gap signals...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section class="panel">
-            <div class="panel-heading">
-                <div>
-                    <p class="panel-kicker">Copier gap loop</p>
-                    <h2>Protected Winners And Copier Gaps</h2>
-                </div>
-            </div>
-            <div class="table-wrap">
-                <table class="report-table compact-table" id="copierGapsTable">
-                    <thead></thead>
-                    <tbody>
-                        <tr><td class="loading-row">Loading copier gap signals...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <div class="split-panels">
-            <section class="panel">
-                <div class="panel-heading">
-                    <div>
-                        <p class="panel-kicker">Recent movement</p>
-                        <h2>Logs</h2>
-                    </div>
-                </div>
-                <div class="table-wrap">
-                    <table class="report-table compact-table" id="logsTable">
-                        <thead></thead>
-                        <tbody>
-                            <tr><td class="loading-row">Loading logs...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <section class="panel">
-                <div class="panel-heading">
-                    <div>
-                        <p class="panel-kicker">Regular daily tasks</p>
-                        <h2>Task Queue</h2>
-                    </div>
-                </div>
-                <div class="table-wrap">
-                    <table class="report-table compact-table" id="tasksTable">
-                        <thead></thead>
-                        <tbody>
-                            <tr><td class="loading-row">Loading tasks...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+    <aside id="monitorDrawer" class="drawer" aria-label="SEO monitor controls" hidden>
+        <div class="drawer-head">
+            <strong>Monitor</strong>
+            <button id="closeMenuButton" class="close-button" type="button" aria-label="Close monitor menu">Close</button>
         </div>
 
-        <footer class="footer-note">
-            <span id="statusText">Waiting for report data...</span>
-        </footer>
-    </div>
+        <label>
+            <span>Keyword</span>
+            <select id="keywordSelect">
+                <option value="all">All keywords</option>
+                <option value="Copier Rental">Copier Rental</option>
+                <option value="Copier For Rent">Copier For Rent</option>
+                <option value="Printer Rental">Printer Rental</option>
+                <option value="Printer For Rent">Printer For Rent</option>
+            </select>
+        </label>
+
+        <div class="date-grid">
+            <label>
+                <span>From</span>
+                <input id="fromDate" type="date">
+            </label>
+            <label>
+                <span>To</span>
+                <input id="toDate" type="date">
+            </label>
+        </div>
+
+        <section class="graph-block" aria-label="Progress graph">
+            <div id="circleGraph" class="circle-graph" aria-live="polite"></div>
+            <div class="progress-area">
+                <div class="progress-head">
+                    <span id="selectedKeywordLabel">All keywords</span>
+                    <strong id="scoreLabel">--</strong>
+                </div>
+                <div class="progress-track">
+                    <div id="progressBar" class="progress-fill"></div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="drawer-actions" aria-label="Monitor actions">
+            <button id="refreshButton" type="button">Refresh</button>
+            <button id="runTodayButton" type="button">Run</button>
+            <a href="/admin/insights/seo.html">Insights</a>
+        </nav>
+
+        <footer id="statusText" class="status">Loading...</footer>
+    </aside>
+
+    <div id="drawerBackdrop" class="backdrop" hidden></div>
 
     <script src="./app.js" defer></script>
 </body>

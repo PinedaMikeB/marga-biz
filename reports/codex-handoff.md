@@ -1,6 +1,6 @@
 # Codex Handoff
 
-Updated: 2026-06-12
+Updated: 2026-06-17
 
 ## What Transfers Cleanly
 
@@ -43,7 +43,8 @@ Use these first on the other Mac:
 
 ## Deploy / Live Testing (Mike preference)
 
-- After every **site-visible** change (HTML/CSS/JS in `static-pages/`, `dist/`, `components/`, `admin/`, `_redirects`, etc.), agents must **commit and push to `main`** so Mike can test on production immediately.
+- After every **site-visible** change (HTML/CSS/JS in `static-pages/`, `dist/`, `components/`, `admin/`, `automations/seo-monitor/`, `_redirects`, etc.), agents must **commit and push to `main` before reporting done** so Mike can test in production/incognito immediately.
+- Do not say a site-visible change is done while it only exists locally. If Mike asks for a visible change, the default finish line is: source update, generated `dist` update, relevant verification, narrow commit, `git push origin main`.
 - Netlify auto-deploys from `main`; publish root is `dist/`. If source lives under `static-pages/`, copy the matching built file into `dist/` before push.
 - Prefer `git push origin main` over manual `npm run deploy` unless functions or Netlify config need a CLI deploy.
 - Keep commits narrow: do not bundle unrelated Facebook, Telegram, HR, SEO report, or function zip changes into a site push.
