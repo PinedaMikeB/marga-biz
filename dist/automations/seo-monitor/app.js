@@ -59,6 +59,7 @@ const elements = {
     toDate: document.getElementById('toDate'),
     refreshButton: document.getElementById('refreshButton'),
     runTodayButton: document.getElementById('runTodayButton'),
+    analyzeButton: document.getElementById('analyzeButton'),
     circleGraph: document.getElementById('circleGraph'),
     selectedKeywordLabel: document.getElementById('selectedKeywordLabel'),
     scoreLabel: document.getElementById('scoreLabel'),
@@ -66,6 +67,7 @@ const elements = {
     equivalentRank: document.getElementById('equivalentRank'),
     rankingData: document.getElementById('rankingData'),
     aiSourceGrid: document.getElementById('aiSourceGrid'),
+    analysisTable: document.getElementById('analysisTable'),
     improvementText: document.getElementById('improvementText'),
     scheduleText: document.getElementById('scheduleText'),
     statusText: document.getElementById('statusText')
@@ -105,6 +107,11 @@ function findRanking(keyword) {
     return (state.data?.rankings || []).find((item) => normalizeKeyword(item.keyword) === normalized) || null;
 }
 
+function findAnalysisRow(keyword) {
+    const normalized = normalizeKeyword(keyword);
+    return (state.data?.aiSearchTable?.rows || []).find((item) => normalizeKeyword(item.keyword) === normalized) || null;
+}
+
 function scorePosition(position) {
     if (position == null) return 0;
     if (position <= 1) return 100;
@@ -125,16 +132,23 @@ function scoreEquivalentFromPosition(position) {
 
 function getSelectedRankings() {
     if (state.keyword !== 'all') {
-        return [{ keyword: state.keyword, ranking: findRanking(state.keyword) }];
+        return [{ keyword: state.keyword, ranking: findRanking(state.keyword), analysis: findAnalysisRow(state.keyword) }];
     }
 
-    return KEYWORDS.map((keyword) => ({ keyword, ranking: findRanking(keyword) }));
+    return KEYWORDS.map((keyword) => ({ keyword, ranking: findRanking(keyword), analysis: findAnalysisRow(keyword) }));
 }
 
 function getScore() {
     if (state.keyword !== 'all') {
+        const analysis = findAnalysisRow(state.keyword);
+        if (analysis?.score != null) return analysis.score;
+
         const ranking = findRanking(state.keyword);
         return scorePosition(ranking?.latestPosition ?? ranking?.position ?? null);
+    }
+
+    if (state.data?.aiSearchTable?.averageScore != null) {
+        return state.data.aiSearchTable.averageScore;
     }
 
     const scores = KEYWORDS.map((keyword) => {
@@ -145,7 +159,10 @@ function getScore() {
     return Math.round(scores.reduce((sum, item) => sum + item, 0) / scores.length);
 }
 
-function getAiStatus(source, ranking) {
+function getAiStatus(source, ranking, analysis) {
+    const sourceRow = (analysis?.aiRankings || []).find((item) => item.engine === source);
+    if (sourceRow?.status) return sourceRow.status;
+
     if (source === 'Google Search') {
         const position = ranking?.latestPosition ?? ranking?.position;
         return position == null ? 'Not found' : `#${position}`;
@@ -158,38 +175,105 @@ function getAiStatus(source, ranking) {
     return 'Needs check';
 }
 
+function getPosition(item) {
+    return item.analysis?.googleSearch?.position ?? item.ranking?.latestPosition ?? item.ranking?.position ?? null;
+}
+
+function renderAnalysisTable(selectedRankings) {
+    if (state.keyword === 'all') {
+        elements.analysisTable.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Keyword</th>
+                        <th>Score</th>
+                        <th>Google</th>
+                        <th>AI status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${selectedRankings.map((item) => {
+                        const position = getPosition(item);
+                        const aiChecked = (item.analysis?.aiRankings || []).filter((source) => source.status && source.status !== 'Needs check').length;
+                        return `
+                            <tr>
+                                <td>${item.keyword}</td>
+                                <td>${item.analysis?.score ?? scorePosition(position)}%</td>
+                                <td>${position == null ? 'Not found' : `#${position}`}</td>
+                                <td>${aiChecked}/8 checked</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+        `;
+        return;
+    }
+
+    const analysis = selectedRankings[0]?.analysis;
+    const rows = analysis?.aiRankings || AI_SOURCES.map((source) => ({
+        engine: source,
+        status: getAiStatus(source, selectedRankings[0]?.ranking, analysis),
+        source: source === 'Google Search' ? 'Ranking history' : 'Manual AI answer check required'
+    }));
+
+    elements.analysisTable.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Status</th>
+                    <th>Evidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${rows.map((row) => `
+                    <tr>
+                        <td>${row.engine}</td>
+                        <td>${row.status}</td>
+                        <td>${row.url ? `<a href="${row.url}" target="_blank" rel="noopener">Open</a>` : row.source || '--'}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
 function renderDetails(score) {
     const selected = state.keyword === 'all' ? 'all' : state.keyword;
     const config = KEYWORD_DETAILS[selected] || KEYWORD_DETAILS.all;
     const selectedRankings = getSelectedRankings();
     const primaryRanking = selectedRankings[0]?.ranking || null;
-    const primaryPosition = primaryRanking?.latestPosition ?? primaryRanking?.position ?? null;
+    const primaryAnalysis = selectedRankings[0]?.analysis || null;
+    const primaryPosition = primaryAnalysis?.googleSearch?.position ?? primaryRanking?.latestPosition ?? primaryRanking?.position ?? null;
 
     elements.equivalentRank.textContent = state.keyword === 'all'
         ? `Average of money keywords = ${score}%`
-        : scoreEquivalentFromPosition(primaryPosition);
+        : primaryAnalysis?.equivalent || scoreEquivalentFromPosition(primaryPosition);
 
     if (state.keyword === 'all') {
         elements.rankingData.textContent = selectedRankings
             .map((item) => {
-                const position = item.ranking?.latestPosition ?? item.ranking?.position;
+                const position = getPosition(item);
                 return `${item.keyword}: ${position == null ? 'not found' : `#${position}`}`;
             })
             .join(' | ');
     } else {
-        const url = primaryRanking?.latestUrl || primaryRanking?.url || config.targetPath;
+        const url = primaryAnalysis?.googleSearch?.url || primaryRanking?.latestUrl || primaryRanking?.url || config.targetPath;
         elements.rankingData.textContent = `${state.keyword}: ${primaryPosition == null ? 'not found' : `#${primaryPosition}`} | Target: ${url}`;
     }
 
     elements.aiSourceGrid.innerHTML = AI_SOURCES.map((source) => `
         <div class="ai-source">
             <span>${source}</span>
-            <strong>${getAiStatus(source, primaryRanking)}</strong>
+            <strong>${getAiStatus(source, primaryRanking, primaryAnalysis)}</strong>
         </div>
     `).join('');
 
-    elements.improvementText.textContent = config.improvement;
-    elements.scheduleText.textContent = config.schedule;
+    renderAnalysisTable(selectedRankings);
+
+    elements.improvementText.textContent = primaryAnalysis?.improvement || config.improvement;
+    elements.scheduleText.textContent = primaryAnalysis?.schedule || config.schedule;
 }
 
 function renderCircle(score) {
@@ -266,6 +350,31 @@ async function runToday() {
     }
 }
 
+async function runAnalyze() {
+    setBusy(elements.analyzeButton, true, 'Analyze');
+    elements.statusText.textContent = 'Analyzing money keywords...';
+
+    try {
+        const payload = await fetchJson('/.netlify/functions/seo-monitor-actions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'analyze_ai_search' })
+        });
+
+        state.data = {
+            ...(state.data || {}),
+            aiSearchTable: payload.data
+        };
+        render();
+        elements.statusText.textContent = `Analysis table updated ${new Date(payload.data.updatedAtIso).toLocaleString('en-US', { timeZone: 'Asia/Manila' })}`;
+    } catch (error) {
+        console.error(error);
+        elements.statusText.textContent = error.message;
+    } finally {
+        setBusy(elements.analyzeButton, false, 'Analyze');
+    }
+}
+
 function syncStateFromControls() {
     state.keyword = elements.keywordSelect.value;
     state.from = elements.fromDate.value || getManilaDate(-4);
@@ -299,6 +408,7 @@ elements.refreshButton.addEventListener('click', () => {
 });
 
 elements.runTodayButton.addEventListener('click', runToday);
+elements.analyzeButton.addEventListener('click', runAnalyze);
 elements.menuButton.addEventListener('click', () => setMenuOpen(elements.menuPanel.hidden));
 
 initializeControls();

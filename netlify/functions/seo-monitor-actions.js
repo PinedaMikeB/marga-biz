@@ -35,6 +35,44 @@ const DAILY_PRINTER_PAGES = [
     '/printer-rental/pasig/',
     '/printer-rental/quezon-city/'
 ];
+const MONEY_KEYWORDS = [
+    'Copier Rental',
+    'Copier For Rent',
+    'Printer Rental',
+    'Printer For Rent'
+];
+const AI_SEARCH_ENGINES = [
+    'ChatGPT',
+    'Claude',
+    'Perplexity',
+    'Gemini',
+    'Copilot',
+    'Google AI',
+    'Google Search',
+    'Bing'
+];
+const MONEY_KEYWORD_DETAILS = {
+    'Copier Rental': {
+        targetPath: '/',
+        improvement: 'Protect the winner. Add concise AI answer wording, FAQ proof, maintenance/setup details, and external review mentions without weakening the existing broad copier ranking.',
+        schedule: 'Monday focus: verify SEO rank, test ChatGPT/Claude/Perplexity/Gemini/Copilot, then add one proof or FAQ improvement if a source misses Marga.'
+    },
+    'Copier For Rent': {
+        targetPath: '/copier-rental/copier-for-rent/',
+        improvement: 'Clarify rental intent: who should rent, what details affect quote, setup/maintenance inclusion, and city coverage. Make this page the preferred citation for “copier for rent.”',
+        schedule: 'Tuesday focus: AI prompt checks, page answer block check, FAQ/schema update, and one outside mention or customer proof item.'
+    },
+    'Printer Rental': {
+        targetPath: '/printer-rental/',
+        improvement: 'Strengthen the printer rental hub as the answer page for offices comparing setup, maintenance, monthly volume, Print All You Can, and city support.',
+        schedule: 'Wednesday focus: SEO rank, AI prompt checks, internal links from support pages, and one buyer-question section improvement.'
+    },
+    'Printer For Rent': {
+        targetPath: '/printer-rental/printer-for-rent/',
+        improvement: 'Make equipment-fit intent clear: printer type, users, volume, mono/color, scan/copy needs, and when rental is better than buying.',
+        schedule: 'Thursday focus: AI prompt checks, quote-readiness copy, FAQ/schema, and proof linking back to the printer-for-rent page.'
+    }
+};
 
 function getManilaDateKey(input = new Date()) {
     const date = input instanceof Date ? input : new Date(input);
@@ -91,6 +129,114 @@ function extractDomain(url) {
     } catch {
         return url;
     }
+}
+
+function scorePosition(position) {
+    if (position == null) return 0;
+    if (position <= 1) return 100;
+    if (position <= 3) return 80;
+    if (position <= 5) return 65;
+    if (position <= 10) return 40;
+    return 15;
+}
+
+function scoreEquivalentFromPosition(position) {
+    if (position == null) return 'Not found = 0%';
+    if (position <= 1) return '#1 = 100%';
+    if (position <= 3) return '#2-3 = 80%';
+    if (position <= 5) return '#4-5 = 65%';
+    if (position <= 10) return '#6-10 = 40%';
+    return 'Below top 10 = 15%';
+}
+
+function buildAiRankingRows(result) {
+    const position = result.ranking?.position || null;
+
+    return AI_SEARCH_ENGINES.map((engine) => {
+        if (engine === 'Google Search') {
+            return {
+                engine,
+                status: position == null ? 'Not found' : `#${position}`,
+                position,
+                url: result.ranking?.url || null,
+                source: 'Serper Google organic search, Philippines',
+                checkedAt: result.checkedAt
+            };
+        }
+
+        return {
+            engine,
+            status: 'Needs check',
+            position: null,
+            url: null,
+            source: 'Manual AI answer check required',
+            checkedAt: null
+        };
+    });
+}
+
+function buildMoneyKeywordRow(result) {
+    const position = result.ranking?.position || null;
+    const details = MONEY_KEYWORD_DETAILS[result.keyword] || {};
+
+    return {
+        keyword: result.keyword,
+        targetPath: details.targetPath || null,
+        score: scorePosition(position),
+        equivalent: scoreEquivalentFromPosition(position),
+        googleSearch: {
+            position,
+            status: position == null ? 'Not found' : `#${position}`,
+            url: result.ranking?.url || null,
+            title: result.ranking?.title || null,
+            snippet: result.ranking?.snippet || null,
+            checkedAt: result.checkedAt
+        },
+        aiRankings: buildAiRankingRows(result),
+        improvement: details.improvement || '',
+        schedule: details.schedule || '',
+        competitors: result.competitors.slice(0, 5),
+        peopleAlsoAsk: result.peopleAlsoAsk,
+        relatedSearches: result.relatedSearches
+    };
+}
+
+async function analyzeAiSearchTable(db) {
+    const rows = await Promise.all(MONEY_KEYWORDS.map(async (keyword) => {
+        const result = await checkRanking(keyword);
+        await storeRankingHistory(db, keyword, result);
+        return buildMoneyKeywordRow(result);
+    }));
+    const averageScore = Math.round(rows.reduce((sum, item) => sum + item.score, 0) / rows.length);
+    const updatedAtIso = new Date().toISOString();
+    const table = {
+        id: 'money_keywords',
+        updatedAtIso,
+        averageScore,
+        rows,
+        scoringLogic: [
+            '#1 = 100%',
+            '#2-3 = 80%',
+            '#4-5 = 65%',
+            '#6-10 = 40%',
+            'below top 10 = 15%',
+            'not found = 0%'
+        ],
+        sourceNote: 'Google Search is scanned on demand with Serper. AI engines are stored in the same table and marked Needs check until each engine is manually or API verified.'
+    };
+
+    await db.collection('seo_monitor_ai_search_tables').doc('money_keywords').set({
+        ...table,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    await logActivity(db, 'seo_monitor_ai_search_analyze', {
+        keywordCount: rows.length,
+        averageScore,
+        updatedAtIso
+    });
+
+    return table;
 }
 
 async function searchGoogle(query) {
@@ -538,6 +684,19 @@ exports.handler = async (event) => {
             };
         }
 
+        if (action === 'analyze_ai_search') {
+            const result = await analyzeAiSearchTable(db);
+
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    success: true,
+                    data: result
+                })
+            };
+        }
+
         if (action === 'complete_task') {
             const result = await recordTaskCompletion(db, body);
 
@@ -567,7 +726,7 @@ exports.handler = async (event) => {
         return {
             statusCode: 400,
             headers,
-            body: JSON.stringify({ success: false, error: 'Invalid action. Use run_today, track_keyword, complete_task, or update_automation_status.' })
+            body: JSON.stringify({ success: false, error: 'Invalid action. Use run_today, analyze_ai_search, track_keyword, complete_task, or update_automation_status.' })
         };
     } catch (error) {
         console.error('SEO monitor action error:', error);

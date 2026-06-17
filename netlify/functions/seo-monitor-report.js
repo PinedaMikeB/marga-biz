@@ -947,6 +947,49 @@ async function getAutomationEvents(db) {
     }
 }
 
+async function getAiSearchTable(db) {
+    try {
+        const doc = await db.collection('seo_monitor_ai_search_tables').doc('money_keywords').get();
+        if (!doc.exists) {
+            return {
+                id: 'money_keywords',
+                updatedAtIso: null,
+                averageScore: null,
+                rows: [],
+                scoringLogic: [
+                    '#1 = 100%',
+                    '#2-3 = 80%',
+                    '#4-5 = 65%',
+                    '#6-10 = 40%',
+                    'below top 10 = 15%',
+                    'not found = 0%'
+                ],
+                sourceNote: 'Click Analyze to create the persistent AI/search table.'
+            };
+        }
+
+        const table = doc.data();
+        return {
+            id: table.id || 'money_keywords',
+            updatedAtIso: table.updatedAtIso || null,
+            averageScore: table.averageScore ?? null,
+            rows: Array.isArray(table.rows) ? table.rows : [],
+            scoringLogic: Array.isArray(table.scoringLogic) ? table.scoringLogic : [],
+            sourceNote: table.sourceNote || ''
+        };
+    } catch (error) {
+        console.warn('Unable to load SEO monitor AI search table:', error.message);
+        return {
+            id: 'money_keywords',
+            updatedAtIso: null,
+            averageScore: null,
+            rows: [],
+            scoringLogic: [],
+            sourceNote: error.message
+        };
+    }
+}
+
 async function getKeywordHistory(db, keywordLabel, days, snapshotFallbackMap) {
     const docId = keywordToDocId(keywordLabel);
     const ref = db.collection('marga_rankings').doc(docId);
@@ -1070,6 +1113,7 @@ exports.handler = async (event) => {
         const latestDailyRun = await getLatestDailyRun(db);
         const automationStatus = await getAutomationStatus(db);
         const automationEvents = await getAutomationEvents(db);
+        const aiSearchTable = await getAiSearchTable(db);
         const weeklyKeywordMetrics = await getWeeklyKeywordSearchMetrics(trackedKeywords.map((item) => item.label));
         const goalProgress = buildGoalProgress(rankings, weeklyKeywordMetrics);
         const copierProgress = buildCopierProgress(rankings, weeklyKeywordMetrics);
@@ -1103,6 +1147,7 @@ exports.handler = async (event) => {
                 copierGaps,
                 automationStatus,
                 automationEvents,
+                aiSearchTable,
                 meta: {
                     keywordsTracked: trackedKeywords.length,
                     latestSnapshotDate: latestSnapshot?.date || null,
@@ -1122,6 +1167,7 @@ exports.handler = async (event) => {
                         'marga_tasks',
                         'marga_activity_log',
                         'marga_shared',
+                        'seo_monitor_ai_search_tables',
                         'seo_monitor_task_completions',
                         'seo_monitor_automation_events'
                     ]
