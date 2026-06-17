@@ -14,9 +14,7 @@ const KEYWORDS = [
 
 const elements = {
     menuButton: document.getElementById('menuButton'),
-    closeMenuButton: document.getElementById('closeMenuButton'),
-    drawer: document.getElementById('monitorDrawer'),
-    drawerBackdrop: document.getElementById('drawerBackdrop'),
+    menuPanel: document.getElementById('monitorMenu'),
     keywordSelect: document.getElementById('keywordSelect'),
     fromDate: document.getElementById('fromDate'),
     toDate: document.getElementById('toDate'),
@@ -30,8 +28,7 @@ const elements = {
 };
 
 function setMenuOpen(open) {
-    elements.drawer.hidden = !open;
-    elements.drawerBackdrop.hidden = !open;
+    elements.menuPanel.hidden = !open;
     elements.menuButton.setAttribute('aria-expanded', String(open));
 }
 
@@ -133,6 +130,8 @@ async function loadReport() {
         elements.statusText.textContent = `Updated ${new Date(state.data.generatedAt).toLocaleString('en-US', { timeZone: 'Asia/Manila' })}`;
     } catch (error) {
         console.error(error);
+        state.data = { rankings: [] };
+        render();
         elements.statusText.textContent = error.message;
     } finally {
         setBusy(elements.refreshButton, false, 'Refresh');
@@ -191,9 +190,8 @@ elements.refreshButton.addEventListener('click', () => {
 });
 
 elements.runTodayButton.addEventListener('click', runToday);
-elements.menuButton.addEventListener('click', () => setMenuOpen(true));
-elements.closeMenuButton.addEventListener('click', () => setMenuOpen(false));
-elements.drawerBackdrop.addEventListener('click', () => setMenuOpen(false));
+elements.menuButton.addEventListener('click', () => setMenuOpen(elements.menuPanel.hidden));
 
 initializeControls();
+render();
 loadReport();
