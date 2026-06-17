@@ -12,6 +12,45 @@ const KEYWORDS = [
     'Printer For Rent'
 ];
 
+const KEYWORD_DETAILS = {
+    all: {
+        targetPath: '/automations/seo-monitor/',
+        improvement: 'Review all four money keywords daily. Lift the weakest score first, then add AI answer blocks, FAQs, proof, and third-party mentions for the selected keyword.',
+        schedule: 'Daily: check AI engines. Monday: copier rental. Tuesday: copier for rent. Wednesday: printer rental. Thursday: printer for rent. Friday: cleanup and source proof.'
+    },
+    'Copier Rental': {
+        targetPath: '/',
+        improvement: 'Protect the winner. Add concise AI answer wording, FAQ proof, maintenance/setup details, and external review mentions without weakening the existing broad copier ranking.',
+        schedule: 'Monday focus: verify SEO rank, test ChatGPT/Claude/Perplexity/Gemini/Copilot, then add one proof or FAQ improvement if a source misses Marga.'
+    },
+    'Copier For Rent': {
+        targetPath: '/copier-rental/copier-for-rent/',
+        improvement: 'Clarify rental intent: who should rent, what details affect quote, setup/maintenance inclusion, and city coverage. Make this page the preferred citation for “copier for rent.”',
+        schedule: 'Tuesday focus: AI prompt checks, page answer block check, FAQ/schema update, and one outside mention or customer proof item.'
+    },
+    'Printer Rental': {
+        targetPath: '/printer-rental/',
+        improvement: 'Strengthen the printer rental hub as the answer page for offices comparing setup, maintenance, monthly volume, Print All You Can, and city support.',
+        schedule: 'Wednesday focus: SEO rank, AI prompt checks, internal links from support pages, and one buyer-question section improvement.'
+    },
+    'Printer For Rent': {
+        targetPath: '/printer-rental/printer-for-rent/',
+        improvement: 'Make equipment-fit intent clear: printer type, users, volume, mono/color, scan/copy needs, and when rental is better than buying.',
+        schedule: 'Thursday focus: AI prompt checks, quote-readiness copy, FAQ/schema, and proof linking back to the printer-for-rent page.'
+    }
+};
+
+const AI_SOURCES = [
+    'ChatGPT',
+    'Claude',
+    'Perplexity',
+    'Gemini',
+    'Copilot',
+    'Google AI',
+    'Google Search',
+    'Bing'
+];
+
 const elements = {
     menuButton: document.getElementById('menuButton'),
     menuPanel: document.getElementById('monitorMenu'),
@@ -24,6 +63,11 @@ const elements = {
     selectedKeywordLabel: document.getElementById('selectedKeywordLabel'),
     scoreLabel: document.getElementById('scoreLabel'),
     progressBar: document.getElementById('progressBar'),
+    equivalentRank: document.getElementById('equivalentRank'),
+    rankingData: document.getElementById('rankingData'),
+    aiSourceGrid: document.getElementById('aiSourceGrid'),
+    improvementText: document.getElementById('improvementText'),
+    scheduleText: document.getElementById('scheduleText'),
     statusText: document.getElementById('statusText')
 };
 
@@ -70,6 +114,23 @@ function scorePosition(position) {
     return 15;
 }
 
+function scoreEquivalentFromPosition(position) {
+    if (position == null) return 'Not found = 0%';
+    if (position <= 1) return '#1 = 100%';
+    if (position <= 3) return '#2-3 = 80%';
+    if (position <= 5) return '#4-5 = 65%';
+    if (position <= 10) return '#6-10 = 40%';
+    return 'Below top 10 = 15%';
+}
+
+function getSelectedRankings() {
+    if (state.keyword !== 'all') {
+        return [{ keyword: state.keyword, ranking: findRanking(state.keyword) }];
+    }
+
+    return KEYWORDS.map((keyword) => ({ keyword, ranking: findRanking(keyword) }));
+}
+
 function getScore() {
     if (state.keyword !== 'all') {
         const ranking = findRanking(state.keyword);
@@ -82,6 +143,53 @@ function getScore() {
     });
 
     return Math.round(scores.reduce((sum, item) => sum + item, 0) / scores.length);
+}
+
+function getAiStatus(source, ranking) {
+    if (source === 'Google Search') {
+        const position = ranking?.latestPosition ?? ranking?.position;
+        return position == null ? 'Not found' : `#${position}`;
+    }
+
+    if (source === 'Bing') {
+        return 'Needs check';
+    }
+
+    return 'Needs check';
+}
+
+function renderDetails(score) {
+    const selected = state.keyword === 'all' ? 'all' : state.keyword;
+    const config = KEYWORD_DETAILS[selected] || KEYWORD_DETAILS.all;
+    const selectedRankings = getSelectedRankings();
+    const primaryRanking = selectedRankings[0]?.ranking || null;
+    const primaryPosition = primaryRanking?.latestPosition ?? primaryRanking?.position ?? null;
+
+    elements.equivalentRank.textContent = state.keyword === 'all'
+        ? `Average of money keywords = ${score}%`
+        : scoreEquivalentFromPosition(primaryPosition);
+
+    if (state.keyword === 'all') {
+        elements.rankingData.textContent = selectedRankings
+            .map((item) => {
+                const position = item.ranking?.latestPosition ?? item.ranking?.position;
+                return `${item.keyword}: ${position == null ? 'not found' : `#${position}`}`;
+            })
+            .join(' | ');
+    } else {
+        const url = primaryRanking?.latestUrl || primaryRanking?.url || config.targetPath;
+        elements.rankingData.textContent = `${state.keyword}: ${primaryPosition == null ? 'not found' : `#${primaryPosition}`} | Target: ${url}`;
+    }
+
+    elements.aiSourceGrid.innerHTML = AI_SOURCES.map((source) => `
+        <div class="ai-source">
+            <span>${source}</span>
+            <strong>${getAiStatus(source, primaryRanking)}</strong>
+        </div>
+    `).join('');
+
+    elements.improvementText.textContent = config.improvement;
+    elements.scheduleText.textContent = config.schedule;
 }
 
 function renderCircle(score) {
@@ -103,6 +211,7 @@ function render() {
     elements.scoreLabel.textContent = `${score}%`;
     elements.progressBar.style.width = `${score}%`;
     renderCircle(score);
+    renderDetails(score);
 }
 
 function setBusy(button, busy, idleLabel) {

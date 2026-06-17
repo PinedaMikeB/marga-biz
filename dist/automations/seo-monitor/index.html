@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marga SEO Monitor</title>
     <meta name="description" content="Minimal SEO and AI search progress monitor for Marga Biz.">
-    <link rel="stylesheet" href="./styles.css?v=20260617-home-graph">
+    <link rel="stylesheet" href="./styles.css?v=20260618-keyword-details">
 </head>
 <body>
     <main class="app" aria-label="SEO monitor">
@@ -58,6 +58,29 @@
             </div>
         </section>
 
+        <section id="detailPanel" class="detail-panel" aria-label="Selected keyword details">
+            <div class="detail-row">
+                <span>Equivalent</span>
+                <strong id="equivalentRank">--</strong>
+            </div>
+            <div class="detail-row">
+                <span>Ranking Data</span>
+                <strong id="rankingData">--</strong>
+            </div>
+            <div>
+                <span class="detail-label">AI Search Ranking</span>
+                <div id="aiSourceGrid" class="ai-grid"></div>
+            </div>
+            <div>
+                <span class="detail-label">Improvement Suggestion</span>
+                <p id="improvementText" class="detail-copy">--</p>
+            </div>
+            <div>
+                <span class="detail-label">Schedule</span>
+                <p id="scheduleText" class="detail-copy">--</p>
+            </div>
+        </section>
+
         <nav id="monitorMenu" class="menu-panel" aria-label="Monitor menu" hidden>
             <button id="refreshButton" type="button">Refresh</button>
             <button id="runTodayButton" type="button">Run</button>
@@ -67,6 +90,6 @@
         <footer id="statusText" class="status">Loading...</footer>
     </main>
 
-    <script src="./app.js?v=20260617-home-graph" defer></script>
+    <script src="./app.js?v=20260618-keyword-details" defer></script>
 </body>
 </html>

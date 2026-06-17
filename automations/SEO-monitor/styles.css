@@ -133,6 +133,75 @@ input:focus {
     box-shadow: var(--shadow);
 }
 
+.detail-panel {
+    display: grid;
+    gap: 14px;
+    margin-top: 14px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: var(--shadow);
+}
+
+.detail-row {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+}
+
+.detail-row span,
+.detail-label {
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 820;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.detail-row strong {
+    min-width: 0;
+    font-size: 0.86rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.ai-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.ai-source {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fbfcfa;
+    font-size: 0.78rem;
+}
+
+.ai-source span {
+    font-weight: 780;
+}
+
+.ai-source strong {
+    color: var(--muted);
+    font-weight: 760;
+    text-align: right;
+}
+
+.detail-copy {
+    margin: 7px 0 0;
+    color: var(--ink);
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
 .circle-graph {
     display: grid;
     place-items: center;
@@ -246,6 +315,11 @@ input:focus {
 
 @media (max-width: 420px) {
     .date-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-row,
+    .ai-grid {
         grid-template-columns: 1fr;
     }
 }
