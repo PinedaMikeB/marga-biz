@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-06-30T15:35:12.102Z",
+  "outputDir": "/Volumes/Wotg Drive Mike/GitHub/marga-platform/apps/margabase/storage/marga-biz",
+  "scannedFiles": 2172,
+  "referencedFirebaseObjects": 1357,
+  "present": 1355,
+  "missingCount": 2,
+  "missing": [
+    "public/website/og-image.png",
+    "public/website/ChatGPT-Image-Apr-15-2025-11_35_46-AM.png"
+  ]
+}

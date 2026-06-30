@@ -23,6 +23,8 @@ build/
 # Logs
 *.log
 npm-debug.log*
+reports/firebase-storage-download/*.pid
+reports/firebase-storage-download/latest-*.path
 
 # Temporary files
 temp/
