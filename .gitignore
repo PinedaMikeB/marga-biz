@@ -25,6 +25,7 @@ build/
 npm-debug.log*
 reports/firebase-storage-download/*.pid
 reports/firebase-storage-download/latest-*.path
+reports/rollback-points/
 
 # Temporary files
 temp/

@@ -23,6 +23,7 @@
     "storage:download:website": "bash scripts/start-firebase-website-storage-download.sh",
     "storage:download:website:status": "bash scripts/check-firebase-website-storage-download.sh",
     "storage:restore:website-backup": "bash scripts/restore-firebase-website-storage-backup.sh",
+    "migration:rollback-point": "bash scripts/create-migration-rollback-point.sh",
     "serve": "cd dist && npx http-server . -p 8080 -o",
     "serve:root": "npx http-server . -p 8080 -o",
     "build": "npm run generate",
