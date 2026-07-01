@@ -42,15 +42,26 @@ function resolveEnvFile() {
     return found;
 }
 
+function hasDirectPgEnv() {
+    return Boolean(
+        process.env.DATABASE_URL ||
+        (
+            process.env.POSTGRES_DB &&
+            process.env.POSTGRES_USER &&
+            (process.env.POSTGRES_PASSWORD || process.env.PGPASSWORD)
+        )
+    );
+}
+
 function getDbConfig() {
-    const envPath = resolveEnvFile();
-    const envValues = parseEnvFile(envPath);
+    const envValues = hasDirectPgEnv() ? {} : parseEnvFile(resolveEnvFile());
     return {
+        connectionString: process.env.DATABASE_URL || undefined,
         host: process.env.POSTGRES_HOST || envValues.POSTGRES_HOST || '127.0.0.1',
         port: Number(process.env.POSTGRES_PORT || envValues.POSTGRES_PORT || 5432),
         database: process.env.POSTGRES_DB || envValues.POSTGRES_DB,
         user: process.env.POSTGRES_USER || envValues.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD || envValues.POSTGRES_PASSWORD,
+        password: process.env.POSTGRES_PASSWORD || process.env.PGPASSWORD || envValues.POSTGRES_PASSWORD,
         max: 5,
         idleTimeoutMillis: 10000
     };
