@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const admin = require('firebase-admin');
 const { addDoc, getDoc, nowIso, setDoc, updateDoc } = require('./lib/marga-doc-store');
 
 const SERPER_API_URL = 'https://google.serper.dev/search';
@@ -98,21 +97,6 @@ function getServiceAccount() {
     }
 
     throw new Error('Google service account is not configured');
-}
-
-function getFirebaseApp() {
-    if (admin.apps.length === 0) {
-        admin.initializeApp({
-            credential: admin.credential.cert(getServiceAccount()),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-
-    return admin.app();
-}
-
-function getDb() {
-    return admin.firestore(getFirebaseApp());
 }
 
 function normalizeKeyword(keyword = '') {
@@ -226,9 +210,9 @@ async function analyzeAiSearchTable(db) {
         sourceNote: 'Google Search is scanned on demand with Serper. AI engines are stored in the same table and marked Needs check until each engine is manually or API verified.'
     };
 
-    await db.collection('seo_monitor_ai_search_tables').doc('money_keywords').set({
+    await setDoc('seo_monitor_ai_search_tables', 'money_keywords', {
         ...table,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        updatedAt: new Date().toISOString()
     }, { merge: true });
 
     await logActivity(db, 'seo_monitor_ai_search_analyze', {
@@ -309,9 +293,7 @@ async function checkRanking(keyword, targetDomain = TARGET_DOMAIN) {
 
 async function storeRankingHistory(db, keyword, result) {
     const docId = keywordToDocId(keyword);
-    const docRef = db.collection('marga_rankings').doc(docId);
-
-    await docRef.set({
+    await setDoc('marga_rankings', docId, {
         keyword,
         latestPosition: result.ranking?.position || null,
         latestCheck: result.checkedAt,
@@ -319,7 +301,9 @@ async function storeRankingHistory(db, keyword, result) {
         notRanking: !result.ranking
     }, { merge: true });
 
-    await docRef.collection('history').add({
+    await addDoc('marga_rankings_history', {
+        rankingId: docId,
+        keyword,
         position: result.ranking?.position || null,
         url: result.ranking?.url || null,
         competitors: result.competitors.slice(0, 5).map((item) => ({
@@ -331,9 +315,7 @@ async function storeRankingHistory(db, keyword, result) {
 }
 
 async function addTrackedKeyword(db, keyword) {
-    const ref = db.collection('marga_config').doc('settings');
-    const snapshot = await ref.get();
-    const current = snapshot.exists ? snapshot.data() : {};
+    const current = await getDoc('marga_config', 'settings') || {};
     const seo = current.seo || {};
     const keywords = seo.keywords || {};
     const manual = Array.isArray(keywords.manual) ? keywords.manual : [];
@@ -343,7 +325,8 @@ async function addTrackedKeyword(db, keyword) {
     }
 
     const nextManual = [...manual, keyword];
-    await ref.set({
+    await setDoc('marga_config', 'settings', {
+        ...current,
         seo: {
             ...seo,
             keywords: {
@@ -392,7 +375,7 @@ async function recordTaskCompletion(db, payload) {
         updatedAt: nowIso()
     };
 
-    await db.collection('seo_monitor_task_completions').doc(docId).set(completion, { merge: true });
+    await setDoc('seo_monitor_task_completions', docId, completion, { merge: true });
     await logActivity(db, 'seo_monitor_task_completed', {
         taskKey,
         task,
@@ -474,7 +457,7 @@ async function updateAutomationStatus(db, payload) {
     await setDoc('marga_shared', 'seo_monitor_automation_status', next, { merge: true });
 
     if (!heartbeat) {
-        await db.collection('seo_monitor_automation_events').add({
+        await addDoc('seo_monitor_automation_events', {
             automationId,
             status,
             currentStep: next.currentStep,
@@ -483,7 +466,7 @@ async function updateAutomationStatus(db, payload) {
             source: next.source,
             runner: next.runner,
             updatedAtIso,
-            createdAt: admin.firestore.FieldValue.serverTimestamp()
+            createdAt: new Date().toISOString()
         });
 
         await logActivity(db, 'seo_monitor_automation_status', {
@@ -643,7 +626,7 @@ exports.handler = async (event) => {
     try {
         const body = JSON.parse(event.body || '{}');
         const action = body.action || 'run_today';
-        const db = getDb();
+        const db = null;
 
         if (action === 'track_keyword') {
             const keyword = String(body.keyword || '').trim();

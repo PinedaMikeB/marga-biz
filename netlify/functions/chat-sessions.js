@@ -3,19 +3,7 @@
  * Syncs across all devices for the user
  */
 
-const admin = require('firebase-admin');
-
-// Initialize Firebase Admin
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
+const { addDoc, deleteDoc, getDoc, listDocs, setDoc } = require('./lib/marga-doc-store');
 
 exports.handler = async (event) => {
     const headers = {
@@ -29,18 +17,14 @@ exports.handler = async (event) => {
     }
 
     try {
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        const sessionsRef = db.collection('chat_sessions');
-        
         // GET - List sessions or get specific session
         if (event.httpMethod === 'GET') {
             const params = event.queryStringParameters || {};
             
             if (params.sessionId) {
                 // Get specific session
-                const doc = await sessionsRef.doc(params.sessionId).get();
-                if (!doc.exists) {
+                const session = await getDoc('chat_sessions', params.sessionId);
+                if (!session) {
                     return {
                         statusCode: 404,
                         headers,
@@ -50,28 +34,23 @@ exports.handler = async (event) => {
                 return {
                     statusCode: 200,
                     headers,
-                    body: JSON.stringify({ success: true, session: { id: doc.id, ...doc.data() } })
+                    body: JSON.stringify({ success: true, session })
                 };
             } else {
                 // List all sessions (most recent first)
                 const limit = parseInt(params.limit) || 50;
-                const snapshot = await sessionsRef
-                    .orderBy('updatedAt', 'desc')
-                    .limit(limit)
-                    .get();
-                
-                const sessions = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    sessions.push({
-                        id: doc.id,
-                        title: data.title || 'New Chat',
-                        preview: data.preview || '',
-                        messageCount: data.messageCount || 0,
-                        createdAt: data.createdAt,
-                        updatedAt: data.updatedAt
-                    });
+                const docs = await listDocs('chat_sessions', {
+                    orderBy: { field: 'updatedAt', direction: 'desc' },
+                    limit
                 });
+                const sessions = docs.map((data) => ({
+                    id: data.id,
+                    title: data.title || 'New Chat',
+                    preview: data.preview || '',
+                    messageCount: data.messageCount || 0,
+                    createdAt: data.createdAt,
+                    updatedAt: data.updatedAt
+                }));
                 
                 return {
                     statusCode: 200,
@@ -98,11 +77,14 @@ exports.handler = async (event) => {
             
             if (sessionId) {
                 // Update existing session
-                await sessionsRef.doc(sessionId).update({
+                const existing = await getDoc('chat_sessions', sessionId);
+                await setDoc('chat_sessions', sessionId, {
+                    ...(existing || {}),
                     messages,
                     title: autoTitle,
                     preview,
                     messageCount: messages.length,
+                    createdAt: existing?.createdAt || now,
                     updatedAt: now
                 });
                 
@@ -113,7 +95,7 @@ exports.handler = async (event) => {
                 };
             } else {
                 // Create new session
-                const docRef = await sessionsRef.add({
+                const docRef = await addDoc('chat_sessions', {
                     messages,
                     title: autoTitle,
                     preview,
@@ -141,7 +123,7 @@ exports.handler = async (event) => {
                 };
             }
             
-            await sessionsRef.doc(params.sessionId).delete();
+            await deleteDoc('chat_sessions', params.sessionId);
             
             return {
                 statusCode: 200,

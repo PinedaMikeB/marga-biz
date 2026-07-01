@@ -9,7 +9,6 @@
  */
 
 const {
-    getDb,
     AGENTS,
     AGENT_STATUS,
     updateAgentStatus,
@@ -19,6 +18,7 @@ const {
     setSharedData,
     getSharedData
 } = require('./lib/agent-utils');
+const { addDoc, getDoc, setDoc } = require('./lib/marga-doc-store');
 
 // Serper.dev API (free tier: 2,500 searches/month)
 const SERPER_API_URL = 'https://google.serper.dev/search';
@@ -247,24 +247,23 @@ function analyzeOpportunities(result) {
  */
 async function storeRankingHistory(db, keyword, result) {
     const docId = keyword.replace(/\s+/g, '_').toLowerCase();
-    
-    await db.collection('marga_rankings').doc(docId).set({
+    await setDoc('marga_rankings', docId, {
         keyword,
         latestPosition: result.ranking?.position || null,
         latestCheck: new Date().toISOString(),
         notRanking: !result.ranking
     }, { merge: true });
 
-    // Store history entry
-    await db.collection('marga_rankings').doc(docId)
-        .collection('history').add({
-            position: result.ranking?.position || null,
-            competitors: result.competitors.slice(0, 5).map(c => ({
-                domain: c.domain,
-                position: c.position
-            })),
-            checkedAt: new Date().toISOString()
-        });
+    await addDoc('marga_rankings_history', {
+        rankingId: docId,
+        keyword,
+        position: result.ranking?.position || null,
+        competitors: result.competitors.slice(0, 5).map(c => ({
+            domain: c.domain,
+            position: c.position
+        })),
+        checkedAt: new Date().toISOString()
+    });
 }
 
 /**
@@ -285,8 +284,6 @@ exports.handler = async (event) => {
     const action = params.action || 'status';
 
     try {
-        const db = getDb();
-        
         // Update agent status
         await updateAgentStatus(AGENTS.SEARCH, AGENT_STATUS.RUNNING, {
             currentTask: action
@@ -313,7 +310,7 @@ exports.handler = async (event) => {
                 result = await checkRanking(keyword);
                 
                 if (!result.error) {
-                    await storeRankingHistory(db, keyword, result);
+                    await storeRankingHistory(null, keyword, result);
                     await logActivity(AGENTS.SEARCH, 'check_ranking', { keyword, position: result.ranking?.position });
                 }
                 break;

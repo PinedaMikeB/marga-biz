@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const admin = require('firebase-admin');
 const { google } = require('googleapis');
 const { getDoc, listDocs } = require('./lib/marga-doc-store');
 
@@ -138,17 +137,6 @@ function getServiceAccount() {
     }
 
     throw new Error('Google service account is not configured');
-}
-
-function getFirebaseApp() {
-    if (admin.apps.length === 0) {
-        admin.initializeApp({
-            credential: admin.credential.cert(getServiceAccount()),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-
-    return admin.app();
 }
 
 function getSearchConsoleAuth() {
@@ -737,15 +725,14 @@ function buildRecommendedDailyTasks(rankings = [], todayRun = null, goalProgress
 
 async function getTaskCompletions(db, dateKey) {
     try {
-        const snapshot = await db.collection('seo_monitor_task_completions')
-            .where('date', '==', dateKey)
-            .get();
-
         const map = new Map();
-        snapshot.forEach(doc => {
-            const data = doc.data();
+        const docs = await listDocs('seo_monitor_task_completions', {
+            filters: [{ field: 'date', op: '==', value: dateKey }],
+            limit: 200
+        });
+        docs.forEach((data) => {
             if (data.taskKey) {
-                map.set(data.taskKey, { id: doc.id, ...data });
+                map.set(data.taskKey, data);
             }
         });
         return map;
@@ -886,18 +873,15 @@ async function getRecentActivity(db) {
 }
 
 async function getConfig(db) {
-    const doc = await db.collection('marga_config').doc('settings').get();
-    return doc.exists ? doc.data() : {};
+    return await getDoc('marga_config', 'settings') || {};
 }
 
 async function getSnapshotFallback(db, days) {
     try {
-        const snapshot = await db.collection('insights_snapshots')
-            .orderBy('date', 'desc')
-            .limit(days)
-            .get();
-
-        return snapshot.docs.map(doc => doc.data());
+        return await listDocs('insights_snapshots', {
+            orderBy: { field: 'date', direction: 'desc' },
+            limit: days
+        });
     } catch (error) {
         console.warn('Unable to load insights snapshots:', error.message);
         return [];
@@ -924,13 +908,11 @@ async function getAutomationStatus(db) {
 
 async function getAutomationEvents(db) {
     try {
-        const snapshot = await db.collection('seo_monitor_automation_events')
-            .orderBy('createdAt', 'desc')
-            .limit(8)
-            .get();
-
-        return snapshot.docs.map(doc => {
-            const item = doc.data();
+        const docs = await listDocs('seo_monitor_automation_events', {
+            orderBy: { field: 'createdAt', direction: 'desc' },
+            limit: 8
+        });
+        return docs.map((item) => {
             return {
                 timestamp: formatDateTime(item.createdAt || item.updatedAtIso),
                 status: item.status || 'LOG',
@@ -946,8 +928,8 @@ async function getAutomationEvents(db) {
 
 async function getAiSearchTable(db) {
     try {
-        const doc = await db.collection('seo_monitor_ai_search_tables').doc('money_keywords').get();
-        if (!doc.exists) {
+        const doc = await getDoc('seo_monitor_ai_search_tables', 'money_keywords');
+        if (!doc) {
             return {
                 id: 'money_keywords',
                 updatedAtIso: null,
@@ -965,7 +947,7 @@ async function getAiSearchTable(db) {
             };
         }
 
-        const table = doc.data();
+        const table = doc;
         return {
             id: table.id || 'money_keywords',
             updatedAtIso: table.updatedAtIso || null,
@@ -989,25 +971,22 @@ async function getAiSearchTable(db) {
 
 async function getKeywordHistory(db, keywordLabel, days, snapshotFallbackMap) {
     const docId = keywordToDocId(keywordLabel);
-    const ref = db.collection('marga_rankings').doc(docId);
-    const doc = await ref.get();
+    const doc = await getDoc('marga_rankings', docId);
     const positionsByDate = {};
     let latestPosition = null;
     let latestUrl = null;
 
-    if (doc.exists) {
-        const data = doc.data();
-        latestPosition = data.latestPosition ?? null;
-        latestUrl = data.latestUrl ?? null;
+    if (doc) {
+        latestPosition = doc.latestPosition ?? null;
+        latestUrl = doc.latestUrl ?? null;
 
         try {
-            const history = await ref.collection('history')
-                .orderBy('checkedAt', 'desc')
-                .limit(Math.max(days * 2, 10))
-                .get();
-
-            history.forEach(item => {
-                const entry = item.data();
+            const history = await listDocs('marga_rankings_history', {
+                filters: [{ field: 'rankingId', op: '==', value: docId }],
+                orderBy: { field: 'checkedAt', direction: 'desc' },
+                limit: Math.max(days * 2, 10)
+            });
+            history.forEach((entry) => {
                 const dateKey = formatDateKey(entry.checkedAt);
                 if (!dateKey || positionsByDate[dateKey] !== undefined) return;
                 positionsByDate[dateKey] = entry.position ?? null;
@@ -1073,7 +1052,7 @@ exports.handler = async (event) => {
         const params = event.queryStringParameters || {};
         const days = Math.min(Math.max(parseInt(params.days, 10) || DEFAULT_DAYS, 2), 14);
 
-        const db = admin.firestore(getFirebaseApp());
+        const db = null;
         const config = await getConfig(db);
         const configuredKeywords = [
             ...(config.seo?.keywords?.primary || []),

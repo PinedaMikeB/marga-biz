@@ -9,19 +9,7 @@
  * - history: Change log for all modifications
  */
 
-const admin = require('firebase-admin');
-
-// Initialize Firebase Admin
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
+const { addDoc, getDoc, listDocs, setDoc } = require('./lib/marga-doc-store');
 
 /**
  * Default configuration schema
@@ -143,17 +131,12 @@ function setNestedValue(obj, path, value) {
 /**
  * Get configuration
  */
-async function getConfig(db, path = null) {
-    const configDoc = await db.collection('marga_config').doc('settings').get();
-    
-    let config;
-    if (!configDoc.exists) {
-        // Initialize with defaults
-        await db.collection('marga_config').doc('settings').set(DEFAULT_CONFIG);
-        config = DEFAULT_CONFIG;
-    } else {
-        config = configDoc.data();
+async function getConfig(_db, path = null) {
+    let configDoc = await getDoc('marga_config', 'settings');
+    if (!configDoc) {
+        configDoc = await setDoc('marga_config', 'settings', DEFAULT_CONFIG);
     }
+    const config = configDoc;
     
     if (path) {
         return getNestedValue(config, path);
@@ -165,9 +148,8 @@ async function getConfig(db, path = null) {
  * Update configuration
  */
 async function updateConfig(db, path, value, source = 'api') {
-    // Get current config
-    const configDoc = await db.collection('marga_config').doc('settings').get();
-    let config = configDoc.exists ? configDoc.data() : { ...DEFAULT_CONFIG };
+    let config = await getDoc('marga_config', 'settings');
+    config = config ? { ...config } : { ...DEFAULT_CONFIG };
     
     // Get old value for history
     const oldValue = getNestedValue(config, path);
@@ -176,7 +158,7 @@ async function updateConfig(db, path, value, source = 'api') {
     setNestedValue(config, path, value);
     
     // Save config
-    await db.collection('marga_config').doc('settings').set(config);
+    await setDoc('marga_config', 'settings', config);
     
     // Log change to history
     await logChange(db, {
@@ -195,11 +177,9 @@ async function updateConfig(db, path, value, source = 'api') {
  * Log change to history
  */
 async function logChange(db, change) {
-    const historyRef = db.collection('marga_history').doc();
-    await historyRef.set({
+    const historyRef = await addDoc('marga_history', {
         ...change,
-        id: historyRef.id,
-        createdAt: admin.firestore.FieldValue.serverTimestamp()
+        createdAt: new Date().toISOString()
     });
     return historyRef.id;
 }
@@ -208,18 +188,11 @@ async function logChange(db, change) {
  * Get change history
  */
 async function getHistory(db, limit = 50, type = null) {
-    let query = db.collection('marga_history')
-        .orderBy('createdAt', 'desc')
-        .limit(limit);
-    
-    if (type) {
-        query = query.where('type', '==', type);
-    }
-    
-    const snapshot = await query.get();
-    const history = [];
-    snapshot.forEach(doc => history.push({ id: doc.id, ...doc.data() }));
-    return history;
+    return listDocs('marga_history', {
+        filters: type ? [{ field: 'type', op: '==', value: type }] : [],
+        orderBy: { field: 'createdAt', direction: 'desc' },
+        limit
+    });
 }
 
 /**
@@ -233,7 +206,7 @@ async function resetConfig(db, section = null) {
         }
         return await updateConfig(db, section, defaultValue, 'reset');
     } else {
-        await db.collection('marga_config').doc('settings').set(DEFAULT_CONFIG);
+        await setDoc('marga_config', 'settings', DEFAULT_CONFIG);
         await logChange(db, {
             type: 'config_reset',
             path: 'all',
@@ -259,8 +232,7 @@ exports.handler = async (event) => {
     }
 
     try {
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
+        const db = null;
         
         const params = event.queryStringParameters || {};
         const action = params.action || 'get';

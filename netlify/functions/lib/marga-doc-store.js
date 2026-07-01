@@ -2,16 +2,20 @@ const crypto = require('crypto');
 const { withClient } = require('./margabase-pg');
 
 const DOC_STORE_LOCK_KEY = 73110202;
-const NUMERIC_FIELDS = new Set(['seoScore']);
+const NUMERIC_FIELDS = new Set(['latestPosition', 'position', 'score', 'seoScore']);
 const TIMESTAMP_FIELDS = new Set([
+    'checkedAt',
     'checkDate',
     'completedAt',
     'createdAt',
     'foundAt',
     'implementedAt',
     'lastActive',
+    'lastCheck',
     'lastScanned',
+    'scannedAt',
     'timestamp',
+    'updatedAtIso',
     'updatedAt'
 ]);
 

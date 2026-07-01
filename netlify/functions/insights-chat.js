@@ -1,41 +1,30 @@
 /**
  * Marga AI - Chat Endpoint (v2 - Full Knowledge)
  * Now includes:
- * - Complete site structure from Firebase
+ * - Complete site structure from the Postgres doc store
  * - Global memory across sessions
  * - No WordPress references (static Netlify site)
  */
 
-const admin = require('firebase-admin');
 const { addDoc, getDoc, listDocs, setDoc } = require('./lib/marga-doc-store');
-
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
 
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
 
 async function getAIConfig(db) {
-    const doc = await db.collection('marga_config').doc('settings').get();
-    if (!doc.exists) {
+    const doc = await getDoc('marga_config', 'settings');
+    if (!doc) {
         return { model: 'claude-sonnet-4-20250514', temperature: 0.7, maxTokens: 4000 };
     }
-    return doc.data().ai;
+    return doc.ai;
 }
 
 async function getLatestAnalytics(db) {
     try {
-        const snapshot = await db.collection('insights_snapshots')
-            .orderBy('date', 'desc').limit(1).get();
-        if (snapshot.empty) return null;
-        return snapshot.docs[0].data();
+        const snapshot = await listDocs('insights_snapshots', {
+            orderBy: { field: 'date', direction: 'desc' },
+            limit: 1
+        });
+        return snapshot[0] || null;
     } catch (e) { return null; }
 }
 
@@ -78,16 +67,14 @@ async function getPageDetails(db, path) {
 
 async function getGlobalMemory(db) {
     try {
-        const doc = await db.collection('marga_ai_memory').doc('global').get();
-        if (!doc.exists) return { facts: [], recentActions: [], improvements: [] };
-        return doc.data();
+        const doc = await getDoc('marga_ai_memory', 'global');
+        if (!doc) return { facts: [], recentActions: [], improvements: [] };
+        return doc;
     } catch (e) { return { facts: [], recentActions: [], improvements: [] }; }
 }
 
 async function updateGlobalMemory(db, update) {
-    const memRef = db.collection('marga_ai_memory').doc('global');
-    const doc = await memRef.get();
-    const current = doc.exists ? doc.data() : { facts: [], recentActions: [], improvements: [] };
+    const current = await getDoc('marga_ai_memory', 'global') || { facts: [], recentActions: [], improvements: [] };
     
     if (update.fact) {
         current.facts = [...(current.facts || []).slice(-20), update.fact];
@@ -103,7 +90,7 @@ async function updateGlobalMemory(db, update) {
     }
     
     current.lastUpdated = new Date().toISOString();
-    await memRef.set(current);
+    await setDoc('marga_ai_memory', 'global', current);
 }
 
 function buildSystemPrompt(config, seoConfig, analytics, siteStructure, memory, pagesWithIssues) {
@@ -305,8 +292,7 @@ async function executeAction(db, action) {
 
     switch (type) {
         case 'add_competitor': {
-            const doc = await db.collection('marga_config').doc('settings').get();
-            const config = doc.data();
+            const config = (await getDoc('marga_config', 'settings')) || {};
             if (!config.seo) config.seo = {};
             if (!config.seo.competitors) config.seo.competitors = [];
             
@@ -315,14 +301,13 @@ async function executeAction(db, action) {
             }
 
             config.seo.competitors.push({ domain: data.domain, notes: data.notes || '', addedAt: new Date().toISOString() });
-            await db.collection('marga_config').doc('settings').set(config);
+            await setDoc('marga_config', 'settings', config);
             await updateGlobalMemory(db, { action: { type: 'add_competitor', description: `Added ${data.domain}` } });
             return { success: true, message: `Added ${data.domain}` };
         }
 
         case 'add_keyword': {
-            const doc = await db.collection('marga_config').doc('settings').get();
-            const config = doc.data();
+            const config = (await getDoc('marga_config', 'settings')) || {};
             if (!config.seo?.keywords) config.seo = { ...config.seo, keywords: { primary: [], growth: [] } };
             
             const kwType = data.type || 'growth';
@@ -333,7 +318,7 @@ async function executeAction(db, action) {
             }
 
             config.seo.keywords[kwType].push(kw);
-            await db.collection('marga_config').doc('settings').set(config);
+            await setDoc('marga_config', 'settings', config);
             await updateGlobalMemory(db, { action: { type: 'add_keyword', description: `Added "${kw}" to ${kwType}` } });
             return { success: true, message: `Added "${kw}"` };
         }
@@ -356,8 +341,7 @@ async function executeAction(db, action) {
         }
 
         case 'update_config': {
-            const doc = await db.collection('marga_config').doc('settings').get();
-            const config = doc.data();
+            const config = (await getDoc('marga_config', 'settings')) || {};
             const keys = data.path.split('.');
             let current = config;
             for (let i = 0; i < keys.length - 1; i++) {
@@ -365,7 +349,7 @@ async function executeAction(db, action) {
                 current = current[keys[i]];
             }
             current[keys[keys.length - 1]] = data.value;
-            await db.collection('marga_config').doc('settings').set(config);
+            await setDoc('marga_config', 'settings', config);
             return { success: true, message: `Updated ${data.path}` };
         }
 
@@ -397,8 +381,7 @@ exports.handler = async (event) => {
     if (event.httpMethod !== 'POST') return { statusCode: 405, headers, body: JSON.stringify({ error: 'POST only' }) };
 
     try {
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
+        const db = null;
         const body = JSON.parse(event.body || '{}');
 
         // Direct action execution
@@ -412,14 +395,14 @@ exports.handler = async (event) => {
 
         // Load ALL context including pages with issues
         const [configDoc, analytics, siteStructure, memory, pagesWithIssues] = await Promise.all([
-            db.collection('marga_config').doc('settings').get(),
+            getDoc('marga_config', 'settings'),
             getLatestAnalytics(db),
             getSiteStructure(db),
             getGlobalMemory(db),
             getPagesWithIssues(db, 5)
         ]);
 
-        const config = configDoc.exists ? configDoc.data() : {};
+        const config = configDoc || {};
         const systemPrompt = buildSystemPrompt(config.ai || {}, config.seo || {}, analytics, siteStructure, memory, pagesWithIssues);
 
         // Build messages with attachment support
@@ -472,14 +455,14 @@ exports.handler = async (event) => {
         const { response, actions } = parseActions(rawResponse);
 
         // Log chat
-        await db.collection('marga_chat_log').add({
+        await addDoc('marga_chat_log', {
             userMessage: message,
             hasAttachments: attachments.length > 0,
             attachmentNames: attachments.map(a => a.name),
             assistantResponse: response,
             actions,
             timestamp: new Date().toISOString(),
-            createdAt: admin.firestore.FieldValue.serverTimestamp()
+            createdAt: new Date().toISOString()
         });
 
         return { statusCode: 200, headers, body: JSON.stringify({ success: true, data: { response, actions } }) };

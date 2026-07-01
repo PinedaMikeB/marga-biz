@@ -7,7 +7,6 @@
  */
 
 const {
-    getDb,
     AGENTS,
     AGENT_STATUS,
     updateAgentStatus,
@@ -21,7 +20,7 @@ const {
     logActivity,
     getSharedData
 } = require('./lib/agent-utils');
-const { getDoc } = require('./lib/marga-doc-store');
+const { getDoc, listDocs, setDoc } = require('./lib/marga-doc-store');
 
 // Direct tool functions (MCP-style)
 const {
@@ -51,7 +50,6 @@ const PRICING = {
  */
 async function trackUsage(usage, model) {
     try {
-        const db = getDb();
         const today = new Date().toISOString().split('T')[0];
         const pricing = PRICING[model] || PRICING['claude-haiku-4-5-20251001'];
         
@@ -60,30 +58,16 @@ async function trackUsage(usage, model) {
         const outputCost = (usage.output_tokens / 1000000) * pricing.output;
         const totalCost = inputCost + outputCost;
         
-        // Get or create today's usage doc
-        const usageRef = db.collection('api_usage').doc(today);
-        const doc = await usageRef.get();
-        
-        if (doc.exists) {
-            const data = doc.data();
-            await usageRef.update({
-                requests: (data.requests || 0) + 1,
-                inputTokens: (data.inputTokens || 0) + usage.input_tokens,
-                outputTokens: (data.outputTokens || 0) + usage.output_tokens,
-                totalCost: (data.totalCost || 0) + totalCost,
-                lastUpdated: new Date().toISOString()
-            });
-        } else {
-            await usageRef.set({
-                date: today,
-                requests: 1,
-                inputTokens: usage.input_tokens,
-                outputTokens: usage.output_tokens,
-                totalCost: totalCost,
-                model: model,
-                lastUpdated: new Date().toISOString()
-            });
-        }
+        const data = await getDoc('api_usage', today);
+        await setDoc('api_usage', today, {
+            date: today,
+            requests: (data?.requests || 0) + 1,
+            inputTokens: (data?.inputTokens || 0) + usage.input_tokens,
+            outputTokens: (data?.outputTokens || 0) + usage.output_tokens,
+            totalCost: (data?.totalCost || 0) + totalCost,
+            model,
+            lastUpdated: new Date().toISOString()
+        });
     } catch (e) {
         console.error('Failed to track usage:', e);
     }
@@ -264,13 +248,11 @@ async function getManagerContext(db) {
     // Get latest analytics snapshot
     let analytics = null;
     try {
-        const snapshot = await db.collection('insights_snapshots')
-            .orderBy('timestamp', 'desc')
-            .limit(1)
-            .get();
-        if (!snapshot.empty) {
-            analytics = snapshot.docs[0].data();
-        }
+        const snapshot = await listDocs('insights_snapshots', {
+            orderBy: { field: 'timestamp', direction: 'desc' },
+            limit: 1
+        });
+        analytics = snapshot[0] || null;
     } catch (e) {
         // Ignore if no snapshots
     }
@@ -278,10 +260,7 @@ async function getManagerContext(db) {
     // Get Search Console keyword data
     let searchConsoleData = null;
     try {
-        const gscDoc = await db.collection('marga_analytics').doc('search_console').get();
-        if (gscDoc.exists) {
-            searchConsoleData = gscDoc.data();
-        }
+        searchConsoleData = await getDoc('marga_analytics', 'search_console');
     } catch (e) {}
     
     // Get scanned pages summary
@@ -1007,9 +986,8 @@ exports.handler = async (event) => {
     try {
         const body = JSON.parse(event.body || '{}');
         
-        // Handle approval action (needs Firebase)
+        // Handle approval action
         if (body.action === 'approve' || body.action === 'dismiss') {
-            const db = getDb();
             await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.RUNNING, { currentTask: 'approval' });
             const result = await handleApproval(body.recId, body.action === 'approve');
             await updateAgentStatus(AGENTS.MANAGER, AGENT_STATUS.IDLE);
@@ -1058,7 +1036,6 @@ exports.handler = async (event) => {
         
         // Fire-and-forget logging (don't await)
         try {
-            const db = getDb();
             logActivity(AGENTS.MANAGER, 'chat_response', {
                 userMessage: message.substring(0, 100)
             }).catch(() => {});

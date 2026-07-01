@@ -9,19 +9,7 @@
  * - Actionable recommendations
  */
 
-const admin = require('firebase-admin');
-
-// Initialize Firebase Admin
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
+const { getDoc, listDocs, setDoc } = require('./lib/marga-doc-store');
 
 // Claude API configuration
 const CLAUDE_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -126,14 +114,13 @@ async function getHistoricalData(db, days = 14) {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
 
-    const snapshot = await db.collection('insights_snapshots')
-        .where('date', '>=', startDate.toISOString().split('T')[0])
-        .orderBy('date', 'asc')
-        .get();
-
-    const snapshots = [];
-    snapshot.forEach(doc => snapshots.push(doc.data()));
-    return snapshots;
+    return listDocs('insights_snapshots', {
+        filters: [
+            { field: 'date', op: '>=', value: startDate.toISOString().split('T')[0] },
+            { field: 'date', op: '<=', value: endDate.toISOString().split('T')[0] }
+        ],
+        orderBy: { field: 'date', direction: 'asc' }
+    });
 }
 
 /**
@@ -196,18 +183,17 @@ function processSnapshots(snapshots) {
 async function storeAnalysis(db, analysis) {
     const today = new Date().toISOString().split('T')[0];
     
-    await db.collection('insights_ai').doc(today).set({
+    await setDoc('insights_ai', today, {
         date: today,
         timestamp: new Date().toISOString(),
         analysis
     });
 
-    // Also update latest for quick access
-    await db.collection('insights_meta').doc('latest_ai').set({
+    await setDoc('insights_meta', 'latest_ai', {
         date: today,
         timestamp: new Date().toISOString(),
         analysis,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        updatedAt: new Date().toISOString()
     });
 }
 
@@ -215,10 +201,8 @@ async function storeAnalysis(db, analysis) {
  * Get cached analysis if recent enough
  */
 async function getCachedAnalysis(db) {
-    const doc = await db.collection('insights_meta').doc('latest_ai').get();
-    if (!doc.exists) return null;
-    
-    const data = doc.data();
+    const data = await getDoc('insights_meta', 'latest_ai');
+    if (!data) return null;
     const cacheAge = Date.now() - new Date(data.timestamp).getTime();
     const maxAge = 12 * 60 * 60 * 1000; // 12 hours
     
@@ -245,8 +229,7 @@ exports.handler = async (event) => {
         const params = event.queryStringParameters || {};
         const forceRefresh = params.refresh === 'true';
 
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
+        const db = null;
 
         // Check for cached analysis first (unless force refresh)
         if (!forceRefresh) {

@@ -5,20 +5,7 @@
  * These are the "MCP-style" tools - synchronous, immediate results.
  */
 
-const admin = require('firebase-admin');
 const { getDoc, listDocs } = require('./marga-doc-store');
-
-// Initialize Firebase if needed
-const getDb = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.firestore();
-};
 
 /**
  * TOOL: Scan a page for SEO issues
@@ -165,20 +152,17 @@ async function getCachedPage(pagePath) {
  */
 async function getSearchConsoleData(keyword) {
     try {
-        const db = getDb();
-        
-        // Get latest snapshot
-        const snapshot = await db.collection('insights_snapshots')
-            .orderBy('timestamp', 'desc')
-            .limit(1)
-            .get();
-        
-        if (snapshot.empty) {
+        const snapshot = await listDocs('insights_snapshots', {
+            orderBy: { field: 'timestamp', direction: 'desc' },
+            limit: 1
+        });
+
+        if (!snapshot.length) {
             return { success: false, error: 'No Search Console data available' };
         }
         
-        const data = snapshot.docs[0].data();
-        const topKeywords = data.seo?.topKeywords || [];
+        const data = snapshot[0];
+        const topKeywords = data.searchConsole?.topKeywords || data.seo?.topKeywords || [];
         
         // Find matching keyword
         const match = topKeywords.find(k => 
@@ -207,8 +191,6 @@ async function getSearchConsoleData(keyword) {
  */
 async function getSiteOverview() {
     try {
-        const db = getDb();
-        
         // Get key pages
         const keyPagesDoc = await getDoc('marga_site', 'key_pages');
         const summaryDoc = await getDoc('marga_site', 'summary');

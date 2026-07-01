@@ -3,19 +3,7 @@
  * Fetches stored snapshots from Firebase for trend analysis
  */
 
-const admin = require('firebase-admin');
-
-// Initialize Firebase Admin using Google Service Account
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
+const { listDocs } = require('./lib/marga-doc-store');
 
 exports.handler = async (event) => {
     const headers = {
@@ -31,23 +19,18 @@ exports.handler = async (event) => {
         const params = event.queryStringParameters || {};
         const days = parseInt(params.days) || 30;
         
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        
         // Calculate date range
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
 
-        // Fetch snapshots
-        const snapshot = await db.collection('insights_snapshots')
-            .where('date', '>=', startDate.toISOString().split('T')[0])
-            .where('date', '<=', endDate.toISOString().split('T')[0])
-            .orderBy('date', 'asc')
-            .get();
-
-        const snapshots = [];
-        snapshot.forEach(doc => snapshots.push(doc.data()));
+        const snapshots = await listDocs('insights_snapshots', {
+            filters: [
+                { field: 'date', op: '>=', value: startDate.toISOString().split('T')[0] },
+                { field: 'date', op: '<=', value: endDate.toISOString().split('T')[0] }
+            ],
+            orderBy: { field: 'date', direction: 'asc' }
+        });
 
         // Calculate trends
         const trends = calculateTrends(snapshots);

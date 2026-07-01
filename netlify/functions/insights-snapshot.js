@@ -5,21 +5,9 @@
  * Run daily via Netlify Scheduled Function or manually
  */
 
-const admin = require('firebase-admin');
 const { BetaAnalyticsDataClient } = require('@google-analytics/data');
 const { google } = require('googleapis');
-
-// Initialize Firebase Admin using Google Service Account
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
+const { setDoc } = require('./lib/marga-doc-store');
 
 const GA4_PROPERTY_ID = process.env.GA4_PROPERTY_ID || '406902171';
 const SITE_URL = process.env.SEARCH_CONSOLE_SITE_URL || 'https://marga.biz/';
@@ -147,17 +135,10 @@ exports.handler = async (event) => {
             }
         };
 
-        // Store in Firebase
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        
-        // Store daily snapshot
-        await db.collection('insights_snapshots').doc(today).set(snapshot);
-        
-        // Also update latest snapshot for quick access
-        await db.collection('insights_meta').doc('latest').set({
+        await setDoc('insights_snapshots', today, snapshot);
+        await setDoc('insights_meta', 'latest', {
             ...snapshot,
-            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+            updatedAt: new Date().toISOString()
         });
 
         return {
