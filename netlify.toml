@@ -16,11 +16,6 @@
   force = true
 
 [[redirects]]
-  from = "/wp-content/*"
-  to = "https://firebasestorage.googleapis.com/v0/b/sah-spiritual-journal.firebasestorage.app/o/public%2Fwebsite%2F:splat?alt=media"
-  status = 301
-
-[[redirects]]
   from = "/feed/*"
   to = "/"
   status = 301

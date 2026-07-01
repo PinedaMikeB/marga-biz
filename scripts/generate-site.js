@@ -15,7 +15,8 @@ const CONFIG = {
     baseUrl: 'https://marga.biz',
     siteName: 'Marga Enterprises - Copier & Printer Rental',
     firebaseStorage: 'https://firebasestorage.googleapis.com/v0/b/sah-spiritual-journal.firebasestorage.app/o/public%2Fwebsite%2F',
-    defaultOgImage: 'https://firebasestorage.googleapis.com/v0/b/sah-spiritual-journal.firebasestorage.app/o/public%2Fwebsite%2Fog-image.png?alt=media',
+    defaultOgImage: '/website-media/og-image.png',
+    websiteMediaDir: 'website-media',
     distDir: path.join(__dirname, '../dist'),
     dataDir: path.join(__dirname, '../data'),
     templatesDir: path.join(__dirname, '../templates'),
@@ -31,6 +32,74 @@ const stats = {
     errors: [],
     startTime: Date.now()
 };
+
+const FIREBASE_STORAGE_URL_REGEX = /https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/sah-spiritual-journal\.firebasestorage\.app\/o\/([^"'\s<>)]+)\?alt=media/gi;
+const WORDPRESS_UPLOAD_URL_REGEX = /https?:\/\/marga\.biz\/wp-content\/uploads\/(\d{4})\/(\d{2})\/([^"'\s>,]+)/gi;
+const WEBSITE_STORAGE_OBJECT_PREFIX = 'public/website/';
+
+function getWebsiteStorageDirCandidates() {
+    return [
+        process.env.MARGA_BIZ_WEBSITE_STORAGE_DIR,
+        path.resolve(__dirname, '../../marga-platform/backups/margabase/full-firebase-backups/2026-05-15T14-15-32-138Z/firebase-storage/public/website'),
+        path.resolve(__dirname, '../../marga-platform/apps/margabase/storage/marga-biz/public/website'),
+        path.resolve(__dirname, '../../Marga-Platform/apps/margabase/storage/marga-biz/public/website')
+    ].filter(Boolean);
+}
+
+function resolveWebsiteStorageDirs() {
+    const candidates = getWebsiteStorageDirCandidates();
+    const storageDirs = candidates.filter((candidate) => fs.existsSync(candidate));
+    if (storageDirs.length === 0) {
+        throw new Error(`Website storage directory not found. Checked: ${candidates.join(', ')}`);
+    }
+    return storageDirs;
+}
+
+function toWebsiteMediaUrl(filename) {
+    if (!filename) return '';
+    if (filename === 'marga-logo.png') {
+        return '/marga-logo.png';
+    }
+    return `/${CONFIG.websiteMediaDir}/${encodeURIComponent(filename)}`;
+}
+
+function normalizeAssetFilename(filename) {
+    return decodeURIComponent(String(filename || '').split('?')[0]);
+}
+
+function stripWordPressSizeSuffix(filename) {
+    return filename.replace(/-\d+x\d+(\.[a-z0-9]+)$/i, '$1');
+}
+
+function getFirebaseAssetFilename(objectPath) {
+    const decodedPath = decodeURIComponent(objectPath || '');
+    if (!decodedPath.startsWith(WEBSITE_STORAGE_OBJECT_PREFIX)) {
+        return '';
+    }
+    return decodedPath.slice(WEBSITE_STORAGE_OBJECT_PREFIX.length);
+}
+
+function rewriteHtmlAssetUrls(html) {
+    if (!html) return html;
+
+    FIREBASE_STORAGE_URL_REGEX.lastIndex = 0;
+    WORDPRESS_UPLOAD_URL_REGEX.lastIndex = 0;
+
+    html = html.replace(/^\s*<link rel="preconnect" href="https:\/\/firebasestorage\.googleapis\.com">\s*$/gm, '');
+    html = html.replace(/^\s*<link rel="dns-prefetch" href="https:\/\/firebasestorage\.googleapis\.com">\s*$/gm, '');
+
+    html = html.replace(FIREBASE_STORAGE_URL_REGEX, (match, objectPath) => {
+        const filename = getFirebaseAssetFilename(objectPath);
+        return filename ? toWebsiteMediaUrl(filename) : match;
+    });
+
+    html = html.replace(WORDPRESS_UPLOAD_URL_REGEX, (match, year, month, filename) => {
+        const normalizedFilename = stripWordPressSizeSuffix(normalizeAssetFilename(filename));
+        return toWebsiteMediaUrl(normalizedFilename);
+    });
+
+    return html;
+}
 
 const PRINTER_PAGE_SEO_OVERRIDES = {
     'https://marga.biz/printer-rental/': {
@@ -379,11 +448,8 @@ function cleanContent(content, urlMap = {}) {
     content = content.replace(
         /https?:\/\/marga\.biz\/wp-content\/uploads\/\d{4}\/\d{2}\/([^"'\s>]+)/gi,
         (match, filename) => {
-            // Clean filename (remove query strings and size suffixes like -300x300)
-            let cleanFilename = filename.split('?')[0];
-            // Remove WordPress size suffixes like -300x300, -768x564, etc.
-            cleanFilename = cleanFilename.replace(/-\d+x\d+(\.[a-z]+)$/i, '$1');
-            return `https://firebasestorage.googleapis.com/v0/b/sah-spiritual-journal.firebasestorage.app/o/public%2Fwebsite%2F${encodeURIComponent(cleanFilename)}?alt=media`;
+            const cleanFilename = stripWordPressSizeSuffix(normalizeAssetFilename(filename));
+            return toWebsiteMediaUrl(cleanFilename);
         }
     );
     
@@ -391,9 +457,8 @@ function cleanContent(content, urlMap = {}) {
     content = content.replace(
         /http:\/\/marga\.biz\/wp-content\/uploads\/\d{4}\/\d{2}\/([^"'\s>]+)/gi,
         (match, filename) => {
-            let cleanFilename = filename.split('?')[0];
-            cleanFilename = cleanFilename.replace(/-\d+x\d+(\.[a-z]+)$/i, '$1');
-            return `https://firebasestorage.googleapis.com/v0/b/sah-spiritual-journal.firebasestorage.app/o/public%2Fwebsite%2F${encodeURIComponent(cleanFilename)}?alt=media`;
+            const cleanFilename = stripWordPressSizeSuffix(normalizeAssetFilename(filename));
+            return toWebsiteMediaUrl(cleanFilename);
         }
     );
     
@@ -643,7 +708,7 @@ function generateStructuredData(page, type = 'page') {
                 "url": "https://marga.biz/",
                 "logo": {
                     "@type": "ImageObject",
-                    "url": CONFIG.firebaseStorage + "marga-logo.png?alt=media"
+                    "url": `${CONFIG.baseUrl}/marga-logo.png`
                 },
                 "contactPoint": {
                     "@type": "ContactPoint",
@@ -1375,6 +1440,7 @@ function copyStaticAssets() {
         copyDirRecursive(adminJsDir, path.join(CONFIG.distDir, 'js', 'admin'));
         console.log('   ✅ Copied js/admin/ folder');
     }
+
 }
 
 // Helper function to copy directory recursively
@@ -1391,9 +1457,206 @@ function copyDirRecursive(src, dest) {
         if (entry.isDirectory()) {
             copyDirRecursive(srcPath, destPath);
         } else {
-            fs.copyFileSync(srcPath, destPath);
+            try {
+                fs.copyFileSync(srcPath, destPath);
+            } catch (error) {
+                console.warn(`   ⚠️ Skipped unreadable asset: ${srcPath} (${error.code || error.message})`);
+            }
         }
     }
+}
+
+function collectLegacyUploadReferences(wpData) {
+    const refs = new Map();
+    const items = [...(wpData.pages || []), ...(wpData.posts || [])];
+
+    for (const item of items) {
+        const serialized = JSON.stringify(item);
+        WORDPRESS_UPLOAD_URL_REGEX.lastIndex = 0;
+        for (const match of serialized.matchAll(WORDPRESS_UPLOAD_URL_REGEX)) {
+            const [, year, month, filename] = match;
+            const normalizedFilename = normalizeAssetFilename(filename);
+            refs.set(`${year}/${month}/${normalizedFilename}`, {
+                year,
+                month,
+                filename: normalizedFilename
+            });
+        }
+    }
+
+    return Array.from(refs.values());
+}
+
+function collectFirebaseAssetReferencesFromText(text, filenames) {
+    FIREBASE_STORAGE_URL_REGEX.lastIndex = 0;
+    for (const match of text.matchAll(FIREBASE_STORAGE_URL_REGEX)) {
+        const filename = getFirebaseAssetFilename(match[1]);
+        if (filename) {
+            filenames.add(filename);
+        }
+    }
+}
+
+function collectAssetReferencesFromDir(dirPath, filenames) {
+    if (!fs.existsSync(dirPath)) {
+        return;
+    }
+
+    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    for (const entry of entries) {
+        if (entry.name.startsWith('.')) continue;
+
+        const fullPath = path.join(dirPath, entry.name);
+        if (entry.isDirectory()) {
+            collectAssetReferencesFromDir(fullPath, filenames);
+            continue;
+        }
+
+        if (!/\.(html|json|md|txt)$/i.test(entry.name)) {
+            continue;
+        }
+
+        const text = fs.readFileSync(fullPath, 'utf8');
+        collectFirebaseAssetReferencesFromText(text, filenames);
+    }
+}
+
+function collectRequiredWebsiteMedia(wpData, rootDir) {
+    const filenames = new Set(['marga-logo.png', 'og-image.png', 'ChatGPT-Image-Apr-15-2025-11_35_46-AM.png']);
+    const items = [...(wpData.pages || []), ...(wpData.posts || [])];
+
+    for (const item of items) {
+        const serialized = JSON.stringify(item);
+
+        WORDPRESS_UPLOAD_URL_REGEX.lastIndex = 0;
+        for (const match of serialized.matchAll(WORDPRESS_UPLOAD_URL_REGEX)) {
+            const filename = stripWordPressSizeSuffix(normalizeAssetFilename(match[3]));
+            filenames.add(filename);
+        }
+
+        collectFirebaseAssetReferencesFromText(serialized, filenames);
+    }
+
+    collectAssetReferencesFromDir(path.join(rootDir, 'static-pages'), filenames);
+    collectAssetReferencesFromDir(path.join(rootDir, 'components'), filenames);
+    collectAssetReferencesFromDir(path.join(rootDir, 'templates'), filenames);
+
+    return Array.from(filenames).sort();
+}
+
+function resolveMediaSourcePath(storageDirs, rootDir, filename) {
+    for (const storageDir of storageDirs) {
+        const exactPath = path.join(storageDir, filename);
+        if (fs.existsSync(exactPath)) {
+            return exactPath;
+        }
+
+        const normalizedFilename = stripWordPressSizeSuffix(filename);
+        const normalizedPath = path.join(storageDir, normalizedFilename);
+        if (fs.existsSync(normalizedPath)) {
+            return normalizedPath;
+        }
+    }
+
+    const fallbackMap = {
+        'og-image.png': path.join(rootDir, 'marga-logo.png'),
+        'ChatGPT-Image-Apr-15-2025-11_35_46-AM.png': storageDirs
+            .map((storageDir) => path.join(storageDir, 'ChatGPT-Image-Apr-15-2025-11_35_45-AM.png'))
+            .find((candidate) => fs.existsSync(candidate))
+    };
+
+    const fallbackPath = fallbackMap[filename];
+    if (fallbackPath && fs.existsSync(fallbackPath)) {
+        return fallbackPath;
+    }
+
+    return null;
+}
+
+function copyWebsiteMediaAssets(wpData, rootDir) {
+    const storageDirs = resolveWebsiteStorageDirs();
+    const websiteMediaDestDir = path.join(CONFIG.distDir, CONFIG.websiteMediaDir);
+    const missingMedia = [];
+    const requiredWebsiteMedia = collectRequiredWebsiteMedia(wpData, rootDir);
+    const legacyUploadsDestDir = path.join(CONFIG.distDir, 'wp-content', 'uploads');
+
+    console.log(`   📁 Using local website storage: ${storageDirs.join(' | ')}`);
+    fs.rmSync(websiteMediaDestDir, { recursive: true, force: true });
+    fs.rmSync(legacyUploadsDestDir, { recursive: true, force: true });
+    ensureDir(websiteMediaDestDir);
+
+    for (const filename of requiredWebsiteMedia) {
+        const sourcePath = resolveMediaSourcePath(storageDirs, rootDir, filename);
+        if (!sourcePath) {
+            missingMedia.push(filename);
+            continue;
+        }
+        const destPath = path.join(websiteMediaDestDir, filename);
+        fs.copyFileSync(sourcePath, destPath);
+    }
+
+    const legacyRefs = collectLegacyUploadReferences(wpData);
+    for (const ref of legacyRefs) {
+        const sourcePath = resolveMediaSourcePath(storageDirs, rootDir, ref.filename);
+        if (!sourcePath) {
+            missingMedia.push(`${ref.year}/${ref.month}/${ref.filename}`);
+            continue;
+        }
+        const legacyDestPath = path.join(CONFIG.distDir, 'wp-content', 'uploads', ref.year, ref.month, ref.filename);
+        ensureDir(path.dirname(legacyDestPath));
+        try {
+            fs.copyFileSync(sourcePath, legacyDestPath);
+        } catch (error) {
+            missingMedia.push(`${ref.year}/${ref.month}/${ref.filename}`);
+            console.warn(`   ⚠️ Skipped legacy mirror asset: ${sourcePath} (${error.code || error.message})`);
+        }
+    }
+
+    console.log(`   ✅ Copied ${requiredWebsiteMedia.length - missingMedia.filter((item) => !item.includes('/')).length} website media files`);
+    console.log(`   ✅ Mirrored ${legacyRefs.length} legacy WordPress upload paths`);
+    const fallbackNames = ['og-image.png', 'ChatGPT-Image-Apr-15-2025-11_35_46-AM.png'].filter((filename) => {
+        const destPath = path.join(websiteMediaDestDir, filename);
+        return fs.existsSync(destPath);
+    });
+    if (fallbackNames.length > 0) {
+        console.log(`   ⚠️ Created local fallbacks for: ${fallbackNames.join(', ')}`);
+    }
+    if (missingMedia.length > 0) {
+        console.log(`   ⚠️ Missing local media after copy: ${missingMedia.slice(0, 10).join(', ')}`);
+    }
+}
+
+function rewriteDistHtmlFiles() {
+    const stack = [CONFIG.distDir];
+    let rewrittenCount = 0;
+
+    while (stack.length > 0) {
+        const currentDir = stack.pop();
+        const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+
+        for (const entry of entries) {
+            if (entry.name.startsWith('.')) continue;
+            const fullPath = path.join(currentDir, entry.name);
+
+            if (entry.isDirectory()) {
+                stack.push(fullPath);
+                continue;
+            }
+
+            if (!entry.name.endsWith('.html')) {
+                continue;
+            }
+
+            const originalHtml = fs.readFileSync(fullPath, 'utf8');
+            const rewrittenHtml = rewriteHtmlAssetUrls(originalHtml);
+            if (rewrittenHtml !== originalHtml) {
+                fs.writeFileSync(fullPath, rewrittenHtml);
+                rewrittenCount++;
+            }
+        }
+    }
+
+    console.log(`   ✅ Rewrote local asset URLs in ${rewrittenCount} HTML files`);
 }
 
 // ============================================
@@ -1492,6 +1755,7 @@ async function main() {
         
         // Copy static assets
         copyStaticAssets();
+        rewriteDistHtmlFiles();
 
         // Summary
         const duration = ((Date.now() - stats.startTime) / 1000).toFixed(2);
