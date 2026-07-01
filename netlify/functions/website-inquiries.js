@@ -1,15 +1,4 @@
-const admin = require('firebase-admin');
-
-function getFirebaseApp() {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-}
+const { listInquiries, mergeInquiry } = require('./lib/website-inquiries-store');
 
 function json(statusCode, body) {
     return {
@@ -64,21 +53,9 @@ exports.handler = async (event) => {
     }
 
     try {
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        const collection = db.collection('website_inquiries');
-
         if (event.httpMethod === 'GET') {
             const limit = Math.min(Number(event.queryStringParameters?.limit || 120), 300);
-            const snapshot = await collection
-                .orderBy('createdAt', 'desc')
-                .limit(limit)
-                .get();
-
-            const leads = snapshot.docs.map((doc) => ({
-                _docId: doc.id,
-                ...doc.data()
-            }));
+            const leads = await listInquiries(limit);
 
             return json(200, { success: true, leads });
         }
@@ -89,7 +66,7 @@ exports.handler = async (event) => {
             if (!leadId) return json(400, { success: false, error: 'leadId is required' });
 
             const updates = safeUpdates(body.updates);
-            await collection.doc(leadId).set(updates, { merge: true });
+            await mergeInquiry(leadId, updates);
 
             return json(200, { success: true, leadId, updates });
         }

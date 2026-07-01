@@ -1,15 +1,4 @@
-const admin = require('firebase-admin');
-
-function getFirebaseApp() {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-}
+const { makeInquiryId, saveInquiry } = require('./lib/website-inquiries-store');
 
 function clean(value) {
     return String(value || '').trim();
@@ -34,12 +23,6 @@ function parseBody(event) {
 
     const params = new URLSearchParams(event.body);
     return Object.fromEntries(params.entries());
-}
-
-function makeLeadId() {
-    const stamp = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14);
-    const suffix = Math.random().toString(36).slice(2, 8);
-    return `web-${stamp}-${suffix}`;
 }
 
 async function notifyTelegram(lead) {
@@ -156,19 +139,17 @@ exports.handler = async (event) => {
             updatedAt: now
         };
 
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        const docRef = db.collection('website_inquiries').doc(makeLeadId());
-        await docRef.set(lead);
+        const inquiryId = makeInquiryId();
+        await saveInquiry(inquiryId, lead);
 
-        notifyTelegram({ id: docRef.id, ...lead }).catch((error) => {
+        notifyTelegram({ id: inquiryId, ...lead }).catch((error) => {
             console.warn('Telegram inquiry notification failed:', error);
         });
 
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ success: true, inquiryId: docRef.id, aiCallStatus: lead.aiCallStatus })
+            body: JSON.stringify({ success: true, inquiryId, aiCallStatus: lead.aiCallStatus })
         };
     } catch (error) {
         console.error('Create inquiry failed:', error);

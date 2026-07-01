@@ -1,18 +1,7 @@
 const crypto = require('crypto');
-const admin = require('firebase-admin');
 const { buildDraftQuotation, transcriptText } = require('./lib/sales-knowledge');
 const { getApprovalRecipient, sendMail } = require('./lib/mailer');
-
-function getFirebaseApp() {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-}
+const { getInquiry, mergeInquiry, tokenHash } = require('./lib/website-inquiries-store');
 
 function json(statusCode, body) {
     return {
@@ -29,10 +18,6 @@ function json(statusCode, body) {
 
 function clean(value) {
     return String(value || '').trim();
-}
-
-function tokenHash(token) {
-    return crypto.createHash('sha256').update(String(token || '')).digest('hex');
 }
 
 function getBaseUrl(event) {
@@ -85,13 +70,8 @@ exports.handler = async (event) => {
         const leadId = clean(body.leadId);
         if (!leadId) return json(400, { success: false, error: 'leadId is required' });
 
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        const ref = db.collection('website_inquiries').doc(leadId);
-        const snap = await ref.get();
-        if (!snap.exists) return json(404, { success: false, error: 'Lead not found' });
-
-        const storedLead = snap.data();
+        const storedLead = await getInquiry(leadId);
+        if (!storedLead) return json(404, { success: false, error: 'Lead not found' });
         const lead = {
             ...storedLead,
             transcript: Array.isArray(body.transcript) ? body.transcript : storedLead.transcript,
@@ -106,7 +86,7 @@ exports.handler = async (event) => {
             approvalEmailTo: getApprovalRecipient()
         };
 
-        await ref.set({
+        await mergeInquiry(leadId, {
             transcript: lead.transcript || storedLead.transcript || [],
             usage: lead.usage || storedLead.usage || null,
             quoteDraft: draft,
@@ -114,7 +94,7 @@ exports.handler = async (event) => {
             leadStatus: 'quote_draft_pending_approval',
             nextAction: 'Mike approval required before sending quotation to prospect',
             updatedAt: new Date().toISOString()
-        }, { merge: true });
+        });
 
         const emailBody = buildApprovalEmail({
             leadId,
@@ -136,14 +116,14 @@ exports.handler = async (event) => {
         } catch (error) {
             emailWarning = error.message;
             console.warn('Quote approval email failed:', error);
-            await ref.set({
+            await mergeInquiry(leadId, {
                 quoteApproval: {
                     ...approval,
                     emailWarning
                 },
                 nextAction: 'Quote draft saved, but approval email could not be sent. Check SMTP configuration.',
                 updatedAt: new Date().toISOString()
-            }, { merge: true });
+            });
         }
 
         return json(200, {

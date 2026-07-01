@@ -20,6 +20,7 @@
     "telegram:check": "node scripts/telegram-approval.js check-approvals",
     "telegram:daemon": "node scripts/telegram-chat-daemon.js --interval=5",
     "content:import:postgres": "node scripts/import-wordpress-data-to-postgres.js",
+    "content:import:inquiries": "node scripts/import-website-inquiries-from-firebase.js",
     "content:test:postgres": "node scripts/test-wordpress-postgres-source.js",
     "generate:postgres": "MARGA_BIZ_CONTENT_SOURCE=postgres node scripts/generate-site.js",
     "static-pages:rewrite-media": "node scripts/rewrite-static-page-firebase-media.js",

@@ -1,5 +1,5 @@
-const admin = require('firebase-admin');
 const { consultantKnowledgeText } = require('./lib/sales-knowledge');
+const { getInquiry, mergeInquiry } = require('./lib/website-inquiries-store');
 
 const VALID_REALTIME_VOICES = new Set([
     'alloy',
@@ -13,17 +13,6 @@ const VALID_REALTIME_VOICES = new Set([
     'shimmer',
     'verse'
 ]);
-
-function getFirebaseApp() {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-}
 
 function clean(value) {
     return String(value || '').trim();
@@ -74,27 +63,25 @@ function safeModel(value, fallback) {
 
 async function getLead(leadId) {
     if (!leadId) return null;
-    const app = getFirebaseApp();
-    const db = admin.firestore(app);
-    const doc = await db.collection('website_inquiries').doc(leadId).get();
-    return doc.exists ? doc.data() : null;
+    return getInquiry(leadId);
 }
 
 async function getConsultantSettings() {
-    const app = getFirebaseApp();
-    const db = admin.firestore(app);
-    const doc = await db.collection('ai_product_consultant_settings').doc('default').get();
-    return doc.exists ? doc.data() : {};
+    const raw = clean(process.env.AI_PRODUCT_CONSULTANT_SETTINGS_JSON);
+    if (!raw) return {};
+    try {
+        return JSON.parse(raw);
+    } catch {
+        return {};
+    }
 }
 
 async function updateLead(leadId, updates) {
     if (!leadId) return;
-    const app = getFirebaseApp();
-    const db = admin.firestore(app);
-    await db.collection('website_inquiries').doc(leadId).set({
+    await mergeInquiry(leadId, {
         ...updates,
         updatedAt: new Date().toISOString()
-    }, { merge: true });
+    });
 }
 
 function getBodyText(event) {

@@ -1,17 +1,6 @@
 const crypto = require('crypto');
-const admin = require('firebase-admin');
 const { getBccRecipient, sendMail } = require('./lib/mailer');
-
-function getFirebaseApp() {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-}
+const { getInquiry, mergeInquiry, tokenHash } = require('./lib/website-inquiries-store');
 
 function html(statusCode, body) {
     return {
@@ -25,10 +14,6 @@ function html(statusCode, body) {
 
 function clean(value) {
     return String(value || '').trim();
-}
-
-function tokenHash(token) {
-    return crypto.createHash('sha256').update(String(token || '')).digest('hex');
 }
 
 function timingSafeEqual(a, b) {
@@ -66,13 +51,8 @@ exports.handler = async (event) => {
             return html(400, page('Invalid request', 'The approval link is missing required information.'));
         }
 
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        const ref = db.collection('website_inquiries').doc(leadId);
-        const snap = await ref.get();
-        if (!snap.exists) return html(404, page('Lead not found', 'This quote approval link does not match an existing inquiry.'));
-
-        const lead = snap.data();
+        const lead = await getInquiry(leadId);
+        if (!lead) return html(404, page('Lead not found', 'This quote approval link does not match an existing inquiry.'));
         const approval = lead.quoteApproval || {};
         const draft = lead.quoteDraft || {};
 
@@ -85,7 +65,7 @@ exports.handler = async (event) => {
         }
 
         if (action === 'reject') {
-            await ref.set({
+            await mergeInquiry(leadId, {
                 quoteApproval: {
                     ...approval,
                     status: 'rejected',
@@ -94,7 +74,7 @@ exports.handler = async (event) => {
                 leadStatus: 'quote_draft_rejected',
                 nextAction: 'Mike rejected the draft quotation; revise manually.',
                 updatedAt: new Date().toISOString()
-            }, { merge: true });
+            });
             return html(200, page('Draft rejected', 'The draft quotation was marked rejected. It was not sent to the prospect.'));
         }
 
@@ -109,7 +89,7 @@ exports.handler = async (event) => {
             text: draft.prospectBody || 'Thank you for your inquiry. Marga Enterprises will follow up with your quotation.'
         });
 
-        await ref.set({
+        await mergeInquiry(leadId, {
             quoteApproval: {
                 ...approval,
                 status: 'sent',
@@ -121,7 +101,7 @@ exports.handler = async (event) => {
             leadStatus: 'quotation_sent',
             nextAction: 'Quotation approved by Mike and sent to prospect.',
             updatedAt: new Date().toISOString()
-        }, { merge: true });
+        });
 
         return html(200, page('Quotation sent', `The quotation was sent to ${lead.email} and BCC was added for Mike.`));
     } catch (error) {
