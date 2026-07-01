@@ -35,6 +35,7 @@ const stats = {
 };
 
 const FIREBASE_STORAGE_URL_REGEX = /https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/sah-spiritual-journal\.firebasestorage\.app\/o\/([^"'\s<>)]+)\?alt=media/gi;
+const GOOGLE_STORAGE_URL_REGEX = /https:\/\/storage\.googleapis\.com\/sah-spiritual-journal\.firebasestorage\.app\/public\/website\/([^"'\s<>)]+)/gi;
 const WORDPRESS_UPLOAD_URL_REGEX = /https?:\/\/marga\.biz\/wp-content\/uploads\/(\d{4})\/(\d{2})\/([^"'\s>,]+)/gi;
 const WEBSITE_STORAGE_OBJECT_PREFIX = 'public/website/';
 
@@ -92,6 +93,11 @@ function rewriteHtmlAssetUrls(html) {
     html = html.replace(FIREBASE_STORAGE_URL_REGEX, (match, objectPath) => {
         const filename = getFirebaseAssetFilename(objectPath);
         return filename ? toWebsiteMediaUrl(filename) : match;
+    });
+
+    html = html.replace(GOOGLE_STORAGE_URL_REGEX, (match, filename) => {
+        const normalizedFilename = normalizeAssetFilename(filename);
+        return normalizedFilename ? toWebsiteMediaUrl(normalizedFilename) : match;
     });
 
     html = html.replace(WORDPRESS_UPLOAD_URL_REGEX, (match, year, month, filename) => {
