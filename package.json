@@ -19,6 +19,9 @@
     "telegram:send": "node scripts/telegram-approval.js send-message",
     "telegram:check": "node scripts/telegram-approval.js check-approvals",
     "telegram:daemon": "node scripts/telegram-chat-daemon.js --interval=5",
+    "content:import:postgres": "node scripts/import-wordpress-data-to-postgres.js",
+    "content:test:postgres": "node scripts/test-wordpress-postgres-source.js",
+    "generate:postgres": "MARGA_BIZ_CONTENT_SOURCE=postgres node scripts/generate-site.js",
     "sync-images": "node scripts/sync-images.js",
     "storage:download:website": "bash scripts/start-firebase-website-storage-download.sh",
     "storage:download:website:status": "bash scripts/check-firebase-website-storage-download.sh",
@@ -43,6 +46,7 @@
     "googleapis": "^128.0.0",
     "imapflow": "^1.2.15",
     "mailparser": "^3.9.4",
-    "nodemailer": "^8.0.3"
+    "nodemailer": "^8.0.3",
+    "pg": "^8.22.0"
   }
 }

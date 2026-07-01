@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadWordpressDatasetFromPostgres } = require('./lib/margabase-local-db');
 
 // Configuration
 const CONFIG = {
@@ -250,9 +251,17 @@ console.log('=' .repeat(50));
 // LOAD DATA AND TEMPLATES
 // ============================================
 
-function loadData() {
-    console.log('\n📁 Loading data files...');
-    
+async function loadData() {
+    const contentSource = (process.env.MARGA_BIZ_CONTENT_SOURCE || 'json').trim().toLowerCase();
+    console.log(`\n📁 Loading data source: ${contentSource}`);
+
+    if (contentSource === 'postgres') {
+        const wpData = await loadWordpressDatasetFromPostgres();
+        console.log(`   ✅ Loaded ${wpData.pages?.length || 0} pages from Postgres`);
+        console.log(`   ✅ Loaded ${wpData.posts?.length || 0} posts from Postgres`);
+        return wpData;
+    }
+
     const wpDataPath = path.join(CONFIG.dataDir, 'wordpress-data.json');
     if (!fs.existsSync(wpDataPath)) {
         console.error('❌ WordPress data not found at:', wpDataPath);
@@ -1669,7 +1678,7 @@ async function main() {
         ensureDir(CONFIG.distDir);
         
         // Load everything
-        const wpData = loadData();
+        const wpData = await loadData();
         const templates = loadTemplates();
         const components = loadComponents();
         
