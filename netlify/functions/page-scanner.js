@@ -8,18 +8,7 @@
  * - targeted: Single page on-demand (before AI works on it)
  */
 
-const admin = require('firebase-admin');
-
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
+const { getDoc, listDocs, setDoc } = require('./lib/marga-doc-store');
 
 const GITHUB_API = 'https://api.github.com';
 const REPO_OWNER = 'PinedaMikeB';
@@ -371,7 +360,7 @@ function pathToDocId(path) {
 /**
  * Scan a single page
  */
-async function scanPage(db, path) {
+async function scanPage(path) {
     // Try GitHub first, then live site
     let html = await fetchPageFromGitHub(path);
     if (!html) {
@@ -386,22 +375,22 @@ async function scanPage(db, path) {
     pageData.lastScanned = new Date().toISOString();
     pageData.scanType = 'targeted';
 
-    // Store in Firebase
+    // Store in Postgres
     const docId = pathToDocId(path);
-    await db.collection('marga_pages').doc(docId).set(pageData);
+    await setDoc('marga_pages', docId, pageData);
 
     return { success: true, path, data: pageData };
 }
 
 /**
- * Get page data from Firebase (with optional fresh scan)
+ * Get page data from Postgres (with optional fresh scan)
  */
-async function getPageData(db, path, maxAge = 24 * 60 * 60 * 1000) {
+async function getPageData(path, maxAge = 24 * 60 * 60 * 1000) {
     const docId = pathToDocId(path);
-    const doc = await db.collection('marga_pages').doc(docId).get();
+    const doc = await getDoc('marga_pages', docId);
     
-    if (doc.exists) {
-        const data = doc.data();
+    if (doc) {
+        const data = doc;
         const age = Date.now() - new Date(data.lastScanned).getTime();
         
         if (age < maxAge) {
@@ -410,27 +399,27 @@ async function getPageData(db, path, maxAge = 24 * 60 * 60 * 1000) {
     }
     
     // Need to scan
-    const result = await scanPage(db, path);
+    const result = await scanPage(path);
     if (result.success) {
         return { fresh: false, data: result.data };
     }
     
-    return doc.exists ? { fresh: false, data: doc.data() } : null;
+    return doc ? { fresh: false, data: doc } : null;
 }
 
 /**
  * Initial scan - scan all pages from sitemap
  */
-async function initialScan(db, limit = 50) {
+async function initialScan(limit = 50) {
     // Get pages from site structure
-    const summaryDoc = await db.collection('marga_site').doc('summary').get();
-    if (!summaryDoc.exists) {
+    const summaryDoc = await getDoc('marga_site', 'summary');
+    if (!summaryDoc) {
         return { error: 'Run site-scanner first to get page list' };
     }
 
     // Get key pages to scan (most important ones)
-    const keyPagesDoc = await db.collection('marga_site').doc('key_pages').get();
-    const keyPages = keyPagesDoc.exists ? keyPagesDoc.data().pages : [];
+    const keyPagesDoc = await getDoc('marga_site', 'key_pages');
+    const keyPages = keyPagesDoc?.pages || [];
     
     // Check which pages are already scanned (within 24 hours)
     const maxAge = 24 * 60 * 60 * 1000; // 24 hours
@@ -441,13 +430,13 @@ async function initialScan(db, limit = 50) {
         if (pagesToScan.length >= limit) break;
         
         const docId = page.path.replace(/\//g, '_').replace(/^_/, '').replace(/_$/, '') || 'homepage';
-        const existingDoc = await db.collection('marga_pages').doc(docId).get();
+        const existingDoc = await getDoc('marga_pages', docId);
         
-        if (!existingDoc.exists) {
+        if (!existingDoc) {
             // Not scanned yet
             pagesToScan.push(page);
         } else {
-            const data = existingDoc.data();
+            const data = existingDoc;
             const lastScanned = data.lastScanned ? new Date(data.lastScanned).getTime() : 0;
             if (now - lastScanned > maxAge) {
                 // Stale, needs rescan
@@ -466,7 +455,7 @@ async function initialScan(db, limit = 50) {
     for (const page of pagesToScan) {
         results.scanned++;
         try {
-            const result = await scanPage(db, page.path);
+            const result = await scanPage(page.path);
             if (result.success) {
                 results.success++;
                 results.pages.push({ path: page.path, score: result.data.seoScore });
@@ -483,7 +472,7 @@ async function initialScan(db, limit = 50) {
     }
 
     // Update index
-    await db.collection('marga_pages').doc('_index').set({
+    await setDoc('marga_pages', '_index', {
         lastFullScan: new Date().toISOString(),
         totalScanned: results.success,
         scanType: 'initial'
@@ -495,29 +484,22 @@ async function initialScan(db, limit = 50) {
 /**
  * Get pages with issues
  */
-async function getPagesWithIssues(db, severity = null, limit = 20) {
-    const snapshot = await db.collection('marga_pages')
-        .where('seoScore', '<', 80)
-        .orderBy('seoScore', 'asc')
-        .limit(limit)
-        .get();
-
-    const pages = [];
-    snapshot.forEach(doc => {
-        if (doc.id !== '_index') {
-            const data = doc.data();
-            if (!severity || data.issues.some(i => i.severity === severity)) {
-                pages.push({
-                    path: data.path,
-                    title: data.title,
-                    seoScore: data.seoScore,
-                    issues: data.issues
-                });
-            }
-        }
+async function getPagesWithIssues(severity = null, limit = 20) {
+    const docs = await listDocs('marga_pages', {
+        filters: [{ field: 'seoScore', op: '<', value: 80 }],
+        orderBy: { field: 'seoScore', direction: 'asc' },
+        limit
     });
 
-    return pages;
+    return docs
+        .filter((doc) => doc.id !== '_index')
+        .filter((doc) => !severity || (doc.issues || []).some((issue) => issue.severity === severity))
+        .map((doc) => ({
+            path: doc.path,
+            title: doc.title,
+            seoScore: doc.seoScore,
+            issues: doc.issues
+        }));
 }
 
 /**
@@ -534,9 +516,6 @@ exports.handler = async (event) => {
     }
 
     try {
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        
         const params = event.queryStringParameters || {};
         const action = params.action || 'get';
 
@@ -544,7 +523,7 @@ exports.handler = async (event) => {
             case 'scan': {
                 // Scan a single page
                 const path = params.path || '/';
-                const result = await scanPage(db, path);
+                const result = await scanPage(path);
                 return {
                     statusCode: 200,
                     headers,
@@ -556,7 +535,7 @@ exports.handler = async (event) => {
                 // Get page data (scan if stale)
                 const path = params.path || '/';
                 const maxAge = parseInt(params.maxAge) || 24 * 60 * 60 * 1000;
-                const result = await getPageData(db, path, maxAge);
+                const result = await getPageData(path, maxAge);
                 return {
                     statusCode: 200,
                     headers,
@@ -567,7 +546,7 @@ exports.handler = async (event) => {
             case 'initial': {
                 // Initial scan of key pages
                 const limit = parseInt(params.limit) || 50;
-                const result = await initialScan(db, limit);
+                const result = await initialScan(limit);
                 return {
                     statusCode: 200,
                     headers,
@@ -579,7 +558,7 @@ exports.handler = async (event) => {
                 // Get pages with issues
                 const severity = params.severity || null;
                 const limit = parseInt(params.limit) || 20;
-                const pages = await getPagesWithIssues(db, severity, limit);
+                const pages = await getPagesWithIssues(severity, limit);
                 return {
                     statusCode: 200,
                     headers,

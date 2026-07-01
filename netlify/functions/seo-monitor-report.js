@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
 const { google } = require('googleapis');
+const { getDoc, listDocs } = require('./lib/marga-doc-store');
 
 const TIMEZONE = 'Asia/Manila';
 const DEFAULT_DAYS = 5;
@@ -860,12 +861,11 @@ function summarizeActivity(item) {
 
 async function getRecentTasks(db) {
     try {
-        const snapshot = await db.collection('marga_tasks')
-            .orderBy('createdAt', 'desc')
-            .limit(8)
-            .get();
-
-        return snapshot.docs.map(doc => summarizeTask(doc.data()));
+        const docs = await listDocs('marga_tasks', {
+            orderBy: { field: 'createdAt', direction: 'desc' },
+            limit: 8
+        });
+        return docs.map(doc => summarizeTask(doc));
     } catch (error) {
         console.warn('Unable to load recent tasks:', error.message);
         return [];
@@ -874,12 +874,11 @@ async function getRecentTasks(db) {
 
 async function getRecentActivity(db) {
     try {
-        const snapshot = await db.collection('marga_activity_log')
-            .orderBy('timestamp', 'desc')
-            .limit(8)
-            .get();
-
-        return snapshot.docs.map(doc => summarizeActivity(doc.data()));
+        const docs = await listDocs('marga_activity_log', {
+            orderBy: { field: 'timestamp', direction: 'desc' },
+            limit: 8
+        });
+        return docs.map(doc => summarizeActivity(doc));
     } catch (error) {
         console.warn('Unable to load recent activity:', error.message);
         return [];
@@ -907,8 +906,7 @@ async function getSnapshotFallback(db, days) {
 
 async function getLatestDailyRun(db) {
     try {
-        const doc = await db.collection('marga_shared').doc('seo_monitor_daily_run').get();
-        return doc.exists ? doc.data() : null;
+        return await getDoc('marga_shared', 'seo_monitor_daily_run');
     } catch (error) {
         console.warn('Unable to load latest SEO monitor run:', error.message);
         return null;
@@ -917,8 +915,7 @@ async function getLatestDailyRun(db) {
 
 async function getAutomationStatus(db) {
     try {
-        const doc = await db.collection('marga_shared').doc('seo_monitor_automation_status').get();
-        return doc.exists ? doc.data() : null;
+        return await getDoc('marga_shared', 'seo_monitor_automation_status');
     } catch (error) {
         console.warn('Unable to load SEO monitor automation status:', error.message);
         return null;

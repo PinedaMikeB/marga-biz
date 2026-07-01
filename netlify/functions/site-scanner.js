@@ -1,22 +1,9 @@
 /**
  * Marga AI - Website Scanner
- * Scans sitemap.xml and stores full site structure in Firebase
+ * Scans sitemap.xml and stores full site structure in Postgres
  * Gives AI complete knowledge of all pages
  */
-
-const admin = require('firebase-admin');
-
-// Initialize Firebase Admin
-const getFirebaseApp = () => {
-    if (admin.apps.length === 0) {
-        const serviceAccount = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: 'sah-spiritual-journal'
-        });
-    }
-    return admin.app();
-};
+const { getDoc, setDoc } = require('./lib/marga-doc-store');
 
 const SITEMAP_URL = 'https://marga.biz/sitemap.xml';
 
@@ -77,28 +64,23 @@ function extractPageInfo(url) {
 }
 
 /**
- * Store site structure in Firebase
+ * Store site structure in Postgres
  */
-async function storeSiteStructure(db, pages) {
-    const batch = db.batch();
-    
+async function storeSiteStructure(pages) {
     // Store summary
-    const summaryRef = db.collection('marga_site').doc('summary');
     const categoryCounts = {};
     
     pages.forEach(page => {
         categoryCounts[page.category] = (categoryCounts[page.category] || 0) + 1;
     });
     
-    batch.set(summaryRef, {
+    await setDoc('marga_site', 'summary', {
         totalPages: pages.length,
         categories: categoryCounts,
         lastScanned: new Date().toISOString(),
         sitemapUrl: SITEMAP_URL
     });
-    
-    await batch.commit();
-    
+
     // Store pages in chunks (Firestore batch limit is 500)
     const chunks = [];
     for (let i = 0; i < pages.length; i += 400) {
@@ -106,14 +88,11 @@ async function storeSiteStructure(db, pages) {
     }
     
     for (let i = 0; i < chunks.length; i++) {
-        const chunkBatch = db.batch();
-        const chunkRef = db.collection('marga_site').doc(`pages_${i}`);
-        chunkBatch.set(chunkRef, { 
+        await setDoc('marga_site', `pages_${i}`, {
             pages: chunks[i],
             chunkIndex: i,
             count: chunks[i].length
         });
-        await chunkBatch.commit();
     }
     
     // Store key pages separately for quick access (PRIORITY ORDER)
@@ -166,7 +145,7 @@ async function storeSiteStructure(db, pages) {
     // Limit to 200 key pages
     const keyPages = priorityPages.slice(0, 200);
     
-    await db.collection('marga_site').doc('key_pages').set({
+    await setDoc('marga_site', 'key_pages', {
         pages: keyPages,
         count: keyPages.length,
         lastUpdated: new Date().toISOString()
@@ -180,20 +159,18 @@ async function storeSiteStructure(db, pages) {
 }
 
 /**
- * Get site structure from Firebase
+ * Get site structure from Postgres
  */
-async function getSiteStructure(db) {
-    const summaryDoc = await db.collection('marga_site').doc('summary').get();
-    
-    if (!summaryDoc.exists) {
+async function getSiteStructure() {
+    const summary = await getDoc('marga_site', 'summary');
+
+    if (!summary) {
         return null;
     }
-    
-    const summary = summaryDoc.data();
-    
+
     // Get key pages
-    const keyPagesDoc = await db.collection('marga_site').doc('key_pages').get();
-    const keyPages = keyPagesDoc.exists ? keyPagesDoc.data().pages : [];
+    const keyPagesDoc = await getDoc('marga_site', 'key_pages');
+    const keyPages = keyPagesDoc?.pages || [];
     
     return {
         ...summary,
@@ -215,17 +192,14 @@ exports.handler = async (event) => {
     }
 
     try {
-        const app = getFirebaseApp();
-        const db = admin.firestore(app);
-        
         const params = event.queryStringParameters || {};
         const action = params.action || 'get';
 
         if (action === 'scan') {
-            // Scan sitemap and store in Firebase
+            // Scan sitemap and store in Postgres
             const urls = await fetchSitemap();
             const pages = urls.map(url => extractPageInfo(url));
-            const result = await storeSiteStructure(db, pages);
+            const result = await storeSiteStructure(pages);
             
             return {
                 statusCode: 200,
@@ -240,7 +214,7 @@ exports.handler = async (event) => {
         
         if (action === 'get') {
             // Get stored site structure
-            const structure = await getSiteStructure(db);
+            const structure = await getSiteStructure();
             
             if (!structure) {
                 return {

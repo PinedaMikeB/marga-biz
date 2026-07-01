@@ -6,6 +6,7 @@
  */
 
 const admin = require('firebase-admin');
+const { getDoc, listDocs } = require('./marga-doc-store');
 
 // Initialize Firebase if needed
 const getDb = () => {
@@ -141,12 +142,11 @@ async function findCompetitors(keyword) {
  */
 async function getCachedPage(pagePath) {
     try {
-        const db = getDb();
         const docId = pagePath.replace(/\//g, '_').replace(/^_|_$/g, '') || 'home';
-        const doc = await db.collection('marga_pages').doc(docId).get();
+        const doc = await getDoc('marga_pages', docId);
         
-        if (doc.exists) {
-            const data = doc.data();
+        if (doc) {
+            const data = doc;
             return {
                 success: true,
                 cached: true,
@@ -210,24 +210,26 @@ async function getSiteOverview() {
         const db = getDb();
         
         // Get key pages
-        const keyPagesDoc = await db.collection('marga_site').doc('key_pages').get();
-        const summaryDoc = await db.collection('marga_site').doc('summary').get();
+        const keyPagesDoc = await getDoc('marga_site', 'key_pages');
+        const summaryDoc = await getDoc('marga_site', 'summary');
         
-        const keyPages = keyPagesDoc.exists ? keyPagesDoc.data() : null;
-        const summary = summaryDoc.exists ? summaryDoc.data() : null;
+        const keyPages = keyPagesDoc || null;
+        const summary = summaryDoc || null;
         
         // Get recent scans
-        const recentScans = await db.collection('marga_pages')
-            .orderBy('scannedAt', 'desc')
-            .limit(10)
-            .get();
+        const recentScans = await listDocs('marga_pages', {
+            orderBy: { field: 'scannedAt', direction: 'desc' },
+            limit: 10
+        });
         
-        const recentPages = recentScans.docs.map(d => ({
-            path: d.data().path,
-            score: d.data().seoScore,
-            grade: d.data().grade,
-            scannedAt: d.data().scannedAt
-        }));
+        const recentPages = recentScans
+            .filter((item) => item.id !== '_index')
+            .map((item) => ({
+                path: item.path,
+                score: item.seoScore,
+                grade: item.grade,
+                scannedAt: item.scannedAt
+            }));
         
         return {
             success: true,

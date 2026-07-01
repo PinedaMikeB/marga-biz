@@ -4,6 +4,14 @@
  */
 
 const admin = require('firebase-admin');
+const {
+    addDoc,
+    getDoc,
+    listDocs,
+    nowIso,
+    setDoc,
+    updateDoc
+} = require('./marga-doc-store');
 
 // Initialize Firebase Admin (singleton)
 let firebaseApp = null;
@@ -61,102 +69,94 @@ const ISSUE_STATUS = {
 // ============ AGENT STATUS ============
 
 async function updateAgentStatus(agentId, status, extras = {}) {
-    const db = getDb();
-    await db.collection('marga_agents').doc(agentId).set({
+    const existing = await getDoc('marga_agents', agentId);
+    await setDoc('marga_agents', agentId, {
+        ...(existing || {}),
         status,
-        lastActive: admin.firestore.FieldValue.serverTimestamp(),
+        lastActive: nowIso(),
         ...extras
     }, { merge: true });
 }
 
 async function getAgentStatus(agentId) {
-    const db = getDb();
-    const doc = await db.collection('marga_agents').doc(agentId).get();
-    return doc.exists ? doc.data() : null;
+    const doc = await getDoc('marga_agents', agentId);
+    return doc || null;
 }
 
 async function getAllAgentsStatus() {
-    const db = getDb();
-    const snapshot = await db.collection('marga_agents').get();
+    const snapshot = await listDocs('marga_agents', { limit: 500 });
     const agents = {};
-    snapshot.forEach(doc => { agents[doc.id] = doc.data(); });
+    snapshot.forEach(({ id, ...data }) => { agents[id] = data; });
     return agents;
 }
 
 // ============ TASKS ============
 
 async function createTask(task) {
-    const db = getDb();
-    const ref = await db.collection('marga_tasks').add({
+    const ref = await addDoc('marga_tasks', {
         ...task,
         status: TASK_STATUS.PENDING,
-        createdAt: admin.firestore.FieldValue.serverTimestamp()
+        createdAt: nowIso()
     });
     return ref.id;
 }
 
 async function getPendingTasks(agentId) {
-    const db = getDb();
-    const snapshot = await db.collection('marga_tasks')
-        .where('agent', '==', agentId)
-        .where('status', '==', TASK_STATUS.PENDING)
-        .orderBy('createdAt', 'asc')
-        .limit(10)
-        .get();
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const docs = await listDocs('marga_tasks', {
+        filters: [
+            { field: 'agent', op: '==', value: agentId },
+            { field: 'status', op: '==', value: TASK_STATUS.PENDING }
+        ],
+        orderBy: { field: 'createdAt', direction: 'asc' },
+        limit: 10
+    });
+    return docs.map(({ id, ...data }) => ({ id, ...data }));
 }
 
 async function updateTask(taskId, updates) {
-    const db = getDb();
-    await db.collection('marga_tasks').doc(taskId).update({
+    await updateDoc('marga_tasks', taskId, {
         ...updates,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        updatedAt: nowIso()
     });
 }
 
 async function completeTask(taskId, result, success = true) {
-    const db = getDb();
-    await db.collection('marga_tasks').doc(taskId).update({
+    await updateDoc('marga_tasks', taskId, {
         status: success ? TASK_STATUS.DONE : TASK_STATUS.FAILED,
         result,
-        completedAt: admin.firestore.FieldValue.serverTimestamp()
+        completedAt: nowIso()
     });
 }
 
 // ============ ISSUES ============
 
 async function createIssue(issue) {
-    const db = getDb();
-    const ref = await db.collection('marga_issues').add({
+    const ref = await addDoc('marga_issues', {
         ...issue,
         status: ISSUE_STATUS.OPEN,
-        foundAt: admin.firestore.FieldValue.serverTimestamp()
+        foundAt: nowIso()
     });
     return ref.id;
 }
 
 async function getOpenIssues(limit = 20) {
-    const db = getDb();
-    // Simple query without orderBy to avoid index requirement
-    const snapshot = await db.collection('marga_issues')
-        .where('status', '==', ISSUE_STATUS.OPEN)
-        .limit(limit)
-        .get();
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const docs = await listDocs('marga_issues', {
+        filters: [{ field: 'status', op: '==', value: ISSUE_STATUS.OPEN }],
+        limit
+    });
+    return docs.map(({ id, ...data }) => ({ id, ...data }));
 }
 
 async function updateIssue(issueId, updates) {
-    const db = getDb();
-    await db.collection('marga_issues').doc(issueId).update(updates);
+    await updateDoc('marga_issues', issueId, updates);
 }
 
 // ============ SOLUTIONS ============
 
 async function createSolution(solution) {
-    const db = getDb();
-    const ref = await db.collection('marga_solutions').add({
+    const ref = await addDoc('marga_solutions', {
         ...solution,
-        implementedAt: admin.firestore.FieldValue.serverTimestamp()
+        implementedAt: nowIso()
     });
     if (solution.issueId) {
         await updateIssue(solution.issueId, {
@@ -170,92 +170,85 @@ async function createSolution(solution) {
 // ============ FOLLOW-UPS ============
 
 async function createFollowup(followup) {
-    const db = getDb();
-    const ref = await db.collection('marga_followups').add({
+    const ref = await addDoc('marga_followups', {
         ...followup,
         status: 'pending',
-        createdAt: admin.firestore.FieldValue.serverTimestamp()
+        createdAt: nowIso()
     });
     return ref.id;
 }
 
 async function getPendingFollowups() {
-    const db = getDb();
     const now = new Date();
-    const snapshot = await db.collection('marga_followups')
-        .where('status', '==', 'pending')
-        .where('checkDate', '<=', now)
-        .get();
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const docs = await listDocs('marga_followups', {
+        filters: [
+            { field: 'status', op: '==', value: 'pending' },
+            { field: 'checkDate', op: '<=', value: now.toISOString() }
+        ]
+    });
+    return docs.map(({ id, ...data }) => ({ id, ...data }));
 }
 
 // ============ RECOMMENDATIONS ============
 
 async function createRecommendation(rec) {
-    const db = getDb();
-    const ref = await db.collection('marga_recommendations').add({
+    const ref = await addDoc('marga_recommendations', {
         ...rec,
         status: 'pending',
-        createdAt: admin.firestore.FieldValue.serverTimestamp()
+        createdAt: nowIso()
     });
     return ref.id;
 }
 
 async function getPendingRecommendations() {
-    const db = getDb();
-    // Simple query without orderBy to avoid index requirement
-    const snapshot = await db.collection('marga_recommendations')
-        .where('status', '==', 'pending')
-        .limit(20)
-        .get();
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const docs = await listDocs('marga_recommendations', {
+        filters: [{ field: 'status', op: '==', value: 'pending' }],
+        limit: 20
+    });
+    return docs.map(({ id, ...data }) => ({ id, ...data }));
 }
 
 async function updateRecommendation(recId, updates) {
-    const db = getDb();
-    await db.collection('marga_recommendations').doc(recId).update(updates);
+    await updateDoc('marga_recommendations', recId, updates);
 }
 
 async function getRecommendation(recId) {
-    const db = getDb();
-    const doc = await db.collection('marga_recommendations').doc(recId).get();
-    return doc.exists ? { id: doc.id, ...doc.data() } : null;
+    const doc = await getDoc('marga_recommendations', recId);
+    return doc ? { ...doc, id: recId } : null;
 }
 
 // ============ ACTIVITY LOG ============
 
 async function logActivity(agentId, action, details) {
-    const db = getDb();
-    await db.collection('marga_activity_log').add({
+    await addDoc('marga_activity_log', {
         agent: agentId,
         action,
         details,
-        timestamp: admin.firestore.FieldValue.serverTimestamp()
+        timestamp: nowIso()
     });
 }
 
 async function getRecentActivity(limit = 20) {
-    const db = getDb();
-    const snapshot = await db.collection('marga_activity_log')
-        .orderBy('timestamp', 'desc')
-        .limit(limit)
-        .get();
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const docs = await listDocs('marga_activity_log', {
+        orderBy: { field: 'timestamp', direction: 'desc' },
+        limit
+    });
+    return docs.map(({ id, ...data }) => ({ id, ...data }));
 }
 
 // ============ SHARED DATA ============
 
 async function getSharedData(key) {
-    const db = getDb();
-    const doc = await db.collection('marga_shared').doc(key).get();
-    return doc.exists ? doc.data() : null;
+    const doc = await getDoc('marga_shared', key);
+    return doc || null;
 }
 
 async function setSharedData(key, data) {
-    const db = getDb();
-    await db.collection('marga_shared').doc(key).set({
+    const existing = await getDoc('marga_shared', key);
+    await setDoc('marga_shared', key, {
+        ...(existing || {}),
         ...data,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        updatedAt: nowIso()
     }, { merge: true });
 }
 

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const admin = require('firebase-admin');
+const { addDoc, getDoc, nowIso, setDoc, updateDoc } = require('./lib/marga-doc-store');
 
 const SERPER_API_URL = 'https://google.serper.dev/search';
 const TARGET_DOMAIN = 'marga.biz';
@@ -356,11 +357,11 @@ async function addTrackedKeyword(db, keyword) {
 }
 
 async function logActivity(db, action, details) {
-    await db.collection('marga_activity_log').add({
+    await addDoc('marga_activity_log', {
         agent: 'seo_monitor',
         action,
         details,
-        timestamp: admin.firestore.FieldValue.serverTimestamp()
+        timestamp: nowIso()
     });
 }
 
@@ -388,7 +389,7 @@ async function recordTaskCompletion(db, payload) {
         link,
         status,
         completedAt: new Date().toISOString(),
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        updatedAt: nowIso()
     };
 
     await db.collection('seo_monitor_task_completions').doc(docId).set(completion, { merge: true });
@@ -427,10 +428,8 @@ async function updateAutomationStatus(db, payload) {
     const runLog = String(payload.runLog || '').trim();
     const lastMessageFile = String(payload.lastMessageFile || '').trim();
     const heartbeat = Boolean(payload.heartbeat);
-    const ref = db.collection('marga_shared').doc('seo_monitor_automation_status');
-    const currentDoc = await ref.get();
-    const current = currentDoc.exists ? currentDoc.data() : {};
-    const nowIso = String(payload.updatedAt || new Date().toISOString());
+    const current = await getDoc('marga_shared', 'seo_monitor_automation_status') || {};
+    const updatedAtIso = String(payload.updatedAt || new Date().toISOString());
 
     const next = {
         automationId,
@@ -457,8 +456,8 @@ async function updateAutomationStatus(db, payload) {
         queueStatus: payload.queueStatus || current.queueStatus || null,
         latestReportGeneratedAt: payload.latestReportGeneratedAt || current.latestReportGeneratedAt || null,
         completedTasks: Array.isArray(payload.completedTasks) ? payload.completedTasks.slice(0, 20) : (current.completedTasks || []),
-        updatedAtIso: nowIso,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        updatedAtIso,
+        updatedAt: updatedAtIso
     };
 
     if (status === 'Running' && payload.startedAt) {
@@ -472,7 +471,7 @@ async function updateAutomationStatus(db, payload) {
         next.queueStatus = current.queueStatus || null;
     }
 
-    await ref.set(next, { merge: true });
+    await setDoc('marga_shared', 'seo_monitor_automation_status', next, { merge: true });
 
     if (!heartbeat) {
         await db.collection('seo_monitor_automation_events').add({
@@ -483,7 +482,7 @@ async function updateAutomationStatus(db, payload) {
             runId: next.runId || null,
             source: next.source,
             runner: next.runner,
-            updatedAtIso: nowIso,
+            updatedAtIso,
             createdAt: admin.firestore.FieldValue.serverTimestamp()
         });
 
@@ -606,9 +605,9 @@ async function runToday(db) {
         pageScans
     };
 
-    await db.collection('marga_shared').doc('seo_monitor_daily_run').set({
+    await setDoc('marga_shared', 'seo_monitor_daily_run', {
         ...result,
-        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        updatedAt: nowIso()
     }, { merge: true });
 
     await logActivity(db, 'seo_monitor_daily_run', {

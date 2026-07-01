@@ -21,6 +21,7 @@ const {
     logActivity,
     getSharedData
 } = require('./lib/agent-utils');
+const { getDoc } = require('./lib/marga-doc-store');
 
 // Direct tool functions (MCP-style)
 const {
@@ -286,9 +287,9 @@ async function getManagerContext(db) {
     // Get scanned pages summary
     let pagesData = null;
     try {
-        const indexDoc = await db.collection('marga_pages').doc('_index').get();
-        if (indexDoc.exists) {
-            pagesData = indexDoc.data();
+        const indexDoc = await getDoc('marga_pages', '_index');
+        if (indexDoc) {
+            pagesData = indexDoc;
         }
     } catch (e) {}
     

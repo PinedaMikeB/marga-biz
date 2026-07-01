@@ -7,6 +7,7 @@
  */
 
 const admin = require('firebase-admin');
+const { addDoc, getDoc, listDocs, setDoc } = require('./lib/marga-doc-store');
 
 const getFirebaseApp = () => {
     if (admin.apps.length === 0) {
@@ -40,12 +41,12 @@ async function getLatestAnalytics(db) {
 
 async function getSiteStructure(db) {
     try {
-        const summaryDoc = await db.collection('marga_site').doc('summary').get();
-        const keyPagesDoc = await db.collection('marga_site').doc('key_pages').get();
+        const summaryDoc = await getDoc('marga_site', 'summary');
+        const keyPagesDoc = await getDoc('marga_site', 'key_pages');
         
         return {
-            summary: summaryDoc.exists ? summaryDoc.data() : null,
-            keyPages: keyPagesDoc.exists ? keyPagesDoc.data().pages : []
+            summary: summaryDoc || null,
+            keyPages: keyPagesDoc?.pages || []
         };
     } catch (e) { return null; }
 }
@@ -55,19 +56,12 @@ async function getSiteStructure(db) {
  */
 async function getPagesWithIssues(db, limit = 10) {
     try {
-        const snapshot = await db.collection('marga_pages')
-            .where('seoScore', '<', 80)
-            .orderBy('seoScore', 'asc')
-            .limit(limit)
-            .get();
-
-        const pages = [];
-        snapshot.forEach(doc => {
-            if (doc.id !== '_index') {
-                pages.push(doc.data());
-            }
+        const docs = await listDocs('marga_pages', {
+            filters: [{ field: 'seoScore', op: '<', value: 80 }],
+            orderBy: { field: 'seoScore', direction: 'asc' },
+            limit
         });
-        return pages;
+        return docs.filter((doc) => doc.id !== '_index');
     } catch (e) { return []; }
 }
 
@@ -77,8 +71,8 @@ async function getPagesWithIssues(db, limit = 10) {
 async function getPageDetails(db, path) {
     try {
         const docId = path.replace(/\//g, '_').replace(/^_/, '').replace(/_$/, '') || 'homepage';
-        const doc = await db.collection('marga_pages').doc(docId).get();
-        return doc.exists ? doc.data() : null;
+        const doc = await getDoc('marga_pages', docId);
+        return doc || null;
     } catch (e) { return null; }
 }
 
@@ -350,12 +344,12 @@ async function executeAction(db, action) {
         }
 
         case 'create_page': {
-            await db.collection('marga_tasks').add({
+            await addDoc('marga_tasks', {
                 type: 'create_page',
                 status: 'pending',
                 data,
                 source: 'ai-chat',
-                createdAt: admin.firestore.FieldValue.serverTimestamp()
+                createdAt: new Date().toISOString()
             });
             await updateGlobalMemory(db, { action: { type: 'create_page', description: `Queued page: ${data.title || data.slug}` } });
             return { success: true, message: `Page creation queued` };
