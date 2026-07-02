@@ -140,7 +140,15 @@ exports.handler = async (event) => {
         };
 
         const inquiryId = makeInquiryId();
-        await saveInquiry(inquiryId, lead);
+        let savedToDb = true;
+        let saveWarning = '';
+        try {
+            await saveInquiry(inquiryId, lead);
+        } catch (error) {
+            savedToDb = false;
+            saveWarning = error.message || 'Inquiry store is temporarily unavailable';
+            console.warn('Create inquiry storage fallback:', error);
+        }
 
         notifyTelegram({ id: inquiryId, ...lead }).catch((error) => {
             console.warn('Telegram inquiry notification failed:', error);
@@ -149,7 +157,14 @@ exports.handler = async (event) => {
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ success: true, inquiryId, aiCallStatus: lead.aiCallStatus })
+            body: JSON.stringify({
+                success: true,
+                inquiryId,
+                aiCallStatus: lead.aiCallStatus,
+                savedToDb,
+                warning: saveWarning || undefined,
+                lead
+            })
         };
     } catch (error) {
         console.error('Create inquiry failed:', error);

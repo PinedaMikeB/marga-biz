@@ -61,9 +61,35 @@ function safeModel(value, fallback) {
     return model;
 }
 
+function decodeHeaderValue(value) {
+    const text = clean(value);
+    if (!text) return '';
+    try {
+        return Buffer.from(text, 'base64').toString('utf8').trim();
+    } catch {
+        return text;
+    }
+}
+
+function getLeadFromEvent(event, payload) {
+    const headers = event.headers || {};
+    return {
+        fullName: decodeHeaderValue(headers['x-lead-full-name'] || headers['X-Lead-Full-Name'] || payload.fullName),
+        company: decodeHeaderValue(headers['x-lead-company'] || headers['X-Lead-Company'] || payload.company),
+        service: decodeHeaderValue(headers['x-lead-service'] || headers['X-Lead-Service'] || payload.service),
+        languageMode: decodeHeaderValue(headers['x-lead-language-mode'] || headers['X-Lead-Language-Mode'] || payload.languageMode),
+        message: decodeHeaderValue(headers['x-lead-message'] || headers['X-Lead-Message'] || payload.message)
+    };
+}
+
 async function getLead(leadId) {
     if (!leadId) return null;
-    return getInquiry(leadId);
+    try {
+        return await getInquiry(leadId);
+    } catch (error) {
+        console.warn('Unable to load stored inquiry, continuing with request payload.', error);
+        return null;
+    }
 }
 
 async function getConsultantSettings() {
@@ -78,10 +104,14 @@ async function getConsultantSettings() {
 
 async function updateLead(leadId, updates) {
     if (!leadId) return;
-    await mergeInquiry(leadId, {
-        ...updates,
-        updatedAt: new Date().toISOString()
-    });
+    try {
+        await mergeInquiry(leadId, {
+            ...updates,
+            updatedAt: new Date().toISOString()
+        });
+    } catch (error) {
+        console.warn('Unable to update inquiry after voice start.', error);
+    }
 }
 
 function getBodyText(event) {
@@ -137,8 +167,9 @@ exports.handler = async (event) => {
         }
 
         const leadId = clean(payload.leadId || event.queryStringParameters?.leadId);
+        const requestLead = getLeadFromEvent(event, payload);
         const storedLead = await getLead(leadId);
-        const lead = storedLead || payload.lead || {};
+        const lead = storedLead || payload.lead || requestLead || {};
         const consultantSettings = await getConsultantSettings().catch((error) => {
             console.warn('Unable to load AI consultant settings, using defaults.', error);
             return {};

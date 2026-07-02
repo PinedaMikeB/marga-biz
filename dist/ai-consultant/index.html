@@ -605,6 +605,10 @@
             return payload;
         }
 
+        function encodeLeadHeader(value) {
+            return btoa(unescape(encodeURIComponent(String(value || '').trim())));
+        }
+
         function prefillFromQuery() {
             const params = new URLSearchParams(window.location.search);
             ['service', 'message', 'fullName', 'phone', 'email', 'company'].forEach((key) => {
@@ -633,7 +637,7 @@
             transcriptEntries = [];
             usageSnapshot = createEmptyUsage();
             callStartedAt = null;
-            return { leadId: result.inquiryId, lead: payload };
+            return { leadId: result.inquiryId, lead: result.lead || payload };
         }
 
         async function startBrowserVoice() {
@@ -725,7 +729,14 @@
 
                 const response = await fetch(`/.netlify/functions/ai-consultant-session?leadId=${encodeURIComponent(saved.leadId)}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/sdp' },
+                    headers: {
+                        'Content-Type': 'application/sdp',
+                        'X-Lead-Full-Name': encodeLeadHeader(saved.lead?.fullName),
+                        'X-Lead-Company': encodeLeadHeader(saved.lead?.company),
+                        'X-Lead-Service': encodeLeadHeader(saved.lead?.service),
+                        'X-Lead-Language-Mode': encodeLeadHeader(saved.lead?.languageMode),
+                        'X-Lead-Message': encodeLeadHeader(saved.lead?.message)
+                    },
                     body: offer.sdp
                 });
                 const answerSdp = await response.text();
