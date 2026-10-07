@@ -24,9 +24,7 @@ services:
       MARGA_BIZ_CONTENT_SOURCE: postgres
       MARGA_BIZ_WEBSITE_STORAGE_DIR: /data/website-media
     env_file:
-      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/repo.env
-      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/automation.env
-      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/integrations.env
+      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/app.env
     ports:
       - 127.0.0.1:9400:9400
     volumes:

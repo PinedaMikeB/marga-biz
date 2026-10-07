@@ -16,6 +16,15 @@ function clean(value) {
     return String(value || '').trim();
 }
 
+function escapeHtml(value) {
+    return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function timingSafeEqual(a, b) {
     const left = Buffer.from(String(a || ''), 'hex');
     const right = Buffer.from(String(b || ''), 'hex');
@@ -103,7 +112,7 @@ exports.handler = async (event) => {
             updatedAt: new Date().toISOString()
         });
 
-        return html(200, page('Quotation sent', `The quotation was sent to ${lead.email} and BCC was added for Mike.`));
+        return html(200, page('Quotation sent', `The quotation was sent to ${escapeHtml(lead.email)} and BCC was added for Mike.`));
     } catch (error) {
         console.error('Quote approval failed:', error);
         return html(500, page('Quotation action failed', error.message));

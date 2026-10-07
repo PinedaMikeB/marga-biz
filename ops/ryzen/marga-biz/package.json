@@ -1,0 +1,9 @@
+{
+  "name": "marga-biz-ryzen-runtime",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "nodemailer": "10.0.16",
+    "pg": "8.22.0"
+  }
+}

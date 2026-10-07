@@ -410,6 +410,7 @@
         let currentPeer = null;
         let currentStream = null;
         let currentLeadId = '';
+        let currentLeadToken = '';
         let currentDataChannel = null;
         let callStartedAt = null;
         let transcriptEntries = [];
@@ -534,17 +535,17 @@
         }
 
         async function patchLead(updates, { keepalive = false } = {}) {
-            if (!currentLeadId) return;
+            if (!currentLeadId || !currentLeadToken) return;
             await fetch('/.netlify/functions/website-inquiries', {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 keepalive,
-                body: JSON.stringify({ leadId: currentLeadId, updates })
+                body: JSON.stringify({ leadId: currentLeadId, clientToken: currentLeadToken, updates })
             });
         }
 
         function queueTranscriptSave({ final = false } = {}) {
-            if (!currentLeadId) return;
+            if (!currentLeadId || !currentLeadToken) return;
             clearTimeout(saveTranscriptTimer);
             const save = () => {
                 const updates = {
@@ -583,6 +584,7 @@
                 keepalive: true,
                 body: JSON.stringify({
                     leadId: currentLeadId,
+                    clientToken: currentLeadToken,
                     transcript: transcriptEntries,
                     usage: usageSnapshot
                 })
@@ -628,6 +630,10 @@
                 throw new Error(result.error || 'Unable to save consultation request');
             }
             currentLeadId = result.inquiryId;
+            currentLeadToken = result.clientToken || '';
+            if (!currentLeadToken) {
+                throw new Error('Unable to authorize the saved consultation request');
+            }
             transcriptEntries = [];
             usageSnapshot = createEmptyUsage();
             callStartedAt = null;
@@ -725,6 +731,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/sdp',
+                        'X-Lead-Token': currentLeadToken,
                         'X-Lead-Full-Name': encodeLeadHeader(saved.lead?.fullName),
                         'X-Lead-Company': encodeLeadHeader(saved.lead?.company),
                         'X-Lead-Service': encodeLeadHeader(saved.lead?.service),

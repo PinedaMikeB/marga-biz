@@ -14,10 +14,21 @@ This stack is intentionally independent from Margabase and Marga App.
 The PostgreSQL service does not publish a host or LAN port. Applications must
 join the private `marga-biz-database` Docker network.
 
+The public application gateway exposes only the customer inquiry, AI
+consultant, and quotation functions. Admin, SEO, GitHub editor, analytics, and
+legacy OTP functions remain unavailable until they receive a separate security
+review.
+
 ## Required secret
 
 Create `/srv/apps/marga-biz-runtime/secrets/postgres-password.txt` with mode
 `0600`. Never commit this file.
+
+Create `/srv/apps/marga-biz-runtime/secrets/app.env` as an allowlisted runtime
+environment containing only Telegram notification and SMTP delivery values.
+OpenAI is loaded separately from the protected `public-runtime.json` file. Do
+not attach Netlify, GitHub, Facebook, analytics-admin, or deployment tokens to
+the public application container.
 
 ## Start and verify
 

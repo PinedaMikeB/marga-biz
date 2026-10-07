@@ -14,6 +14,10 @@ function makeInquiryId() {
     return `web-${stamp}-${suffix}`;
 }
 
+function makeClientToken() {
+    return crypto.randomBytes(32).toString('hex');
+}
+
 function mapLeadScalars(inquiryId, data) {
     const createdAt = parseTimestamp(data.createdAt, new Date().toISOString());
     const updatedAt = parseTimestamp(data.updatedAt, createdAt);
@@ -185,12 +189,21 @@ function tokenHash(token) {
     return crypto.createHash('sha256').update(String(token || '')).digest('hex');
 }
 
+function verifyClientToken(token, expectedHash) {
+    const actual = Buffer.from(tokenHash(token), 'hex');
+    const expected = Buffer.from(String(expectedHash || ''), 'hex');
+    if (actual.length !== expected.length || expected.length === 0) return false;
+    return crypto.timingSafeEqual(actual, expected);
+}
+
 module.exports = {
     ensureWebsiteInquiriesTable,
     getInquiry,
     listInquiries,
+    makeClientToken,
     makeInquiryId,
     mergeInquiry,
     saveInquiry,
-    tokenHash
+    tokenHash,
+    verifyClientToken
 };

@@ -1,7 +1,12 @@
 const crypto = require('crypto');
 const { buildDraftQuotation, transcriptText } = require('./lib/sales-knowledge');
 const { getApprovalRecipient, sendMail } = require('./lib/mailer');
-const { getInquiry, mergeInquiry, tokenHash } = require('./lib/website-inquiries-store');
+const {
+    getInquiry,
+    mergeInquiry,
+    tokenHash,
+    verifyClientToken
+} = require('./lib/website-inquiries-store');
 
 function json(statusCode, body) {
     return {
@@ -72,6 +77,9 @@ exports.handler = async (event) => {
 
         const storedLead = await getInquiry(leadId);
         if (!storedLead) return json(404, { success: false, error: 'Lead not found' });
+        if (!verifyClientToken(body.clientToken, storedLead.clientTokenHash)) {
+            return json(401, { success: false, error: 'Invalid inquiry token' });
+        }
         const lead = {
             ...storedLead,
             transcript: Array.isArray(body.transcript) ? body.transcript : storedLead.transcript,

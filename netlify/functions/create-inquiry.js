@@ -1,4 +1,9 @@
-const { makeInquiryId, saveInquiry } = require('./lib/website-inquiries-store');
+const {
+    makeClientToken,
+    makeInquiryId,
+    saveInquiry,
+    tokenHash
+} = require('./lib/website-inquiries-store');
 
 function clean(value) {
     return String(value || '').trim();
@@ -140,10 +145,14 @@ exports.handler = async (event) => {
         };
 
         const inquiryId = makeInquiryId();
+        const clientToken = makeClientToken();
         let savedToDb = true;
         let saveWarning = '';
         try {
-            await saveInquiry(inquiryId, lead);
+            await saveInquiry(inquiryId, {
+                ...lead,
+                clientTokenHash: tokenHash(clientToken)
+            });
         } catch (error) {
             savedToDb = false;
             saveWarning = error.message || 'Inquiry store is temporarily unavailable';
@@ -160,6 +169,7 @@ exports.handler = async (event) => {
             body: JSON.stringify({
                 success: true,
                 inquiryId,
+                clientToken: savedToDb ? clientToken : undefined,
                 aiCallStatus: lead.aiCallStatus,
                 savedToDb,
                 warning: saveWarning || undefined,

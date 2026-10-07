@@ -1,5 +1,9 @@
 const { consultantKnowledgeText } = require('./lib/sales-knowledge');
-const { getInquiry, mergeInquiry } = require('./lib/website-inquiries-store');
+const {
+    getInquiry,
+    mergeInquiry,
+    verifyClientToken
+} = require('./lib/website-inquiries-store');
 
 const VALID_REALTIME_VOICES = new Set([
     'alloy',
@@ -123,7 +127,7 @@ function getBodyText(event) {
 exports.handler = async (event) => {
     const headers = {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Headers': 'Content-Type, X-Lead-Token, X-Lead-Full-Name, X-Lead-Company, X-Lead-Service, X-Lead-Language-Mode, X-Lead-Message',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Content-Type': 'application/json'
     };
@@ -167,8 +171,20 @@ exports.handler = async (event) => {
         }
 
         const leadId = clean(payload.leadId || event.queryStringParameters?.leadId);
+        const clientToken = clean(
+            event.headers?.['x-lead-token'] ||
+            event.headers?.['X-Lead-Token'] ||
+            payload.clientToken
+        );
         const requestLead = getLeadFromEvent(event, payload);
         const storedLead = await getLead(leadId);
+        if (!storedLead || !verifyClientToken(clientToken, storedLead.clientTokenHash)) {
+            return {
+                statusCode: 401,
+                headers,
+                body: JSON.stringify({ success: false, error: 'Invalid inquiry token' })
+            };
+        }
         const lead = storedLead || payload.lead || requestLead || {};
         const consultantSettings = await getConsultantSettings().catch((error) => {
             console.warn('Unable to load AI consultant settings, using defaults.', error);

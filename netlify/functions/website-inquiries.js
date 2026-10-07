@@ -1,4 +1,8 @@
-const { listInquiries, mergeInquiry } = require('./lib/website-inquiries-store');
+const {
+    getInquiry,
+    mergeInquiry,
+    verifyClientToken
+} = require('./lib/website-inquiries-store');
 
 function json(statusCode, body) {
     return {
@@ -6,7 +10,7 @@ function json(statusCode, body) {
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Methods': 'GET, PATCH, OPTIONS',
+            'Access-Control-Allow-Methods': 'PATCH, OPTIONS',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
@@ -53,17 +57,16 @@ exports.handler = async (event) => {
     }
 
     try {
-        if (event.httpMethod === 'GET') {
-            const limit = Math.min(Number(event.queryStringParameters?.limit || 120), 300);
-            const leads = await listInquiries(limit);
-
-            return json(200, { success: true, leads });
-        }
-
         if (event.httpMethod === 'PATCH') {
             const body = JSON.parse(event.body || '{}');
             const leadId = clean(body.leadId);
             if (!leadId) return json(400, { success: false, error: 'leadId is required' });
+
+            const lead = await getInquiry(leadId);
+            if (!lead) return json(404, { success: false, error: 'Lead not found' });
+            if (!verifyClientToken(body.clientToken, lead.clientTokenHash)) {
+                return json(401, { success: false, error: 'Invalid inquiry token' });
+            }
 
             const updates = safeUpdates(body.updates);
             await mergeInquiry(leadId, updates);

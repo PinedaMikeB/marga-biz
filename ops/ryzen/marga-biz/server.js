@@ -21,6 +21,21 @@ const PORT = Number(process.env.PORT || 9400);
 const SITE_ROOT = path.resolve(process.env.SITE_ROOT || '/site/dist');
 const FUNCTIONS_ROOT = path.resolve(process.env.FUNCTIONS_ROOT || '/site/netlify/functions');
 const MAX_BODY_BYTES = 2 * 1024 * 1024;
+const PUBLIC_FUNCTIONS = new Set([
+    'ai-consultant-session',
+    'create-inquiry',
+    'quote-approval',
+    'quote-draft',
+    'website-inquiries'
+]);
+const RATE_LIMITS = {
+    'ai-consultant-session': { limit: 5, windowMs: 60 * 60 * 1000 },
+    'create-inquiry': { limit: 10, windowMs: 60 * 60 * 1000 },
+    'quote-approval': { limit: 30, windowMs: 60 * 60 * 1000 },
+    'quote-draft': { limit: 10, windowMs: 60 * 60 * 1000 },
+    'website-inquiries': { limit: 240, windowMs: 60 * 60 * 1000 }
+};
+const rateBuckets = new Map();
 
 const MIME_TYPES = {
     '.avif': 'image/avif',
@@ -85,11 +100,41 @@ function eventHeaders(req) {
     return headers;
 }
 
+function clientAddress(req) {
+    const cloudflareIp = String(req.headers['cf-connecting-ip'] || '').trim();
+    return cloudflareIp || req.socket.remoteAddress || 'unknown';
+}
+
+function allowRequest(req, functionName) {
+    if (req.method === 'OPTIONS') return true;
+    const policy = RATE_LIMITS[functionName];
+    if (!policy) return true;
+
+    const now = Date.now();
+    const key = `${functionName}:${clientAddress(req)}`;
+    const recent = (rateBuckets.get(key) || []).filter((timestamp) => now - timestamp < policy.windowMs);
+    if (recent.length >= policy.limit) return false;
+    recent.push(now);
+    rateBuckets.set(key, recent);
+    return true;
+}
+
 async function serveFunction(req, res, requestUrl) {
     const prefix = '/.netlify/functions/';
     const functionName = requestUrl.pathname.slice(prefix.length).split('/')[0];
     if (!/^[A-Za-z0-9_-]+$/.test(functionName)) {
         sendJson(res, 404, { error: 'Function not found' });
+        return;
+    }
+
+    if (!PUBLIC_FUNCTIONS.has(functionName)) {
+        sendJson(res, 404, { error: 'Function not found' });
+        return;
+    }
+
+    if (!allowRequest(req, functionName)) {
+        res.setHeader('Retry-After', '3600');
+        sendJson(res, 429, { error: 'Too many requests' });
         return;
     }
 
@@ -128,6 +173,9 @@ async function serveFunction(req, res, requestUrl) {
     }
     for (const [key, values] of Object.entries(response?.multiValueHeaders || {})) {
         if (values != null) res.setHeader(key, values);
+    }
+    if (!res.hasHeader('Cache-Control')) {
+        res.setHeader('Cache-Control', 'no-store');
     }
 
     const responseBody = response?.body == null ? '' : String(response.body);
