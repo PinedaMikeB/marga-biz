@@ -37,7 +37,13 @@ cd /srv/apps/marga-biz
 docker compose -f ops/ryzen/marga-biz/compose.yaml up -d postgres app
 bash ops/ryzen/marga-biz/verify-postgres.sh
 curl -fsS http://127.0.0.1:9400/__health
+docker exec marga-biz-app node /site/ops/ryzen/marga-biz/smoke-test.js
 ```
+
+Set `SMOKE_BASE_URL=https://marga.biz` on the `docker exec` command after
+cutover to prove the disposable update/readback/delete flow through the public
+hostname. The script disables Telegram notifications and always deletes the
+test inquiry.
 
 ## Back up
 
