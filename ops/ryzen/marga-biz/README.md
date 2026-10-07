@@ -38,6 +38,18 @@ bash ops/ryzen/marga-biz/backup-postgres.sh
 Every backup is written in PostgreSQL custom format, validated with
 `pg_restore --list`, and accompanied by a SHA-256 checksum.
 
+Install the daily user timer with:
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp ops/ryzen/marga-biz/systemd/marga-biz-backup.* ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now marga-biz-backup.timer
+```
+
+The timer runs daily at approximately 2:45 AM local server time and catches up
+after downtime with `Persistent=true`.
+
 ## Migration guardrails
 
 - Do not connect this container to the Margabase volume or Docker network.

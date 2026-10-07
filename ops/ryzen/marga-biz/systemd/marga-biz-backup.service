@@ -1,0 +1,7 @@
+[Unit]
+Description=Back up the isolated Marga.biz PostgreSQL database
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/apps/marga-biz
+ExecStart=/srv/apps/marga-biz/ops/ryzen/marga-biz/backup-postgres.sh

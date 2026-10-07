@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily validated Marga.biz PostgreSQL backup
+
+[Timer]
+OnCalendar=*-*-* 02:45:00
+Persistent=true
+RandomizedDelaySec=10m
+Unit=marga-biz-backup.service
+
+[Install]
+WantedBy=timers.target
