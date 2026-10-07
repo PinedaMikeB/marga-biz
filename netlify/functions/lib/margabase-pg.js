@@ -33,6 +33,17 @@ function getEnvCandidates() {
     ].filter(Boolean);
 }
 
+function readSecretFile(filePath) {
+    if (!filePath) return '';
+    return fs.readFileSync(filePath, 'utf8').trim();
+}
+
+function getDirectPassword() {
+    return process.env.POSTGRES_PASSWORD ||
+        process.env.PGPASSWORD ||
+        readSecretFile(process.env.POSTGRES_PASSWORD_FILE);
+}
+
 function resolveEnvFile() {
     const candidates = getEnvCandidates();
     const found = candidates.find((candidate) => fs.existsSync(candidate));
@@ -48,7 +59,7 @@ function hasDirectPgEnv() {
         (
             process.env.POSTGRES_DB &&
             process.env.POSTGRES_USER &&
-            (process.env.POSTGRES_PASSWORD || process.env.PGPASSWORD)
+            getDirectPassword()
         )
     );
 }
@@ -61,7 +72,7 @@ function getDbConfig() {
         port: Number(process.env.POSTGRES_PORT || envValues.POSTGRES_PORT || 5432),
         database: process.env.POSTGRES_DB || envValues.POSTGRES_DB,
         user: process.env.POSTGRES_USER || envValues.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD || process.env.PGPASSWORD || envValues.POSTGRES_PASSWORD,
+        password: getDirectPassword() || envValues.POSTGRES_PASSWORD,
         max: 5,
         idleTimeoutMillis: 10000
     };

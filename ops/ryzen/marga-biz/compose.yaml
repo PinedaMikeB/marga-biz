@@ -1,6 +1,60 @@
 name: marga-biz
 
 services:
+  app:
+    build:
+      context: ../../..
+      dockerfile: ops/ryzen/marga-biz/Dockerfile
+    container_name: marga-biz-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: 9400
+      SITE_ROOT: /site/dist
+      FUNCTIONS_ROOT: /site/netlify/functions
+      NETLIFY_ENV_JSON: /run/secrets/public-runtime.json
+      SITE_ORIGIN: https://marga.biz
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: marga_biz
+      POSTGRES_USER: marga_biz_app
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      MARGA_BIZ_CONTENT_SOURCE: postgres
+      MARGA_BIZ_WEBSITE_STORAGE_DIR: /data/website-media
+    env_file:
+      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/repo.env
+      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/automation.env
+      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/integrations.env
+    ports:
+      - 127.0.0.1:9400:9400
+    volumes:
+      - ../../..:/site:ro
+      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/storage:/data/website-media
+      - ${MARGA_BIZ_RUNTIME_ROOT:-/srv/apps/marga-biz-runtime}/secrets/public-runtime.json:/run/secrets/public-runtime.json:ro
+    secrets:
+      - postgres_password
+    networks:
+      - frontend
+      - database
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9400/__health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 2g
+    cpus: 2.0
+    pids_limit: 256
+
   postgres:
     image: postgres:16-alpine
     container_name: marga-biz-postgres
@@ -48,6 +102,8 @@ services:
     shm_size: 256mb
 
 networks:
+  frontend:
+    name: marga-biz-frontend
   database:
     name: marga-biz-database
     internal: true

@@ -23,8 +23,9 @@ Create `/srv/apps/marga-biz-runtime/secrets/postgres-password.txt` with mode
 
 ```bash
 cd /srv/apps/marga-biz
-docker compose -f ops/ryzen/marga-biz/compose.yaml up -d postgres
+docker compose -f ops/ryzen/marga-biz/compose.yaml up -d postgres app
 bash ops/ryzen/marga-biz/verify-postgres.sh
+curl -fsS http://127.0.0.1:9400/__health
 ```
 
 ## Back up
@@ -43,6 +44,7 @@ Every backup is written in PostgreSQL custom format, validated with
 - Do not publish PostgreSQL port 5432.
 - Restore the Mac `website` schema only into the new `marga_biz` database.
 - Keep the existing Ryzen static service on port 9300 unchanged during tests.
+- Keep the test application bound to Ryzen loopback port 9400 until approved.
 - Do not change the Cloudflare production route until the complete website,
   functions, inquiry writes, and media have been verified on a private route.
 - Keep the Mac source and database copy available until post-cutover audit.
